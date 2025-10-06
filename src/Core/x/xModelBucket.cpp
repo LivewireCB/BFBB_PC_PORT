@@ -1,26 +1,29 @@
-//#include "xModelBucket.h"
-//
-//#include "iCamera.h"
-//
-//#include <types.h>
-//#include <PowerPC_EABI_Support\MSL_C\MSL_Common\stdlib.h>
-//
-//extern RpWorld* sBucketDummyWorld;
-//extern RwCamera* sBucketDummyCamera;
-//extern S32 xModelBucketEnabled;
-//extern S32 sBucketCurr;
-//extern S32 sBucketCount;
-//extern xModelBucket* sBucketList;
-//extern S32 sBucketClipCullCurr;
-//extern S32 sBucketClipCullCount;
-//extern xModelBucket** sBucketClipCullList;
-//extern S32 sAlphaCurr;
-//extern S32 sAlphaStart;
-//extern S32 sAlphaCount;
-//extern xModelAlphaBucket* sAlphaList;
-//extern F32 xModelBucket_f675; // 100000.0f
-//extern F32 xModelBucket_f676; // -100000.0f
-//
+#include "xModelBucket.h"
+
+#include "iCamera.h"
+
+#include <types.h>
+#include <stdlib.h>
+
+WIP
+// check that these are supposed to be statics
+
+ static RpWorld* sBucketDummyWorld;
+ static RwCamera* sBucketDummyCamera;
+ static S32 xModelBucketEnabled;
+ static S32 sBucketCurr;
+ static S32 sBucketCount;
+ static xModelBucket* sBucketList;
+ static S32 sBucketClipCullCurr;
+ static S32 sBucketClipCullCount;
+ static xModelBucket** sBucketClipCullList;
+ static S32 sAlphaCurr;
+ static S32 sAlphaStart;
+ static S32 sAlphaCount;
+ static xModelAlphaBucket* sAlphaList;
+ static F32 xModelBucket_f675; // 100000.0f
+ static F32 xModelBucket_f676; // -100000.0f
+
 //S32 CmpAlphaBucket(const void* _a, const void* _b)
 //{
 //    xModelAlphaBucket* a = (xModelAlphaBucket*)_a;
@@ -107,3 +110,13 @@
 //        qsort(sAlphaList, sAlphaCurr, sizeof(xModelAlphaBucket), CmpAlphaBucket);
 //    }
 //}
+
+xModelBucket** xModelBucket_GetBuckets(RpAtomic* data)
+{
+    for (S32 i = 0; i < sBucketClipCullCount; i += 2) {
+        if (sBucketClipCullList[i]->OriginalData == data) {
+            return &sBucketClipCullList[i];
+        }
+    }
+    return NULL;
+}

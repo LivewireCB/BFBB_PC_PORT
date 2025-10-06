@@ -1,27 +1,27 @@
-//#include "iModel.h"
-//#include "xModel.h"
-//
-//#include <types.h>
-//
-//static xModelPool* sxModelPoolList;
-//static RwCamera* subcamera;
-//S32 xModelBucketEnabled;
-//
-//static RwCamera* CameraCreate(int a, int b, int c);
-//void CameraDestroy(RwCamera* cam);
-//
-//U32 xModelGetPipeFlags(RpAtomic* model)
-//{
-//    for (int i = 0; i < xModelLookupCount; i++)
-//    {
-//        if (xModelLookupList[i].model == model)
-//        {
-//            return xModelLookupList[i].PipeFlags;
-//        }
-//    }
-//    return NULL;
-//}
-//
+#include "iModel.h"
+#include "xModel.h"
+
+#include <types.h>
+
+static xModelPool* sxModelPoolList;
+static RwCamera* subcamera;
+S32 xModelBucketEnabled;
+
+static RwCamera* CameraCreate(int a, int b, int c);
+void CameraDestroy(RwCamera* cam);
+
+U32 xModelGetPipeFlags(RpAtomic* model)
+{
+    for (int i = 0; i < xModelLookupCount; i++)
+    {
+        if (xModelLookupList[i].model == model)
+        {
+            return xModelLookupList[i].PipeFlags;
+        }
+    }
+    return NULL;
+}
+
 //// Equivalent (regalloc)
 //void xModelInit()
 //{
@@ -137,7 +137,61 @@
 //        model = model->Next;
 //    }
 //}
-//
+
+void xModelRender2D(const xModelInstance& model, const basic_rect<F32>& r, const xVec3& from, const xVec3& to) NONMATCH("https://decomp.me/scratch/6vVy4")
+{
+    if (r.w <= 0.0f ||
+        r.h <= 0.0f ||
+        r.x + r.w < 0.0f ||
+        r.x > 1.0f ||
+        r.y + r.h < 0.0f ||
+        r.y > 1.0f) {
+        return;
+    }
+
+    RwCamera* camera = RwCameraGetCurrentCamera();
+    RwFrame* frame = RwCameraGetFrame(camera);
+    RwMatrix* cammat = RwFrameGetLTM(frame);
+
+    xMat4x3 objmat, shearmat, temp1, temp2;
+    xMat3x3LookAt(&objmat, &to, &from);
+    xMat3x3Transpose(&objmat, &objmat);
+    objmat.pos.x = 0.0f;
+    objmat.pos.y = 0.0f;
+    objmat.pos.z = xVec3Dist(&to, &from);
+    objmat.flags = 0;
+
+    const RwV2d* camvw = RwCameraGetViewWindow(camera);
+    F32 viewscale = camvw->x * r.w * 2.0f;
+    F32 shearX = camvw->x * -(r.x * 2.0f + r.w - 1.0f);
+    F32 shearY = camvw->y * -(r.y * 2.0f + r.h - 1.0f);
+
+    shearmat.right.x = viewscale;
+    shearmat.right.y = 0.0f;
+    shearmat.right.z = 0.0f;
+    shearmat.up.x = 0.0f;
+    shearmat.up.y = viewscale;
+    shearmat.up.z = 0.0f;
+    shearmat.at.x = shearX;
+    shearmat.at.y = shearY;
+    shearmat.at.z = 1.0f;
+    shearmat.pos.x = 0.0f;
+    shearmat.pos.y = 0.0f;
+    shearmat.pos.z = 0.0f;
+    shearmat.flags = 0;
+
+    xMat4x3Mul(&temp1, &objmat, &shearmat);
+    xMat4x3Mul(&temp2, &temp1, (xMat4x3*)cammat);
+    xMat4x3Mul(&objmat, (xMat4x3*)model.Mat, &temp2);
+
+    temp1 = *(xMat4x3*)model.Mat;
+    *model.Mat = *(RwMatrix*)&objmat;
+
+    iModelRender(model.Data, model.Mat);
+
+    *model.Mat = *(RwMatrix*)&temp1;
+}
+
 //static RwCamera* CameraCreate(int a, int b, int c)
 //{
 //    RwCamera* camera = RwCameraCreate();
@@ -190,21 +244,21 @@
 //    }
 //}
 //
-//void xModelSetMaterialAlpha(xModelInstance* model, U8 alpha)
-//{
-//    iModelSetMaterialAlpha(model->Data, alpha);
-//}
-//
-//void xModelMaterialMul(xModelInstance* model, F32 rm, F32 gm, F32 bm)
-//{
-//    iModelMaterialMul(model->Data, rm, gm, bm);
-//}
-//
-//void xModelResetMaterial(xModelInstance* model)
-//{
-//    iModelResetMaterial(model->Data);
-//}
-//
+void xModelSetMaterialAlpha(xModelInstance* model, U8 alpha)
+{
+    iModelSetMaterialAlpha(model->Data, alpha);
+}
+
+void xModelMaterialMul(xModelInstance* model, F32 rm, F32 gm, F32 bm)
+{
+    iModelMaterialMul(model->Data, rm, gm, bm);
+}
+
+void xModelResetMaterial(xModelInstance* model)
+{
+    iModelResetMaterial(model->Data);
+}
+
 //void xModel_SceneEnter(RpWorld* world)
 //{
 //    RpWorldAddCamera(world, subcamera);

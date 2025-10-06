@@ -1,129 +1,141 @@
-//#include "zEntPlayer.h"
-//#include "zGlobals.h"
-//#include "zMain.h"
+#include "zEntPlayer.h"
+#include "zGlobals.h"
+#include "zMain.h"
 //
 //#include <PowerPC_EABI_Support/MSL_C/MSL_Common/printf.h>
-//#include <types.h>
-//
-//#include "iSystem.h"
-//#include "xMemMgr.h"
-//#include "zVar.h"
-//#include "zAssetTypes.h"
-//#include "xTRC.h"
-//#include "iTime.h"
-//#include "zDispatcher.h"
-//#include "xserializer.h"
-//#include "xScrFX.h"
-//#include "xFX.h"
+#include <types.h>
+
+#include "iSystem.h"
+#include "xMemMgr.h"
+#include "zVar.h"
+#include "zAssetTypes.h"
+#include "xTRC.h"
+#include "iTime.h"
+#include "zDispatcher.h"
+#include "xserializer.h"
+#include "xScrFX.h"
+#include "xFont.h"
+#include "xFX.h"
 //#include "xParMgr.h"
 //#include "zParCmd.h"
 //#include "zCameraTweak.h"
 //#include "zShrapnel.h"
 //#include "zNPCMgr.h"
-//#include "xCamera.h"
+#include "xCamera.h"
 //#include "zCamera.h"
 //#include "zCutsceneMgr.h"
 //#include "zEntPlayerBungeeState.h"
 //#include "zEntPlayerOOBState.h"
-//#include "zMenu.h"
-//#include "iTime.h"
-//#include "xstransvc.h"
-//
-//zGlobals globals;
-//xGlobals* xglobals;
-//
-//S32 percentageDone;
-//_tagxPad* gDebugPad;
-//static S32 sShowMenuOnBoot;
-//S32 gGameSfxReport;
-//static st_SERIAL_PERCID_SIZE* g_xser_sizeinfo;
-//
-//void zLedgeAdjust(zLedgeGrabParams* params);
-//void zMainMemCardRenderText(const char*, bool);
-//void RenderText(const char*, bool);
-//
+#include "zMenu.h"
+#include "xstransvc.h"
+#include "xutil.h"
+
+#include <SDL.h>
+
+zGlobals globals;
+xGlobals* xglobals;
+
+S32 percentageDone;
+_tagxPad* gDebugPad;
+static S32 sShowMenuOnBoot = 1;
+S32 gGameSfxReport;
+static st_SERIAL_PERCID_SIZE* g_xser_sizeinfo;
+
+void zLedgeAdjust(zLedgeGrabParams* params);
+void zMainMemCardRenderText(const char*, bool);
+void RenderText(const char*, bool);
+
 extern "C" {
+
 	int main(int argc, char** argv)
 	{
+        memset(&globals, 0, sizeof(globals));
+        globals.firstStartPressed = true;
+
+        iSystemInit(FALSE);
+        zMainOutputMgrSetup();
+        xMemRegisterBaseNotifyFunc(zMainMemLvlChkCB);
+        zMainInitGlobals();
+        var_init();
+        zAssetStartup();
+        zMainLoadFontHIP();
+        xfont::init();
+//
+//#if SHOW_COPYRIGHT_SCREEN
+//        zMainFirstScreen(1);
+//#endif
+//
+//        zMainShowProgressBar();
+//
+//        xTRCInit();
+//        zMainReadINI();
+//        iFuncProfileParse("scooby.elf", globals.profile);
+//        xUtilStartup();
+//        xSerialStartup(128, g_xser_sizeinfo);
+//        zDispatcher_Startup();
+//        xScrFxInit();
+//        xFXStartup();
+//
+//        zMainShowProgressBar();
+//
+//        xParMgrInit();
+//        zParCmdInit();
+//        iEnvStartup();
+//        zEntPickup_Startup();
+//        zCameraTweakGlobal_Init();
+//
+//        globals.option_vibration = true;
+//        globals.pad0 = xPadEnable(globals.currentActivePad);
+//        globals.pad1 = NULL;
+//        gDebugPad = NULL;
+//        xPadRumbleEnable(globals.currentActivePad, globals.option_vibration);
+//
+//        xSGStartup();
+//        xDebugTimestampScreen();
+//        zShrapnel_GameInit();
+//
+//        zMainShowProgressBar();
+//
+//        xBehaveMgr_Startup();
+//        zNPCMgr_Startup();
+//
+//        // MAIN LOOP
+//        zMainLoop();
+//
+//        zNPCMgr_Shutdown();
+//        xBehaveMgr_Shutdown();
+//        zAssetShutdown();
+//        xFXShutdown();
+//        zDispatcher_Shutdown();
+//        xSGShutdown();
+//        xSerialShutdown();
+//        xUtilShutdown();
+//        iSystemExit();
+//
+        return 0;
 	}
 }
-// 
-//void main(S32 argc, char** argv)
-//{
-//    U32 options;
-//    S32 i;
-//    char* tmpStr;
-//
-//    memset(&globals, 0, 0x1fc8);
-//    globals.firstStartPressed = TRUE;
-//    iSystemInit(FALSE); // 0x6d2
-//    zMainOutputMgrSetup();
-//    xMemRegisterBaseNotifyFunc(zMainMemLvlChkCB);
-//    zMainInitGlobals();
-//    var_init();
-//    zAssetStartup();
-//    zMainLoadFontHIP();
-//    xfont::init();
-//    zMainFirstScreen(1);
-//    zMainShowProgressBar();
-//    xTRCInit();
-//    zMainReadINI();
-//    iFuncProfileParse(tmpStr = "scooby.elf", globals.profile);
-//    xUtilStartup();
-//    xSerialStartup(0x80, (st_SERIAL_PERCID_SIZE*)&g_xser_sizeinfo);
-//    zDispatcher_Startup();
-//    xScrFxInit();
-//    xFXStartup();
-//    zMainShowProgressBar();
-//    xParMgrInit();
-//    zParCmdInit();
-//    iEnvStartup();
-//    zEntPickup_Startup();
-//    zCameraTweakGlobal_Init();
-//    globals.option_vibration = 1; // 0x6c0
-//    globals.pad0 = xPadEnable(globals.currentActivePad); // 0x6d1
-//    globals.pad1 = 0;
-//    gDebugPad = 0;
-//    xPadRumbleEnable(globals.currentActivePad, globals.option_vibration); //  0x6d1, 0x6c0
-//    xSGStartup();
-//    xDebugTimestampScreen();
-//    zShrapnel_GameInit();
-//    zMainShowProgressBar();
-//    xBehaveMgr_Startup();
-//    zNPCMgr_Startup();
-//    zMainLoop();
-//    zNPCMgr_Shutdown();
-//    xBehaveMgr_Shutdown();
-//    zAssetShutdown();
-//    xFXShutdown();
-//    zDispatcher_Shutdown();
-//    xSGShutdown();
-//    xSerialShutdown();
-//    xUtilShutdown();
-//    iSystemExit();
-//}
-//
-//void zMainOutputMgrSetup()
-//{
-//    iTime tim = iTimeGet();
-//    iTimeDiffSec(tim);
-//    iTimeGet();
-//}
-//
-//void zMainInitGlobals()
-//{
-//    memset(&globals, 0, sizeof(zGlobals));
-//    globals.sceneFirst = 1;
-//    iTime tim = iTimeGet();
-//    iTimeDiffSec(tim);
-//    iTimeGet();
-//}
-//
+void zMainOutputMgrSetup()
+{
+    iTime tim = iTimeGet();
+    iTimeDiffSec(tim);
+    iTimeGet();
+}
+
+void zMainInitGlobals()
+{
+    memset(&globals, 0, sizeof(zGlobals));
+    globals.sceneFirst = 1;
+    iTime tim = iTimeGet();
+    iTimeDiffSec(tim);
+    iTimeGet();
+}
+
 //void ParseFloatList(F32* dest, char* strbuf, S32 max)
 //{
 //    xStrParseFloatList(dest, strbuf, max);
 //}
-//
+
 //void zMainParseINIGlobals(xIniFile* ini)
 //{
 //    F32 fVar1;
@@ -594,16 +606,16 @@ extern "C" {
 //    globals.player.sandy.pcType = ePlayer_Sandy;
 //}
 //
-//void zMainMemLvlChkCB()
-//{
-//    zSceneMemLvlChkCB();
-//}
-//
-//void zLedgeAdjust(zLedgeGrabParams* params)
-//{
-//    params->animGrab *= (1.0f / 30);
-//}
-//
+void zMainMemLvlChkCB() WIP
+{
+    //zSceneMemLvlChkCB();
+}
+
+void zLedgeAdjust(zLedgeGrabParams* params)
+{
+    params->animGrab *= (1.0f / 30);
+}
+
 //void zMainShowProgressBar()
 //{
 //    S32 progBar;
@@ -753,24 +765,24 @@ extern "C" {
 //        xIniGetString(xIniParse(0, 0), "patrick.MoveSpeed", 0);
 //    }
 //}
-//
-//void zMainFirstScreen(int)
-//{
-//}
-//
-//void zMainMemCardSpaceQuery()
-//{
-//    S32 bytesNeeded;
-//    S32 availOnDisk;
-//    S32 neededFiles;
-//    S32 do_chk;
-//    S32 fullCard;
-//    U8 formatInProgress;
-//    U8 formatFailed;
-//    eStartupErrors startupError;
-//    S32 status;
-//}
-//
+
+void zMainFirstScreen(int)
+{
+}
+
+void zMainMemCardSpaceQuery()
+{
+    S32 bytesNeeded;
+    S32 availOnDisk;
+    S32 neededFiles;
+    S32 do_chk;
+    S32 fullCard;
+    U8 formatInProgress;
+    U8 formatFailed;
+    eStartupErrors startupError;
+    S32 status;
+}
+
 //void zMainMemCardQueryPost(S32 needed, S32 available, S32 neededFiles, S32 unk0)
 //{
 //    RwCamera* cam = 0;
@@ -801,34 +813,34 @@ extern "C" {
 //    iCameraDestroy(cam);
 //}
 //
-//void zMainLoadFontHIP()
-//{
-//    iTime time;
-//
-//    xMemPushBase();
-//    time = iTimeGet();
-//    xUtil_idtag2string('FONT', 0);
-//    iTimeDiffSec(time);
-//    xSTPreLoadScene('FONT', NULL, 0x1);
-//    time = iTimeGet();
-//    xUtil_idtag2string('FONT', 0);
-//    iTimeDiffSec(time);
-//    xSTQueueSceneAssets('FONT', 1);
-//    time = iTimeGet();
-//    xUtil_idtag2string('FONT', 0);
-//    iTimeDiffSec(time);
-//
-//    do
-//    {
-//        xSTLoadStep(time);
-//    } while (time < 1.0f);
-//
-//    xSTDisconnect('FONT', 1);
-//    time = iTimeGet();
-//    xUtil_idtag2string('FONT', 0);
-//    iTimeDiffSec(time);
-//}
-//
-//void iEnvStartup()
-//{
-//}
+void zMainLoadFontHIP()
+{
+    iTime time;
+
+    xMemPushBase();
+    time = iTimeGet();
+    //xUtil_idtag2string('FONT', 0);
+    iTimeDiffSec(time);
+    xSTPreLoadScene('FONT', NULL, 0x1);
+    time = iTimeGet();
+    //xUtil_idtag2string('FONT', 0);
+    iTimeDiffSec(time);
+    xSTQueueSceneAssets('FONT', 1);
+    time = iTimeGet();
+    //xUtil_idtag2string('FONT', 0);
+    iTimeDiffSec(time);
+
+    do
+    {
+        xSTLoadStep(time);
+    } while (time < 1.0f);
+
+    xSTDisconnect('FONT', 1);
+    time = iTimeGet();
+    //xUtil_idtag2string('FONT', 0);
+    iTimeDiffSec(time);
+}
+
+void iEnvStartup()
+{
+}

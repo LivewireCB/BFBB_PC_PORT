@@ -1,44 +1,44 @@
-//#include "xSnd.h"
-//
-//#include <types.h>
-//
-//#include "iSnd.h"
-//#include "xVec3.h"
-//
-//extern _xSndDelayed sDelayedSnd[16];
-//extern U32 sDelayedPaused;
-//extern F32 sTimeElapsed;
-//
-//xSndGlobals gSnd;
-//
-//static S32 faders_active;
-//
-//void xSndInit()
-//{
-//    iSndInit();
-//    xSndVoiceInfo* voice = gSnd.voice;
-//    for (S32 i = 0; i < 64; i++, voice++)
-//    {
-//        voice->flags = 0;
-//        voice->lock_owner = 0;
-//    }
-//
-//    xSndSceneInit();
-//
-//    //Need this to only use f0 instead of f1 for 1.0f
-//    for (int i = 0; i < 5; i++)
-//    {
-//        gSnd.categoryVolFader[i] = 1.0f;
-//    }
-//
-//    gSnd.categoryVolFader[2] = 0.7f;
-//
-//    gSnd.stereo = 1;
-//    iSndSuspendCD(1);
-//    xSndDelayedInit();
-//    reset_faders();
-//}
-//
+#include "xSnd.h"
+
+#include <types.h>
+
+#include "iSnd.h"
+#include "xVec3.h"
+
+extern _xSndDelayed sDelayedSnd[16];
+extern U32 sDelayedPaused;
+extern F32 sTimeElapsed;
+
+xSndGlobals gSnd;
+
+static S32 faders_active;
+
+void xSndInit() WIP
+{
+    //iSndInit();
+    //xSndVoiceInfo* voice = gSnd.voice;
+    //for (S32 i = 0; i < 64; i++, voice++)
+    //{
+    //    voice->flags = 0;
+    //    voice->lock_owner = 0;
+    //}
+
+    //xSndSceneInit();
+
+    ////Need this to only use f0 instead of f1 for 1.0f
+    //for (int i = 0; i < 5; i++)
+    //{
+    //    gSnd.categoryVolFader[i] = 1.0f;
+    //}
+
+    //gSnd.categoryVolFader[2] = 0.7f;
+
+    //gSnd.stereo = 1;
+    //iSndSuspendCD(1);
+    //xSndDelayedInit();
+    //reset_faders();
+}
+
 //void xSndSceneInit()
 //{
 //    gSnd.listenerMode = SND_LISTENER_MODE_PLAYER;

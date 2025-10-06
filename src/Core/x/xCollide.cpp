@@ -1,15 +1,15 @@
-//#include "xCollide.h"
-//#include "zSurface.h"
-//#include "iCollide.h"
-//#include "iMath3.h"
-//#include "rpcollis.h"
-//#include "xMathInlines.h"
-//
-//#include <PowerPC_EABI_Support/MSL_C/MSL_Common/cmath>
-//#include <types.h>
-//
-//S32 sSweptSphereHitFound;
-//
+#include "xCollide.h"
+#include "zSurface.h"
+#include "iCollide.h"
+#include "iMath3.h"
+#include "rpcollis.h"
+#include "xMathInlines.h"
+
+#include <cmath>
+#include <types.h>
+
+S32 sSweptSphereHitFound;
+
 //_xCollsIdx xCollideGetCollsIdx(const xCollis* coll, const xVec3* tohit, const xMat3x3* mat)
 //{
 //    if (tohit->y * tohit->y > tohit->x * tohit->x + tohit->z * tohit->z)
@@ -460,19 +460,19 @@
 //    o->y += v->y * s;
 //    o->z += v->z * s;
 //}
-//
-//void xVec3Cross(xVec3* o, const xVec3* a, const xVec3* b)
-//{
-//    o->x = a->y * b->z - b->y * a->z;
-//    o->y = a->z * b->x - b->z * a->x;
-//    o->z = a->x * b->y - b->x * a->y;
-//}
-//
-//F32 xVec3Length2(const xVec3* vec)
-//{
-//    return vec->x * vec->x + vec->y * vec->y + vec->z * vec->z;
-//}
-//
+
+void xVec3Cross(xVec3* o, const xVec3* a, const xVec3* b)
+{
+    o->x = a->y * b->z - b->y * a->z;
+    o->y = a->z * b->x - b->z * a->x;
+    o->z = a->x * b->y - b->x * a->y;
+}
+
+F32 xVec3Length2(const xVec3* vec)
+{
+    return vec->x * vec->x + vec->y * vec->y + vec->z * vec->z;
+}
+
 //F32 xVec3Dist(const xVec3* a, const xVec3* b)
 //{
 //    F32 dx = a->x - b->x;
@@ -616,12 +616,12 @@
 //{
 //    return 0;
 //}
-//
-//F32 xVec2::length2() const
-//{
-//    return x * x + y * y;
-//}
-//
+
+F32 xVec2::length2() const
+{
+    return x * x + y * y;
+}
+
 //xVec2 xVec2::operator-(const xVec2& v) const
 //{
 //    xVec2 vec = *this;

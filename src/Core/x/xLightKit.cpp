@@ -1,12 +1,12 @@
-//#include "xLightKit.h"
-//#include "xMath.h"
-//
-//#include <types.h>
-//#include <string.h>
-//
-//S32 iModelHack_DisablePrelight;
-//xLightKit* gLastLightKit;
-//
+#include "xLightKit.h"
+#include "xMath.h"
+
+#include <types.h>
+#include <string.h>
+
+S32 iModelHack_DisablePrelight;
+xLightKit* gLastLightKit;
+
 //xLightKit* xLightKit_Prepare(void* data)
 //{
 //    xLightKit* lkit = (xLightKit*)data;

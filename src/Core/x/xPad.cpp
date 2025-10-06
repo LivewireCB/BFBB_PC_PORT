@@ -1,90 +1,91 @@
-//#include "xPad.h"
-//
-//#include <types.h>
-//#include <string.h>
-//
-//_tagxPad mPad[4];
-//
-//S32 xPadInit()
-//{
-//    memset(mPad, 0, sizeof(mPad));
-//    memset(mRumbleList, 0, sizeof(mRumbleList));
-//    S32 code = iPadInit();
-//    if (!code)
-//    {
-//        return 0;
-//    }
-//    gPlayerPad = mPad;
-//    return 1;
-//}
-//
-//// WIP.
-//_tagxPad* xPadEnable(S32 idx)
-//{
-//    _tagxPad* p = mPad + idx;
-//    if (p->state == ePad_Disabled && idx == 0)
-//    {
-//        p = iPadEnable(mPad + idx, 0);
-//    }
-//    return p;
-//}
-//
-//void xPadRumbleEnable(S32 idx, S32 enable)
-//{
-//    _tagxPad* p = mPad + idx;
-//    if (p->state != 2)
-//    {
-//        enable = 0;
-//    }
-//    if (enable)
-//    {
-//        if (p->flags & 4)
-//        {
-//            p->flags |= 8;
-//        }
-//    }
-//    else
-//    {
-//        if (p->flags & 8)
-//        {
-//            p->flags ^= 8;
-//            xPadDestroyRumbleChain(mPad + idx);
-//        }
-//    }
-//}
-//
-//void xPadAnalogIsDigital(S32 idx, S32 enable)
-//{
-//    if (idx != 0)
-//        return;
-//
-//    _tagxPad* pad = &mPad[idx];
-//
-//    if (enable)
-//    {
-//        pad->flags |= 0x10;
-//    }
-//    else
-//    {
-//        pad->flags &= ~0x10;
-//    }
-//
-//    if (pad->al2d_timer >= 0.35f)
-//    {
-//        pad->al2d_timer = 0.35f;
-//    }
-//
-//    if (pad->ar2d_timer >= 0.35f)
-//    {
-//        pad->ar2d_timer = 0.35f;
-//    }
-//
-//    if (pad->d_timer >= 0.35f)
-//    {
-//        pad->d_timer = 0.35f;
-//    }
-//}
-//
+#include "xPad.h"
+
+#include <types.h>
+#include <string.h>
+
+_tagxPad mPad[4];
+
+S32 xPadInit() WIP
+{
+    /*memset(mPad, 0, sizeof(mPad));
+    memset(mRumbleList, 0, sizeof(mRumbleList));
+    S32 code = iPadInit();
+    if (!code)
+    {
+        return 0;
+    }
+    gPlayerPad = mPad;*/
+    return 1;
+}
+
+// WIP.
+_tagxPad* xPadEnable(S32 idx) WIP
+{
+    /*_tagxPad* p = mPad + idx;
+    if (p->state == ePad_Disabled && idx == 0)
+    {
+        p = iPadEnable(mPad + idx, 0);
+    }
+    return p;*/
+    return NULL;
+}
+
+void xPadRumbleEnable(S32 idx, S32 enable)
+{
+    /*_tagxPad* p = mPad + idx;
+    if (p->state != 2)
+    {
+        enable = 0;
+    }
+    if (enable)
+    {
+        if (p->flags & 4)
+        {
+            p->flags |= 8;
+        }
+    }
+    else
+    {
+        if (p->flags & 8)
+        {
+            p->flags ^= 8;
+            xPadDestroyRumbleChain(mPad + idx);
+        }
+    }*/
+}
+
+void xPadAnalogIsDigital(S32 idx, S32 enable)
+{
+    /*if (idx != 0)
+        return;
+
+    _tagxPad* pad = &mPad[idx];
+
+    if (enable)
+    {
+        pad->flags |= 0x10;
+    }
+    else
+    {
+        pad->flags &= ~0x10;
+    }
+
+    if (pad->al2d_timer >= 0.35f)
+    {
+        pad->al2d_timer = 0.35f;
+    }
+
+    if (pad->ar2d_timer >= 0.35f)
+    {
+        pad->ar2d_timer = 0.35f;
+    }
+
+    if (pad->d_timer >= 0.35f)
+    {
+        pad->d_timer = 0.35f;
+    }*/
+}
+
 //void xPadKill()
 //{
 //    iPadKill();

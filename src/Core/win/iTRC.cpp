@@ -1,5 +1,5 @@
-//#include "iTRC.h"
-//
+#include "iTRC.h"
+
 //#include <PowerPC_EABI_Support/MSL_C/MSL_Common/strtoul.h>
 //#include <string.h>
 //#include <dolphin/gx/GXCull.h>
@@ -14,44 +14,44 @@
 //#include <dolphin/mtx.h>
 //#include <dolphin/vi/vifuncs.h>
 //#include <dolphin/os.h>
-//
-//#define FONT_MATRIX_ID 0x1E
-//#define TEXTBOX_MAX_TEXT_LENGTH 256
-//
+
+#define FONT_MATRIX_ID 0x1E
+#define TEXTBOX_MAX_TEXT_LENGTH 256
+
 //// FIXME: These should be in a RW header somewhere
 //extern GXRenderModeObj* _RwDlRenderMode;
-//extern "C" {
-//void RwGameCubeGetXFBs(void*, void*);
-//}
-//
-//namespace ROMFont
-//{
-//    OSFontHeader* mFontData;
-//    void* mXFBs[2];
-//    void* mCurrentFrameBuffer;
-//    GXRenderModeObj* mRenderMode;
-//    bool mFirstFrame = true;
-//} // namespace ROMFont
-//
-//namespace ResetButton
-//{
-//    bool mResetEnabled = 1;
-//    BOOL mWasResetButtonPressed;
-//    void (*mSndKill)();
-//} // namespace ResetButton
-//
-//namespace iTRCDisk
-//{
-//    char mMessage[256];
-//
-//    void (*mSndSuspend)();
-//    void (*mSndResume)();
-//    void (*mPadStopRumbling)();
-//    void (*mSndKill)();
-//    void (*mMovieSuspendFunction)();
-//    void (*mMovieResumeFunction)();
-//} // namespace iTRCDisk
-//
+extern "C" {
+void RwGameCubeGetXFBs(void*, void*);
+}
+
+namespace ROMFont
+{
+    //OSFontHeader* mFontData;
+    void* mXFBs[2];
+    void* mCurrentFrameBuffer;
+    //GXRenderModeObj* mRenderMode;
+    bool mFirstFrame = true;
+} // namespace ROMFont
+
+namespace ResetButton
+{
+    bool mResetEnabled = 1;
+    bool mWasResetButtonPressed;
+    void (*mSndKill)();
+} // namespace ResetButton
+
+namespace iTRCDisk
+{
+    char mMessage[256];
+
+    void (*mSndSuspend)();
+    void (*mSndResume)();
+    void (*mPadStopRumbling)();
+    void (*mSndKill)();
+    void (*mMovieSuspendFunction)();
+    void (*mMovieResumeFunction)();
+} // namespace iTRCDisk
+
 //BOOL ROMFont::Init()
 //{
 //    if (OSGetFontEncode() == 1)
@@ -495,40 +495,8 @@
 //    return dvd_state;
 //}
 //
-//bool iTRCDisk::CheckDVDAndResetState()
-//{
-//    S32 dvd_state = SetDVDState();
-//    DVDCheckDisk();
-//    bool ret = false;
-//
-//    if (dvd_state != DVD_STATE_FATAL_ERROR)
-//    {
-//        ResetButton::CheckResetButton();
-//    }
-//    if (dvd_state != DVD_STATE_END && dvd_state != DVD_STATE_BUSY)
-//    {
-//        if (mSndSuspend)
-//        {
-//            mSndSuspend();
-//        }
-//        if (mPadStopRumbling)
-//        {
-//            mPadStopRumbling();
-//        }
-//        if (mMovieSuspendFunction)
-//        {
-//            mMovieSuspendFunction();
-//        }
-//        DisplayErrorMessage();
-//        if (mMovieResumeFunction)
-//        {
-//            mMovieResumeFunction();
-//        }
-//        if (mSndResume)
-//        {
-//            mSndResume();
-//        }
-//        ret = true;
-//    }
-//    return ret;
-//}
+bool iTRCDisk::CheckDVDAndResetState() WIP
+{
+    // Deleted actual code to get a build working
+    return 0;
+}

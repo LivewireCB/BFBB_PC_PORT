@@ -1,37 +1,37 @@
-//#include "xCamera.h"
-//
-//#include "xstransvc.h"
-//#include "xMath.h"
-//#include "xMathInlines.h"
-//#include "xScene.h"
-//#include "xCollideFast.h"
-//#include "xScrFx.h"
-//
-//#include "iMath.h"
-//
-//#include <PowerPC_EABI_Support\MSL_C\MSL_Common\cmath>
-//#include <PowerPC_EABI_Support\MSL_C\MSL_Common\cstring>
-//
-//#define CAMERAFX_ZOOM_MODE_0 0
-//#define CAMERAFX_ZOOM_MODE_1 1
-//#define CAMERAFX_ZOOM_MODE_2 2
-//#define CAMERAFX_ZOOM_MODE_3 3
-//
-//#define CAMERAFX_TYPE_SHAKE 2
-//
-//S32 sCamCollis;
-//volatile S32 xcam_collis_owner_disable;
-//S32 xcam_do_collis = 1;
-//F32 xcam_collis_radius = 0.4f;
-//F32 xcam_collis_stiffness = 0.3f;
-//RpAtomic* sInvisWallHack;
-//static xMat4x3 sCameraFXMatOld;
-//cameraFX sCameraFX[10];
-//cameraFXTableEntry sCameraFXTable[3] = {};
-//
-//static void xCameraFXInit();
-//void add_camera_tweaks();
-//
+#include "xCamera.h"
+
+#include "xstransvc.h"
+#include "xMath.h"
+#include "xMathInlines.h"
+#include "xScene.h"
+#include "xCollideFast.h"
+#include "xScrFx.h"
+
+#include "iMath.h"
+
+#include <cmath>
+#include <cstring>
+
+#define CAMERAFX_ZOOM_MODE_0 0
+#define CAMERAFX_ZOOM_MODE_1 1
+#define CAMERAFX_ZOOM_MODE_2 2
+#define CAMERAFX_ZOOM_MODE_3 3
+
+#define CAMERAFX_TYPE_SHAKE 2
+
+S32 sCamCollis;
+volatile S32 xcam_collis_owner_disable;
+S32 xcam_do_collis = 1;
+F32 xcam_collis_radius = 0.4f;
+F32 xcam_collis_stiffness = 0.3f;
+RpAtomic* sInvisWallHack;
+static xMat4x3 sCameraFXMatOld;
+cameraFX sCameraFX[10];
+cameraFXTableEntry sCameraFXTable[3] = {};
+
+static void xCameraFXInit();
+void add_camera_tweaks();
+
 //void xCameraInit(xCamera* cam, U32 width, U32 height)
 //{
 //    xCameraFXInit();
@@ -1117,15 +1117,15 @@
 //{
 //}
 //
-//void xMat4x3Identity(xMat4x3* m)
-//{
-//    xMat4x3Copy(m, &g_I3);
-//}
-//
-//void xMat4x3Copy(xMat4x3* o, const xMat4x3* m)
-//{
-//    memcpy(o, m, sizeof(xMat4x3));
-//}
+void xMat4x3Identity(xMat4x3* m)
+{
+    xMat4x3Copy(m, &g_I3);
+}
+
+void xMat4x3Copy(xMat4x3* o, const xMat4x3* m)
+{
+    memcpy(o, m, sizeof(xMat4x3));
+}
 //
 //void xQuatConj(xQuat* o, const xQuat* q)
 //{
@@ -1133,15 +1133,15 @@
 //
 //    xVec3Inv(&o->v, &q->v);
 //}
-//
-//void xMat3x3LookAt(xMat3x3* m, const xVec3* pos, const xVec3* at)
-//{
-//    xVec3 v;
-//
-//    xVec3Sub(&v, at, pos);
-//    xMat3x3LookVec(m, &v);
-//}
-//
+
+void xMat3x3LookAt(xMat3x3* m, const xVec3* pos, const xVec3* at)
+{
+    xVec3 v;
+
+    xVec3Sub(&v, at, pos);
+    xMat3x3LookVec(m, &v);
+}
+
 //F32 xQuatGetAngle(const xQuat* q)
 //{
 //    if (q->s > 0.99998999f)
@@ -1167,125 +1167,115 @@
 //{
 //    return xsqrt(SQR(v->x) + SQR(v->y) + SQR(v->z));
 //}
-//
-//void xVec3Sub(xVec3* o, const xVec3* a, const xVec3* b)
-//{
-//    o->x = a->x - b->x;
-//    o->y = a->y - b->y;
-//    o->z = a->z - b->z;
-//}
-//
-//void xVec3Inv(xVec3* o, const xVec3* v)
-//{
-//    o->x = -v->x;
-//    o->y = -v->y;
-//    o->z = -v->z;
-//}
-//
-//F32 xacos(F32 x)
-//{
-//    return std::acosf(x);
-//}
-//
+
+void xVec3Sub(xVec3* o, const xVec3* a, const xVec3* b)
+{
+    o->x = a->x - b->x;
+    o->y = a->y - b->y;
+    o->z = a->z - b->z;
+}
+
+void xVec3Inv(xVec3* o, const xVec3* v)
+{
+    o->x = -v->x;
+    o->y = -v->y;
+    o->z = -v->z;
+}
+
 //#ifndef INLINE
 //float std::acosf(float x)
 //{
 //    return (float)acos((double)x);
 //}
 //#endif
-//
-//void xVec3AddTo(xVec3* o, const xVec3* v)
-//{
-//    o->x += v->x;
-//    o->y += v->y;
-//    o->z += v->z;
-//}
-//
-//xVec3& xVec3::invert()
-//{
-//    this->x = -this->x;
-//    this->y = -this->y;
-//    this->z = -this->z;
-//
-//    return *this;
-//}
-//
-//F32 xexp(F32 x)
-//{
-//    return std::expf(x);
-//}
-//
+
+void xVec3AddTo(xVec3* o, const xVec3* v)
+{
+    o->x += v->x;
+    o->y += v->y;
+    o->z += v->z;
+}
+
+xVec3& xVec3::invert()
+{
+    this->x = -this->x;
+    this->y = -this->y;
+    this->z = -this->z;
+
+    return *this;
+}
+
 //#ifndef INLINE
 //float std::expf(float x)
 //{
 //    return (float)exp((double)x);
 //}
 //#endif
-//
-//F32 xrmod(F32 ang)
-//{
-//    F32 frac = 0.15915494f * ang;
-//
-//    if (frac < 0.0f)
-//    {
-//        return (frac - std::ceilf(frac) + 1.0f) * 6.2831855f;
-//    }
-//    else if (frac >= 1.0f)
-//    {
-//        return (frac - std::floorf(frac)) * 6.2831855f;
-//    }
-//
-//    return ang;
-//}
-//
-//xVec3& xVec3::operator/=(F32 f)
-//{
-//    F32 f2 = 1.0f;
-//
-//    this->x *= f2 / f;
-//    this->y *= f2 / f;
-//    this->z *= f2 / f;
-//
-//    return *this;
-//}
-//
+
+F32 xrmod(F32 ang)
+{
+    F32 frac = 0.15915494f * ang;
+
+    if (frac < 0.0f)
+    {
+        return (frac - std::ceilf(frac) + 1.0f) * 6.2831855f;
+    }
+    else if (frac >= 1.0f)
+    {
+        return (frac - std::floorf(frac)) * 6.2831855f;
+    }
+
+    return ang;
+}
+
+xVec3& xVec3::operator/=(F32 f)
+{
+    F32 f2 = 1.0f;
+
+    this->x *= f2 / f;
+    this->y *= f2 / f;
+    this->z *= f2 / f;
+
+    return *this;
+}
+
 //xVec3& xVec3::right_normalize()
 //{
 //    return this->safe_normalize(xVec3::m_UnitAxisX);
 //}
-//
-//xVec3& xVec3::safe_normalize(const xVec3& val)
-//{
-//    F32 len = this->length2();
-//
-//    if (len < 0.000099999997f)
-//    {
-//        return (*this = val);
-//    }
-//    else
-//    {
-//        return (*this *= 1.0f / xsqrt(len));
-//    }
-//}
-//
-//template <> F32 range_limit<F32>(F32 v, F32 minv, F32 maxv)
-//{
-//    if (v <= minv)
-//    {
-//        return minv;
-//    }
-//
-//    if (v >= maxv)
-//    {
-//        return maxv;
-//    }
-//
-//    return v;
-//}
-//
-//xVec2& xVec2::operator=(F32 f)
-//{
-//    this->x = this->y = f;
-//
-//    return *this;
-//}
+
+xVec3& xVec3::safe_normalize(const xVec3& val)
+{
+    F32 len = this->length2();
+
+    if (len < 0.000099999997f)
+    {
+        return (*this = val);
+    }
+    else
+    {
+        return (*this *= 1.0f / xsqrt(len));
+    }
+}
+
+template <> F32 range_limit<F32>(F32 v, F32 minv, F32 maxv)
+{
+    if (v <= minv)
+    {
+        return minv;
+    }
+
+    if (v >= maxv)
+    {
+        return maxv;
+    }
+
+    return v;
+}
+
+xVec2& xVec2::operator=(F32 f)
+{
+    this->x = this->y = f;
+
+    return *this;
+}

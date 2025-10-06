@@ -1,132 +1,132 @@
-//#include "zScene.h"
-//
-//#include "zEntTrigger.h"
-//#include "zMovePoint.h"
-//#include "zEntPickup.h"
-//#include "zEntSimpleObj.h"
-//#include "zPlatform.h"
-//#include "zPendulum.h"
-//#include "zEntHangable.h"
-//#include "zEntDestructObj.h"
-//#include "zEntButton.h"
-//#include "zPortal.h"
-//#include "zCamMarker.h"
-//#include "zGust.h"
-//#include "zVolume.h"
-//#include "zConditional.h"
-//#include "zEnv.h"
-//#include "zUI.h"
-//#include "zUIFont.h"
-//#include "zLight.h"
-//#include "zCutsceneMgr.h"
-//#include "zEGenerator.h"
-//#include "zScript.h"
-//#include "zDiscoFloor.h"
-//#include "zEntTeleportBox.h"
-//#include "zBusStop.h"
-//#include "zTextBox.h"
-//#include "zTalkBox.h"
-//#include "zTaskBox.h"
-//#include "zTaxi.h"
-//#include "zEntPlayerBungeeState.h"
-//#include "zCameraFly.h"
-//#include "zCameraTweak.h"
-//#include "zNPCMgr.h"
-//#include "zGlobals.h"
-//#include "zDispatcher.h"
-//#include "zThrown.h"
-//#include "zGrid.h"
-//#include "zFX.h"
-//#include "zSurface.h"
-//#include "zGoo.h"
-//#include "zParPTank.h"
-//#include "zAnimList.h"
-//#include "zParSys.h"
-//#include "zRenderState.h"
-//#include "zGame.h"
-//#include "zNPCGlyph.h"
-//#include "zNPCHazard.h"
-//#include "zEntPlayerOOBState.h"
-//#include "zActionLine.h"
-//#include "zGameState.h"
-//#include "zEntCruiseBubble.h"
-//#include "zHud.h"
-//#include "zMenu.h"
-//#include "zNPCTypeBossSandy.h"
-//#include "zNPCTypeBossPatrick.h"
-//#include "zCombo.h"
-//#include "zLOD.h"
-//#include "zMusic.h"
-//#include "zNPCTypeTiki.h"
-//#include "zGameExtras.h"
-//#include "zCollGeom.h"
-//#include "zFeet.h"
-//#include "zParCmd.h"
-//#include "zAssetTypes.h"
-//
-//#include "xNPCBasic.h"
-//#include "xString.h"
-//#include "xstransvc.h"
-//#include "xDynAsset.h"
-//#include "xParSys.h"
-//#include "xParEmitter.h"
-//#include "xEntBoulder.h"
-//#include "xTimer.h"
-//#include "xCounter.h"
-//#include "xSFX.h"
-//#include "xGroup.h"
-//#include "xSurface.h"
-//#include "xFog.h"
-//#include "xHudModel.h"
-//#include "xHudFontMeter.h"
-//#include "xHudUnitMeter.h"
-//#include "xHudText.h"
-//#include "iModel.h"
-//#include "xutil.h"
-//#include "xModelBucket.h"
-//#include "xFX.h"
-//#include "xDecal.h"
-//#include "xPtankPool.h"
-//#include "xSystem.h"
-//#include "xSkyDome.h"
-//#include "xShadow.h"
-//#include "xParMgr.h"
-//#include "xScrFx.h"
-//#include "xTRC.h"
-//#include "xCM.h"
-//#include "xMath.h"
-//#include "iMath.h"
-//#include "xMarkerAsset.h"
-//#include "xPartition.h"
-//#include "xMathInlines.h"
-//
-//#include <string.h>
-//#include <stdio.h>
-//
-//U8 HACK_BASETYPE;
-//static S32 bytesNeeded;
-//static S32 availOnDisk;
-//static S32 neededFiles;
-//static F32 offsetx;
-//static F32 offsety;
-//static U32 enableScreenAdj;
-//volatile static F32 oldOffsetx;
-//volatile static F32 oldOffsety;
-//static S32 sMemDepthSceneStart = -1;
-//static S32 sMemDepthJustHIPStart = -1;
-//_zEnv* gCurEnv;
-//U32 gTransitionSceneID;
-//F32 gSceneUpdateTime;
-//static xVec3 sOldPosPlayer;
-//static xVec3 sOldPosCamera;
-//static U32 sSuddenMove;
-//
-//struct zSceneLevel
-//{
-//    const char* desc;
-//    const char* prefix;
-//};
-//
+#include "zScene.h"
+
+#include "zEntTrigger.h"
+#include "zMovePoint.h"
+#include "zEntPickup.h"
+#include "zEntSimpleObj.h"
+#include "zPlatform.h"
+#include "zPendulum.h"
+#include "zEntHangable.h"
+#include "zEntDestructObj.h"
+#include "zEntButton.h"
+#include "zPortal.h"
+#include "zCamMarker.h"
+#include "zGust.h"
+#include "zVolume.h"
+#include "zConditional.h"
+#include "zEnv.h"
+#include "zUI.h"
+#include "zUIFont.h"
+#include "zLight.h"
+#include "zCutsceneMgr.h"
+#include "zEGenerator.h"
+#include "zScript.h"
+#include "zDiscoFloor.h"
+#include "zEntTeleportBox.h"
+#include "zBusStop.h"
+#include "zTextBox.h"
+#include "zTalkBox.h"
+#include "zTaskBox.h"
+#include "zTaxi.h"
+#include "zEntPlayerBungeeState.h"
+#include "zCameraFly.h"
+#include "zCameraTweak.h"
+#include "zNPCMgr.h"
+#include "zGlobals.h"
+#include "zDispatcher.h"
+#include "zThrown.h"
+#include "zGrid.h"
+#include "zFX.h"
+#include "zSurface.h"
+#include "zGoo.h"
+#include "zParPTank.h"
+#include "zAnimList.h"
+#include "zParSys.h"
+#include "zRenderState.h"
+#include "zGame.h"
+#include "zNPCGlyph.h"
+#include "zNPCHazard.h"
+#include "zEntPlayerOOBState.h"
+#include "zActionLine.h"
+#include "zGameState.h"
+#include "zEntCruiseBubble.h"
+#include "zHud.h"
+#include "zMenu.h"
+#include "zNPCTypeBossSandy.h"
+#include "zNPCTypeBossPatrick.h"
+#include "zCombo.h"
+#include "zLOD.h"
+#include "zMusic.h"
+#include "zNPCTypeTiki.h"
+#include "zGameExtras.h"
+#include "zCollGeom.h"
+#include "zFeet.h"
+#include "zParCmd.h"
+#include "zAssetTypes.h"
+
+#include "xNPCBasic.h"
+#include "xString.h"
+#include "xstransvc.h"
+#include "xDynAsset.h"
+#include "xParSys.h"
+#include "xParEmitter.h"
+#include "xEntBoulder.h"
+#include "xTimer.h"
+#include "xCounter.h"
+#include "xSFX.h"
+#include "xGroup.h"
+#include "xSurface.h"
+#include "xFog.h"
+#include "xHudModel.h"
+#include "xHudFontMeter.h"
+#include "xHudUnitMeter.h"
+#include "xHudText.h"
+#include "iModel.h"
+#include "xutil.h"
+#include "xModelBucket.h"
+#include "xFX.h"
+#include "xDecal.h"
+#include "xPtankPool.h"
+#include "xSystem.h"
+#include "xSkyDome.h"
+#include "xShadow.h"
+#include "xParMgr.h"
+#include "xScrFx.h"
+#include "xTRC.h"
+#include "xCM.h"
+#include "xMath.h"
+#include "iMath.h"
+#include "xMarkerAsset.h"
+#include "xPartition.h"
+#include "xMathInlines.h"
+
+#include <string.h>
+#include <stdio.h>
+
+U8 HACK_BASETYPE;
+static S32 bytesNeeded;
+static S32 availOnDisk;
+static S32 neededFiles;
+static F32 offsetx;
+static F32 offsety;
+static U32 enableScreenAdj;
+volatile static F32 oldOffsetx;
+volatile static F32 oldOffsety;
+static S32 sMemDepthSceneStart = -1;
+static S32 sMemDepthJustHIPStart = -1;
+_zEnv* gCurEnv;
+U32 gTransitionSceneID;
+F32 gSceneUpdateTime;
+static xVec3 sOldPosPlayer;
+static xVec3 sOldPosCamera;
+static U32 sSuddenMove;
+
+struct zSceneLevel
+{
+    const char* desc;
+    const char* prefix;
+};
+
 //// clang-format off
 //static zSceneLevel sLevelTable[] =
 //{
@@ -366,16 +366,16 @@
 //    }
 //} // namespace
 //
-//struct IDBasePair
-//{
-//    U32 id;
-//    xBase* base;
-//};
-//
-//static IDBasePair* scobj_idbps;
-//static S32 scobj_size = -1;
-//static S32 nidbps = -1;
-//
+struct IDBasePair
+{
+    U32 id;
+    xBase* base;
+};
+
+static IDBasePair* scobj_idbps;
+static S32 scobj_size = -1;
+static S32 nidbps = -1;
+
 //static U32 zSceneInitFunc_DefaultEnt(zScene* s, zSceneObjectInstanceDesc* desc, U32 base_idx)
 //{
 //    U8* block;
@@ -3234,43 +3234,43 @@
 //        }
 //    }
 //}
-//
-//static xBase* zSceneObjHashtableGet(U32 id)
-//{
-//    S32 k, chkd;
-//
-//    chkd = id & (scobj_size - 1);
-//
-//    for (k = 0; k < scobj_size; k++)
-//    {
-//        IDBasePair* idbp = &scobj_idbps[chkd];
-//
-//        if (idbp->id == id)
-//        {
-//            return idbp->base;
-//        }
-//
-//        if (idbp->id == 0)
-//        {
-//            return NULL;
-//        }
-//
-//        chkd++;
-//
-//        if (chkd == scobj_size)
-//        {
-//            chkd = 0;
-//        }
-//    }
-//
-//    return NULL;
-//}
-//
-//xBase* zSceneFindObject(U32 gameID)
-//{
-//    return zSceneObjHashtableGet(gameID);
-//}
-//
+
+static xBase* zSceneObjHashtableGet(U32 id)
+{
+    S32 k, chkd;
+
+    chkd = id & (scobj_size - 1);
+
+    for (k = 0; k < scobj_size; k++)
+    {
+        IDBasePair* idbp = &scobj_idbps[chkd];
+
+        if (idbp->id == id)
+        {
+            return idbp->base;
+        }
+
+        if (idbp->id == 0)
+        {
+            return NULL;
+        }
+
+        chkd++;
+
+        if (chkd == scobj_size)
+        {
+            chkd = 0;
+        }
+    }
+
+    return NULL;
+}
+
+xBase* zSceneFindObject(U32 gameID)
+{
+    return zSceneObjHashtableGet(gameID);
+}
+
 //xBase* zSceneGetObject(S32 type, S32 idx)
 //{
 //    zScene* s = globals.sceneCur;

@@ -1,51 +1,50 @@
-//#include "xMath.h"
-//
-//#include <types.h>
-//#include <PowerPC_EABI_Support\MSL_C\MSL_Common\stdlib.h>
-//
-//#include "xMathInlines.h"
-//
-//S32 xmath_inited;
-//S32 xmath_exited;
-//volatile U32 rndseed; // made this volatile so xrand() matches
-//
-//void xMathInit()
-//{
-//    if (!xmath_inited)
-//    {
-//        xmath_inited = 1;
-//        rndseed = 0;
-//    }
-//}
-//
-//void xMathExit()
-//{
-//    if (!xmath_exited)
-//    {
-//        xmath_exited = 1;
-//    }
-//}
-//
-//F32 xatof(const char* x)
-//{
-//    return atof(x);
-//}
-//
-//void xsrand(U32 seed)
-//{
-//    rndseed = seed;
-//}
-//
-//U32 xrand()
-//{
-//    rndseed = rndseed * 1103515245 + 12345;
-//    return rndseed;
-//}
-//
-//F32 xurand()
-//{
-//    return xrand() * 2.3283064e-10f;
-//}
+#include "xMath.h"
+
+#include <types.h>
+#include <stdlib.h>
+
+#include "xMathInlines.h"
+
+S32 xmath_inited;
+S32 xmath_exited;
+volatile U32 rndseed; // made this volatile so xrand() matches
+
+void xMathInit()
+{
+    if (!xmath_inited)
+    {
+        xmath_inited = 1;
+        rndseed = 0;
+    }
+}
+
+void xMathExit()
+{
+    if (xmath_exited) return;
+
+    xmath_exited = 1;
+}
+
+F32 xatof(const char* x)
+{
+    return atof(x);
+}
+
+void xsrand(U32 seed)
+{
+    rndseed = seed;
+}
+
+U32 xrand()
+{
+    rndseed = rndseed * 1103515245 + 12345;
+    return rndseed;
+}
+
+F32 xurand()
+{
+    return xrand() * 2.3283064e-10f;
+}
 //
 //U32 xMathSolveQuadratic(F32 a, F32 b, F32 c, F32* x1, F32* x2)
 //{
@@ -199,24 +198,24 @@
 //
 //    return rem;
 //}
-//
-//F32 xAngleClampFast(F32 a)
-//{
-//    F32 rad360 = (2 * PI);
-//
-//    if (a < 0.0f)
-//    {
-//        return a + rad360;
-//    }
-//
-//    if (a >= rad360)
-//    {
-//        return a - rad360;
-//    }
-//
-//    return a;
-//}
-//
+
+F32 xAngleClampFast(F32 a)
+{
+    F32 rad360 = (2 * PI);
+
+    if (a < 0.0f)
+    {
+        return a + rad360;
+    }
+
+    if (a >= rad360)
+    {
+        return a - rad360;
+    }
+
+    return a;
+}
+
 //F32 xDangleClamp(F32 a)
 //{
 //    F32 rad360 = 2 * PI;
@@ -535,3 +534,43 @@
 //    func->coef[1] = (ff - fi) * (1.0f / func->end);
 //    xFuncPiece_ShiftPiece(func, func, -pi);
 //}
+
+ F32 xsqrt(F32 x)
+{
+    return std::sqrtf(x);
+}
+
+ F32 xexp(F32 x)
+{
+    return std::expf(x);
+}
+
+ F32 xpow(F32 x, F32 y)
+{
+    return std::powf(x, y);
+}
+
+ F32 xfmod(F32 x, F32 y)
+{
+    return std::fmodf(x, y);
+}
+
+ F32 xacos(F32 x)
+{
+    return std::acosf(x);
+}
+
+ F32 xasin(F32 x)
+{
+    return std::asinf(x);
+}
+
+ F32 xatan2(F32 y, F32 x)
+{
+    return xAngleClampFast(std::atan2f(y, x));
+}
+
+ void xsqrtfast(F32& o, F32 fVal)
+{
+    o = std::sqrtf(fVal);
+}

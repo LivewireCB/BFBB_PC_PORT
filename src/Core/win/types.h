@@ -1,6 +1,8 @@
 #pragma once
 
 #include <stdint.h>
+#include <vcruntime_string.h>
+
 
 #define GAME_NAME "SpongeBob SquarePants: Battle for Bikini Bottom"
 

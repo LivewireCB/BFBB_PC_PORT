@@ -1,19 +1,20 @@
-//#include "iMemMgr.h"
-//#include "iSystem.h"
-//#include "xMemMgr.h"
-//
-//#include <types.h>
+#include "iMemMgr.h"
+#include "iSystem.h"
+#include "xMemMgr.h"
+
+#include <types.h>
+#include <cmath>
 //#include <PowerPC_EABI_Support/MSL_C/MSL_Common/stdlib.h>
 //#include <dolphin.h>
 //
-//U32 mem_top_alloc;
-//U32 mem_base_alloc;
+U32 mem_top_alloc;
+U32 mem_base_alloc;
 //volatile OSHeapHandle the_heap;
 //OSHeapHandle hs;
 //OSHeapHandle he;
-//U32 HeapSize;
-//extern xMemInfo_tag gMemInfo;
-//extern unsigned char _stack_addr[];
+U32 HeapSize;
+extern xMemInfo_tag gMemInfo;
+extern unsigned char _stack_addr[];
 //
 //// Starts going wrong after the if and else statement, everything else before looks fine.
 //void iMemInit()
@@ -38,7 +39,7 @@
 //    gMemInfo.stack.size = 0xffff8000;
 //    gMemInfo.stack.flags = gMemInfo.DRAM.flags = 0x820;
 //    HeapSize = 0x384000;
-//    gMemInfo.DRAM.addr = (U32)OSAllocFromHeap(__OSCurrHeap, 0x384000);
+//    //gMemInfo.DRAM.addr = (U32)OSAllocFromHeap(__OSCurrHeap, 0x384000);
 //    gMemInfo.DRAM.size = HeapSize;
 //    gMemInfo.DRAM.flags = 0x820;
 //    gMemInfo.SRAM.addr = 0;
@@ -47,9 +48,13 @@
 //    mem_top_alloc = gMemInfo.DRAM.addr + HeapSize;
 //    mem_base_alloc = gMemInfo.DRAM.addr;
 //}
-//
-//void iMemExit()
-//{
-//    free((void*)gMemInfo.DRAM.addr);
-//    gMemInfo.DRAM.addr = 0;
-//}
+// 
+void iMemInit()
+{
+}
+
+void iMemExit()
+{
+    free((void*)gMemInfo.DRAM.addr);
+    gMemInfo.DRAM.addr = 0;
+}

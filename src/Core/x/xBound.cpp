@@ -1,11 +1,11 @@
-//#include "xBound.h"
-//
-//#include "xMath.h"
-//#include "xMathInlines.h"
-//#include "xDraw.h"
-//
-//#include "iMath.h"
-//
+#include "xBound.h"
+
+#include "xMath.h"
+#include "xMathInlines.h"
+#include "xDraw.h"
+
+#include "iMath.h"
+
 //void xBoundUpdate(xBound* b)
 //{
 //    if (b->type == XBOUND_TYPE_BOX)
@@ -84,7 +84,7 @@
 //    }
 //    }
 //}
-//
+
 //F32 xsqrt(F32 x)
 //{
 //    const F32 half = 0.5f;
@@ -107,7 +107,7 @@
 //
 //    return 100000.0f;
 //}
-//
+
 //U32 xBoundSphereHitsOBB(const xSphere* s, const xBox* b, const xMat4x3* m, xCollis* coll)
 //{
 //    return xSphereHitsOBB_nu(s, b, m, coll);
@@ -389,16 +389,16 @@
 //{
 //    xQuickCullForBound(&xqc_def_ctrl, q, b);
 //}
-//
-//void xMat4x3Toworld(xVec3* o, const xMat4x3* m, const xVec3* v)
-//{
-//    xMat3x3RMulVec(o, m, v);
-//
-//    o->x += m->pos.x;
-//    o->y += m->pos.y;
-//    o->z += m->pos.z;
-//}
-//
+
+void xMat4x3Toworld(xVec3* o, const xMat4x3* m, const xVec3* v)
+{
+    xMat3x3RMulVec(o, m, v);
+
+    o->x += m->pos.x;
+    o->y += m->pos.y;
+    o->z += m->pos.z;
+}
+
 //void xMat4x3Tolocal(xVec3* o, const xMat4x3* m, const xVec3* v)
 //{
 //    o->x = v->x - m->pos.x;
@@ -430,12 +430,12 @@
 //
 //    return *this;
 //}
-//
-//F32 xVec3::length2() const
-//{
-//    return this->x * this->x + this->y * this->y + this->z * this->z;
-//}
-//
+
+F32 xVec3::length2() const
+{
+    return this->x * this->x + this->y * this->y + this->z * this->z;
+}
+
 //xVec3 xVec3::operator*(F32 f) const
 //{
 //    xVec3 temp = *this;

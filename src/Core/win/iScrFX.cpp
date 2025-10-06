@@ -1,19 +1,19 @@
-//#include "iScrFX.h"
-//
-//#include <types.h>
-//
-//extern RwRaster* g_rast_gctapdance;
-//extern S32 g_alreadyTriedAlloc;
-//extern _iMotionBlurData sMBD;
-//extern U32 sMotionBlurEnabled;
-//extern F32 lbl_803CE168; // 0.0f
-//extern F32 lbl_803CE174; // 1.0f
-//extern F32 lbl_803CE178; // 0.5f
-//extern F32 lbl_803CE17C; // 254f
-//
-//void iScrFxInit()
-//{
-//}
+#include "iScrFX.h"
+
+#include <types.h>
+
+RwRaster* g_rast_gctapdance;
+S32 g_alreadyTriedAlloc;
+_iMotionBlurData sMBD;
+extern U32 sMotionBlurEnabled;
+extern F32 lbl_803CE168; // 0.0f
+extern F32 lbl_803CE174; // 1.0f
+extern F32 lbl_803CE178; // 0.5f
+extern F32 lbl_803CE17C; // 254f
+
+void iScrFxInit()
+{
+}
 //
 //void iScrFxBegin()
 //{
@@ -60,21 +60,21 @@
 //        sMBD.motionBlurAlpha = (S32)(lbl_803CE17C * amount + lbl_803CE178);
 //    }
 //}
-//
-//// Instructions in the wrong order.
-//void iScrFxCameraCreated(RwCamera* pCamera)
-//{
-//    sMBD.motionBlurAlpha = 0x90;
-//    sMBD.motionBlurFrontBuffer = NULL;
-//    sMBD.index[0] = 0;
-//    sMBD.index[1] = 1;
-//    sMBD.index[2] = 2;
-//    sMBD.index[3] = 0;
-//    sMBD.index[4] = 2;
-//    sMBD.index[5] = 3;
-//    iScrFxMotionBlurOpen(pCamera);
-//}
-//
+
+// Instructions in the wrong order.
+void iScrFxCameraCreated(RwCamera* pCamera)
+{
+    sMBD.motionBlurAlpha = 0x90;
+    sMBD.motionBlurFrontBuffer = NULL;
+    sMBD.index[0] = 0;
+    sMBD.index[1] = 1;
+    sMBD.index[2] = 2;
+    sMBD.index[3] = 0;
+    sMBD.index[4] = 2;
+    sMBD.index[5] = 3;
+    iScrFxMotionBlurOpen(pCamera);
+}
+
 //void iScrFxCameraEndScene(RwCamera* pCamera)
 //{
 //    if ((sMotionBlurEnabled != 0) && (sMBD.motionBlurAlpha != 0))
@@ -87,30 +87,30 @@
 //{
 //    GCMB_SiphonFrameBuffer(pCamera);
 //}
-//
-//RwRaster* FBMBlur_DebugIntervention(RwCamera* camera, RwRaster* ras)
-//{
-//    return ras;
-//}
-//
-//S32 iScrFxMotionBlurOpen(RwCamera* camera)
-//{
-//    return 0;
-//}
-//
-//S32 iScrFxCameraDestroyed(RwCamera* pCamera)
-//{
-//    GCMB_KillFrameBufferCopy();
-//    if (sMBD.motionBlurFrontBuffer != NULL)
-//    {
-//        RwRasterDestroy(sMBD.motionBlurFrontBuffer);
-//        sMBD.motionBlurFrontBuffer = NULL;
-//        return 1;
-//    }
-//    return 0;
-//}
-//
-//// WIP.
+
+RwRaster* FBMBlur_DebugIntervention(RwCamera* camera, RwRaster* ras)
+{
+    return ras;
+}
+
+S32 iScrFxMotionBlurOpen(RwCamera* camera)
+{
+    return 0;
+}
+
+S32 iScrFxCameraDestroyed(RwCamera* pCamera)
+{
+    GCMB_KillFrameBufferCopy();
+    if (sMBD.motionBlurFrontBuffer != NULL)
+    {
+        RwRasterDestroy(sMBD.motionBlurFrontBuffer);
+        sMBD.motionBlurFrontBuffer = NULL;
+        return 1;
+    }
+    return 0;
+}
+
+// WIP.
 //void iScrFxMotionBlurRender(RwCamera* camera, U32 col)
 //{
 //    if (sMBD.motionBlurFrontBuffer != NULL)
@@ -120,21 +120,21 @@
 //        iCameraOverlayRender(camera, (RwRaster*)sMBD.motionBlurFrontBuffer, col);
 //    }
 //}
-//
-//void GCMB_MakeFrameBufferCopy(const RwCamera* camera)
-//{
-//}
-//
-//void GCMB_KillFrameBufferCopy()
-//{
-//    if (g_rast_gctapdance != NULL)
-//    {
-//        RwRasterDestroy(g_rast_gctapdance);
-//    }
-//    g_rast_gctapdance = NULL;
-//    g_alreadyTriedAlloc = 0;
-//}
-//
+
+void GCMB_MakeFrameBufferCopy(const RwCamera* camera)
+{
+}
+
+void GCMB_KillFrameBufferCopy()
+{
+    if (g_rast_gctapdance != NULL)
+    {
+        RwRasterDestroy(g_rast_gctapdance);
+    }
+    g_rast_gctapdance = NULL;
+    g_alreadyTriedAlloc = 0;
+}
+
 //void GCMB_SiphonFrameBuffer(const RwCamera* camera)
 //{
 //    if ((g_rast_gctapdance == NULL) && (g_alreadyTriedAlloc == 0))

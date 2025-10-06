@@ -1,21 +1,21 @@
-//#include "xClimate.h"
-//
-//#include <types.h>
-//#include <string.h>
-//#include "xMath.h"
-//#include "xMath3.h"
-//#include "xString.h"
-//#include "xVec3.h"
-//#include "zGlobals.h"
-//#include "zParEmitter.h"
-//#include "zParPTank.h"
-//
-//_tagClimate* sClimate;
-//
-//const float snow_life = 3.0f;
-//const xVec3 snow_vel = { 0.0f, -2.0f, 0.0f };
-//const xVec3 snow_dvel = { 0.1f, 0.1f, 0.1f };
-//
+#include "xClimate.h"
+
+#include <types.h>
+#include <string.h>
+#include "xMath.h"
+#include "xMath3.h"
+#include "xString.h"
+#include "xVec3.h"
+#include "zGlobals.h"
+#include "zParEmitter.h"
+#include "zParPTank.h"
+
+_tagClimate* sClimate;
+
+const float snow_life = 3.0f;
+const xVec3 snow_vel = { 0.0f, -2.0f, 0.0f };
+const xVec3 snow_dvel = { 0.1f, 0.1f, 0.1f };
+
 //void xClimateVecFromAngle(F32 angleDegrees, xVec3* vec)
 //{
 //    xMat3x3 Mat;
@@ -188,12 +188,12 @@
 //    vec->z = z;
 //}
 //
-//void xMat3x3Identity(xMat3x3* matrix)
-//{
-//    xMat3x3Copy(matrix, &g_I3);
-//}
-//
-//void xMat3x3Copy(xMat3x3* m1, const xMat3x3* m2)
-//{
-//    memcpy(m1, m2, sizeof(xMat3x3));
-//}
+void xMat3x3Identity(xMat3x3* matrix)
+{
+    xMat3x3Copy(matrix, &g_I3);
+}
+
+void xMat3x3Copy(xMat3x3* m1, const xMat3x3* m2)
+{
+    memcpy(m1, m2, sizeof(xMat3x3));
+}

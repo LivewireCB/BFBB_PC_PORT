@@ -1,107 +1,111 @@
-//#include "iCamera.h"
-//
-//#include "xShadow.h"
-//
-//#include "iScrFX.h"
-//#include "iMath.h"
-//
-//#include "zGlobals.h"
-//
-//#include <string.h>
-//
-//extern F32 sCameraNearClip;
-//extern F32 sCameraFarClip;
-//extern RwCamera* sMainGameCamera;
-//
-//extern F32 _640_0;
-//extern F32 _706_0;
-//extern F32 _707_1;
-//extern F32 _708_3;
-//extern F32 _709_1;
-//extern F32 _741_3;
-//extern F32 _742_1;
-//extern F32 _743_1;
-//extern F64 _769_1;
-//extern F64 _826_0;
-//
-//RwCamera* iCameraCreate(S32 width, S32 height, S32 mainGameCamera)
-//{
-//    RwV2d vw;
-//    RwCamera* camera;
-//
-//    camera = RwCameraCreate();
-//
-//    RwCameraSetFrame(camera, RwFrameCreate());
-//    RwCameraSetRaster(camera, RwRasterCreate(width, height, 0, rwRASTERTYPECAMERA));
-//    RwCameraSetZRaster(camera, RwRasterCreate(width, height, 0, rwRASTERTYPEZBUFFER));
-//    RwCameraSetFarClipPlane(camera, sCameraFarClip);
-//    RwCameraSetNearClipPlane(camera, sCameraNearClip);
-//
-//    vw.x = _640_0;
-//    vw.y = _640_0;
-//
-//    RwCameraSetViewWindow(camera, &vw);
-//
-//    if (mainGameCamera)
-//    {
-//        iScrFxCameraCreated(camera);
-//        sMainGameCamera = camera;
-//    }
-//
-//    return camera;
-//}
-//
-//void iCameraDestroy(RwCamera* camera)
-//{
-//    RpWorld* pWorld;
-//    RwRaster* raster;
-//    RwFrame* frame;
-//
-//    _rwFrameSyncDirty();
-//
-//    pWorld = RwCameraGetWorld(camera);
-//
-//    if (pWorld)
-//    {
-//        RpWorldRemoveCamera(pWorld, camera);
-//    }
-//
-//    if (camera == sMainGameCamera)
-//    {
-//        iScrFxCameraDestroyed(camera);
-//        sMainGameCamera = NULL;
-//    }
-//
-//    if (camera)
-//    {
-//        frame = RwCameraGetFrame(camera);
-//
-//        if (frame)
-//        {
-//            RwCameraSetFrame(camera, NULL);
-//            RwFrameDestroy(frame);
-//        }
-//
-//        raster = RwCameraGetRaster(camera);
-//
-//        if (raster)
-//        {
-//            RwRasterDestroy(raster);
-//            RwCameraSetRaster(camera, NULL);
-//        }
-//
-//        raster = RwCameraGetZRaster(camera);
-//
-//        if (raster)
-//        {
-//            RwRasterDestroy(raster);
-//            RwCameraSetZRaster(camera, NULL);
-//        }
-//
-//        RwCameraDestroy(camera);
-//    }
-//}
-//
+#include "iCamera.h"
+
+#include "xShadow.h"
+
+#include "iScrFX.h"
+#include "iMath.h"
+
+#include "zGlobals.h"
+
+#include <string.h>
+#include "rwframesync.h"
+
+F32 sCameraNearClip;
+F32 sCameraFarClip;
+RwCamera* sMainGameCamera;
+
+WIP
+// Get rid of these
+
+F32 _640_0;
+extern F32 _706_0;
+extern F32 _707_1;
+extern F32 _708_3;
+extern F32 _709_1;
+extern F32 _741_3;
+extern F32 _742_1;
+extern F32 _743_1;
+extern F64 _769_1;
+extern F64 _826_0;
+
+RwCamera* iCameraCreate(S32 width, S32 height, S32 mainGameCamera)
+{
+    RwV2d vw;
+    RwCamera* camera;
+
+    camera = RwCameraCreate();
+
+    RwCameraSetFrame(camera, RwFrameCreate());
+    RwCameraSetRaster(camera, RwRasterCreate(width, height, 0, rwRASTERTYPECAMERA));
+    RwCameraSetZRaster(camera, RwRasterCreate(width, height, 0, rwRASTERTYPEZBUFFER));
+    RwCameraSetFarClipPlane(camera, sCameraFarClip);
+    RwCameraSetNearClipPlane(camera, sCameraNearClip);
+
+    vw.x = _640_0;
+    vw.y = _640_0;
+
+    RwCameraSetViewWindow(camera, &vw);
+
+    if (mainGameCamera)
+    {
+        iScrFxCameraCreated(camera);
+        sMainGameCamera = camera;
+    }
+
+    return camera;
+}
+
+void iCameraDestroy(RwCamera* camera)
+{
+    RpWorld* pWorld;
+    RwRaster* raster;
+    RwFrame* frame;
+
+    _rwFrameSyncDirty();
+
+    pWorld = RwCameraGetWorld(camera);
+
+    if (pWorld)
+    {
+        RpWorldRemoveCamera(pWorld, camera);
+    }
+
+    if (camera == sMainGameCamera)
+    {
+        iScrFxCameraDestroyed(camera);
+        sMainGameCamera = NULL;
+    }
+
+    if (camera)
+    {
+        frame = RwCameraGetFrame(camera);
+
+        if (frame)
+        {
+            RwCameraSetFrame(camera, NULL);
+            RwFrameDestroy(frame);
+        }
+
+        raster = RwCameraGetRaster(camera);
+
+        if (raster)
+        {
+            RwRasterDestroy(raster);
+            RwCameraSetRaster(camera, NULL);
+        }
+
+        raster = RwCameraGetZRaster(camera);
+
+        if (raster)
+        {
+            RwRasterDestroy(raster);
+            RwCameraSetZRaster(camera, NULL);
+        }
+
+        RwCameraDestroy(camera);
+    }
+}
+
 //void iCameraBegin(RwCamera* cam, S32 clear)
 //{
 //    if (clear)

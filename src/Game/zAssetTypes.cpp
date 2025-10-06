@@ -1,43 +1,43 @@
-//#include "zAssetTypes.h"
-//
-//#include "xAnim.h"
-//#include "xstransvc.h"
-//#include "xDebug.h"
-//#include "xEnv.h"
-//#include "xJSP.h"
-//#include "xMorph.h"
-//
-//#include <types.h>
-//#include <stdio.h>
-//#include <rwcore.h>
-//#include <rpworld.h>
-//
-//static void* Curve_Read(void* param_1, U32 param_2, void* indata, U32 insize, U32* outsize);
-//static void* ATBL_Read(void* param_1, U32 param_2, void* indata, U32 insize, U32* outsize);
-//static void ATBL_Init();
-//static void* RWTX_Read(void* param_1, U32 param_2, void* indata, U32 insize, U32* outsize);
-//static void* Model_Read(void* param_1, U32 param_2, void* indata, U32 insize, U32* outsize);
-//static void* BSP_Read(void* param_1, U32 param_2, void* indata, U32 insize, U32* outsize);
-//static void* JSP_Read(void* param_1, U32 param_2, void* indata, U32 insize, U32* outsize);
-//static void* SndInfoRead(void*, unsigned int, void*, unsigned int, unsigned int*);
-//static void Model_Unload(void*, U32);
-//static void BSP_Unload(void*, U32);
-//static void JSP_Unload(void*, U32);
-//static void Anim_Unload(void*, U32);
-//static void TextureRW3_Unload(void*, U32);
-//static void LightKit_Unload(void*, U32);
-//static void MovePoint_Unload(void*, U32);
-//
-//static xJSPHeader sDummyEmptyJSP;
-//static xJSPHeader* sTempJSP;
-//
-//static u32 s_sbFootSoundA;
-//static u32 s_sbFootSoundB;
-//static u32 s_scFootSoundA;
-//static u32 s_scFootSoundB;
-//static u32 s_patFootSoundA;
-//static u32 s_patFootSoundB;
-//
+#include "zAssetTypes.h"
+
+#include "xAnim.h"
+#include "xstransvc.h"
+#include "xDebug.h"
+#include "xEnv.h"
+#include "xJSP.h"
+#include "xMorph.h"
+
+#include <types.h>
+#include <stdio.h>
+#include <rwcore.h>
+#include <rpworld.h>
+
+static void* Curve_Read(void* param_1, U32 param_2, void* indata, U32 insize, U32* outsize);
+static void* ATBL_Read(void* param_1, U32 param_2, void* indata, U32 insize, U32* outsize);
+static void ATBL_Init();
+static void* RWTX_Read(void* param_1, U32 param_2, void* indata, U32 insize, U32* outsize);
+static void* Model_Read(void* param_1, U32 param_2, void* indata, U32 insize, U32* outsize);
+static void* BSP_Read(void* param_1, U32 param_2, void* indata, U32 insize, U32* outsize);
+static void* JSP_Read(void* param_1, U32 param_2, void* indata, U32 insize, U32* outsize);
+static void* SndInfoRead(void*, unsigned int, void*, unsigned int, unsigned int*);
+static void Model_Unload(void*, U32);
+static void BSP_Unload(void*, U32);
+static void JSP_Unload(void*, U32);
+static void Anim_Unload(void*, U32);
+static void TextureRW3_Unload(void*, U32);
+static void LightKit_Unload(void*, U32);
+static void MovePoint_Unload(void*, U32);
+
+static xJSPHeader sDummyEmptyJSP;
+static xJSPHeader* sTempJSP;
+
+static U32 s_sbFootSoundA;
+static U32 s_sbFootSoundB;
+static U32 s_scFootSoundA;
+static U32 s_scFootSoundB;
+static U32 s_patFootSoundA;
+static U32 s_patFootSoundB;
+
 //static st_PACKER_ASSETTYPE assetTypeHandlers[78] = {
 //    { 'BSP ', 0, 0, BSP_Read, NULL, NULL, NULL, NULL, BSP_Unload, NULL },
 //    { 'JSP ', 0, 0, JSP_Read, NULL, NULL, NULL, NULL, JSP_Unload, NULL },
@@ -118,16 +118,16 @@
 //    { 'CRDT' },
 //};
 //
-//void zAssetStartup()
-//{
-//    xSTStartup(assetTypeHandlers);
-//    ATBL_Init();
-//}
-//
-//void zAssetShutdown()
-//{
-//    xSTShutdown();
-//}
+void zAssetStartup()
+{
+    //xSTStartup(assetTypeHandlers);
+    ATBL_Init();
+}
+
+void zAssetShutdown()
+{
+    //xSTShutdown();
+}
 //
 //static HackModelRadius hackRadiusTable[3] = { { 0xFA77E6FAU, 20.0f },
 //                                              { 0x5BD0EDACU, 1000.0f },
@@ -221,47 +221,47 @@
 //};
 //
 //static char** jsp_shadow_hack_end_textures = &jsp_shadow_hack_textures[5];
-//
-//struct AnimTableList animTable[33] = {
-//    { "ZNPC_AnimTable_Test", ZNPC_AnimTable_Test, 0 },
-//    { "ZNPC_AnimTable_Dutchman", ZNPC_AnimTable_Dutchman, 0 },
-//    { "ZNPC_AnimTable_Duplotron", ZNPC_AnimTable_Duplotron, 0 },
-//    { "ZNPC_AnimTable_Common", ZNPC_AnimTable_Common, 0 },
-//    { "ZNPC_AnimTable_BossPlankton", ZNPC_AnimTable_BossPlankton, 0 },
-//    { "ZNPC_AnimTable_BossSandy", ZNPC_AnimTable_BossSandy, 0 },
-//    { "ZNPC_AnimTable_SleepyTime", ZNPC_AnimTable_SleepyTime, 0 },
-//    { "ZNPC_AnimTable_BossSandyHead", ZNPC_AnimTable_BossSandyHead, 0 },
-//    { "ZNPC_AnimTable_Hammer", ZNPC_AnimTable_Hammer, 0 },
-//    { "ZNPC_AnimTable_TTSauce", ZNPC_AnimTable_TTSauce, 0 },
-//    { "ZNPC_AnimTable_KingJelly", ZNPC_AnimTable_KingJelly, 0 },
-//    { "ZNPC_AnimTable_Slick", ZNPC_AnimTable_Slick, 0 },
-//    { "ZNPC_AnimTable_TarTar", ZNPC_AnimTable_TarTar, 0 },
-//    { "ZNPC_AnimTable_Villager", ZNPC_AnimTable_Villager, 0 },
-//    { "ZNPC_AnimTable_BalloonBoy", ZNPC_AnimTable_BalloonBoy, 0 },
-//    { "ZNPC_AnimTable_Fodder", ZNPC_AnimTable_Fodder, 0 },
-//    { "ZNPC_AnimTable_Prawn", ZNPC_AnimTable_Prawn, 0 },
-//    { "ZNPC_AnimTable_Neptune", ZNPC_AnimTable_Neptune, 0 },
-//    { "ZNPC_AnimTable_BossSB1", ZNPC_AnimTable_BossSB1, 0 },
-//    { "ZNPC_AnimTable_BossSBobbyArm", ZNPC_AnimTable_BossSBobbyArm, 0 },
-//    { "ZNPC_AnimTable_Monsoon", ZNPC_AnimTable_Monsoon, 0 },
-//    { "ZNPC_AnimTable_ArfDog", ZNPC_AnimTable_ArfDog, 0 },
-//    { "ZNPC_AnimTable_ArfArf", ZNPC_AnimTable_ArfArf, 0 },
-//    { "ZNPC_AnimTable_BossSB2", ZNPC_AnimTable_BossSB2, 0 },
-//    { "ZNPC_AnimTable_Tiki", ZNPC_AnimTable_Tiki, 0 },
-//    { "ZNPC_AnimTable_Tubelet", ZNPC_AnimTable_Tubelet, 0 },
-//    { "ZNPC_AnimTable_Ambient", ZNPC_AnimTable_Ambient, 0 },
-//    { "ZNPC_AnimTable_GLove", ZNPC_AnimTable_GLove, 0 },
-//    { "ZNPC_AnimTable_LassoGuide", ZNPC_AnimTable_LassoGuide, 0 },
-//    { "ZNPC_AnimTable_Chuck", ZNPC_AnimTable_Chuck, 0 },
-//    { "ZNPC_AnimTable_Jelly", ZNPC_AnimTable_Jelly, 0 },
-//    { "ZNPC_AnimTable_SuperFriend", ZNPC_AnimTable_SuperFriend, 0 },
-//    {
-//        "ZNPC_AnimTable_BossPatrick",
-//        ZNPC_AnimTable_BossPatrick,
-//        0,
-//    }
-//};
-//
+
+struct AnimTableList animTable[33] = {
+    /*{ "ZNPC_AnimTable_Test", ZNPC_AnimTable_Test, 0 },
+    { "ZNPC_AnimTable_Dutchman", ZNPC_AnimTable_Dutchman, 0 },
+    { "ZNPC_AnimTable_Duplotron", ZNPC_AnimTable_Duplotron, 0 },
+    { "ZNPC_AnimTable_Common", ZNPC_AnimTable_Common, 0 },
+    { "ZNPC_AnimTable_BossPlankton", ZNPC_AnimTable_BossPlankton, 0 },
+    { "ZNPC_AnimTable_BossSandy", ZNPC_AnimTable_BossSandy, 0 },
+    { "ZNPC_AnimTable_SleepyTime", ZNPC_AnimTable_SleepyTime, 0 },
+    { "ZNPC_AnimTable_BossSandyHead", ZNPC_AnimTable_BossSandyHead, 0 },
+    { "ZNPC_AnimTable_Hammer", ZNPC_AnimTable_Hammer, 0 },
+    { "ZNPC_AnimTable_TTSauce", ZNPC_AnimTable_TTSauce, 0 },
+    { "ZNPC_AnimTable_KingJelly", ZNPC_AnimTable_KingJelly, 0 },
+    { "ZNPC_AnimTable_Slick", ZNPC_AnimTable_Slick, 0 },
+    { "ZNPC_AnimTable_TarTar", ZNPC_AnimTable_TarTar, 0 },
+    { "ZNPC_AnimTable_Villager", ZNPC_AnimTable_Villager, 0 },
+    { "ZNPC_AnimTable_BalloonBoy", ZNPC_AnimTable_BalloonBoy, 0 },
+    { "ZNPC_AnimTable_Fodder", ZNPC_AnimTable_Fodder, 0 },
+    { "ZNPC_AnimTable_Prawn", ZNPC_AnimTable_Prawn, 0 },
+    { "ZNPC_AnimTable_Neptune", ZNPC_AnimTable_Neptune, 0 },
+    { "ZNPC_AnimTable_BossSB1", ZNPC_AnimTable_BossSB1, 0 },
+    { "ZNPC_AnimTable_BossSBobbyArm", ZNPC_AnimTable_BossSBobbyArm, 0 },
+    { "ZNPC_AnimTable_Monsoon", ZNPC_AnimTable_Monsoon, 0 },
+    { "ZNPC_AnimTable_ArfDog", ZNPC_AnimTable_ArfDog, 0 },
+    { "ZNPC_AnimTable_ArfArf", ZNPC_AnimTable_ArfArf, 0 },
+    { "ZNPC_AnimTable_BossSB2", ZNPC_AnimTable_BossSB2, 0 },
+    { "ZNPC_AnimTable_Tiki", ZNPC_AnimTable_Tiki, 0 },
+    { "ZNPC_AnimTable_Tubelet", ZNPC_AnimTable_Tubelet, 0 },
+    { "ZNPC_AnimTable_Ambient", ZNPC_AnimTable_Ambient, 0 },
+    { "ZNPC_AnimTable_GLove", ZNPC_AnimTable_GLove, 0 },
+    { "ZNPC_AnimTable_LassoGuide", ZNPC_AnimTable_LassoGuide, 0 },
+    { "ZNPC_AnimTable_Chuck", ZNPC_AnimTable_Chuck, 0 },
+    { "ZNPC_AnimTable_Jelly", ZNPC_AnimTable_Jelly, 0 },
+    { "ZNPC_AnimTable_SuperFriend", ZNPC_AnimTable_SuperFriend, 0 },
+    {
+        "ZNPC_AnimTable_BossPatrick",
+        ZNPC_AnimTable_BossPatrick,
+        0,
+    }*/
+};
+
 //struct jsp_shadow_hack_atomic_context
 //{
 //    xJSPHeader* jsp;
@@ -486,15 +486,15 @@
 //        RwTextureDestroy((RwTexture*)a);
 //    }
 //}
-//
-//static void ATBL_Init()
-//{
-//    for (int i = 0; i < 0x21; i++)
-//    {
-//        animTable[i].id = xStrHash(animTable[i].name);
-//    }
-//}
-//
+
+static void ATBL_Init()
+{
+    for (int i = 0; i < 0x21; i++)
+    {
+        animTable[i].id = xStrHash(animTable[i].name);
+    }
+}
+
 //void FootstepHackSceneEnter()
 //{
 //    s_sbFootSoundA = xStrHash("SB_run1L");

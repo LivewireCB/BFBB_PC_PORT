@@ -1,12 +1,12 @@
-//#include "zVar.h"
-//
-//#include <types.h>
-//#include <stdio.h>
-//#include <string.h>
-//#include <PowerPC_EABI_Support\MSL_C\MSL_Common\stdlib.h>
-//
-//#include "iTime.h"
-//
+#include "zVar.h"
+
+#include <types.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+#include "iTime.h"
+
 //#include "xString.h"
 //#include "xFont.h"
 //#include "xSnd.h"
@@ -513,11 +513,11 @@
 //
 //} // namespace
 //
-//void var_init()
-//{
-//    extern xtextbox::tag_type var_tag[];
-//    xtextbox::register_tags(var_tag, 1);
-//}
+void var_init()
+{
+    /*extern xtextbox::tag_type var_tag[];
+    xtextbox::register_tags(var_tag, 1);*/
+}
 //
 //char* var_text(const substr& str)
 //{

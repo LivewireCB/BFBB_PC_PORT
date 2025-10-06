@@ -1,30 +1,50 @@
-//#include "iSystem.h"
-//
-//#include <types.h>
-//
-//#include <rwcore.h>
-//
-//#include "xDebug.h"
-//#include "xMath.h"
-//#include "xSnd.h"
-//#include "xPad.h"
-//#include "xMemMgr.h"
-//
-//#include "iSystem.h"
-//#include "iFile.h"
-//#include "iTime.h"
-//#include "iTRC.h"
-//
-//extern U32 mem_base_alloc;
-//extern U32 add;
-//extern U32 size;
-//extern S32 gEmergencyMemLevel;
+#include "iSystem.h"
+
+#include <types.h>
+
+#include <rwcore.h>
+
+#include "xDebug.h"
+#include "xMath.h"
+#include "xSnd.h"
+#include "xPad.h"
+#include "xMemMgr.h"
+#include "iFile.h"
+#include "iTime.h"
+#include "iTRC.h"
+
+#include <SDL.h>
+#include <SDL_syswm.h>
+
+#include <rwcore.h>
+#include <rpworld.h>
+#include <rpcollis.h>
+#include <rpskin.h>
+#include <rphanim.h>
+#include <rpmatfx.h>
+#include <rpusrdat.h>
+#include <rpptank.h>
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#define RES_ARENA_SIZE 0x60000
+RwVideoMode sVideoMode;
+static SDL_Window* window;
+static U32 shouldQuit = 0;
+static RwEngineOpenParams openParams;
+static RwDebugHandler oldDebugHandler;
+
+extern U32 mem_base_alloc;
+extern U32 add;
+extern U32 size;
+extern S32 gEmergencyMemLevel;
 //extern OSHeapHandle the_heap;
-//extern void* bad_val;
-//extern void* MemoryFunctions[4];
-//extern U16 last_error;
+extern void* bad_val;
+extern void* MemoryFunctions[4];
+extern U16 last_error;
 //extern OSContext* last_context;
-//
+
 //// Taken from iSystem.s
 //// Defining these here makes the stringBase0 offsets match in the later functions.
 //static char* str1 = "Level %d, Warning $03d: %s\n";
@@ -51,17 +71,57 @@
 //{
 //    return MemoryFunctions;
 //}
-//
+
 //void iVSync()
 //{
-//    VIWaitForRetrace();
+//    //VIWaitForRetrace();
 //}
 //
 //U16 my_dsc(U16 dsc)
 //{
 //    return dsc;
 //}
-//
+
+U32 RenderWareInit() { return 0; }
+void TRCInit() {}
+
+void iSystemInit(U32 options)
+{
+    shouldQuit = 0;
+
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+        fprintf(stderr, "Failed to initialize SDL! SDL Error: %s\n", SDL_GetError());
+        exit(-1);
+    }
+
+    window = SDL_CreateWindow(GAME_NAME,
+        SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+        FB_XRES, FB_YRES,
+        SDL_WINDOW_SHOWN);
+    if (!window) {
+        fprintf(stderr, "Failed to create SDL window! SDL Error: %s\n", SDL_GetError());
+        exit(-1);
+    }
+
+    SDL_SysWMinfo wmInfo;
+    SDL_VERSION(&wmInfo.version);
+    SDL_GetWindowWMInfo(window, &wmInfo);
+    HWND hwnd = wmInfo.info.win.window;
+
+    openParams.displayID = (void*)hwnd;
+
+    xDebugInit();
+    xMemInit();
+    iFileInit();
+    iTimeInit();
+    xPadInit();
+    xSndInit();
+    TRCInit();
+    RenderWareInit();
+    xMathInit();
+    xMath3Init();
+}
+
 //void FloatingPointErrorHandler(U16 last, OSContext* ctxt, U64 unk1, U64 unk2)
 //{
 //    U32 uVar2;

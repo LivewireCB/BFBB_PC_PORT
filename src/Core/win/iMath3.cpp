@@ -1,14 +1,14 @@
-//#include "iMath3.h"
-//
-//#include "xMath.h"
-//#include "xMath2.h"
-//#include "xMathInlines.h"
-//
-//#include <string.h>
-//
-//void iMath3Init()
-//{
-//}
+#include "iMath3.h"
+
+#include "xMath.h"
+#include "xMath2.h"
+#include "xMathInlines.h"
+
+#include <string.h>
+
+void iMath3Init()
+{
+}
 //
 //void iSphereIsectVec(const xSphere* s, const xVec3* v, xIsect* isx)
 //{
