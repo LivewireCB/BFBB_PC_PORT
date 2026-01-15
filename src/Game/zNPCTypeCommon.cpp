@@ -3038,19 +3038,20 @@ U32 zNPCCommon::AnimCurStateID()
 //void zNPCCommon::AddDEVGoals(xPsyche*)
 //{
 //}
-//
-//xAnimTable* ZNPC_AnimTable_Common()
-//{
+
+xAnimTable* ZNPC_AnimTable_Common()
+{
 //    xAnimTable* table = xAnimTableNew("zNPCCommon", NULL, 0x0);
 //
 //    xAnimTableNewState(table, "Idle01", 0x110, 0x1, 1.0f, NULL, NULL, 0.0f, NULL, NULL,
 //                       xAnimDefaultBeforeEnter, NULL, NULL);
 //
 //    return table;
-//}
-//
-//xAnimTable* ZNPC_AnimTable_LassoGuide()
-//{
+return 0;
+}
+
+xAnimTable* ZNPC_AnimTable_LassoGuide()
+{
 //    xAnimTable* table = xAnimTableNew("LassoGuides", NULL, 0x0);
 //
 //    xAnimTableNewState(table, g_strz_lassanim[LassoGuide_Grab01], 0x0, 0x1, 1.0f, NULL, NULL, 0.0f,
@@ -3063,7 +3064,8 @@ U32 zNPCCommon::AnimCurStateID()
 //                            0, 0, 0.0f, NULL);
 //
 //    return table;
-//}
+    return 0;
+}
 //
 //U32 zNPCCommon::DBG_Name()
 //{

@@ -1,18 +1,19 @@
-//#include "xHudModel.h"
-//#include "xHud.h"
-//#include "xString.h"
-//
-//#include <PowerPC_EABI_Support\MSL_C++\MSL_Common\Include\new.h>
-//#include <types.h>
-//
-//xAnimTable* XHUD_AnimTable_Idle()
-//{
-//    xAnimTable* table = xAnimTableNew("XHUD_AnimTable_Idle", NULL, 0);
-//    xAnimTableNewState(table, "Idle01", 0x10, 1, 1.0f, NULL, NULL, 0.0f, NULL, NULL,
-//                       xAnimDefaultBeforeEnter, NULL, NULL);
-//    return table;
-//}
-//
+#include "xHudModel.h"
+#include "xHud.h"
+#include "xString.h"
+
+#include <new.h>
+#include <types.h>
+
+xAnimTable* XHUD_AnimTable_Idle()
+{
+    /*xAnimTable* table = xAnimTableNew("XHUD_AnimTable_Idle", NULL, 0);
+    xAnimTableNewState(table, "Idle01", 0x10, 1, 1.0f, NULL, NULL, 0.0f, NULL, NULL,
+                       xAnimDefaultBeforeEnter, NULL, NULL);
+    return table;*/
+    return 0;
+}
+
 //namespace xhud
 //{
 //

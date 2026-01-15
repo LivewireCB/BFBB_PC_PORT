@@ -4416,17 +4416,17 @@ S32 zEntPlayer_Damage(xBase* src, U32 damage, const xVec3* knockback)
 //
 //    return vec;
 //}
-//
-//void zEntPlayer_StoreCheckPoint(xVec3* pos, F32 rot, U32 initCamID)
-//{
-//    if (pos != NULL)
-//    {
-//        globals.player.cp.pos = *pos;
-//        globals.player.cp.rot = rot;
-//        globals.player.cp.initCamID = initCamID;
-//    }
-//}
-//
+
+void zEntPlayer_StoreCheckPoint(xVec3* pos, F32 rot, U32 initCamID) RIMP
+{
+    /*if (pos != NULL)
+    {
+        globals.player.cp.pos = *pos;
+        globals.player.cp.rot = rot;
+        globals.player.cp.initCamID = initCamID;
+    }*/
+}
+
 //void zEntPlayer_LoadCheckPoint()
 //{
 //    xEnt& p = globals.player.ent;
@@ -5384,8 +5384,8 @@ S32 zEntPlayer_Damage(xBase* src, U32 damage, const xVec3* knockback)
 //    sCurrentStreamSndID = id;
 //}
 //
-//xAnimTable* zSandy_AnimTable()
-//{
+xAnimTable* zSandy_AnimTable()
+{
 //    xAnimTable* animTable = xAnimTableNew("Sandy", NULL, 0);
 //
 //    xAnimTableNewState(animTable, "Idle01", 0x10, 0x0001, 1.0, NULL, NULL, 0.0, NULL, NULL,
@@ -5864,10 +5864,11 @@ S32 zEntPlayer_Damage(xBase* src, U32 damage, const xVec3* knockback)
 //                            0x00, 0, 0.15, NULL);
 //
 //    return animTable;
-//}
-//
-//xAnimTable* zPatrick_AnimTable()
-//{
+return 0;
+}
+
+xAnimTable* zPatrick_AnimTable()
+{
 //    xAnimTable* animTable = xAnimTableNew("Patrick", NULL, 0);
 //
 //    xAnimTableNewState(animTable, "Idle01", 0x10, 0x0001, 1.0, NULL, NULL, 0.0, NULL, NULL,
@@ -6276,10 +6277,11 @@ S32 zEntPlayer_Damage(xBase* src, U32 damage, const xVec3* knockback)
 //                            0x14, 0, 0.15, NULL);
 //
 //    return animTable;
-//}
-//
-//xAnimTable* zEntPlayer_AnimTable()
-//{
+return 0;
+}
+
+xAnimTable* zEntPlayer_AnimTable()
+{
 //    static const char* STANDARD_STATES[33] = {
 //        "Idle01",     "Walk01",     "Run01",      "Run02",      "Run03",      "RunOutOfWorld01",
 //        "SlipRun01",  "SlipIdle01", "Land01",     "LandHigh01", "Idle02",     "Idle03",
@@ -7136,10 +7138,11 @@ S32 zEntPlayer_Damage(xBase* src, U32 damage, const xVec3* knockback)
 //                            0x14, 0, 0.15, NULL);
 //
 //    return animTable;
-//}
-//
-//xAnimTable* zSpongeBobTongue_AnimTable()
-//{
+return 0;
+}
+
+xAnimTable* zSpongeBobTongue_AnimTable()
+{
 //    xAnimTable* animTable = xAnimTableNew("SBTongue", NULL, 0);
 //
 //    xAnimTableNewState(animTable, "TongueSlide01", 0x10, 0, 1.0f, NULL, NULL, 0.0f, NULL, NULL,
@@ -7158,27 +7161,29 @@ S32 zEntPlayer_Damage(xBase* src, U32 damage, const xVec3* knockback)
 //                       xAnimDefaultBeforeEnter, NULL, NULL);
 //
 //    return animTable;
-//}
-//
-//xAnimTable* zEntPlayer_BoulderVehicleAnimTable()
-//{
-//    xAnimTable* table = xAnimTableNew("BoulderVehicleTable", NULL, 0x0);
-//
-//    xAnimTableNewState(table, "Idle01", 0x10, 0x0, 1.0f, NULL, NULL, 0.0f, NULL, NULL,
-//                       xAnimDefaultBeforeEnter, NULL, NULL);
-//    xAnimTableNewState(table, "Move01", 0x10, 0x0, 1.0f, NULL, NULL, 0.0f, NULL, NULL,
-//                       xAnimDefaultBeforeEnter, NULL, NULL);
-//
-//    xAnimTableNewTransition(table, "Idle01", "Move01", BoulderRollMoveCheck, NULL, 0x0, 0x0, 0.0f,
-//                            0.0f, 1, 0, 0.45f, NULL);
-//    xAnimTableNewTransition(table, "Move01", "Idle01", BoulderRollIdleCheck, NULL, 0x0, 0x0, 0.0f,
-//                            0.0f, 1, 0, 0.45f, NULL);
-//
-//    return table;
-//}
-//
-//xAnimTable* zEntPlayer_TreeDomeSBAnimTable()
-//{
+    return 0;
+}
+
+xAnimTable* zEntPlayer_BoulderVehicleAnimTable()
+{
+    /*xAnimTable* table = xAnimTableNew("BoulderVehicleTable", NULL, 0x0);
+
+    xAnimTableNewState(table, "Idle01", 0x10, 0x0, 1.0f, NULL, NULL, 0.0f, NULL, NULL,
+                       xAnimDefaultBeforeEnter, NULL, NULL);
+    xAnimTableNewState(table, "Move01", 0x10, 0x0, 1.0f, NULL, NULL, 0.0f, NULL, NULL,
+                       xAnimDefaultBeforeEnter, NULL, NULL);
+
+    xAnimTableNewTransition(table, "Idle01", "Move01", BoulderRollMoveCheck, NULL, 0x0, 0x0, 0.0f,
+                            0.0f, 1, 0, 0.45f, NULL);
+    xAnimTableNewTransition(table, "Move01", "Idle01", BoulderRollIdleCheck, NULL, 0x0, 0x0, 0.0f,
+                            0.0f, 1, 0, 0.45f, NULL);
+
+    return table;*/
+    return 0;
+}
+
+xAnimTable* zEntPlayer_TreeDomeSBAnimTable()
+{
 //    xAnimTable* table = xAnimTableNew("SB", NULL, 0x0);
 //
 //    xAnimTableNewState(table, "Idle01", 0x10, 0x1, 1.0f, NULL, NULL, 0.0f, NULL, NULL,
@@ -7363,8 +7368,9 @@ S32 zEntPlayer_Damage(xBase* src, U32 damage, const xVec3* knockback)
 //                       xAnimDefaultBeforeEnter, NULL, NULL);
 //
 //    return table;
-//}
-//
+return 0;
+}
+
 //void iCameraSetBlurriness(F32 amount);
 //
 //// Equivalent; scheduling issues.

@@ -7,7 +7,7 @@
 
 S32 xUtilStartup();
 S32 xUtilShutdown();
-char* xUtil_idtag2string(U32 srctag, S32 bufidx);
+char* xUtil_idtag2string(U32 srctag, S32 bufidx = 0);
 U32 xUtil_crc_init();
 U32 xUtil_crc_update(U32 crc_accum, char* data, S32 datasize);
 S32 xUtil_yesno(F32 wt_yes);

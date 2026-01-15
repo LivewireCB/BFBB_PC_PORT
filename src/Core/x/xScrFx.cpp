@@ -1,4 +1,5 @@
 #include "xScrFx.h"
+#include "rwplcore.h"
 
 #include <types.h>
 

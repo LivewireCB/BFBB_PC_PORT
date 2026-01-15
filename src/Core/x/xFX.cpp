@@ -38,6 +38,7 @@ F32 EnvMapShininess = 1.0f;
 
 /* End global variables */
 
+U32 gFXSurfaceFlags;
 static U32 num_fx_atomics = 0;
 static U32 xfx_initted = 0;
 
@@ -212,115 +213,115 @@ static RpMaterial* MaterialSetBumpMap(RpMaterial* material, void* data);
 static RpMaterial* MaterialSetBumpEnvMap(RpMaterial* material, RwTexture* env, F32 shininess,
                                          RwTexture* bump, F32 bumpiness);
 
-//void xFX_SceneEnter(RpWorld* world)
-//{
-//    S32 i;
-//    S32 num = RpWorldGetNumMaterials(world);
-//
-//    for (i = 0; i < num; i++)
-//    {
-//        xSurface* sp = zSurfaceGetSurface(i);
-//        zSurfaceProps* pp = (zSurfaceProps*)sp->moprops;
-//
-//        if (pp && pp->asset)
-//        {
-//            zSurfMatFX* fxp = &pp->asset->matfx;
-//
-//            if (fxp->flags)
-//            {
-//                if (fxp->flags == 0x10)
-//                {
-//                    fxp->flags |= 0x1;
-//                }
-//
-//                RpMaterial* mp = RpWorldGetMaterial(world, i);
-//
-//                if (RpMaterialGetTexture(mp))
-//                {
-//                    gFXSurfaceFlags = fxp->flags;
-//
-//                    if (fxp->flags & 0x1)
-//                    {
-//                        RwTexture* env = (RwTexture*)xSTFindAsset(fxp->envmapID, NULL);
-//
-//                        if (!env)
-//                        {
-//                            continue;
-//                        }
-//
-//                        MaterialSetEnvMap(mp, env);
-//                        RpMatFXMaterialSetEnvMapCoefficient(mp, 0.5f * fxp->shininess);
-//                    }
-//
-//                    if (fxp->flags & 0x2)
-//                    {
-//                        RwTexture* bump = (RwTexture*)xSTFindAsset(fxp->bumpmapID, NULL);
-//
-//                        if (!bump)
-//                        {
-//                            continue;
-//                        }
-//
-//                        MaterialSetBumpMap(mp, bump);
-//                        RpMatFXMaterialSetBumpMapCoefficient(mp, fxp->bumpiness);
-//                    }
-//
-//                    if (fxp->flags & 0x4)
-//                    {
-//                        RwTexture* env = (RwTexture*)xSTFindAsset(fxp->envmapID, NULL);
-//                        RwTexture* bump = (RwTexture*)xSTFindAsset(fxp->bumpmapID, NULL);
-//
-//                        if (!env || !bump)
-//                        {
-//                            continue;
-//                        }
-//
-//                        MaterialSetBumpEnvMap(mp, env, fxp->shininess, bump, fxp->bumpiness);
-//                    }
-//                }
-//            }
-//        }
-//    }
-//
-//    zScene* sc = globals.sceneCur;
-//
-//    for (i = 0; i < sc->num_act_ents; i++)
-//    {
-//        xEnt* ent = sc->act_ents[i];
-//
-//        if (!gAtomicRenderCallBack && ent->model)
-//        {
-//            RpAtomicCallBackRender tmp = RpAtomicGetRenderCallBack(ent->model->Data);
-//
-//            RpAtomicSetRenderCallBack(ent->model->Data, NULL);
-//
-//            gAtomicRenderCallBack = RpAtomicGetRenderCallBack(ent->model->Data);
-//
-//            RpAtomicSetRenderCallBack(ent->model->Data, tmp);
-//        }
-//
-//        if (ent->model)
-//        {
-//            U32 bubble = 0;
-//
-//            bubble |= (ent->id == xStrHash("bubble buddy"));
-//            bubble |= (ent->id == xStrHash("bubble missile"));
-//            bubble |= (ent->id == xStrHash("bubble helmet"));
-//            bubble |= (ent->id == xStrHash("bubble bowling ball"));
-//            bubble |= (ent->id == xStrHash("bubble shoeL"));
-//            bubble |= (ent->id == xStrHash("bubble shoeR"));
-//
-//            if (bubble)
-//            {
-//                xSTAssetName(ent->id);
-//
-//                RpAtomicSetRenderCallBack(ent->model->Data, xFXBubbleRender);
-//            }
-//        }
-//    }
-//
-//    num_fx_atomics = 0;
-//}
+void xFX_SceneEnter(RpWorld* world)
+{
+    S32 i;
+    S32 num = RpWorldGetNumMaterials(world);
+
+    for (i = 0; i < num; i++)
+    {
+        xSurface* sp = zSurfaceGetSurface(i);
+        zSurfaceProps* pp = (zSurfaceProps*)sp->moprops;
+
+        if (pp && pp->asset)
+        {
+            zSurfMatFX* fxp = &pp->asset->matfx;
+
+            if (fxp->flags)
+            {
+                if (fxp->flags == 0x10)
+                {
+                    fxp->flags |= 0x1;
+                }
+
+                RpMaterial* mp = RpWorldGetMaterial(world, i);
+
+                if (RpMaterialGetTexture(mp))
+                {
+                    gFXSurfaceFlags = fxp->flags;
+
+                    if (fxp->flags & 0x1)
+                    {
+                        RwTexture* env = (RwTexture*)xSTFindAsset(fxp->envmapID, NULL);
+
+                        if (!env)
+                        {
+                            continue;
+                        }
+
+                        MaterialSetEnvMap(mp, env);
+                        RpMatFXMaterialSetEnvMapCoefficient(mp, 0.5f * fxp->shininess);
+                    }
+
+                    if (fxp->flags & 0x2)
+                    {
+                        RwTexture* bump = (RwTexture*)xSTFindAsset(fxp->bumpmapID, NULL);
+
+                        if (!bump)
+                        {
+                            continue;
+                        }
+
+                        MaterialSetBumpMap(mp, bump);
+                        RpMatFXMaterialSetBumpMapCoefficient(mp, fxp->bumpiness);
+                    }
+
+                    if (fxp->flags & 0x4)
+                    {
+                        RwTexture* env = (RwTexture*)xSTFindAsset(fxp->envmapID, NULL);
+                        RwTexture* bump = (RwTexture*)xSTFindAsset(fxp->bumpmapID, NULL);
+
+                        if (!env || !bump)
+                        {
+                            continue;
+                        }
+
+                        MaterialSetBumpEnvMap(mp, env, fxp->shininess, bump, fxp->bumpiness);
+                    }
+                }
+            }
+        }
+    }
+
+    zScene* sc = globals.sceneCur;
+
+    for (i = 0; i < sc->num_act_ents; i++)
+    {
+        xEnt* ent = sc->act_ents[i];
+
+        if (!gAtomicRenderCallBack && ent->model)
+        {
+            RpAtomicCallBackRender tmp = RpAtomicGetRenderCallBack(ent->model->Data);
+
+            RpAtomicSetRenderCallBack(ent->model->Data, NULL);
+
+            gAtomicRenderCallBack = RpAtomicGetRenderCallBack(ent->model->Data);
+
+            RpAtomicSetRenderCallBack(ent->model->Data, tmp);
+        }
+
+        if (ent->model)
+        {
+            U32 bubble = 0;
+
+            bubble |= (ent->id == xStrHash("bubble buddy"));
+            bubble |= (ent->id == xStrHash("bubble missile"));
+            bubble |= (ent->id == xStrHash("bubble helmet"));
+            bubble |= (ent->id == xStrHash("bubble bowling ball"));
+            bubble |= (ent->id == xStrHash("bubble shoeL"));
+            bubble |= (ent->id == xStrHash("bubble shoeR"));
+
+            if (bubble)
+            {
+                xSTAssetName(ent->id);
+
+                RpAtomicSetRenderCallBack(ent->model->Data, xFXBubbleRender);
+            }
+        }
+    }
+
+    num_fx_atomics = 0;
+}
 
 void xFX_SceneExit(RpWorld*)
 {
@@ -348,27 +349,27 @@ static const RwV3d _1169 = { 0, 1, 0 };
 //    RwFrameRotate(frame, &v1, 45.0f, rwCOMBINEREPLACE);
 //    RwFrameRotate(frame, &v2, 45.0f, rwCOMBINEPOSTCONCAT);
 //}
-//
-//static RpMaterial* MaterialDisableMatFX(RpMaterial* material, void*)
-//{
-//    RpMatFXMaterialSetEffects(material, rpMATFXEFFECTNULL);
-//    return material;
-//}
-//
-//RpAtomic* AtomicDisableMatFX(RpAtomic* atomic)
-//{
-//    RpMatFXAtomicEnableEffects(atomic);
-//
-//    RpGeometry* geometry = RpAtomicGetGeometry(atomic);
-//
-//    if (geometry)
-//    {
-//        RpGeometryForAllMaterials(geometry, MaterialDisableMatFX, NULL);
-//    }
-//
-//    return atomic;
-//}
-//
+
+static RpMaterial* MaterialDisableMatFX(RpMaterial* material, void*)
+{
+    RpMatFXMaterialSetEffects(material, rpMATFXEFFECTNULL);
+    return material;
+}
+
+RpAtomic* AtomicDisableMatFX(RpAtomic* atomic)
+{
+    RpMatFXAtomicEnableEffects(atomic);
+
+    RpGeometry* geometry = RpAtomicGetGeometry(atomic);
+
+    if (geometry)
+    {
+        RpGeometryForAllMaterials(geometry, MaterialDisableMatFX, NULL);
+    }
+
+    return atomic;
+}
+
 //static RpAtomic* PreAllocMatFX_cb(RpAtomic* atomic, void*)
 //{
 //    AtomicDisableMatFX(atomic);
@@ -380,59 +381,59 @@ void xFXPreAllocMatFX(RpClump* clump) RIMP
     //RpClumpForAllAtomics(clump, PreAllocMatFX_cb, NULL);
 }
 
-//RpMaterial* MaterialSetShininess(RpMaterial* material, void*)
-//{
-//    RpMatFXMaterialFlags flags = RpMatFXMaterialGetEffects(material);
-//
-//    if (flags == rpMATFXEFFECTENVMAP || flags == rpMATFXEFFECTBUMPENVMAP)
-//    {
-//        RpMatFXMaterialSetEnvMapCoefficient(material, EnvMapShininess);
-//    }
-//
-//    return material;
-//}
-//
-//static RpAtomic* AtomicSetShininess(RpAtomic* atomic, void* data)
-//{
-//    RpGeometry* geometry = RpAtomicGetGeometry(atomic);
-//
-//    if (geometry)
-//    {
-//        RpGeometryForAllMaterials(geometry, MaterialSetShininess, data);
-//    }
-//
-//    return atomic;
-//}
-//
-//static RpAtomic* AtomicSetEnvMap(RpAtomic* atomic, void* data)
-//{
-//    RpMatFXAtomicEnableEffects(atomic);
-//    if (atomic->geometry != 0)
-//    {
-//        RpGeometryForAllMaterials(atomic->geometry, MaterialSetEnvMap2, data);
-//    }
-//    return atomic;
-//}
-//
-//RpAtomic* xFXAtomicEnvMapSetup(RpAtomic* atomic, U32 aid, F32 shininess)
-//{
-//    void* asset = xSTFindAsset(aid, NULL);
-//    if (asset)
-//    {
-//        AtomicSetEnvMap(atomic, asset);
-//        F32 oldShininess = EnvMapShininess;
-//        EnvMapShininess = shininess;
-//        AtomicSetShininess(atomic, NULL);
-//        EnvMapShininess = oldShininess;
-//        RpSkin* skin = RpSkinGeometryGetSkin(atomic->geometry);
-//        if (skin)
-//        {
-//            RpSkinAtomicSetType(atomic, rpSKINTYPEMATFX);
-//        }
-//        return atomic;
-//    }
-//    return NULL;
-//}
+RpMaterial* MaterialSetShininess(RpMaterial* material, void*)
+{
+    RpMatFXMaterialFlags flags = RpMatFXMaterialGetEffects(material);
+
+    if (flags == rpMATFXEFFECTENVMAP || flags == rpMATFXEFFECTBUMPENVMAP)
+    {
+        RpMatFXMaterialSetEnvMapCoefficient(material, EnvMapShininess);
+    }
+
+    return material;
+}
+
+static RpAtomic* AtomicSetShininess(RpAtomic* atomic, void* data)
+{
+    RpGeometry* geometry = RpAtomicGetGeometry(atomic);
+
+    if (geometry)
+    {
+        RpGeometryForAllMaterials(geometry, MaterialSetShininess, data);
+    }
+
+    return atomic;
+}
+
+static RpAtomic* AtomicSetEnvMap(RpAtomic* atomic, void* data)
+{
+    RpMatFXAtomicEnableEffects(atomic);
+    if (atomic->geometry != 0)
+    {
+        RpGeometryForAllMaterials(atomic->geometry, MaterialSetEnvMap2, data);
+    }
+    return atomic;
+}
+
+RpAtomic* xFXAtomicEnvMapSetup(RpAtomic* atomic, U32 aid, F32 shininess)
+{
+    void* asset = xSTFindAsset(aid, NULL);
+    if (asset)
+    {
+        AtomicSetEnvMap(atomic, asset);
+        F32 oldShininess = EnvMapShininess;
+        EnvMapShininess = shininess;
+        AtomicSetShininess(atomic, NULL);
+        EnvMapShininess = oldShininess;
+        RpSkin* skin = RpSkinGeometryGetSkin(atomic->geometry);
+        if (skin)
+        {
+            RpSkinAtomicSetType(atomic, rpSKINTYPEMATFX);
+        }
+        return atomic;
+    }
+    return NULL;
+}
 
 void xFXAuraAdd(void*, xVec3*, iColor_tag*, F32)
 {
@@ -1022,113 +1023,113 @@ void xFXShineRender()
 //        }
 //    }
 //}
-//
-//RpMaterial* MaterialSetBumpMap(RpMaterial* material, void* data)
-//{
-//    RwFrame* frame;
-//    if (data == NULL)
-//    {
-//        return NULL;
-//    }
-//    else if (material->texture)
-//    {
-//        if (data)
-//        {
-//            frame = (RwFrame*)MainLight->object.object.parent;
-//            RpMatFXMaterialSetEffects(material, rpMATFXEFFECTBUMPMAP);
-//            RpMatFXMaterialSetupBumpMap(material, (RwTexture*)data, frame, 1.0f);
-//        }
-//        else
-//        {
-//            RpMatFXMaterialSetEffects(material, rpMATFXEFFECTNULL);
-//        }
-//    }
-//    return material;
-//}
-//
-//RpMaterial* MaterialSetEnvMap(RpMaterial* material, void* data)
-//{
-//    // Matching but with mr. instead of cmplwi
-//    if (data == NULL)
-//    {
-//        return NULL;
-//    }
-//    if (material->texture)
-//    {
-//        if (data)
-//        {
-//            RwFrame* frame = NULL;
-//            if ((gFXSurfaceFlags & 0x10) != 0)
-//            {
-//                if (globals.camera.lo_cam)
-//                {
-//                    frame = (RwFrame*)globals.camera.lo_cam->object.object.parent;
-//                }
-//                else
-//                {
-//                    frame = (RwFrame*)MainLight->object.object.parent;
-//                }
-//            }
-//            else
-//            {
-//                frame = (RwFrame*)MainLight->object.object.parent;
-//            }
-//            RpMatFXMaterialSetEffects(material, rpMATFXEFFECTENVMAP);
-//            RpMatFXMaterialSetupEnvMap(material, (RwTexture*)data, frame, FALSE, 1.0f);
-//        }
-//        else
-//        {
-//            RpMatFXMaterialSetEffects(material, rpMATFXEFFECTNULL);
-//        }
-//    }
-//    return material;
-//}
-//
-//RpMaterial* MaterialSetEnvMap2(RpMaterial* material, void* data)
-//{
-//    if (material->texture != NULL)
-//    {
-//        RwFrame* frame;
-//        if (RwEngineInstance->stringFuncs.vecStrcmp(((RwTexture*)data)->name, "spec3") == 0)
-//        {
-//            frame = (RwFrame*)globals.camera.lo_cam->object.object.parent;
-//        }
-//        else
-//        {
-//            frame = (RwFrame*)MainLight->object.object.parent;
-//        }
-//        RpMatFXMaterialSetEffects(material, rpMATFXEFFECTENVMAP);
-//        RpMatFXMaterialSetupEnvMap(material, (RwTexture*)data, frame, FALSE, EnvMapShininess);
-//    }
-//    return material;
-//}
-//
-//RpMaterial* MaterialSetBumpEnvMap(RpMaterial* material, RwTexture* envMap, F32 envCooef,
-//                                  RwTexture* bumpMap, F32 bumpCooef)
-//{
-//    if (envMap == NULL || bumpMap == NULL)
-//    {
-//        return NULL;
-//    }
-//    else
-//    {
-//        RwFrame* frame;
-//        RpMatFXMaterialSetEffects(material, rpMATFXEFFECTBUMPENVMAP);
-//        if ((gFXSurfaceFlags & 0x10) != 0)
-//        {
-//            frame = (RwFrame*)globals.camera.lo_cam->object.object.parent;
-//        }
-//        else
-//        {
-//            frame = (RwFrame*)MainLight->object.object.parent;
-//        }
-//        RpMatFXMaterialSetupEnvMap(material, envMap, frame, TRUE, envCooef);
-//        RpMatFXMaterialSetupBumpMap(material, bumpMap, (RwFrame*)MainLight->object.object.parent,
-//                                    bumpCooef);
-//    }
-//    return material;
-//}
-//
+
+RpMaterial* MaterialSetBumpMap(RpMaterial* material, void* data)
+{
+    RwFrame* frame;
+    if (data == NULL)
+    {
+        return NULL;
+    }
+    else if (material->texture)
+    {
+        if (data)
+        {
+            frame = (RwFrame*)MainLight->object.object.parent;
+            RpMatFXMaterialSetEffects(material, rpMATFXEFFECTBUMPMAP);
+            RpMatFXMaterialSetupBumpMap(material, (RwTexture*)data, frame, 1.0f);
+        }
+        else
+        {
+            RpMatFXMaterialSetEffects(material, rpMATFXEFFECTNULL);
+        }
+    }
+    return material;
+}
+
+RpMaterial* MaterialSetEnvMap(RpMaterial* material, void* data)
+{
+    // Matching but with mr. instead of cmplwi
+    if (data == NULL)
+    {
+        return NULL;
+    }
+    if (material->texture)
+    {
+        if (data)
+        {
+            RwFrame* frame = NULL;
+            if ((gFXSurfaceFlags & 0x10) != 0)
+            {
+                if (globals.camera.lo_cam)
+                {
+                    frame = (RwFrame*)globals.camera.lo_cam->object.object.parent;
+                }
+                else
+                {
+                    frame = (RwFrame*)MainLight->object.object.parent;
+                }
+            }
+            else
+            {
+                frame = (RwFrame*)MainLight->object.object.parent;
+            }
+            RpMatFXMaterialSetEffects(material, rpMATFXEFFECTENVMAP);
+            RpMatFXMaterialSetupEnvMap(material, (RwTexture*)data, frame, FALSE, 1.0f);
+        }
+        else
+        {
+            RpMatFXMaterialSetEffects(material, rpMATFXEFFECTNULL);
+        }
+    }
+    return material;
+}
+
+RpMaterial* MaterialSetEnvMap2(RpMaterial* material, void* data) RIMP WIP // IMPORTANT
+{
+    if (material->texture != NULL)
+    {
+        RwFrame* frame;
+        /*if (RwEngineInstance->stringFuncs.vecStrcmp(((RwTexture*)data)->name, "spec3") == 0)
+        {
+            frame = (RwFrame*)globals.camera.lo_cam->object.object.parent;
+        }
+        else
+        {
+            frame = (RwFrame*)MainLight->object.object.parent;
+        }*/
+        RpMatFXMaterialSetEffects(material, rpMATFXEFFECTENVMAP);
+        RpMatFXMaterialSetupEnvMap(material, (RwTexture*)data, frame, FALSE, EnvMapShininess);
+    }
+    return material;
+}
+
+RpMaterial* MaterialSetBumpEnvMap(RpMaterial* material, RwTexture* envMap, F32 envCooef,
+                                  RwTexture* bumpMap, F32 bumpCooef)
+{
+    if (envMap == NULL || bumpMap == NULL)
+    {
+        return NULL;
+    }
+    else
+    {
+        RwFrame* frame;
+        RpMatFXMaterialSetEffects(material, rpMATFXEFFECTBUMPENVMAP);
+        if ((gFXSurfaceFlags & 0x10) != 0)
+        {
+            frame = (RwFrame*)globals.camera.lo_cam->object.object.parent;
+        }
+        else
+        {
+            frame = (RwFrame*)MainLight->object.object.parent;
+        }
+        RpMatFXMaterialSetupEnvMap(material, envMap, frame, TRUE, envCooef);
+        RpMatFXMaterialSetupBumpMap(material, bumpMap, (RwFrame*)MainLight->object.object.parent,
+                                    bumpCooef);
+    }
+    return material;
+}
+
 //RpAtomic* xFXanimUVAtomicSetup(RpAtomic* atomic)
 //{
 //    if (atomic == 0)
@@ -1195,52 +1196,52 @@ void xFXShineRender()
 //
 //    return atomic;
 //}
-//
-//RpAtomic* xFXBubbleRender(RpAtomic* atomic)
-//{
-//    RwCullMode cmode;
-//    xFXBubbleParams* bp;
-//
-//    bp = BFX + bfx_curr * 1; // Why multiply by 1? Probably needs rewritten differently
-//
-//    RwRenderStateGet(rwRENDERSTATECULLMODE, NULL);
-//    RwRenderStateSet(rwRENDERSTATECULLMODE, (void*)rwCULLMODECULLBACK);
-//    iDrawSetFBMSK(bp->pass1_fbmsk);
-//    iModelSetMaterialAlpha(atomic, bp->pass1_alpha);
-//
-//    if (((char)bp->pass1))
-//    {
-//        AtomicDisableMatFX(atomic);
-//        (*gAtomicRenderCallBack)(atomic);
-//    }
-//
-//    iDrawSetFBMSK(0);
-//    iModelSetMaterialAlpha(atomic, bp->pass2_alpha);
-//
-//    if (((char)bp->pass2) != 0)
-//    {
-//        gFXSurfaceFlags = 0x10;
-//        xFXAtomicEnvMapSetup(atomic, bp->fresnel_map, bp->fresnel_map_coeff);
-//        gFXSurfaceFlags = 0;
-//        (*gAtomicRenderCallBack)(atomic);
-//    }
-//
-//    iModelSetMaterialAlpha(atomic, bp->pass3_alpha);
-//
-//    if (((char)bp->pass3) != 0)
-//    {
-//        AtomicDisableMatFX(atomic);
-//        gFXSurfaceFlags = 0x10;
-//        xFXAtomicEnvMapSetup(atomic, bp->env_map, bp->env_map_coeff);
-//        gFXSurfaceFlags = 0;
-//        (*gAtomicRenderCallBack)(atomic);
-//    }
-//
-//    RwRenderStateSet(rwRENDERSTATECULLMODE, (void*)0x8);
-//
-//    return atomic;
-//}
-//
+
+RpAtomic* xFXBubbleRender(RpAtomic* atomic)
+{
+    RwCullMode cmode;
+    xFXBubbleParams* bp;
+
+    bp = BFX + bfx_curr * 1; // Why multiply by 1? Probably needs rewritten differently
+
+    RwRenderStateGet(rwRENDERSTATECULLMODE, NULL);
+    RwRenderStateSet(rwRENDERSTATECULLMODE, (void*)rwCULLMODECULLBACK);
+    iDrawSetFBMSK(bp->pass1_fbmsk);
+    iModelSetMaterialAlpha(atomic, bp->pass1_alpha);
+
+    if (((char)bp->pass1))
+    {
+        AtomicDisableMatFX(atomic);
+        (*gAtomicRenderCallBack)(atomic);
+    }
+
+    iDrawSetFBMSK(0);
+    iModelSetMaterialAlpha(atomic, bp->pass2_alpha);
+
+    if (((char)bp->pass2) != 0)
+    {
+        gFXSurfaceFlags = 0x10;
+        xFXAtomicEnvMapSetup(atomic, bp->fresnel_map, bp->fresnel_map_coeff);
+        gFXSurfaceFlags = 0;
+        (*gAtomicRenderCallBack)(atomic);
+    }
+
+    iModelSetMaterialAlpha(atomic, bp->pass3_alpha);
+
+    if (((char)bp->pass3) != 0)
+    {
+        AtomicDisableMatFX(atomic);
+        gFXSurfaceFlags = 0x10;
+        xFXAtomicEnvMapSetup(atomic, bp->env_map, bp->env_map_coeff);
+        gFXSurfaceFlags = 0;
+        (*gAtomicRenderCallBack)(atomic);
+    }
+
+    RwRenderStateSet(rwRENDERSTATECULLMODE, (void*)0x8);
+
+    return atomic;
+}
+
 //void xFXRibbonRender()
 //{
 //    xFXRibbon* prev;

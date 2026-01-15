@@ -1,28 +1,28 @@
-//#include <types.h>
-//#include "string.h"
-//
-//#include "iModel.h"
-//
-//#include "xCollide.h"
-//#include "xDebug.h"
-//#include "xMath.h"
-//#include "xMath3.h"
-//#include "xstransvc.h"
-//#include "xSnd.h"
-//#include "xVec3.h"
-//
-//#include "zCamera.h"
-//#include "zEntSimpleObj.h"
-//#include "zEntDestructObj.h"
-//#include "zGlobals.h"
-//#include "zGrid.h"
-//#include "zNPCTypeBossPatrick.h"
-//#include "zRenderState.h"
-//#include "zNPCGoals.h"
-//#include "zLightning.h"
-//#include "zNPCTypeRobot.h"
-//#include <xMathInlines.h>
-//
+#include <types.h>
+#include "string.h"
+
+#include "iModel.h"
+
+#include "xCollide.h"
+#include "xDebug.h"
+#include "xMath.h"
+#include "xMath3.h"
+#include "xstransvc.h"
+#include "xSnd.h"
+#include "xVec3.h"
+
+#include "zCamera.h"
+#include "zEntSimpleObj.h"
+#include "zEntDestructObj.h"
+#include "zGlobals.h"
+#include "zGrid.h"
+#include "zNPCTypeBossPatrick.h"
+#include "zRenderState.h"
+#include "zNPCGoals.h"
+#include "zLightning.h"
+#include "zNPCTypeRobot.h"
+#include <xMathInlines.h>
+
 //#define f831 1.0f
 //#define f832 0.0f
 //#define f833 0.2f
@@ -234,9 +234,9 @@
 //void test(S32)
 //{
 //}
-//
-//xAnimTable* ZNPC_AnimTable_BossPatrick()
-//{
+
+xAnimTable* ZNPC_AnimTable_BossPatrick()
+{
 //    // clang-format off
 //    S32 ourAnims[23] = {
 //        ANIM_IDLE01,
@@ -315,8 +315,9 @@
 //    NPCC_BuildStandardAnimTran(table, g_strz_bossanim, ourAnims, 1, f833);
 //
 //    return table;
-//}
-//
+	return 0;
+}
+
 //static const tweak_callback newsfish_cb = {};
 //static const tweak_callback recenter_cb = {};
 //

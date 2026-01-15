@@ -1,14 +1,14 @@
-//#include "zNPCTypeBoss.h"
-//
-//#include "zNPCTypes.h"
-//#include "zNPCTypeBossSandy.h"
-//#include "zNPCTypeBossPatrick.h"
-//#include "zNPCTypeBossSB1.h"
-//#include "zNPCTypeBossSB2.h"
-//#include "zNPCTypeBossPlankton.h"
-//
-//#include "xString.h"
-//
+#include "zNPCTypeBoss.h"
+
+#include "zNPCTypes.h"
+#include "zNPCTypeBossSandy.h"
+#include "zNPCTypeBossPatrick.h"
+#include "zNPCTypeBossSB1.h"
+#include "zNPCTypeBossSB2.h"
+#include "zNPCTypeBossPlankton.h"
+
+#include "xString.h"
+
 //U32 g_hash_bossanim[ANIM_COUNT] = {};
 //
 //void foo(zNPCBPatrick* pat)
@@ -181,8 +181,8 @@
 //    delete inst;
 //}
 //
-//xAnimTable* ZNPC_AnimTable_BossSBobbyArm()
-//{
+xAnimTable* ZNPC_AnimTable_BossSBobbyArm()
+{
 //    xAnimTable* table;
 //
 //    S32 ourAnims[2] = { 0, 1 };
@@ -196,7 +196,8 @@
 //    NPCC_BuildStandardAnimTran(table, (char**)g_strz_bossanim, &ourAnims[0], 1, _922_0);
 //
 //    return table;
-//}
+	return 0;
+}
 //
 //void BOSS_InitEffects();
 //

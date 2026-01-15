@@ -281,16 +281,16 @@
 //{
 //    xEntUpdate(ent, scene, elapsedSec);
 //}
-//
-//void zEntEventAll(xBase* from, U32 fromEvent, U32 toEvent, F32* toParam)
-//{
-//    zScene* s = globals.sceneCur;
-//    for (U16 i = 0; i < s->num_base; i++)
-//    {
-//        zEntEvent(from, fromEvent, s->base[i], toEvent, toParam, NULL, 0);
-//    }
-//}
-//
+
+void zEntEventAll(xBase* from, U32 fromEvent, U32 toEvent, F32* toParam)
+{
+    zScene* s = globals.sceneCur;
+    for (U16 i = 0; i < s->num_base; i++)
+    {
+        zEntEvent(from, fromEvent, s->base[i], toEvent, toParam, NULL, 0);
+    }
+}
+
 //void zEntEventAllOfType(xBase* from, U32 fromEvent, U32 toEvent, F32* toParam, U32 type)
 //{
 //    zScene* s = globals.sceneCur;
@@ -548,8 +548,8 @@
 //    "Idle01", "Anim02", "Anim03", "Anim04", "Anim05",
 //};
 //// Thank you floating point memes. Very cool.
-//xAnimTable* xEnt_AnimTable_AutoEventSmall()
-//{
+xAnimTable* xEnt_AnimTable_AutoEventSmall()
+{
 //    char** names = g_strz_xentanim;
 //    U32* hash = g_hash_xentanim;
 //    xAnimTransition* deftran = NULL;
@@ -589,7 +589,8 @@
 //        }
 //    }
 //    return table;
-//}
+    return 0;
+}
 //
 //// This function needs the floats to be replaced with literals
 //// and the jumptable to be generated in the right spot.

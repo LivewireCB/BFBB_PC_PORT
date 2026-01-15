@@ -363,16 +363,17 @@ void zNPCTiki_ExplodeFX(zNPCTiki* tiki) RIMP
 //    delete inst;
 //}
 //
-//xAnimTable* ZNPC_AnimTable_Tiki()
-//{
+xAnimTable* ZNPC_AnimTable_Tiki()
+{
 //    xAnimTable* table;
 //
 //    table = xAnimTableNew("zNPCTiki", NULL, 0);
 //    xAnimTableNewState(table, g_strz_tikianim[1], 0x110, 1, 1.0f, NULL, NULL, 0.0f, NULL, NULL,
 //                       xAnimDefaultBeforeEnter, NULL, NULL);
 //    return table;
-//}
-//
+    return 0;
+}
+
 //void zNPCTiki::Reset()
 //{
 //    zNPCCommon::Reset();

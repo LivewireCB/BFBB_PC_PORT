@@ -1,14 +1,14 @@
-//#include "zNPCTypeVillager.h"
-//
-//#include "xMath3.h"
-//#include "xVec3.h"
-//#include "zGlobals.h"
-//#include "zNPCTypeCommon.h"
-//#include "zNPCTypes.h"
-//#include "zNPCGoals.h"
-//#include "zTaskBox.h"
-//#include "xDebug.h"
-//
+#include "zNPCTypeVillager.h"
+
+#include "xMath3.h"
+#include "xVec3.h"
+#include "zGlobals.h"
+#include "zNPCTypeCommon.h"
+#include "zNPCTypes.h"
+#include "zNPCGoals.h"
+#include "zTaskBox.h"
+#include "xDebug.h"
+
 //#define Unknown 0
 //#define Idle01 1
 //#define Move01 2
@@ -270,14 +270,15 @@
 //{
 //    delete inst;
 //}
-//
-//xAnimTable* ZNPC_AnimTable_Villager()
-//{
-//    return ZNPC_AnimTable_Villager(NULL);
-//}
-//
-//xAnimTable* ZNPC_AnimTable_Villager(xAnimTable* callerTable)
-//{
+
+xAnimTable* ZNPC_AnimTable_Villager()
+{
+    return 0;
+    //return ZNPC_AnimTable_Villager(NULL);
+}
+
+xAnimTable* ZNPC_AnimTable_Villager(xAnimTable* callerTable)
+{
 //    S32 ourAnims[11] = { Idle01, Move01, Hurt01, Yawn01,    Talk01, Flee01,
 //                         Fear01, Pray01, Clap01, Special01, Unknown };
 //    xAnimTable* table = callerTable;
@@ -315,15 +316,17 @@
 //                            0, 0, 0.35f, NULL);
 //
 //    return table;
-//}
-//
-//xAnimTable* ZNPC_AnimTable_BalloonBoy()
-//{
+    return 0;
+}
+
+xAnimTable* ZNPC_AnimTable_BalloonBoy()
+{
 //    return ZNPC_AnimTable_BalloonBoy(NULL);
-//}
-//
-//xAnimTable* ZNPC_AnimTable_BalloonBoy(xAnimTable* callerTable)
-//{
+    return 0;
+}
+
+xAnimTable* ZNPC_AnimTable_BalloonBoy(xAnimTable* callerTable)
+{
 //    S32 ourAnims[7] = { Ride01, Bump01, Fall01, Land01, Weep01, Swim01, Unknown };
 //    xAnimTable* table = callerTable;
 //    char** names = g_strz_folkanim;
@@ -356,15 +359,17 @@
 //                            0, 0, 0.35f, NULL);
 //
 //    return table;
-//}
-//
-//xAnimTable* ZNPC_AnimTable_SuperFriend()
-//{
+    return 0;
+}
+
+xAnimTable* ZNPC_AnimTable_SuperFriend()
+{
 //    return ZNPC_AnimTable_SuperFriend(NULL);
-//}
-//
-//xAnimTable* ZNPC_AnimTable_SuperFriend(xAnimTable* callerTable)
-//{
+    return 0;
+}
+
+xAnimTable* ZNPC_AnimTable_SuperFriend(xAnimTable* callerTable)
+{
 //    S32 ourAnims[10] = { Idle02, Idle03, Idle04, Yawn02, Yawn03,
 //                         Yawn04, Talk02, Talk03, Talk04, Unknown };
 //    xAnimTable* table = callerTable;
@@ -406,8 +411,9 @@
 //                            0, 0, 0.35f, NULL);
 //
 //    return table;
-//}
-//
+    return 0;
+}
+
 //U8 zNPCVillager::PhysicsFlags() const
 //{
 //    S32 flags = 0;

@@ -97,17 +97,18 @@
 //{
 //    delete inst;
 //}
-//
-//xAnimTable* ZNPC_AnimTable_Ambient()
-//{
-//    xAnimTable* table = (xAnimTable*)xAnimTableNew("zNPCAmbient", NULL, 0);
-//    xAnimTableNewState(table, g_strz_ambianim[1], 0x110, 1, _882, NULL, NULL, _883, NULL, NULL,
-//                       xAnimDefaultBeforeEnter, NULL, NULL);
-//    return table;
-//}
-//
-//xAnimTable* ZNPC_AnimTable_Jelly()
-//{
+
+xAnimTable* ZNPC_AnimTable_Ambient()
+{
+    /*xAnimTable* table = (xAnimTable*)xAnimTableNew("zNPCAmbient", NULL, 0);
+    xAnimTableNewState(table, g_strz_ambianim[1], 0x110, 1, _882, NULL, NULL, _883, NULL, NULL,
+                       xAnimDefaultBeforeEnter, NULL, NULL);
+    return table;*/
+    return 0;
+}
+
+xAnimTable* ZNPC_AnimTable_Jelly()
+{
 //    xAnimTable* table = (xAnimTable*)xAnimTableNew("zNPCJelly", NULL, 0);
 //
 //    S32 local_887[] = {
@@ -131,10 +132,11 @@
 //    NPCC_BuildStandardAnimTran(table, g_strz_ambianim, local_887, 1, 0.2f);
 //
 //    return table;
-//}
-//
-//xAnimTable* ZNPC_AnimTable_Neptune()
-//{
+	return 0;
+}
+
+xAnimTable* ZNPC_AnimTable_Neptune()
+{
 //    S32 local_48[] = {
 //        1, 2, 3, 4, 5, 6, 0,
 //    };
@@ -165,7 +167,8 @@
 //                            f883, 0, 0, f903, 0x0);
 //
 //    return table;
-//}
+	return 0;
+}
 //
 ///* This should be 100% matching but it causes a vtable duplication error for some reason
 //void zNPCAmbient::Init(xEntAsset* asset)

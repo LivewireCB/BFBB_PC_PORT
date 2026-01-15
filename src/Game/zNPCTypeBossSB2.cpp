@@ -987,8 +987,8 @@
 //
 //} // namespace
 //
-//xAnimTable* ZNPC_AnimTable_BossSB2()
-//{
+xAnimTable* ZNPC_AnimTable_BossSB2()
+{
 //    // clang-format off
 //    S32 anim_list[27] = {
 //
@@ -1108,7 +1108,8 @@
 //                            0x10, 0, 0, 0, 0, 0, 0.1, 0);
 //
 //    return table;
-//}
+return 0;
+}
 //
 //void zNPCB_SB2::SelfSetup()
 //{

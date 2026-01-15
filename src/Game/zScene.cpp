@@ -2067,9 +2067,9 @@ void zSceneInit(U32 theSceneID, S32 reloadInProgress) RIMP
 //0x800B3418, 0x800B3418, 0x800B3418
 //};
 //// clang-format on
-//
-//void zSceneSetup()
-//{
+
+void zSceneSetup() RIMP
+{
 //    zScene* s = globals.sceneCur;
 //
 //    globals.cmgr = NULL;
@@ -2675,8 +2675,8 @@ void zSceneInit(U32 theSceneID, S32 reloadInProgress) RIMP
 //    *(U32*)&clear = _2014;
 //
 //    xScrFxFade(&black, &clear, 1.0f, NULL, 0);
-//}
-//
+}
+
 //S32 zSceneSetup_serialTraverseCB(U32 clientID, xSerial* xser)
 //{
 //    char uiName[16];

@@ -7,6 +7,7 @@
 #include "xutil.h"
 #include "xTRC.h"
 #include "iFile.h"
+#include "iSystem.h"
 
 static st_STRAN_DATA g_xstdata = {};
 static S32 g_straninit;
@@ -51,102 +52,90 @@ S32 xSTShutdown()
     return g_straninit;
 }
 
-// This doesn't seem exactly how HI would have written this, but it OKs
-// TODO: Try to clean this up?
 S32 xSTPreLoadScene(U32 sid, void* userdata, S32 flg_hiphop)
 {
-    S32 result;
-    S32 i = 0;
-    st_STRAN_SCENE* sdata;
-    char* path;
-    if ((flg_hiphop & 3) == 2)
-    {
+    S32 result = 1;
+    st_STRAN_SCENE* sdata = NULL;
+    const char* sfile = NULL;
+    S32 cltver = 0;
+
+    if ((flg_hiphop & XST_OPTS_MASKHH) == XST_OPTS_HOP) {
         sdata = XST_lock_next();
         sdata->scnid = sid;
         sdata->userdata = userdata;
         sdata->isHOP = 1;
 
-        path = XST_translate_sid_path(sid, ".HOP");
-        if (path != NULL)
-        {
-            strcpy(sdata->fnam, path);
-            i = XST_PreLoadScene(sdata, path);
+        sfile = XST_translate_sid_path(sid, ".HOP");
+        if (sfile) {
+            strcpy(sdata->fnam, sfile);
+            cltver = XST_PreLoadScene(sdata, sfile);
         }
-        if (i == 0)
-        {
-            path = XST_translate_sid(sid, ".HOP");
-            if (path != NULL)
-            {
-                strcpy(sdata->fnam, path);
-                i = XST_PreLoadScene(sdata, path);
+        if (cltver == 0) {
+            sfile = XST_translate_sid(sid, ".HOP");
+            if (sfile) {
+                strcpy(sdata->fnam, sfile);
+                cltver = XST_PreLoadScene(sdata, sfile);
             }
         }
-        if (i == 0)
-        {
+        if (cltver == 0) {
             XST_unlock(sdata);
             result = 0;
         }
-        else
-        {
-            result = i;
+        else {
+            result = cltver;
         }
     }
-    else
-    {
-        do
-        {
+    else {
+        do {
             sdata = XST_lock_next();
             sdata->scnid = sid;
             sdata->userdata = userdata;
             sdata->isHOP = 0;
 
-            if (sid != 0x424f4f54 && sid != 0x464f4e54)
-            {
-                path = XST_translate_sid_path(sid, ".HIP");
-                if (path != NULL)
-                {
-                    strcpy(sdata->fnam, path);
-                    i = XST_PreLoadScene(sdata, path);
+            if (sid != IDTAG('B', 'O', 'O', 'T') &&
+                sid != IDTAG('F', 'O', 'N', 'T')) {
+                sfile = XST_translate_sid_path(sid, ".HIP");
+                if (sfile) {
+                    strcpy(sdata->fnam, sfile);
+                    cltver = XST_PreLoadScene(sdata, sfile);
                 }
             }
-            if (i == 0)
-            {
-                path = XST_translate_sid(sid, ".HIP");
-                if (path != NULL)
-                {
-                    strcpy(sdata->fnam, path);
-                    i = XST_PreLoadScene(sdata, path);
+            if (cltver == 0) {
+                sfile = XST_translate_sid(sid, ".HIP");
+                if (sfile) {
+                    strcpy(sdata->fnam, sfile);
+                    cltver = XST_PreLoadScene(sdata, sfile);
                 }
             }
-            if (i == 0)
-            {
+            if (cltver == 0) {
                 XST_unlock(sdata);
                 result = 0;
             }
-            else
-            {
-                result = i;
+            else {
+                result = cltver;
             }
-        } while (i == 0);
+
+            iSystemPollEvents();
+        } while (cltver == 0 && !iSystemShouldQuit());
     }
+
     return result;
 }
 
 S32 xSTQueueSceneAssets(U32 sid, S32 flg_hiphop)
 {
     S32 result = 1;
-    st_STRAN_SCENE* sdata = XST_find_bySID(sid, (flg_hiphop & 3) == 2 ? 1 : 0);
-    if (sdata == NULL)
-    {
+    st_STRAN_SCENE* sdata = NULL;
+    S32 doTheHOP = ((flg_hiphop & XST_OPTS_MASKHH) == XST_OPTS_HOP) ? 1 : 0;
+
+    sdata = XST_find_bySID(sid, doTheHOP);
+    if (!sdata) {
         result = 0;
     }
-    else
-    {
-        if (sdata->spkg != NULL)
-        {
-            g_pkrf->LoadLayer(sdata->spkg, PKR_LTYPE_ALL);
-        }
+    else if (sdata->spkg) {
+        g_pkrf->LoadLayer(sdata->spkg, PKR_LTYPE_ALL);
     }
+
     return result;
 }
 
@@ -185,18 +174,28 @@ void xSTUnLoadScene(U32 sid, S32 flg_hiphop)
 
 F32 xSTLoadStep(U32)
 {
-    F32 pct = PKRLoadStep(0) != 0 ? 0.0f : 1.00001f;
+    F32 pct;
+    S32 rc = PKRLoadStep(0);
+    if (rc) {
+        pct = 0.0f;
+    }
+    else {
+        pct = 1.00001f;
+    }
 
     iTRCDisk::CheckDVDAndResetState();
     iFileAsyncService();
+
     return pct;
 }
 
 void xSTDisconnect(U32 sid, S32 flg_hiphop)
 {
-    st_STRAN_SCENE* sdata = XST_find_bySID(sid, (flg_hiphop & 3) == 2 ? 1 : 0);
-    if (sdata != NULL)
-    {
+    st_STRAN_SCENE* sdata = NULL;
+    S32 doTheHOP = ((flg_hiphop & XST_OPTS_MASKHH) == XST_OPTS_HOP) ? 1 : 0;
+
+    sdata = XST_find_bySID(sid, doTheHOP);
+    if (sdata) {
         g_pkrf->PkgDisconnect(sdata->spkg);
     }
 }
@@ -316,22 +315,24 @@ S32 xSTAssetCountByType(U32 type)
 
 void* xSTFindAssetByType(U32 type, S32 idx, U32* size)
 {
+    st_STRAN_SCENE* sdata = NULL;
     void* memptr = NULL;
-    S32 i;
+    S32 scncnt = 0;
+    S32 i = 0;
     S32 sum = 0;
-    S32 cnt = XST_cnt_locked();
-    for (i = 0; i < cnt; i++)
-    {
-        st_STRAN_SCENE* sdata = XST_nth_locked(i);
-        S32 scncnt = g_pkrf->AssetCount(sdata->spkg, type);
-        if (idx >= sum && idx < sum + scncnt)
-        {
+    S32 cnt = 0;
+
+    scncnt = XST_cnt_locked();
+    for (i = 0; i < scncnt; i++) {
+        sdata = XST_nth_locked(i);
+        cnt = g_pkrf->AssetCount(sdata->spkg, type);
+        if (idx >= sum && idx < sum + cnt) {
             memptr = g_pkrf->AssetByType(sdata->spkg, type, idx - sum, size);
             break;
         }
-
-        sum += scncnt;
+        sum += cnt;
     }
+
     return memptr;
 }
 
@@ -532,31 +533,31 @@ static st_STRAN_SCENE* XST_get_rawinst(S32 index)
 
 static S32 XST_cnt_locked()
 {
-    S32 sum = 0;
-    for (int i = 0; i < 16; i++)
-    {
-        if (g_xstdata.loadlock & 1 << i)
-        {
-            sum++;
+    S32 cnt = 0;
+    S32 i = 0;
+
+    for (i = 0; i < 16; i++) {
+        if (g_xstdata.loadlock & (1 << i)) {
+            cnt++;
         }
     }
-    return sum;
+
+    return cnt;
 }
 
-static st_STRAN_SCENE* XST_nth_locked(S32 index)
+static st_STRAN_SCENE* XST_nth_locked(S32 nth)
 {
     st_STRAN_SCENE* sdata = NULL;
     S32 cnt = 0;
-    for (S32 i = 0; i < 16; i++)
-    {
-        if (g_xstdata.loadlock & 1 << i)
-        {
-            if (cnt == index)
-            {
+    S32 i = 0;
+
+    for (i = 0; i < 16; i++) {
+        if (g_xstdata.loadlock & (1 << i)) {
+            if (cnt == nth) {
                 sdata = &g_xstdata.hipscn[i];
                 break;
             }
-            cnt += 1;
+            cnt++;
         }
     }
 
@@ -566,19 +567,20 @@ static st_STRAN_SCENE* XST_nth_locked(S32 index)
 static st_STRAN_SCENE* XST_find_bySID(U32 sid, S32 findTheHOP)
 {
     st_STRAN_SCENE* da_sdata = NULL;
+    S32 i = 0;
+    st_STRAN_SCENE* tmp_sdata = NULL;
 
-    for (S32 i = 0; i < 16; i++)
-    {
-        st_STRAN_SCENE* sc = &g_xstdata.hipscn[i];
-        if (g_xstdata.loadlock & 1 << i && sc->scnid == sid && (findTheHOP || !sc->isHOP))
-        {
-            if (!findTheHOP || sc->isHOP)
-            {
-                da_sdata = sc;
+    for (i = 0; i < 16; i++) {
+        if (g_xstdata.loadlock & (1 << i)) {
+            tmp_sdata = &g_xstdata.hipscn[i];
+            if (tmp_sdata->scnid == sid &&
+                (findTheHOP || !tmp_sdata->isHOP) && (!findTheHOP || tmp_sdata->isHOP)) {
+                da_sdata = tmp_sdata;
                 break;
             }
         }
     }
+
     return da_sdata;
 }
 

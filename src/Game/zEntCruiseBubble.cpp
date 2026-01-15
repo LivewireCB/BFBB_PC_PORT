@@ -1,38 +1,50 @@
-//#include <PowerPC_EABI_Support\MSL_C\MSL_Common\cmath>
-//#include <rpskin.h>
-//#include <stdio.h>
-//#include <string.h>
-//
-//#include "zCamera.h"
-//#include "zEnt.h"
-//#include "zEntButton.h"
-//#include "zEntCruiseBubble.h"
-//#include "zEntDestructObj.h"
-//#include "zEntPlayer.h"
-//#include "zEntTrigger.h"
-//#include "zGameExtras.h"
-//#include "zGlobals.h"
-//#include "zNPCHazard.h"
-//#include "zNPCTypeCommon.h"
-//#include "zPlatform.h"
-//#include "zRenderState.h"
-//#include "zTalkBox.h"
-//
-//#include "iMath.h"
-//
-//#include "xColor.h"
-//#include "xDecal.h"
-//#include "xFX.h"
-//#include "xGrid.h"
-//#include "xMath.h"
-//#include "xMath3.h"
-//#include "xMathInlines.h"
-//#include "xModel.h"
-//#include "xSnd.h"
-//#include "xstransvc.h"
-//#include "xString.h"
-//#include "xVec3.h"
-//
+#include <cmath>
+#include <rpskin.h>
+#include <stdio.h>
+#include <string.h>
+
+#include "zCamera.h"
+#include "zEnt.h"
+#include "zEntButton.h"
+#include "zEntCruiseBubble.h"
+#include "zEntDestructObj.h"
+#include "zEntPlayer.h"
+#include "zEntTrigger.h"
+#include "zGameExtras.h"
+#include "zGlobals.h"
+#include "zNPCHazard.h"
+#include "zNPCTypeCommon.h"
+#include "zPlatform.h"
+#include "zRenderState.h"
+#include "zTalkBox.h"
+
+#include "iMath.h"
+
+#include "xColor.h"
+#include "xDecal.h"
+#include "xFX.h"
+#include "xGrid.h"
+#include "xMath.h"
+#include "xMath3.h"
+#include "xMathInlines.h"
+#include "xModel.h"
+#include "xSnd.h"
+#include "xstransvc.h"
+#include "xString.h"
+#include "xVec3.h"
+
+namespace cruise_bubble {
+    xAnimTable* anim_table() WIP
+    {
+        return NULL;
+    }
+
+    bool active() WIP
+    {
+        return false;
+    }
+}
+
 //basic_rect<F32> screen_bounds = { 0.0f, 0.0f, 1.0f, 1.0f };
 //basic_rect<F32> default_adjust = { 0.0f, 0.0f, 1.0f, 1.0f };
 //
@@ -2509,20 +2521,21 @@
 //            xMemPopTemp(start_from);
 //        }
 //
-//        xAnimTable* cruise_bubble::anim_table()
-//        {
-//            xAnimTable* table = xAnimTableNew("Cruise Bubble", 0, 0);
-//            shared.astate.missle.fire =
-//                xAnimTableNewState(table, "fire", 0x20, 0, 1.0f, NULL, NULL, 0.0f, NULL, NULL,
-//                                   xAnimDefaultBeforeEnter, NULL, NULL);
-//            shared.astate.missle.fly =
-//                xAnimTableNewState(table, "fly", 0x10, 0, 1.0f, NULL, NULL, 0.0f, NULL, NULL,
-//                                   xAnimDefaultBeforeEnter, NULL, NULL);
-//            shared.atran.missle.fly = xAnimTableNewTransition(
-//                table, "fire", "fly", NULL, NULL, 0x10, 0, 0.0f, 0.0f, 0, 0, 0.15f, NULL);
-//            return table;
-//        }
-//
+        //xAnimTable* cruise_bubble::anim_table()
+        //{
+            /*xAnimTable* table = xAnimTableNew("Cruise Bubble", 0, 0);
+            shared.astate.missle.fire =
+                xAnimTableNewState(table, "fire", 0x20, 0, 1.0f, NULL, NULL, 0.0f, NULL, NULL,
+                                   xAnimDefaultBeforeEnter, NULL, NULL);
+            shared.astate.missle.fly =
+                xAnimTableNewState(table, "fly", 0x10, 0, 1.0f, NULL, NULL, 0.0f, NULL, NULL,
+                                   xAnimDefaultBeforeEnter, NULL, NULL);
+            shared.atran.missle.fly = xAnimTableNewTransition(
+                table, "fire", "fly", NULL, NULL, 0x10, 0, 0.0f, 0.0f, 0, 0, 0.15f, NULL);
+            return table;*/
+            
+        //}
+
 //        bool cruise_bubble::active()
 //        {
 //            return shared.flags & 0x10;

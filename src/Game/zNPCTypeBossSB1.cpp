@@ -1,19 +1,19 @@
-//#include <types.h>
-//#include <string.h>
-//#include <xDebug.h>
-//
-//#include "iMath.h"
-//#include "iModel.h"
-//
-//#include "xDraw.h"
-//#include "xMathInlines.h"
-//
-//#include "zGrid.h"
-//#include "zNPCGoals.h"
-//#include "zNPCTypeBossSB1.h"
-//#include "zThrown.h"
-//#include "zGlobals.h"
-//
+#include <types.h>
+#include <string.h>
+#include <xDebug.h>
+
+#include "iMath.h"
+#include "iModel.h"
+
+#include "xDraw.h"
+#include "xMathInlines.h"
+
+#include "zGrid.h"
+#include "zNPCGoals.h"
+#include "zNPCTypeBossSB1.h"
+#include "zThrown.h"
+#include "zGlobals.h"
+
 //static xVec3 BossArmTags[8] = { //
 //    { 11.507f, 4.523f, 2.53f },
 //    {
@@ -93,9 +93,9 @@
 //#define AttackRumble 45
 //#define SmashHitLeft 46
 //#define SmashHitRight 47
-//
-//xAnimTable* ZNPC_AnimTable_BossSB1()
-//{
+
+xAnimTable* ZNPC_AnimTable_BossSB1()
+{
 //    // clang-format off
 //    S32 ourAnims[11] = {
 //        Idle01,
@@ -150,7 +150,8 @@
 //    }
 //
 //    return table;
-//}
+	return 0;
+}
 //
 //static void SB1Dummy_UpdateFunc(xEnt* ent, xScene* param_2, F32 param_3)
 //{

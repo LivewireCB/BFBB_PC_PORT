@@ -1,15 +1,20 @@
-//#ifndef ZENTCRUISEBUBBLE_H
-//
-//#define ZENTCRUISEBUBBLE_H
-//
-//#include "xDebug.h"
-//
-//#include "zNPCHazard.h"
-//#include "zShrapnel.h"
-//#include <types.h>
-//
-//#include "zRumble.h"
-//
+#ifndef ZENTCRUISEBUBBLE_H
+
+#define ZENTCRUISEBUBBLE_H
+
+#include "xDebug.h"
+
+#include "zNPCHazard.h"
+#include "zShrapnel.h"
+#include <types.h>
+
+#include "zRumble.h"
+
+namespace cruise_bubble {
+	xAnimTable* anim_table();
+	bool active();
+}
+
 //// I have no idea where to put this. This is only used by
 //// cruise_bubble::tweak_group::register_tweaks() so far.
 //// If you are searching the project for 'auto_tweak' you are
@@ -666,5 +671,5 @@
 //    bool event_handler(xBase* from, U32 event, const F32* fparam, xBase* to);
 //
 //} // namespace cruise_bubble
-//
-//#endif
+
+#endif

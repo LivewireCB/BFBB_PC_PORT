@@ -310,7 +310,8 @@ void xSerial::prepare(U32 idtag)
 
 void xSerialWipeMainBuffer()
 {
-    memset(g_xserdata.bitbuf, 0, g_xserdata.buf_bytcnt);
+    st_XSERIAL_DATA_PRIV* xser = &g_xserdata;
+    memset(xser->bitbuf, 0, xser->buf_bytcnt);
 }
 
 static void xSER_init_tables()

@@ -400,9 +400,9 @@
 //    }
 //    ring.queue.pop_back();
 //}
-//
-//xAnimTable* ZNPC_AnimTable_Prawn()
-//{
+
+xAnimTable* ZNPC_AnimTable_Prawn()
+{
 //    // clang-format off
 //    S32 ourAnims[10] = {
 //        ANIM_Idle01,
@@ -450,7 +450,8 @@
 //                            0, 0, 0x10, 0, 0, 0, 0, 0, f1455, 0);
 //
 //    return table;
-//}
+    return 0;
+}
 //
 //void zNPCPrawn::Init(xEntAsset* a)
 //{

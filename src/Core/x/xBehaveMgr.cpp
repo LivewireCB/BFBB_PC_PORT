@@ -10,10 +10,9 @@ static xBehaveMgr* g_behavmgr;
 
 void xBehaveMgr_Startup()
 {
-    if (g_modinit++ == 0)
-    {
+    if (!g_modinit++) {
         g_behavmgr = new ('BMGR', NULL) xBehaveMgr();
-        g_behavmgr->Startup(0xfa, 0xfa);
+        g_behavmgr->Startup(250, 250);
     }
 }
 

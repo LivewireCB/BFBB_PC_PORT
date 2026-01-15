@@ -377,9 +377,9 @@ void zNPCMgr_Startup()
     }
 }
 
-void zNPCMgr_Shutdown()
+void zNPCMgr_Shutdown() RIMP
 {
-    g_modinit--;
+    /*g_modinit--;
     if (g_modinit == 0)
     {
         zNPCMgr* mgr = zNPCMgrSelf();
@@ -391,7 +391,7 @@ void zNPCMgr_Shutdown()
         }
         zNPCMgr_Shutdown();
         xBehaveMgr_Shutdown();
-    }
+    }*/
 }
 
 //void zNPCMgr_scenePrepare(S32 npccnt)

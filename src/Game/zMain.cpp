@@ -632,7 +632,7 @@ void zMainShowProgressBar()
     percentageDone += 10;
 }
 
-static void zMainLoop() WIP
+static void zMainLoop() RIMP WIP
 {
     zMainShowProgressBar();
 
@@ -789,9 +789,8 @@ static void zMainLoop() WIP
 
             zMenuSetup();
 
-#if ENABLE_WIP_CODE
-            xFX_SceneEnter(globals.sceneCur->env->geom->world);
-#endif
+
+            //xFX_SceneEnter(globals.sceneCur->env->geom->world);
 
             newGameSceneID = zMenuLoop();
 
@@ -922,7 +921,7 @@ void zMainMemCardSpaceQuery() RIMP
 
 static void zMainMemCardQueryPost(S32 needed, S32 available, S32 neededFiles, S32 unk0) RIMP
 {
-    /*RwCamera* cam = nullptr;
+    RwCamera* cam = nullptr;
     RwRGBA colour = {};
     RwInt32 clearMode = 3;
 
@@ -932,7 +931,7 @@ static void zMainMemCardQueryPost(S32 needed, S32 available, S32 neededFiles, S3
     render_mem_card_no_space(needed, available, neededFiles, unk0);
     RwCameraEndUpdate(cam);
     RwCameraShowRaster(cam, NULL, 1);
-    iCameraDestroy(cam);*/
+    iCameraDestroy(cam);
 }
 
 void zMainMemCardRenderText(const char* text, bool enabled)

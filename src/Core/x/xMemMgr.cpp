@@ -343,16 +343,16 @@ void xMemPopTemp(void* memory)
 S32 xMemPushBase(U32 heapID)
 {
     xMemHeap_tag* heap = &gxHeap[heapID];
+    heap->state_idx++;
 
-    heap->state_idx += 1;
     xHeapState_tag* sp = &heap->state[heap->state_idx];
     *sp = *(sp - 1);
 
-    if (sMemBaseNotifyFunc != NULL)
-    {
+    if (sMemBaseNotifyFunc) {
         sMemBaseNotifyFunc();
     }
-    return heap->state_idx - 1;
+
+    return heap->state_idx;
 }
 
 S32 xMemPushBase()

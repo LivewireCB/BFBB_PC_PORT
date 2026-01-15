@@ -28,39 +28,35 @@ S32 xUtilShutdown()
 
 char* xUtil_idtag2string(U32 srctag, S32 bufidx)
 {
-    U32 tag = srctag;
-    char* strptr;
-    char* uc = (char*)&tag;
-    S32 l;
-    char t;
     static char buf[6][10] = {};
 
-    if (bufidx < 0 || bufidx >= 7)
-    {
+    U32 tag = srctag;
+    char* strptr = NULL;
+    char* uc = (char*)&tag;
+    S32 is_mot = 0;
+
+    if (bufidx < 0 || bufidx >= 7) {
         strptr = buf[0];
     }
-    else
-    {
+    else {
         strptr = buf[bufidx];
     }
 
-    // convert tag to big endian
+    // detect endian
+    S32 l = 1;
+    char* c = (char*)&l;
+    is_mot = c[3];
 
-    l = 1;
-
-    if ((S32)((char*)&l)[3] != 0)
-    {
-        t = uc[0];
+    if (is_mot) {
+        char t = uc[0];
         uc[0] = uc[3];
         uc[3] = t;
-
         t = uc[1];
         uc[1] = uc[2];
         uc[2] = t;
     }
 
-    switch (bufidx)
-    {
+    switch (bufidx) {
     case 4:
     case 5:
         strptr[0] = isprint(uc[0]) ? uc[0] : '?';
@@ -76,11 +72,8 @@ char* xUtil_idtag2string(U32 srctag, S32 bufidx)
         strptr[3] = isprint(uc[0]) ? uc[0] : '?';
         break;
     }
-
     strptr[4] = '\0';
-
-    if (bufidx == 6)
-    {
+    if (bufidx == 6) {
         strptr[4] = '/';
         strptr[5] = isprint(uc[0]) ? uc[0] : '?';
         strptr[6] = isprint(uc[1]) ? uc[1] : '?';

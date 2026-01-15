@@ -114,9 +114,9 @@ static zShrapnelInitTable sShrapnelTable[6] = {
 //}
 
 // equivalent
-void zShrapnel_GameInit()
+void zShrapnel_GameInit() RIMP
 {
-    zShrapnelInitTable* curr = sShrapnelTable;
+    /*zShrapnelInitTable* curr = sShrapnelTable;
     S32 i = 0;
     while (curr->name != NULL)
     {
@@ -154,7 +154,7 @@ void zShrapnel_GameInit()
     sCinProj.maxScale = 1.0f;
     sCinProj.scaleCurveID = 0;
     sCinProj.scaleCurve = NULL;
-    sCinProj.gravity = 0.0f;
+    sCinProj.gravity = 0.0f;*/
 }
 
 //void zShrapnel_ProjectileSceneInit(zFragProjectileAsset* asset)

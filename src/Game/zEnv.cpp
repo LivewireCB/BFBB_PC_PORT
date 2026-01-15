@@ -1,15 +1,15 @@
-//#include "zEnv.h"
-//
-//#include "zGlobals.h"
-//#include "zSurface.h"
-//#include "zLight.h"
-//
-//#include "xstransvc.h"
-//#include "xGroup.h"
-//#include "xEvent.h"
-//#include "xClimate.h"
-//#include "iLight.h"
-//
+#include "zEnv.h"
+
+#include "zGlobals.h"
+#include "zSurface.h"
+#include "zLight.h"
+
+#include "xstransvc.h"
+#include "xGroup.h"
+#include "xEvent.h"
+#include "xClimate.h"
+#include "iLight.h"
+
 //void zEnvInit(void* env, void* easset)
 //{
 //    zEnvInit((_zEnv*)env, (xEnvAsset*)easset);
@@ -86,20 +86,20 @@
 //    xBaseSetup(env);
 //    iEnvLightingBasics(globals.sceneCur->env->geom, env->easset);
 //}
-//
-//void zEnvStartingCamera(_zEnv* env)
-//{
-//    xCamera* cam;
-//
-//    cam = (xCamera*)zSceneFindObject(env->easset->startCameraAssetID);
-//
-//    if (cam)
-//    {
-//        zEntPlayer_StoreCheckPoint(&globals.player.ent.frame->mat.pos,
-//                                   globals.player.ent.frame->rot.angle, globals.camera.id);
-//    }
-//}
-//
+
+void zEnvStartingCamera(_zEnv* env)
+{
+    xCamera* cam;
+
+    cam = (xCamera*)zSceneFindObject(env->easset->startCameraAssetID);
+
+    if (cam)
+    {
+        zEntPlayer_StoreCheckPoint(&globals.player.ent.frame->mat.pos,
+                                   globals.player.ent.frame->rot.angle, globals.camera.id);
+    }
+}
+
 //void zEnvRender(xEnv* env)
 //{
 //    RpWorld* world = env->geom->world;

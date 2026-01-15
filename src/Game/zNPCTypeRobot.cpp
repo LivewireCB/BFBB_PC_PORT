@@ -1,20 +1,20 @@
-//#include "zNPCTypeRobot.h"
-//#include "zNPCSupplement.h"
-//#include "zNPCSupport.h"
-//#include "zNPCSndLists.h"
-//#include "zNPCGoalRobo.h"
-//#include "zNPCTypes.h"
-//#include "zNPCGoalStd.h"
-//#include "zGlobals.h"
-//#include "zNPCGoals.h"
-//
-//#include "xFactory.h"
-//#include "xMath.h"
-//#include "xAnim.h"
-//#include "xBehaviour.h"
-//
-//#include <string.h>
-//
+#include "zNPCTypeRobot.h"
+#include "zNPCSupplement.h"
+#include "zNPCSupport.h"
+#include "zNPCSndLists.h"
+#include "zNPCGoalRobo.h"
+#include "zNPCTypes.h"
+#include "zNPCGoalStd.h"
+#include "zGlobals.h"
+#include "zNPCGoals.h"
+
+#include "xFactory.h"
+#include "xMath.h"
+#include "xAnim.h"
+#include "xBehaviour.h"
+
+#include <string.h>
+
 //extern UVAModelInfo g_uvaShield;
 //extern S32 g_cnt_fodbzzt;
 //extern S32 g_cnt_sleepy;
@@ -1018,8 +1018,8 @@
 //
 //void ZNPC_AnimTable_RobotBase(xAnimTable*);
 //
-//void ZNPC_AnimTable_RobotBase(xAnimTable* table)
-//{
+void ZNPC_AnimTable_RobotBase(xAnimTable* table)
+{
 //    int ourAnims[17] = { 0x01, 0x03, 0x02, 0x04, 0x05, 0x07, 0x08, 0x17, 0x09,
 //                         0x0a, 0x14, 0x16, 0x15, 0x25, 0x26, 0x06, 0x00 };
 //
@@ -1073,10 +1073,10 @@
 //                            0, 0.0f, 0.0f, 0, 0, 0.2f, NULL);
 //    xAnimTableNewTransition(table, g_strz_roboanim[0x15], g_strz_roboanim[0x25], NULL, NULL, 0x10,
 //                            0, 0.0f, 0.0f, 0, 0, 0.2f, NULL);
-//}
-//
-//xAnimTable* ZNPC_AnimTable_Fodder()
-//{
+}
+
+xAnimTable* ZNPC_AnimTable_Fodder()
+{
 //    int ourAnims[16] = { 0x01, 0x03, 0x02, 0x04, 0x05, 0x22, 0x23, 0x24,
 //                         0x0e, 0x14, 0x16, 0x15, 0x25, 0x26, 0x06, 0x00 };
 //
@@ -1125,10 +1125,11 @@
 //                            0, 0.0f, 0.0f, 0, 0, 0.2f, NULL);
 //
 //    return pxVar1;
-//}
-//
-//xAnimTable* ZNPC_AnimTable_Hammer()
-//{
+    return 0;
+}
+
+xAnimTable* ZNPC_AnimTable_Hammer() RIMP
+{
 //    int ourAnims[6] = {
 //        0x0e, 0x18, 0x19, 0x1a, 0x1b, 0x00,
 //    };
@@ -1155,10 +1156,11 @@
 //                            0, 0.0f, 0.0f, 0, 0, 0.2f, NULL);
 //
 //    return pxVar1;
-//}
-//
-//xAnimTable* ZNPC_AnimTable_TarTar()
-//{
+	return 0;
+}
+
+xAnimTable* ZNPC_AnimTable_TarTar()
+{
 //    int ourAnims[4] = { 0x0c, 0x11, 0x0e, 0x00 };
 //
 //    xAnimTable* pxVar1 = xAnimTableNew(stringBase + 0x237, NULL, 0); // "zNPCTarTar"
@@ -1181,10 +1183,11 @@
 //                            0, 0.0f, 0.0f, 0, 0, 0.2f, NULL);
 //
 //    return pxVar1;
-//}
-//
-//xAnimTable* ZNPC_AnimTable_TTSauce()
-//{
+    return 0;
+}
+
+xAnimTable* ZNPC_AnimTable_TTSauce()
+{
 //    int ourAnims[6] = {
 //        0x0e, 0x18, 0x19, 0x1a, 0x1b, 0x00,
 //    };
@@ -1195,10 +1198,11 @@
 //                       xAnimDefaultBeforeEnter, NULL, NULL);
 //
 //    return pxVar1;
-//}
-//
-//xAnimTable* ZNPC_AnimTable_GLove()
-//{
+    return 0;
+}
+
+xAnimTable* ZNPC_AnimTable_GLove()
+{
 //    int ourAnims[8] = {
 //        0x18, 0x19, 0x1a, 0x1b, 0x11, 0x12, 0x13, 0x00,
 //    };
@@ -1231,10 +1235,11 @@
 //                            0, 0.0f, 0.0f, 0, 0, 0.2f, NULL);
 //
 //    return pxVar1;
-//}
-//
-//xAnimTable* ZNPC_AnimTable_Monsoon()
-//{
+    return 0;
+}
+
+xAnimTable* ZNPC_AnimTable_Monsoon()
+{
 //    int ourAnims[5] = { 0x0c, 0x0d, 0x11, 0x12, 0x00 };
 //
 //    xAnimTable* pxVar1 = xAnimTableNew(stringBase + 0x258, NULL, 0); // "zNPCMonsoon"
@@ -1255,10 +1260,11 @@
 //                            0, 0.0f, 0.0f, 0, 0, 0.2f, NULL);
 //
 //    return pxVar1;
-//}
-//
-//xAnimTable* ZNPC_AnimTable_ThunderCloud()
-//{
+    return 0;
+}
+
+xAnimTable* ZNPC_AnimTable_ThunderCloud()
+{
 //    int ourAnims[3] = { 0x01, 0x02, 0x00 };
 //
 //    xAnimTable* pxVar1 = xAnimTableNew(stringBase + 0x264, NULL, 0); // "ThunderCloud"
@@ -1271,10 +1277,11 @@
 //    NPCC_BuildStandardAnimTran(pxVar1, g_strz_roboanim, ourAnims, 1, 0.2f);
 //
 //    return pxVar1;
-//}
-//
-//xAnimTable* ZNPC_AnimTable_NightLight()
-//{
+    return 0;
+}
+
+xAnimTable* ZNPC_AnimTable_NightLight()
+{
 //    int ourAnims[2] = { 0x01, 0x00 };
 //
 //    xAnimTable* pxVar1 = xAnimTableNew(stringBase + 0x271, NULL, 0); // "NightLight"
@@ -1285,28 +1292,31 @@
 //    NPCC_BuildStandardAnimTran(pxVar1, g_strz_nytlytanim, ourAnims, 1, 0.2f);
 //
 //    return pxVar1;
-//}
-//
-//// Regalloc
-//xAnimTable* ZNPC_AnimTable_SleepyTime()
-//{
-//    int ourAnims[3] = { 0x0c, 0x0e, 0x00 };
-//
-//    xAnimTable* pxVar1 = xAnimTableNew(stringBase + 0x27c, NULL, 0); // "zNPCSleepy"
-//    ZNPC_AnimTable_RobotBase(pxVar1);
-//
-//    xAnimTableNewState(pxVar1, g_strz_roboanim[0x0c], 0x010, 0, 1.0f, NULL, NULL, 0.0f, NULL, NULL,
-//                       xAnimDefaultBeforeEnter, NULL, NULL);
-//    xAnimTableNewState(pxVar1, g_strz_roboanim[0x0e], 0x010, 0, 1.0f, NULL, NULL, 0.0f, NULL, NULL,
-//                       xAnimDefaultBeforeEnter, NULL, NULL);
-//
-//    NPCC_BuildStandardAnimTran(pxVar1, g_strz_roboanim, ourAnims, 1, 0.2f);
-//
-//    return pxVar1;
-//}
-//
-//xAnimTable* ZNPC_AnimTable_ArfDog()
-//{
+    return 0;
+}
+
+// Regalloc
+xAnimTable* ZNPC_AnimTable_SleepyTime()
+{
+    //int ourAnims[3] = { 0x0c, 0x0e, 0x00 };
+
+    //xAnimTable* pxVar1 = xAnimTableNew(stringBase + 0x27c, NULL, 0); // "zNPCSleepy"
+    //ZNPC_AnimTable_RobotBase(pxVar1);
+
+    //xAnimTableNewState(pxVar1, g_strz_roboanim[0x0c], 0x010, 0, 1.0f, NULL, NULL, 0.0f, NULL, NULL,
+    //                   xAnimDefaultBeforeEnter, NULL, NULL);
+    //xAnimTableNewState(pxVar1, g_strz_roboanim[0x0e], 0x010, 0, 1.0f, NULL, NULL, 0.0f, NULL, NULL,
+    //                   xAnimDefaultBeforeEnter, NULL, NULL);
+
+    //NPCC_BuildStandardAnimTran(pxVar1, g_strz_roboanim, ourAnims, 1, 0.2f);
+
+    //return pxVar1;
+
+    return 0;
+}
+
+xAnimTable* ZNPC_AnimTable_ArfDog()
+{
 //    int ourAnims[17] = { 0x01, 0x03, 0x02, 0x04, 0x05, 0x20, 0x21, 0x0c, 0x0d,
 //                         0x12, 0x14, 0x16, 0x15, 0x25, 0x26, 0x06, 0x00 };
 //
@@ -1348,10 +1358,11 @@
 //    NPCC_BuildStandardAnimTran(pxVar1, g_strz_roboanim, ourAnims, 1, 0.2f);
 //
 //    return pxVar1;
-//}
-//
-//xAnimTable* ZNPC_AnimTable_ArfArf()
-//{
+    return 0;
+}
+
+xAnimTable* ZNPC_AnimTable_ArfArf()
+{
 //    int ourAnims[7] = { 0x0e, 0x0f, 0x10, 0x1d, 0x1e, 0x1f, 0x00 };
 //
 //    xAnimTable* pxVar1 = xAnimTableNew(stringBase + 0x292, NULL, 0); // "zNPCArfArf"
@@ -1376,10 +1387,11 @@
 //                            0, 0.0f, 0.0f, 0, 0, 0.2f, NULL);
 //
 //    return pxVar1;
-//}
-//
-//xAnimTable* ZNPC_AnimTable_Chuck()
-//{
+    return 0;
+}
+
+xAnimTable* ZNPC_AnimTable_Chuck()
+{
 //    int ourAnims[4] = { 0x0c, 0x0d, 0x0e, 0x00 };
 //
 //    xAnimTable* pxVar1 = xAnimTableNew(stringBase + 0x29d, NULL, 0); // "zNPCChuck"
@@ -1402,11 +1414,12 @@
 //                            0, 0.0f, 0.0f, 0, 0, 0.2f, NULL);
 //
 //    return pxVar1;
-//}
-//
+    return 0;
+}
+
 //// Regalloc
-//xAnimTable* ZNPC_AnimTable_Tubelet()
-//{
+xAnimTable* ZNPC_AnimTable_Tubelet()
+{
 //    int ourAnims[2] = { 0x0e, 0x00 };
 //
 //    xAnimTable* pxVar1 = xAnimTableNew(stringBase + 0x2a7, NULL, 0); // "zNPCTubelet"
@@ -1417,28 +1430,31 @@
 //    NPCC_BuildStandardAnimTran(pxVar1, g_strz_roboanim, ourAnims, 1, 0.2f);
 //
 //    return pxVar1;
-//}
-//
-//xAnimTable* ZNPC_AnimTable_FloatDevice()
-//{
+    return 0;
+}
+
+xAnimTable* ZNPC_AnimTable_FloatDevice()
+{
 //    xAnimTable* pxVar1 = xAnimTableNew(stringBase + 0x2b3, NULL, 0); // "FloatDevice"
 //    xAnimTableNewState(pxVar1, g_strz_flotanim[0x01], 0x10, 1, 1.0f, NULL, NULL, 0.0f, NULL, NULL,
 //                       xAnimDefaultBeforeEnter, NULL, NULL);
 //
 //    return pxVar1;
-//}
-//
-//xAnimTable* ZNPC_AnimTable_SlickShield()
-//{
+    return 0;
+}
+
+xAnimTable* ZNPC_AnimTable_SlickShield()
+{
 //    xAnimTable* pxVar1 = xAnimTableNew(stringBase + 0x2c6, NULL, 0); // "SlickBubbleShield"
 //    xAnimTableNewState(pxVar1, g_strz_shieldanim[0x01], 0x10, 1, 1.0f, NULL, NULL, 0.0f, NULL, NULL,
 //                       xAnimDefaultBeforeEnter, NULL, NULL);
 //
 //    return pxVar1;
-//}
-//
-//xAnimTable* ZNPC_AnimTable_Slick()
-//{
+    return 0;
+}
+
+xAnimTable* ZNPC_AnimTable_Slick()
+{
 //    int ourAnims[4] = { 0x11, 0x12, 0x13, 0x00 };
 //
 //    xAnimTable* pxVar1 = xAnimTableNew(stringBase + 0x2d8, NULL, 0); // "zNPCSlick"
@@ -1458,8 +1474,9 @@
 //                            0, 0.0f, 0.0f, 0, 0, 0.2f, NULL);
 //
 //    return pxVar1;
-//}
-//
+    return 0;
+}
+
 //void zNPCTubelet::Reset()
 //{
 //    tubestat = TUBE_STAT_BORN;

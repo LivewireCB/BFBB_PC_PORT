@@ -968,8 +968,8 @@ static U32 dutchman_count;
 //
 ////13 new states
 ////8 new transitions
-//xAnimTable* ZNPC_AnimTable_Dutchman()
-//{
+xAnimTable* ZNPC_AnimTable_Dutchman()
+{
 //    // clang-format off
 //    S32 ourAnims[13] = {
 //        ANIM_Idle01,
@@ -1039,7 +1039,8 @@ static U32 dutchman_count;
 //                            0, 0, 0, 0, 0, 0, 0, 0, f1690, 0);
 //
 //    return table;
-//}
+    return 0;
+}
 //
 //void zNPCDutchman::Init(xEntAsset* asset)
 //{

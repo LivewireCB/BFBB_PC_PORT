@@ -1,24 +1,24 @@
-//#include "xVec3Inlines.h"
-//#include <types.h>
-//
-//#include "xAnim.h"
-//#include "xVec3.h"
-//#include "xEvent.h"
-//#include "xCamera.h"
-//#include "xMath3.h"
-//#include "xDebug.h"
-//#include "xJaw.h"
-//
-//#include "zEnt.h"
-//#include "zFX.h"
-//#include "zGlobals.h"
-//#include "zNPCSndTable.h"
-//#include "zNPCSndLists.h"
-//#include "zNPCTypeBossSandy.h"
-//#include "xMarkerAsset.h"
-//#include "zCamera.h"
-//#include "zGrid.h"
-//
+#include "xVec3Inlines.h"
+#include <types.h>
+
+#include "xAnim.h"
+#include "xVec3.h"
+#include "xEvent.h"
+#include "xCamera.h"
+#include "xMath3.h"
+#include "xDebug.h"
+#include "xJaw.h"
+
+#include "zEnt.h"
+#include "zFX.h"
+#include "zGlobals.h"
+#include "zNPCSndTable.h"
+#include "zNPCSndLists.h"
+#include "zNPCTypeBossSandy.h"
+#include "xMarkerAsset.h"
+#include "zCamera.h"
+#include "zGrid.h"
+
 //extern const char bossSandyStrings[];
 //
 //#define Unknown 1
@@ -141,9 +141,9 @@
 //    sSandyPtr->shockwaveEmitter->tasset->pos.y = 0.0f;
 //    sSandyPtr->shockRadius = 1.0f;
 //}
-//
-//xAnimTable* ZNPC_AnimTable_BossSandy()
-//{
+
+xAnimTable* ZNPC_AnimTable_BossSandy()
+{
 //    // clang-format off
 //    S32 ourAnims[25] = {
 //        Idle01,
@@ -235,7 +235,8 @@
 //    }
 //
 //    return table;
-//}
+	return 0;
+}
 //
 //U32 HeadIsCarried(xAnimTransition*, xAnimSingle*, void*)
 //{
@@ -257,8 +258,8 @@
 //    return !(sSandyPtr->bossFlags & 0x100);
 //}
 //
-//xAnimTable* ZNPC_AnimTable_BossSandyHead()
-//{
+xAnimTable* ZNPC_AnimTable_BossSandyHead()
+{
 //    xAnimTable* table;
 //
 //    table = xAnimTableNew("SandyBossHead", NULL, 0);
@@ -280,10 +281,11 @@
 //                            0, 0.25f, NULL);
 //
 //    return table;
-//}
-//
-//xAnimTable* ZNPC_AnimTable_BossSandyScoreboard()
-//{
+	return 0;
+}
+
+xAnimTable* ZNPC_AnimTable_BossSandyScoreboard()
+{
 //    xAnimTable* table;
 //
 //    table = xAnimTableNew("SandyBossScoreboard", NULL, 0);
@@ -299,8 +301,9 @@
 //                            0, 0, 0.25f, NULL);
 //
 //    return table;
-//}
-//
+	return 0;
+}
+
 //void zNPCBSandy::Init(xEntAsset* asset)
 //{
 //    S32 i;

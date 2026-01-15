@@ -1,16 +1,16 @@
-//#include "xGroup.h"
-//#include "xMathInlines.h"
-//#include "zGlobals.h"
-//#include "zNPCGoalCommon.h"
-//#include "zNPCSupport.h"
-//#include "zNPCTypeDuplotron.h"
-//
-//#define ANIM_Unknown 0
-//#define ANIM_Idle01 1
-//#define ANIM_Spawn01 2
-//#define ANIM_Shiver01 3
-//#define ANIM_Hurt01 4
-//
+#include "xGroup.h"
+#include "xMathInlines.h"
+#include "zGlobals.h"
+#include "zNPCGoalCommon.h"
+#include "zNPCSupport.h"
+#include "zNPCTypeDuplotron.h"
+
+#define ANIM_Unknown 0
+#define ANIM_Idle01 1
+#define ANIM_Spawn01 2
+#define ANIM_Shiver01 3
+#define ANIM_Hurt01 4
+
 //extern U32 g_hash_dupoanim[5] = {};
 //extern char* g_strz_dupoanim[5] = { "Unknown", "Idle01", "Spawn01", "Shiver01", "Hurt01" };
 //static zParEmitter* g_pemit_smoky;
@@ -79,8 +79,8 @@
 //    delete inst;
 //}
 //
-//xAnimTable* ZNPC_AnimTable_Duplotron()
-//{
+xAnimTable* ZNPC_AnimTable_Duplotron()
+{
 //    xAnimTable* table = xAnimTableNew("zNPCDupltron", NULL, 0);
 //
 //    S32 ourAnims[5] = { ANIM_Idle01, ANIM_Spawn01, ANIM_Shiver01, ANIM_Hurt01, ANIM_Unknown };
@@ -94,7 +94,8 @@
 //
 //    NPCC_BuildStandardAnimTran(table, g_strz_dupoanim, ourAnims, 1, 0.2f);
 //    return table;
-//}
+	return 0;
+}
 //
 //void zNPCDuplotron::Init(xEntAsset* asset)
 //{

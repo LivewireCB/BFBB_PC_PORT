@@ -1187,8 +1187,8 @@
 //    active = 0;
 //}
 //
-//xAnimTable* ZNPC_AnimTable_KingJelly()
-//{
+xAnimTable* ZNPC_AnimTable_KingJelly()
+{
 //    // clang-format off
 //    S32 ourAnims[11] = {
 //        ANIM_Idle01,
@@ -1272,8 +1272,9 @@
 //                            g_strz_subbanim[ANIM_SpawnKids01], 0, 0, 0, 0, 0, 0, 0, 0, f2106, 0);
 //
 //    return table;
-//}
-//
+    return 0;
+}
+
 //void zNPCKingJelly::Init(xEntAsset* asset)
 //{
 //    zNPCCommon::Init(asset);

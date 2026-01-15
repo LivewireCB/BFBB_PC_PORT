@@ -1,12 +1,12 @@
-//#include "zNPCTypeTest.h"
-//
-//#include "zNPCTypes.h"
-//
-//#include "xString.h"
-//#include "xMath.h"
-//
-//#define ANIM_COUNT 11
-//
+#include "zNPCTypeTest.h"
+
+#include "zNPCTypes.h"
+
+#include "xString.h"
+#include "xMath.h"
+
+#define ANIM_COUNT 11
+
 //U32 g_hash_testanim[ANIM_COUNT] = {};
 //
 //// clang-format off
@@ -59,8 +59,8 @@
 //    delete inst;
 //}
 //
-//xAnimTable* ZNPC_AnimTable_Test()
-//{
+xAnimTable* ZNPC_AnimTable_Test()
+{
 //    xAnimTable* table;
 //    const char** names = g_strz_testanim;
 //
@@ -88,7 +88,8 @@
 //    }
 //
 //    return table;
-//}
+	return 0;
+}
 //
 //zNPCTest::zNPCTest(S32 myType) : zNPCCommon(myType)
 //{

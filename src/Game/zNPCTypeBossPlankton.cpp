@@ -934,8 +934,8 @@
 //
 //} // namespace
 //
-//xAnimTable* ZNPC_AnimTable_BossPlankton()
-//{
+xAnimTable* ZNPC_AnimTable_BossPlankton()
+{
 //    // clang-format off
 //    S32 ourAnims[32] = {            //dwarf says it should be 32, matches less with 15
 //        ANIM_Idle01,
@@ -1053,7 +1053,8 @@
 //                            0);
 //
 //    return table;
-//}
+return 0;
+}
 //
 //void zNPCBPlankton::Init(xEntAsset* asset) //66%
 //{

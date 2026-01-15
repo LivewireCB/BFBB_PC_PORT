@@ -1,17 +1,17 @@
-//#include "zNPCHazard.h"
-//
-//#include <types.h>
-//#include <string.h>
-//
-//#include "zGlobals.h"
-//#include "zNPCTypeCommon.h"
-//#include "zNPCTypes.h"
-//#include "zNPCSupplement.h"
-//#include "zNPCSupport.h"
-//#include "xMath.h"
-//#include "xMathInlines.h"
-//#include "zGameExtras.h"
-//
+#include "zNPCHazard.h"
+
+#include <types.h>
+#include <string.h>
+
+#include "zGlobals.h"
+#include "zNPCTypeCommon.h"
+#include "zNPCTypes.h"
+#include "zNPCSupplement.h"
+#include "zNPCSupport.h"
+#include "xMath.h"
+#include "xMathInlines.h"
+#include "zGameExtras.h"
+
 //extern U32 g_hash_hazanim[3];
 //extern char* g_strz_hazanim[3];
 //extern UVAModelInfo g_haz_uvAnimInfo[30];
@@ -1975,3 +1975,8 @@
 //        geo->matList.materials[i]->color = col;
 //    }
 //}
+
+xAnimTable* ZNPC_AnimTable_HazardStd()
+{
+	return 0;
+}

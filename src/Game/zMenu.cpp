@@ -60,7 +60,7 @@ void zMenuInit(U32 theSceneID) RIMP
     zSceneInit(theSceneID, 0);
     xCameraInit(&globals.camera, FB_XRES, FB_YRES);
     zCameraReset(&globals.camera);
-    xCameraSetScene(&globals.camera, globals.sceneCur);
+    //xCameraSetScene(&globals.camera, globals.sceneCur);
     //zMusicInit();
 }
 
@@ -75,20 +75,20 @@ void zMenuExit() RIMP
 
 void zMenuSetup() RIMP
 {
-    /*globals.player.MaxHealth = 3;
+    globals.player.MaxHealth = 3;
     zSceneSetup();
     sAttractMode_timer = 48.264f;
-    zGameSetupPlayer();
+    //zGameSetupPlayer();
     zEnvStartingCamera(gCurEnv);
     xCameraUpdate(&globals.camera, -1.0f);
-    xSkyDome_Setup();
+    //xSkyDome_Setup();
     zEntEventAll(NULL, 0, eEventSceneBegin, NULL);
     zEntEventAll(NULL, 0, eEventRoomBegin, NULL);
     if (globals.updateMgr)
     {
-        xUpdateCull_Update(globals.updateMgr, eEventDispatcher_PadVibrateOn);
+        //xUpdateCull_Update(globals.updateMgr, eEventDispatcher_PadVibrateOn);
     }
-    zEntEvent(&globals.player.ent, 8);*/
+    //zEntEvent(&globals.player.ent, 8);
 }
 
 //void zMenuFirstBootSet(S32 value);
