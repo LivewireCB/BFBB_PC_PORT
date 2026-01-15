@@ -8,13 +8,11 @@ Join the [BFBB Decompilation](https://discord.gg/dVbGFdYU6A) or [Heavy Iron Modd
 - A copy of the original game for Xbox
 - [Visual Studio 2022](https://visualstudio.microsoft.com/)
 - [RenderWare SDK 3.4 for D3D8](https://archive.org/details/rw34sdk) - Download the ZIP and extract the `RW34` folder into the `vendor` folder.
-- [SDL 3.4.0](https://github.com/libsdl-org/SDL/releases/tag/release-3.4.0) - Download `SDL3-devel-3.4.0-VC.zip` and extract the `SDL3-3.4.0` folder into the `vendor` folder.
 - [DirectX SDK August 2007](https://archive.org/details/dxsdk_aug2007) - Download and install the SDK.
 
-Building is simple: Open bfbbpc.sln in Visual Studio and build any of the 3 configurations: Debug, Release, and Master.
+Building is simple: Open bfbbpc.sln in Visual Studio and build the debug configuration:
 - Debug (`sbpcD.exe`) is the least optimized version with the most debug features (asserts, logging, etc.)
-- Release (`sbpcR.exe`) is a more optimized version of Debug with less debug features
-- Master (`sb.exe`/`sbpcM.exe`) is the most optimized version with no debug features (the version that normally appears on a retail disc)
+
 
 ## Converting assets
 Currently you will need the Xbox version of the original game and some way to extract the files from it. You'll need to extract the files directly into the `bin` folder (`sb.ini`, `boot.HIP`, `font.HIP`, etc. should all be in the same folder as the game exes).
