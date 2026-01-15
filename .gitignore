@@ -384,7 +384,7 @@ FodyWeavers.xsd
 *.sln.iml
 
 *.zip
-vendor/*
+vendor/RW34*
 !vendor/README.txt
 
 bin/*
