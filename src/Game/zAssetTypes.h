@@ -27,27 +27,10 @@
 #include "zNPCTypeTest.h"
 #include "zNPCTypeTiki.h"
 
-//struct RwMemory
-//{
-//    U8* start;
-//    U32 length;
-//};
-
 class HackModelRadius
 {
 public:
     U32 assetid;
-    F32 radius;
-};
-
-// Note (Square): I'm not sure if this should be in this header but it looks to only be used in one other place
-struct zAnimFxSound
-{
-    U32 ID;
-    F32 vol;
-    F32 pitch;
-    U32 priority;
-    U32 flags;
     F32 radius;
 };
 

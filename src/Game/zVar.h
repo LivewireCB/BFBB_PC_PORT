@@ -47,6 +47,7 @@ struct var_type
 };
 
 extern S32 bad_card_needed;
+extern S32 bad_card_available;
 
 void var_init();
 void zVarNewGame();
@@ -55,5 +56,6 @@ U32 zVarEntryCB_VibrationOn(void* arg);
 U32 zVarEntryCB_SndMode(void* arg);
 U32 zVarEntryCB_SndMusicVol(void* arg);
 U32 zVarEntryCB_SndFXVol(void* arg);
+char* var_text(const substr& str);
 
 #endif

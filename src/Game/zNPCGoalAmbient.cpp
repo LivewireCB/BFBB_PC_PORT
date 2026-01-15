@@ -1,14 +1,19 @@
-//#include <types.h>
-//
-//#include "xMath.h"
-//#include "xMath3.h"
-//#include "xVec3.h"
-//#include "zNPCGoalAmbient.h"
-//#include "zNPCSndTable.h"
-//#include "xMathInlines.h"
-//#include "zNPCSupplement.h"
-//#include "zGlobals.h"
-//
+#include <types.h>
+
+#include "xMath.h"
+#include "xMath3.h"
+#include "xVec3.h"
+#include "zNPCGoalAmbient.h"
+#include "zNPCSndTable.h"
+#include "xMathInlines.h"
+#include "zNPCSupplement.h"
+#include "zGlobals.h"
+
+xFactoryInst* GOALCreate_Ambient(S32 who, RyzMemGrow* grow, void*)
+{
+	return 0;
+}
+
 //S32 zNPCGoalJellyBumped::Enter(F32 dt, void* updCtxt)
 //{
 //    zNPCJelly* npc;

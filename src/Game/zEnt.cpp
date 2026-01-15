@@ -1,23 +1,23 @@
-//#include "zEnt.h"
-//
-//#include <types.h>
-//
-//#include "zGlobals.h"
-//#include "zAnimList.h"
-//#include "zNPCTypeCommon.h"
-//#include "xNPCBasic.h"
-//#include "xstransvc.h"
-//#include "xString.h"
-//#include "xMath.h"
-//#include "xutil.h"
-//#include "iModel.h"
-//#include "xSnd.h"
-//#include "xCollide.h"
-//#include "zNPCTypes.h"
-//#include <PowerPC_EABI_Support\MSL_C\MSL_Common\cstring>
-//#include <stdio.h>
-//#include <PowerPC_EABI_Support\MSL_C\MSL_Common\stdlib.h>
-//
+#include "zEnt.h"
+
+#include <types.h>
+
+#include "zGlobals.h"
+#include "zAnimList.h"
+#include "zNPCTypeCommon.h"
+#include "xNPCBasic.h"
+#include "xstransvc.h"
+#include "xString.h"
+#include "xMath.h"
+#include "xutil.h"
+#include "iModel.h"
+#include "xSnd.h"
+#include "xCollide.h"
+#include "zNPCTypes.h"
+#include <cstring>
+#include <stdio.h>
+#include <stdlib.h>
+
 //void zEntInit(zEnt* ent, xEntAsset* asset, U32 type)
 //{
 //    xEntInit(ent, asset);
@@ -929,8 +929,8 @@
 //{
 //    xSndPlay3D(id, vol, pitch, priority, flags, pos, radius / 4.0f, radius, category, delay);
 //}
-//
-//S32 xNPCBasic::SelfType() const
-//{
-//    return myNPCType;
-//};
+
+S32 xNPCBasic::SelfType() const
+{
+    return myNPCType;
+};

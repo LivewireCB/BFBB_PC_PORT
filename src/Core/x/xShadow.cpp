@@ -1,56 +1,57 @@
-//#include "xShadow.h"
-//
-//#include "rpworld.h"
-//
-//#include "xMath.h"
-//#include "iModel.h"
-//#include "zGlobals.h"
-//
-//#include <types.h>
-//
-//RwRGBAReal ShadowLightColor = { 1.0f, 1.0f, 1.0f, 1.0f };
-//
-//RpLight* ShadowLight;
-//static F32 SHADOW_BOTH;
-//RwCamera* ShadowCamera;
-//RwRaster* ShadowCameraRaster;
-//static RwRaster* ShadowRenderRaster;
-//F32 gShadowObjectRadius;
-//static S32 shadow_ent_count;
-//static RwRaster* gc_saveraster;
-//static xShadowMgr* sMgrList;
-//static S32 sMgrCount;
-//static S32 sMgrTotal;
-//
-//void xShadowInit();
-//static void ShadowCameraDestroy(RwCamera* shadowCamera);
-//static S32 SetupShadow();
-//static RwRaster* ShadowRasterCreate(S32 res);
-//static RwCamera* ShadowCameraCreatePersp(S32 param);
-//U32 xShadowCameraCreate();
-//void xShadowRenderWorld(xVec3* a, F32 b, F32 c);
-//void xShadow_ListAdd(xEnt* ent);
-//void xShadowManager_Add(xEnt* ent);
-//static void GCSaveFrameBuffer();
-//RwCamera* ShadowCameraSetSpherePersp(RwCamera* camera, RwV3d* center, float radius);
-//int Im2DRenderQuad(float x1, float y1, float x2, float y2, float z, float recipCamZ, float uvOffset);
-//
-///* Three more params than in DWARF.
-//RwCamera* ShadowCameraUpdate(RwCamera* shadowCamera, void* model, void(*renderCB)(void*))
-//*/
-//RwCamera* ShadowCameraUpdate(RwCamera* shadowCamera, void* model, void(*renderCB)(void*), RwV3d* center, float radius, int);
-//
-//void xShadowInit()
-//{
-//    xShadowCameraCreate();
-//    gc_saveraster = RwRasterCreate(256, 256, 32, 0x504);
-//    shadow_ent_count = 0;
-//    ShadowLight = RpLightCreate(1);
-//    RpLightSetColor(ShadowLight, &ShadowLightColor);
-//    RwFrame* frame = RwFrameCreate();
-//    _rwObjectHasFrameSetFrame(ShadowLight, frame);
-//}
-//
+#include "xShadow.h"
+
+#include <rwcore.h>
+#include "rpworld.h"
+
+#include "xMath.h"
+#include "iModel.h"
+#include "zGlobals.h"
+
+#include <types.h>
+
+RwRGBAReal ShadowLightColor = { 1.0f, 1.0f, 1.0f, 1.0f };
+
+RpLight* ShadowLight;
+static F32 SHADOW_BOTH;
+RwCamera* ShadowCamera;
+RwRaster* ShadowCameraRaster;
+static RwRaster* ShadowRenderRaster;
+F32 gShadowObjectRadius;
+static S32 shadow_ent_count;
+static RwRaster* gc_saveraster;
+static xShadowMgr* sMgrList;
+static S32 sMgrCount;
+static S32 sMgrTotal;
+
+
+static void ShadowCameraDestroy(RwCamera* shadowCamera);
+static S32 SetupShadow();
+static RwRaster* ShadowRasterCreate(S32 res);
+static RwCamera* ShadowCameraCreatePersp(S32 param);
+U32 xShadowCameraCreate();
+void xShadowRenderWorld(xVec3* a, F32 b, F32 c);
+void xShadow_ListAdd(xEnt* ent);
+void xShadowManager_Add(xEnt* ent);
+static void GCSaveFrameBuffer();
+RwCamera* ShadowCameraSetSpherePersp(RwCamera* camera, RwV3d* center, float radius);
+int Im2DRenderQuad(float x1, float y1, float x2, float y2, float z, float recipCamZ, float uvOffset);
+
+/* Three more params than in DWARF.
+RwCamera* ShadowCameraUpdate(RwCamera* shadowCamera, void* model, void(*renderCB)(void*))
+*/
+RwCamera* ShadowCameraUpdate(RwCamera* shadowCamera, void* model, void(*renderCB)(void*), RwV3d* center, float radius, int);
+
+void xShadowInit() RIMP
+{
+    /*xShadowCameraCreate();
+    gc_saveraster = RwRasterCreate(256, 256, 32, 0x504);
+    shadow_ent_count = 0;
+    ShadowLight = RpLightCreate(1);
+    RpLightSetColor(ShadowLight, &ShadowLightColor);
+    RwFrame* frame = RwFrameCreate();
+    _rwObjectHasFrameSetFrame(ShadowLight, frame);*/
+}
+
 //void xShadowRender(xVec3* a, F32 b, F32 c)
 //{
 //    xShadowRenderWorld(a, b, c);
@@ -79,13 +80,13 @@
 //    ShadowCamera->frameBuffer = ShadowCameraRaster;
 //    return 1;
 //}
-//
-//void xShadowSetWorld(RpWorld* world)
-//{
-//    RpWorldAddCamera(world, ShadowCamera);
-//    SHADOW_BOTH = 2.0f;
-//}
-//
+
+void xShadowSetWorld(RpWorld* world)
+{
+    RpWorldAddCamera(world, ShadowCamera);
+    SHADOW_BOTH = 2.0f;
+}
+
 //U32 xShadowCameraCreate()
 //{
 //    U32 setup = SetupShadow();
@@ -212,19 +213,19 @@
 //    ShadowCameraDestroy(cam);
 //    return NULL;
 //}
-//
-//void xShadowManager_Init(S32 numEnts)
-//{
-//    sMgrList = (xShadowMgr*)xMemAlloc(gActiveHeap, numEnts << 4, 0);
-//    sMgrTotal = numEnts;
-//    sMgrCount = 0; // Scheduling off
-//}
-//
-//void xShadowManager_Reset()
-//{
-//    sMgrCount = 0;
-//}
-//
+
+void xShadowManager_Init(S32 numEnts)
+{
+    sMgrList = (xShadowMgr*)xMemAlloc(gActiveHeap, numEnts << 4, 0);
+    sMgrTotal = numEnts;
+    sMgrCount = 0; // Scheduling off
+}
+
+void xShadowManager_Reset()
+{
+    sMgrCount = 0;
+}
+
 //void xShadowManager_Add(xEnt* ent)
 //{
 //    for (int i = 0; i < sMgrCount; i++)

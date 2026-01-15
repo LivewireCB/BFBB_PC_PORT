@@ -2,6 +2,17 @@
 //#define ZHUD_H
 //
 //#include <types.h>
+//#include "xString.h"
+//#include "xHudMeter.h"
+//#include "xHudModel.h"
+//#include "xHud.h"
+//
+//extern const basic_rect<F32> screen_bounds;
+//
+//struct special_data {
+//    char* hud_model;
+//    S32 max_value;
+//};
 //
 //namespace zhud
 //{

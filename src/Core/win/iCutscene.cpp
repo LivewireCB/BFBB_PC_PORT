@@ -1,135 +1,135 @@
-//#include "iCutscene.h"
-//
-//#include "xpkrsvc.h"
-//#include "xstransvc.h"
-//#include "xMath.h"
-//
-//#include "iModel.h"
-//
-//#include <rwcore.h>
-//#include <string.h>
-//
-//U32 read_sizzze = 0;
-//
-//void iCSSoundSetup(xCutscene* csn)
-//{
-//    xCutsceneData* data;
-//    U32 dataIndex;
-//    U32 numData;
-//
-//    data = (xCutsceneData*)(csn->Play + 1);
-//    numData = csn->Play->NumData;
-//
-//    for (dataIndex = 0; dataIndex < numData; dataIndex++)
-//    {
-//        if (data->DataType == XCUTSCENEDATA_TYPE_SOUND)
-//        {
-//            if (csn->SndNumChannel >= 2)
-//            {
-//                break;
-//            }
-//
-//            csn->SndAssetID[csn->SndNumChannel] = data->AssetID;
-//            csn->SndNumChannel++;
-//        }
-//
-//        data = (xCutsceneData*)((U8*)data + ALIGN(data->ChunkSize, 16) + sizeof(xCutsceneData));
-//    }
-//}
-//
-//void* iCSSoundGetData(xSndVoiceInfo* vp, U32* size)
-//{
-//    U32 channelIndex;
-//    U32 dataIndex;
-//    xCutscene* csn;
-//    void* retdata;
-//    xCutsceneData* data;
-//    U32 numChannel;
-//    U32 numData;
-//    S32 sndChannelIndex;
-//    U32 r4;
-//    U32 sndChannelReq;
-//
-//    csn = xCutscene_CurrentCutscene();
-//
-//    numChannel = csn->SndNumChannel;
-//    retdata = NULL;
-//    sndChannelIndex = -1;
-//
-//    for (channelIndex = 0; channelIndex < numChannel; channelIndex++)
-//    {
-//        if (csn->SndAssetID[channelIndex] == vp->assetID)
-//        {
-//            sndChannelIndex = channelIndex;
-//            sndChannelReq = csn->SndChannelReq[channelIndex];
-//        }
-//    }
-//
-//    if (sndChannelIndex == -1)
-//    {
-//        return NULL;
-//    }
-//
-//    if (!csn->Waiting && csn->Stream->ChunkIndex == sndChannelReq)
-//    {
-//        numData = csn->Stream->NumData;
-//        data = (xCutsceneData*)(csn->Stream + 1);
-//    }
-//    else
-//    {
-//        numData = csn->Play->NumData;
-//        data = (xCutsceneData*)(csn->Play + 1);
-//
-//        if (csn->SndChannelReq[sndChannelIndex] != csn->Play->ChunkIndex)
-//        {
-//            csn->SndChannelReq[sndChannelIndex] = csn->Play->ChunkIndex;
-//        }
-//    }
-//
-//    r4 = 0;
-//
-//    for (dataIndex = 0; dataIndex < numData; dataIndex++)
-//    {
-//        if (data->DataType == XCUTSCENEDATA_TYPE_SOUND)
-//        {
-//            if (!retdata)
-//            {
-//                retdata = (void*)(data + 1);
-//                *size = data->ChunkSize;
-//            }
-//
-//            if (sndChannelIndex == r4)
-//            {
-//                retdata = (void*)(data + 1);
-//                *size = data->ChunkSize;
-//
-//                break;
-//            }
-//            else
-//            {
-//                r4++;
-//            }
-//        }
-//
-//        data = (xCutsceneData*)((U8*)data + ALIGN(data->ChunkSize, 16) + sizeof(xCutsceneData));
-//    }
-//
-//    if (!retdata)
-//    {
-//        return NULL;
-//    }
-//
-//    while ((U32)retdata & 0x1F)
-//    {
-//        retdata = (void*)((U8*)retdata + 16);
-//        *size -= 16;
-//    }
-//
-//    csn->SndChannelReq[sndChannelIndex]++;
-//
-//    return retdata;
-//}
-//
+#include "iCutscene.h"
+
+#include "xpkrsvc.h"
+#include "xstransvc.h"
+#include "xMath.h"
+
+#include "iModel.h"
+
+#include <rwcore.h>
+#include <string.h>
+
+U32 read_sizzze = 0;
+
+void iCSSoundSetup(xCutscene* csn)
+{
+    xCutsceneData* data;
+    U32 dataIndex;
+    U32 numData;
+
+    data = (xCutsceneData*)(csn->Play + 1);
+    numData = csn->Play->NumData;
+
+    for (dataIndex = 0; dataIndex < numData; dataIndex++)
+    {
+        if (data->DataType == XCUTSCENEDATA_TYPE_SOUND)
+        {
+            if (csn->SndNumChannel >= 2)
+            {
+                break;
+            }
+
+            csn->SndAssetID[csn->SndNumChannel] = data->AssetID;
+            csn->SndNumChannel++;
+        }
+
+        data = (xCutsceneData*)((U8*)data + ALIGN(data->ChunkSize, 16) + sizeof(xCutsceneData));
+    }
+}
+
+void* iCSSoundGetData(xSndVoiceInfo* vp, U32* size)
+{
+    U32 channelIndex;
+    U32 dataIndex;
+    xCutscene* csn;
+    void* retdata;
+    xCutsceneData* data;
+    U32 numChannel;
+    U32 numData;
+    S32 sndChannelIndex;
+    U32 r4;
+    U32 sndChannelReq;
+
+    csn = xCutscene_CurrentCutscene();
+
+    numChannel = csn->SndNumChannel;
+    retdata = NULL;
+    sndChannelIndex = -1;
+
+    for (channelIndex = 0; channelIndex < numChannel; channelIndex++)
+    {
+        if (csn->SndAssetID[channelIndex] == vp->assetID)
+        {
+            sndChannelIndex = channelIndex;
+            sndChannelReq = csn->SndChannelReq[channelIndex];
+        }
+    }
+
+    if (sndChannelIndex == -1)
+    {
+        return NULL;
+    }
+
+    if (!csn->Waiting && csn->Stream->ChunkIndex == sndChannelReq)
+    {
+        numData = csn->Stream->NumData;
+        data = (xCutsceneData*)(csn->Stream + 1);
+    }
+    else
+    {
+        numData = csn->Play->NumData;
+        data = (xCutsceneData*)(csn->Play + 1);
+
+        if (csn->SndChannelReq[sndChannelIndex] != csn->Play->ChunkIndex)
+        {
+            csn->SndChannelReq[sndChannelIndex] = csn->Play->ChunkIndex;
+        }
+    }
+
+    r4 = 0;
+
+    for (dataIndex = 0; dataIndex < numData; dataIndex++)
+    {
+        if (data->DataType == XCUTSCENEDATA_TYPE_SOUND)
+        {
+            if (!retdata)
+            {
+                retdata = (void*)(data + 1);
+                *size = data->ChunkSize;
+            }
+
+            if (sndChannelIndex == r4)
+            {
+                retdata = (void*)(data + 1);
+                *size = data->ChunkSize;
+
+                break;
+            }
+            else
+            {
+                r4++;
+            }
+        }
+
+        data = (xCutsceneData*)((U8*)data + ALIGN(data->ChunkSize, 16) + sizeof(xCutsceneData));
+    }
+
+    if (!retdata)
+    {
+        return NULL;
+    }
+
+    while ((U32)retdata & 0x1F)
+    {
+        retdata = (void*)((U8*)retdata + 16);
+        *size -= 16;
+    }
+
+    csn->SndChannelReq[sndChannelIndex]++;
+
+    return retdata;
+}
+
 //static void iCSAsyncReadCB(tag_xFile* file)
 //{
 //    S32 bytes;
@@ -146,7 +146,7 @@
 //        csn->Waiting = 0;
 //    }
 //}
-//
+
 //U32 iCSFileOpen(xCutscene* csn)
 //{
 //    U32 headerskip;
@@ -176,7 +176,7 @@
 //
 //    return 1;
 //}
-//
+
 //void iCSFileAsyncRead(xCutscene* csn, void* dest, U32 size)
 //{
 //    U32* buf = (U32*)dest;
@@ -192,21 +192,20 @@
 //
 //    iFileReadAsync(&csn->File, dest, size, iCSAsyncReadCB, 0);
 //}
-//
-//void iCSFileAsyncSkip(xCutscene* csn, U32 amount)
-//{
-//    csn->Waiting = 1;
-//
-//    iFileSeek(&csn->File, amount, IFILE_SEEK_CUR);
-//}
-//
-//void iCSFileClose(xCutscene* csn)
-//{
-//    iFileReadStop();
-//
-//    csn->Opened = 0;
-//}
-//
+
+void iCSFileAsyncSkip(xCutscene* csn, U32 amount)
+{
+    csn->Waiting = 1;
+
+    iFileSeek(&csn->File, amount, IFILE_SEEK_CUR);
+}
+
+void iCSFileClose(xCutscene* csn) // TODO; reimplement function
+{
+    /*iFileReadStop();
+    csn->Opened = 0;*/
+}
+
 //S32 iCSLoadStep(xCutscene* csn)
 //{
 //    S32 bytes;

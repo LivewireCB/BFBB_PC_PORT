@@ -1,58 +1,56 @@
-//#include "iFMV.h"
-//
-//#include "iCamera.h"
-//#include "iFile.h"
-//#include "iPad.h"
-//#include "iSystem.h"
-//#include "iTRC.h"
-//
-//#include "xFile.h"
-//#include "xPar.h"
-//#include <dolphin/gx.h>
-//
-//#include "zGlobals.h"
-//
-//#include <types.h>
-//#include <dolphin.h>
-//
-//// FIXME: These should be in a RW header somewhere
+#include "iFMV.h"
+
+#include "iCamera.h"
+#include "iFile.h"
+#include "iPad.h"
+#include "iSystem.h"
+#include "iTRC.h"
+
+#include "xFile.h"
+#include "xPar.h"
+
+#include "zGlobals.h"
+
+// #include <dolphin.h>
+
+// FIXME: These should be in a RW header somewhere
 //extern GXRenderModeObj* _RwDlRenderMode;
-//extern "C" {
-//void RwGameCubeGetXFBs(void*, void*);
-//}
-//
-//// .bss
-//static U32 Bink_surface_type[5];
-//
-//// .sbss
-//static S32 frame_num;
-//U32 fuckingSurfaceType;
+extern "C" {
+void RwGameCubeGetXFBs(void*, void*);
+}
+
+// .bss
+static U32 Bink_surface_type[5];
+
+// .sbss
+static S32 frame_num;
+U32 fuckingSurfaceType;
 //static HBINK Bink;
 //static HRAD3DIMAGE Image;
-//static S32 Paused;
-//static void* pixels;
-//static volatile F32 vol;
-//S32 ip;
-//s32 oof;
-//void* iFMV::mXFBs[2];
-//void* iFMV::mCurrentFrameBuffer;
+static S32 Paused;
+static void* pixels;
+static volatile F32 vol;
+S32 ip;
+S32 oof;
+void* iFMV::mXFBs[2];
+void* iFMV::mCurrentFrameBuffer;
 //GXRenderModeObj* iFMV::mRenderMode;
-//
-//// .sdata
-//static float Width_scale = 1.0f;
-//static float Height_scale = 1.0f;
-//U8 iFMV::mFirstFrame = 1;
-//
-//void* iFMVmalloc(size_t size)
-//{
-//    return RwMalloc(size);
-//}
-//
-//void iFMVfree(void* mem)
-//{
-//    RwFree(mem);
-//}
-//
+
+// .sdata
+static float Width_scale = 1.0f;
+static float Height_scale = 1.0f;
+U8 iFMV::mFirstFrame = 1;
+
+void* iFMVmalloc(size_t size)
+{
+    return RwMalloc(size);
+}
+
+void iFMVfree(void* mem)
+{
+    RwFree(mem);
+}
+
 //static void PlayFMV(char* filename, size_t buttons, F32 time);
 //U32 iFMVPlay(char* filename, U32 buttons, F32 time, bool skippable, bool lockController)
 //{
@@ -68,7 +66,7 @@
 //    }
 //    return 0;
 //}
-//
+
 //static void Setup_surface_array()
 //{
 //    Bink_surface_type[0] = BINKSURFACE32;
@@ -97,7 +95,7 @@
 //        mask = mask >> 0x1f;
 //        mask = mask & 0x80000000;
 //        mask |= Bink_surface_type[result.unk_8];
-//        result.unk_0 = BinkCopyToBuffer(bnk, pixels, result.unk_c, bnk->unk_4, NULL, NULL, mask);
+//        result.unk_0 = BinkCopyToBuffer(bnk, pixels, result.unk_c, bnk->Height, NULL, NULL, mask);
 //        Unlock_RAD_3D_image(rad_image);
 //    }
 //}
@@ -168,8 +166,8 @@
 //    RwCameraClear(cam, &color, rwCAMERACLEARIMAGE);
 //
 //    RwCameraBeginUpdate(cam);
-//    Width_scale = 640 / Bink->unk_0;
-//    Height_scale = 480 / Bink->unk_4;
+//    Width_scale = 640 / Bink->Width;
+//    Height_scale = 480 / Bink->Height;
 //    xDrawLine2D_LocaliFMVVersion(0.0f, 0.0f, 0.0f, 0.0f);
 //    DrawFrame(0.0f, 0.0f, Width_scale, Height_scale);
 //    RwCameraEndUpdate(cam);
@@ -177,12 +175,12 @@
 //
 //    iCameraDestroy(cam);
 //}
-//
+
 //static void* arammalloc(size_t size)
 //{
 //    return (void*)ARAlloc(size);
 //}
-//
+
 //// Something weird is going on here...
 //static void aramfree(void* mem)
 //{
@@ -190,7 +188,7 @@
 //    ARFree(&vol);
 //}
 //
-//static void PlayFMV(char* fname, u32 buttons, F32 time)
+//static void PlayFMV(char* fname, size_t buttons, F32 time)
 //{
 //    GXCullMode cull_mode;
 //    GXGetCullMode(&cull_mode);
@@ -242,9 +240,9 @@
 //
 //    if (Bink != NULL)
 //    {
-//        if (Bink->unk_f0 != 0)
+//        if (Bink->Width != 0)
 //        {
-//            for (ip = 0; ip <= Bink->unk_f0; ++ip)
+//            for (ip = 0; ip <= Bink->Width; ++ip)
 //            {
 //                vol = gSnd.categoryVolFader[SND_CAT_CUTSCENE];
 //                vol = vol * vol;
@@ -253,7 +251,7 @@
 //            }
 //        }
 //
-//        Image = Open_RAD_3D_image(NULL, Bink->unk_0, Bink->unk_4, fuckingSurfaceType);
+//        Image = Open_RAD_3D_image(NULL, Bink->Width, Bink->Height, fuckingSurfaceType);
 //        if (Image != NULL)
 //        {
 //            if (frame_num != 0)
@@ -280,19 +278,19 @@
 //                }
 //                xPadUpdate(globals.currentActivePad, 0.0f);
 //
-//                F32 t = (float)Bink->unk_c / (Bink->unk_14 / Bink->unk_18);
+//                F32 t = (float)Bink->FrameNum / (Bink->FrameRate / Bink->FrameRateDiv);
 //                if (buttons && t >= time && globals.pad0->pressed & buttons)
 //                {
 //                    frame_num = -1;
 //                    goto superbreak;
 //                }
-//            } while (Bink->unk_c < Bink->unk_8 - 1);
+//            } while (Bink->FrameNum < Bink->Frames - 1);
 //            frame_num = -1;
 //        }
 //    superbreak:
 //        if (frame_num != -1)
 //        {
-//            frame_num = Bink->unk_c;
+//            frame_num = Bink->FrameNum;
 //        }
 //        Close_RAD_3D_image(Image);
 //        Image = NULL;
@@ -381,43 +379,43 @@
 //        VIWaitForRetrace();
 //    }
 //}
-//
-//void iFMV::Suspend()
-//{
-//}
-//
-//void iFMV::Resume()
-//{
-//}
-//
-//static void xDrawLine2D_LocaliFMVVersion(F32 arg0, F32 arg1, F32 arg2, F32 arg3)
-//{
-//    RwRGBA color = { -1, -1, -1, -1 };
-//
-//    F32 nearz = RwIm2DGetNearScreenZ();
-//    void* texraster_state;
-//    RwRenderStateGet(rwRENDERSTATETEXTURERASTER, &texraster_state);
-//    void* vtx_alpha_state;
-//    RwRenderStateGet(rwRENDERSTATEVERTEXALPHAENABLE, &vtx_alpha_state);
-//    RwIm2DVertex verts[2];
-//
-//    // RwIm2DVertexSetRealRGBA
-//
-//    RwIm2DVertexSetScreenX(&verts[0], arg0);
-//    RwIm2DVertexSetScreenY(&verts[0], arg1);
-//    RwIm2DVertexSetScreenZ(&verts[0], nearz);
-//    RwIm2DVertexSetIntRGBA(&verts[0], color.red, color.green, color.blue, color.alpha);
-//
-//    RwIm2DVertexSetScreenX(&verts[1], arg2);
-//    RwIm2DVertexSetScreenY(&verts[1], arg3);
-//    RwIm2DVertexSetScreenZ(&verts[1], nearz);
-//    RwIm2DVertexSetIntRGBA(&verts[1], color.red, color.green, color.blue, color.alpha);
-//
-//    RwRenderStateSet(rwRENDERSTATETEXTURERASTER, NULL);
-//    RwRenderStateSet(rwRENDERSTATEVERTEXALPHAENABLE, NULL);
-//
-//    // { arg2, arg3, nearz, -1 };
-//    RwIm2DRenderLine(verts, 2, 0, 1);
-//    RwRenderStateSet(rwRENDERSTATETEXTURERASTER, texraster_state);
-//    RwRenderStateSet(rwRENDERSTATEVERTEXALPHAENABLE, vtx_alpha_state);
-//}
+
+void iFMV::Suspend()
+{
+}
+
+void iFMV::Resume()
+{
+}
+
+static void xDrawLine2D_LocaliFMVVersion(F32 arg0, F32 arg1, F32 arg2, F32 arg3)
+{
+    RwRGBA color = { -1, -1, -1, -1 };
+
+    F32 nearz = RwIm2DGetNearScreenZ();
+    void* texraster_state;
+    RwRenderStateGet(rwRENDERSTATETEXTURERASTER, &texraster_state);
+    void* vtx_alpha_state;
+    RwRenderStateGet(rwRENDERSTATEVERTEXALPHAENABLE, &vtx_alpha_state);
+    RwIm2DVertex verts[2];
+
+    // RwIm2DVertexSetRealRGBA
+
+    RwIm2DVertexSetScreenX(&verts[0], arg0);
+    RwIm2DVertexSetScreenY(&verts[0], arg1);
+    RwIm2DVertexSetScreenZ(&verts[0], nearz);
+    RwIm2DVertexSetIntRGBA(&verts[0], color.red, color.green, color.blue, color.alpha);
+
+    RwIm2DVertexSetScreenX(&verts[1], arg2);
+    RwIm2DVertexSetScreenY(&verts[1], arg3);
+    RwIm2DVertexSetScreenZ(&verts[1], nearz);
+    RwIm2DVertexSetIntRGBA(&verts[1], color.red, color.green, color.blue, color.alpha);
+
+    RwRenderStateSet(rwRENDERSTATETEXTURERASTER, NULL);
+    RwRenderStateSet(rwRENDERSTATEVERTEXALPHAENABLE, NULL);
+
+    // { arg2, arg3, nearz, -1 };
+    RwIm2DRenderLine(verts, 2, 0, 1);
+    RwRenderStateSet(rwRENDERSTATETEXTURERASTER, texraster_state);
+    RwRenderStateSet(rwRENDERSTATEVERTEXALPHAENABLE, vtx_alpha_state);
+}

@@ -82,20 +82,20 @@
       <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;RWDEBUG;_DEBUG;_CONSOLE;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>src\Core\win;src\Core\x;src\Game;vendor;vendor\RW34\include\d3d8;vendor\SDL2-2.26.3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src\Core\win;src\Core\x;src\Game;vendor;vendor\RW34\include\d3d8;vendor\SDL3-3.2.26\include;vendor\SDL3-3.2.26\include\SDL3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>Default</LanguageStandard>
       <LanguageStandard_C>Default</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>vendor\SDL2-2.26.3\lib\x86;vendor\RW34\lib\d3d8\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>rwcore.lib;rpworld.lib;rpcollis.lib;rpskin.lib;rphanim.lib;rpmatfx.lib;rpusrdat.lib;rpptank.lib;rtanim.lib;rtquat.lib;rtslerp.lib;rtcharse.lib;rtintsec.lib;SDL2.lib;SDL2main.lib;legacy_stdio_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>vendor\RW34\lib\d3d8\debug;vendor\SDL3-3.2.26\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>rwcore.lib;rpworld.lib;rpcollis.lib;rpskin.lib;rphanim.lib;rpmatfx.lib;rpusrdat.lib;rpptank.lib;rtanim.lib;rtquat.lib;rtslerp.lib;rtcharse.lib;rtintsec.lib;SDL3.lib;legacy_stdio_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DataExecutionPrevention>false</DataExecutionPrevention>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
     <PostBuildEvent>
-      <Command>copy /y "vendor\SDL2-2.26.3\lib\x86\SDL2.dll" "bin\SDL2.dll"</Command>
+      <Command>copy /y "vendor\SDL3-3.2.26\lib\x86\SDL3.dll" "bin\SDL3.dll"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -144,6 +144,7 @@
     <ClCompile Include="src\Core\win\iCollide.cpp" />
     <ClCompile Include="src\Core\win\iCollideFast.cpp" />
     <ClCompile Include="src\Core\win\iCutscene.cpp" />
+    <ClCompile Include="src\Core\win\iDebug.cpp" />
     <ClCompile Include="src\Core\win\iDraw.cpp" />
     <ClCompile Include="src\Core\win\iEnv.cpp" />
     <ClCompile Include="src\Core\win\iFile.cpp" />
@@ -371,15 +372,13 @@
     <ResourceCompile Include="res\bfbbpc.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="resource.h" />
-    <ClInclude Include="rpcollbsptree.h" />
-    <ClInclude Include="rwframesync.h" />
     <ClInclude Include="src\Core\win\iAnim.h" />
     <ClInclude Include="src\Core\win\iAnimSKB.h" />
     <ClInclude Include="src\Core\win\iCollide.h" />
     <ClInclude Include="src\Core\win\iCollideFast.h" />
     <ClInclude Include="src\Core\win\iColor.h" />
     <ClInclude Include="src\Core\win\iCutscene.h" />
+    <ClInclude Include="src\Core\win\iDebug.h" />
     <ClInclude Include="src\Core\win\iDraw.h" />
     <ClInclude Include="src\Core\win\iEnv.h" />
     <ClInclude Include="src\Core\win\iFile.h" />
@@ -621,7 +620,6 @@
     <ClInclude Include="src\Game\zUIFont.h" />
     <ClInclude Include="src\Game\zVar.h" />
     <ClInclude Include="src\Game\zVolume.h" />
-    <ClInclude Include="types.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

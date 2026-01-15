@@ -368,7 +368,14 @@ struct zPlayerLassoInfo
     xAnimState* zeroAnim;
 };
 
-class PlayerStreakInfo
+struct Melee_cbData {
+    xEnt* ent; // offset 0x0, size 0x4
+    zScene* zsc; // offset 0x4, size 0x4
+    xBound * meleeB; // offset 0x8, size 0x4
+    S32 hitsomething; // offset 0xC, size 0x4
+};
+
+struct PlayerStreakInfo
 {
     U32 activated;
     U32 streakID;
@@ -386,6 +393,9 @@ class PlayerStreakInfo
 
 extern _CurrentPlayer gCurrentPlayer;
 extern S32 gWaitingToAutoSave;
+extern S32 gSpongeBall;
+
+void SetPlayerKillsVillainTimer(F32 time);
 
 void zEntPlayer_Load(xEnt*, xSerial*);
 
@@ -397,6 +407,7 @@ xAnimTable* zPatrick_AnimTable();
 xAnimTable* zEntPlayer_AnimTable();
 xAnimTable* zSpongeBobTongue_AnimTable();
 
+void zEntPlayer_Init(xEnt* ent, xEntAsset* asset);
 void zEntPlayerExit(xEnt*);
 void zEntPlayerPreReset();
 void zEntPlayerReset(xEnt* ent);
@@ -405,7 +416,7 @@ void zEntPlayer_UnloadSounds();
 void zEntPlayer_ShadowModelEnable();
 void zEntPlayer_ShadowModelDisable();
 
-void zEntPlayerJumpStart(class xEnt* ent, class zJumpParam* jump);
+void zEntPlayerJumpStart(struct xEnt* ent, struct zJumpParam* jump);
 S32 zEntPlayer_IsSneaking();
 
 void zEntPlayer_setBoulderMode(U32 mode);
@@ -446,7 +457,6 @@ void zEntPlayerControlOff(zControlOwner owner);
 void zEntPlayerControlOn(zControlOwner owner);
 
 void zEntPlayer_StoreCheckPoint(xVec3* pos, F32 rot, U32 initCamID);
-S32 load_talk_filter(U8* filter, xModelAssetParam* params, U32 params_size, S32 max_size);
 
 S32 zEntPlayer_DamageNPCKnockBack(xBase* src, U32 damage, xVec3* npcPos);
 

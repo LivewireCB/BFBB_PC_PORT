@@ -1,23 +1,23 @@
-//#include "zCutsceneMgr.h"
-//
-//#include <types.h>
-//
-//#include "zGlobals.h"
-//#include "zEnt.h"
-//#include "zEntPlayer.h"
-//#include "zMusic.h"
-//#include "zNPCFXCinematic.h"
-//#include "zParEmitter.h"
-//#include "xEvent.h"
-//#include "xCutscene.h"
-//#include "xserializer.h"
-//#include "xSnd.h"
-//#include "xString.h"
-//#include "iFile.h"
-//#include "iTRC.h"
-//#include "iCutscene.h"
-//#include "iSystem.h"
-//
+#include "zCutsceneMgr.h"
+
+#include <types.h>
+
+#include "zGlobals.h"
+#include "zEnt.h"
+#include "zEntPlayer.h"
+#include "zMusic.h"
+#include "zNPCFXCinematic.h"
+#include "zParEmitter.h"
+#include "xEvent.h"
+#include "xCutscene.h"
+#include "xserializer.h"
+#include "xSnd.h"
+#include "xString.h"
+#include "iFile.h"
+#include "iTRC.h"
+#include "iCutscene.h"
+#include "iSystem.h"
+
 //static zCutsceneHack cutsceneHackTable[58] = {
 //    {"cin_hammer", "spongebob.dff", 0.0f, 1, 0, 0, NULL},
 //    {"cin_hammer", "fish_j_skel.dff", 0.0f, 1, 0, 0, NULL},
@@ -177,15 +177,15 @@
 //    s_atomicNumber++;
 //    return atomic;
 //}
-//
-//void zCutSceneNamesTable_clearAll()
-//{
-//    for (int i = 0; i < 14; i++)
-//    {
-//        zCutSceneNamesTable[i].played = 0;
-//    }
-//}
-//
+
+void zCutSceneNamesTable_clearAll() RIMP
+{
+    /*for (int i = 0; i < 14; i++)
+    {
+        zCutSceneNamesTable[i].played = 0;
+    }*/
+}
+
 //void zCutsceneMgrPlayStart(zCutsceneMgr* t)
 //{
 //    gCutsceneSkipOK = 1;

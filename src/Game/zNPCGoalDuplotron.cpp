@@ -1,36 +1,35 @@
-//#include "zNPCGoalDuplotron.h"
-//
-//#include "zNPCGoals.h"
-//#include "zNPCTypeDuplotron.h"
-//#include "zNPCHazard.h"
-//#include "zGlobals.h"
-//
-//#include "xMath.h"
-//#include "xMathInlines.h"
-//#include "xEvent.h"
-//#include "xScrFx.h"
-//
-//xFactoryInst* GOALCreate_Duplotron(S32 who, RyzMemGrow* grow, void*)
-//{
-//    xGoal* goal = NULL;
-//
-//    switch (who)
-//    {
-//    case NPC_GOAL_DUPLOLIVE:
-//    {
-//        goal = new (who, grow) zNPCGoalDuploLive(who);
-//        break;
-//    }
-//    case NPC_GOAL_DUPLODEAD:
-//    {
-//        goal = new (who, grow) zNPCGoalDuploDead(who);
-//        break;
-//    }
-//    }
-//
-//    return goal;
-//}
-//
+#include "zNPCGoalDuplotron.h"
+
+#include "zNPCGoals.h"
+#include "zNPCTypeDuplotron.h"
+#include "zGlobals.h"
+
+#include "xMath.h"
+#include "xMathInlines.h"
+#include "xEvent.h"
+#include "xScrFx.h"
+
+xFactoryInst* GOALCreate_Duplotron(S32 who, RyzMemGrow* grow, void*)
+{
+    xGoal* goal = NULL;
+
+    switch (who)
+    {
+    case NPC_GOAL_DUPLOLIVE:
+    {
+        goal = new (who, grow) zNPCGoalDuploLive(who);
+        break;
+    }
+    case NPC_GOAL_DUPLODEAD:
+    {
+        goal = new (who, grow) zNPCGoalDuploDead(who);
+        break;
+    }
+    }
+
+    return goal;
+}
+
 //S32 zNPCGoalDuploLive::Enter(F32 dt, void* updCtxt)
 //{
 //    livestat = LIVESTAT_NORMAL;

@@ -1,17 +1,17 @@
-//#include "zNPCMessenger.h"
-//
-//#include "xordarray.h"
-//#include <types.h>
-//
-//static NPCPSData g_postoffice;
-//static NPCMsg g_msgdata;
-//static S32 g_lockarea;
-//
-//NPCPSData* NPCPS_postOffice()
-//{
-//    return &g_postoffice;
-//}
-//
+#include "zNPCMessenger.h"
+
+#include "xordarray.h"
+#include <types.h>
+
+static NPCPSData g_postoffice;
+static NPCMsg g_msgdata;
+static S32 g_lockarea;
+
+NPCPSData* NPCPS_postOffice()
+{
+    return &g_postoffice;
+}
+
 //void zNPCCommon::Stun(F32)
 //{
 //}
@@ -69,37 +69,37 @@
 //{
 //    return NPC_MID_DTRON_NPCAVAIL;
 //}
-//
-//void NPCPS_MsgPoolInit(NPCPSData* npc, S32 unk)
-//{
-//    XOrdInit(&npc->quelist, unk, 0);
-//    npc->msgblob = (NPCMsg*)xMemAlloc(gActiveHeap, unk * sizeof(NPCMsg), 0);
-//    memset(npc->msgblob, 0, unk * sizeof(NPCMsg));
-//    NPCPS_MsgPoolReset(npc);
-//}
-//
-//void NPCPS_MsgPoolReset(NPCPSData* npc)
-//{
-//    S32 iVar11 = npc->quelist.max;
-//    npc->quelist.cnt = 0;
-//    memset(npc->msgblob, 0, npc->quelist.max * sizeof(NPCMsg));
-//    if (0 < iVar11)
-//    {
-//    }
-//}
-//
-//void NPCPS_CltPoolInit(NPCPSData* npc, S32 unk)
-//{
-//    XOrdInit(&npc->cltlist, unk, 0);
-//    npc->cltblob = (NPCPSClt*)xMemAlloc(gActiveHeap, unk * 16, 0);
-//    memset(npc->cltblob, 0, unk * 16);
-//    NPCPS_CltPoolReset(npc);
-//}
-//
-//void NPCPS_CltPoolReset(NPCPSData*)
-//{
-//}
-//
+
+void NPCPS_MsgPoolInit(NPCPSData* npc, S32 unk)
+{
+    XOrdInit(&npc->quelist, unk, 0);
+    npc->msgblob = (NPCMsg*)xMemAlloc(gActiveHeap, unk * sizeof(NPCMsg), 0);
+    memset(npc->msgblob, 0, unk * sizeof(NPCMsg));
+    NPCPS_MsgPoolReset(npc);
+}
+
+void NPCPS_MsgPoolReset(NPCPSData* npc)
+{
+    S32 iVar11 = npc->quelist.max;
+    npc->quelist.cnt = 0;
+    memset(npc->msgblob, 0, npc->quelist.max * sizeof(NPCMsg));
+    if (0 < iVar11)
+    {
+    }
+}
+
+void NPCPS_CltPoolInit(NPCPSData* npc, S32 unk)
+{
+    XOrdInit(&npc->cltlist, unk, 0);
+    npc->cltblob = (NPCPSClt*)xMemAlloc(gActiveHeap, unk * 16, 0);
+    memset(npc->cltblob, 0, unk * 16);
+    NPCPS_CltPoolReset(npc);
+}
+
+void NPCPS_CltPoolReset(NPCPSData*)
+{
+}
+
 //void NPCPS_grabMsg()
 //{
 //    NPCPSData* npc = NPCPS_postOffice();
@@ -173,16 +173,16 @@
 //        g_lockarea = 0;
 //    }
 //}
-//
-//void zNPCMsg_Startup()
-//{
-//    NPCPSData* tempStartup;
-//
-//    tempStartup = NPCPS_postOffice();
-//    NPCPS_CltPoolInit(tempStartup, 0x20);
-//    NPCPS_MsgPoolInit(tempStartup, 0x40);
-//}
-//
+
+void zNPCMsg_Startup()
+{
+    NPCPSData* tempStartup;
+
+    tempStartup = NPCPS_postOffice();
+    NPCPS_CltPoolInit(tempStartup, 0x20);
+    NPCPS_MsgPoolInit(tempStartup, 0x40);
+}
+
 //void zNPCMsg_SceneReset()
 //{
 //    NPCPSData* tempReset;

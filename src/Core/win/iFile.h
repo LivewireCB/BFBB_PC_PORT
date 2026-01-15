@@ -14,48 +14,47 @@ enum IFILE_READSECTOR_STATUS
     IFILE_RDSTAT_EXPIRED
 };
 
-//#ifdef GAMECUBE
-//struct tag_iFile
-//{
-//    U32 flags;
-//    char path[128];
-//    S32 entrynum;
-//    DVDFileInfo fileInfo;
-//    S32 unkC4;
-//    S32 asynckey;
-//    S32 unknown[7];
-//    S32 unkE8;
-//    S32 offset;
-//};
-//#else
-//#ifdef PS2
-//struct tag_iFile
-//{
-//    U32 flags;
-//    char path[128];
-//    S32 fd;
-//    S32 offset;
-//    S32 length;
-//};
-//#endif
-//#endif
-
+#ifdef GAMECUBE
 struct tag_iFile
 {
     U32 flags;
     char path[128];
     S32 entrynum;
-    //DVDFileInfo fileInfo;
+    DVDFileInfo fileInfo;
     S32 unkC4;
     S32 asynckey;
     S32 unknown[7];
     S32 unkE8;
     S32 offset;
 };
+#else
+#ifdef PS2
+struct tag_iFile
+{
+    U32 flags;
+    char path[128];
+    S32 fd;
+    S32 offset;
+    S32 length;
+};
+#else
+#ifndef WINDOWS
+typedef struct tag_iFile
+{
+    U32 flags;
+    char path[128];
+    S32 fd;
+} iFile;
+#endif
+#endif
+#endif
+
+#define IFILE_NAMELEN_MAX 128
+#define IFILE_OPENED 1
 
 #define IFILE_OPEN_READ 0x1
 #define IFILE_OPEN_WRITE 0x2
-#define IFILE_OPEN_ABSPATH 0x4
+#define IFILE_OPEN_ABSPATH (1<<2)
 
 #define IFILE_SEEK_SET 0
 #define IFILE_SEEK_CUR 1
@@ -65,7 +64,7 @@ struct tag_xFile;
 
 void iFileInit();
 void iFileExit();
-U32* iFileLoad(char* name, U32* buffer, U32* size);
+U32* iFileLoad(const char* name, U32* buffer, U32* size);
 U32 iFileOpen(const char* name, S32 flags, tag_xFile* file);
 S32 iFileSeek(tag_xFile* file, S32 offset, S32 whence);
 U32 iFileRead(tag_xFile* file, void* buf, U32 size);

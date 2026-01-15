@@ -1,28 +1,28 @@
-//#include "xSurface.h"
-//#include "xMemMgr.h"
-//
-//#include <types.h>
-//
-//xSurface* surfs;
-//U16 nsurfs;
-//
-//void xSurfaceInit(U16 num_surfs)
-//{
-//    nsurfs = num_surfs;
-//    if (num_surfs != 0)
-//    {
-//        surfs = (xSurface*)xMemAllocSize(num_surfs * sizeof(xSurface));
-//        for (U16 i = 0; i < nsurfs; i++)
-//        {
-//            surfs[i].idx = i;
-//        }
-//    }
-//    else
-//    {
-//        surfs = NULL;
-//    }
-//}
-//
+#include "xSurface.h"
+#include "xMemMgr.h"
+
+#include <types.h>
+
+xSurface* surfs;
+U16 nsurfs;
+
+void xSurfaceInit(U16 num_surfs)
+{
+    nsurfs = num_surfs;
+    if (num_surfs != 0)
+    {
+        surfs = (xSurface*)xMemAllocSize(num_surfs * sizeof(xSurface));
+        for (U16 i = 0; i < nsurfs; i++)
+        {
+            surfs[i].idx = i;
+        }
+    }
+    else
+    {
+        surfs = NULL;
+    }
+}
+
 //// xSurface::operator= and xBase::operator= are placed here at link time, however nothing in
 ////   xSurface.cpp calls them in the final executable. This likely means there was an
 ////   unused/stripped function in xSurface.cpp that called xSurface::operator= (which calls
@@ -40,31 +40,31 @@
 //{
 //    surfs[n] = *ent;
 //}
-//
-//void xSurfaceExit()
-//{
-//}
-//
-//void xSurfaceSave(xSurface* ent, xSerial* s)
-//{
-//    xBaseSave((xBase*)ent, s);
-//}
-//
-//void xSurfaceLoad(xSurface* ent, xSerial* s)
-//{
-//    xBaseLoad((xBase*)ent, s);
-//}
-//
-//void xSurfaceReset(xSurface* ent)
-//{
-//}
-//
-//U16 xSurfaceGetNumSurfaces()
-//{
-//    return nsurfs;
-//}
-//
-//xSurface* xSurfaceGetByIdx(U16 n)
-//{
-//    return surfs != NULL ? &surfs[n] : NULL;
-//}
+
+void xSurfaceExit()
+{
+}
+
+void xSurfaceSave(xSurface* ent, xSerial* s)
+{
+    xBaseSave((xBase*)ent, s);
+}
+
+void xSurfaceLoad(xSurface* ent, xSerial* s)
+{
+    xBaseLoad((xBase*)ent, s);
+}
+
+void xSurfaceReset(xSurface* ent)
+{
+}
+
+U16 xSurfaceGetNumSurfaces()
+{
+    return nsurfs;
+}
+
+xSurface* xSurfaceGetByIdx(U16 n)
+{
+    return surfs != NULL ? &surfs[n] : NULL;
+}

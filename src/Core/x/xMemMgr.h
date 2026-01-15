@@ -84,8 +84,48 @@ struct xMemPool
     U32 Total;
 };
 
+// TODO: evaluate these
+// PC PORT REPO ADD INS
+
+// Required for seils version of iMemMgr
+#define XMEMMAXSTACK 12
+extern xMemInfo_tag gMemInfo;
+
+typedef U32 xMemAddr;
+
+enum
+{
+    XMEM_HEAP_0,
+    XMEM_HEAP_1,
+    XMEM_HEAP_2,
+    XMEM_MAX_HEAPS
+
+};
+#define XMEMAREA_0x20 0x20
+#define XMEMAREA_0x40 0x40
+#define XMEMAREA_0x200 0x200
+#define XMEMAREA_0x400 0x400
+#define XMEMAREA_0x800 0x800
+#define XMEMHEAP_0x1 0x1
+#define XMEMHEAP_0x2 0x2
+#define XMEMHEAP_0x4 0x4
+#define XMEMHEAP_0x8 0x8
+#define XMEMHEAP_0x20 0x20
+#define XMEMHEAP_0x100 0x100
+#define XMEMHEAP_0x3E00(x) (((x) & 0x1F) << 9)
+#define XMEMHEAP_0x4000(x) (((x) & 0x1) << 14)
+#define XMEMHEAP_0x8000(x) (((x) & 0x1) << 15)
+#define XMEMHEAP_0x10000 0x10000
+#define XMEMHEAP_GET_0x3E00(flags) (S32)(((flags) >> 9) & 0x1F)
+#define XMEMHEAP_GET_0x4000(flags) (S32)(((flags) >> 14) & 0x1)
+#define XMEMHEAP_GET_0x8000(flags) (S32)(((flags) >> 15) & 0x1)
+
+
+// END OF ADD INS
+
 extern U32 gActiveHeap;
 
+void xMemDebug_SoakLog(const char*);
 void xMemInit();
 void xMemExit();
 void xMemInitHeap(xMemHeap_tag* heap, U32 base, U32 size, U32 flags);

@@ -1,70 +1,96 @@
 #include "iScrFX.h"
 
+#include "rwplcore.h"
 #include <types.h>
 
-RwRaster* g_rast_gctapdance;
-S32 g_alreadyTriedAlloc;
-_iMotionBlurData sMBD;
-extern U32 sMotionBlurEnabled;
-extern F32 lbl_803CE168; // 0.0f
-extern F32 lbl_803CE174; // 1.0f
-extern F32 lbl_803CE178; // 0.5f
-extern F32 lbl_803CE17C; // 254f
+static U32 sMotionBlurEnabled;
+static RwRaster* g_rast_gctapdance;
+static S32 g_alreadyTriedAlloc;
+static _iMotionBlurData sMBD = {};
+
 
 void iScrFxInit()
 {
 }
-//
-//void iScrFxBegin()
+
+void iScrFxBegin()
+{
+    RwRenderStateSet(rwRENDERSTATETEXTUREFILTER, (void*)rwFILTERNEAREST);
+    RwRenderStateSet(rwRENDERSTATEFOGENABLE, (void*)rwFOGTYPENAFOGTYPE);
+    RwRenderStateSet(rwRENDERSTATEZTESTENABLE, NULL);
+    RwRenderStateSet(rwRENDERSTATEZWRITEENABLE, NULL);
+    RwRenderStateSet(rwRENDERSTATETEXTURERASTER, NULL);
+    RwRenderStateSet(rwRENDERSTATEVERTEXALPHAENABLE, (void*)TRUE);
+    RwRenderStateSet(rwRENDERSTATESRCBLEND, (void*)rwBLENDSRCALPHA);
+    RwRenderStateSet(rwRENDERSTATEDESTBLEND, (void*)rwBLENDINVSRCALPHA);
+}
+
+void iScrFxEnd()
+{
+    RwRenderStateSet(rwRENDERSTATEFOGENABLE, (void*)rwFOGTYPENAFOGTYPE);
+    RwRenderStateSet(rwRENDERSTATEZTESTENABLE, (void*)TRUE);
+    RwRenderStateSet(rwRENDERSTATEZWRITEENABLE, (void*)TRUE);
+    RwRenderStateSet(rwRENDERSTATETEXTURERASTER, NULL);
+    RwRenderStateSet(rwRENDERSTATEVERTEXALPHAENABLE, (void*)FALSE);
+    RwRenderStateSet(rwRENDERSTATESRCBLEND, (void*)rwBLENDONE);
+    RwRenderStateSet(rwRENDERSTATEDESTBLEND, (void*)rwBLENDZERO);
+}
+
+//void iScrFxDrawBox(F32 x1, F32 y1, F32 x2, F32 y2, U8 red, U8 green, U8 blue, U8 alpha)
 //{
-//    RwRenderStateSet(rwRENDERSTATETEXTUREFILTER, (void*)rwFILTERNEAREST);
-//    RwRenderStateSet(rwRENDERSTATEFOGENABLE, (void*)rwFOGTYPENAFOGTYPE);
-//    RwRenderStateSet(rwRENDERSTATEZTESTENABLE, NULL);
-//    RwRenderStateSet(rwRENDERSTATEZWRITEENABLE, NULL);
-//    RwRenderStateSet(rwRENDERSTATETEXTURERASTER, NULL);
-//    RwRenderStateSet(rwRENDERSTATEVERTEXALPHAENABLE, (void*)true);
-//    RwRenderStateSet(rwRENDERSTATESRCBLEND, (void*)rwBLENDSRCALPHA);
-//    RwRenderStateSet(rwRENDERSTATEDESTBLEND, (void*)rwBLENDINVSRCALPHA);
-//}
+//    U16 indices[4] = { 0, 1, 2, 3 };
+//    rwGameCube2DVertex v[4];
+//    F32 nearZ = RwIm2DGetNearScreenZ();
 //
-//void iScrFxEnd()
-//{
-//    RwRenderStateSet(rwRENDERSTATEFOGENABLE, (void*)rwFOGTYPENAFOGTYPE);
-//    RwRenderStateSet(rwRENDERSTATEZTESTENABLE, (void*)true);
-//    RwRenderStateSet(rwRENDERSTATEZWRITEENABLE, (void*)true);
-//    RwRenderStateSet(rwRENDERSTATETEXTURERASTER, NULL);
-//    RwRenderStateSet(rwRENDERSTATEVERTEXALPHAENABLE, (void*)false);
-//    RwRenderStateSet(rwRENDERSTATESRCBLEND, (void*)rwBLENDONE);
-//    RwRenderStateSet(rwRENDERSTATEDESTBLEND, (void*)rwBLENDZERO);
-//}
+//    RwIm2DVertexSetScreenX(&v[0], x1);
+//    RwIm2DVertexSetScreenY(&v[0], y1);
+//    RwIm2DVertexSetScreenZ(&v[0], nearZ);
+//    RwIm2DVertexSetScreenX(&v[1], x2);
+//    RwIm2DVertexSetScreenY(&v[1], y1);
+//    RwIm2DVertexSetScreenZ(&v[1], nearZ);
+//    RwIm2DVertexSetScreenX(&v[2], x1);
+//    RwIm2DVertexSetScreenY(&v[2], y2);
+//    RwIm2DVertexSetScreenZ(&v[2], nearZ);
+//    RwIm2DVertexSetScreenX(&v[3], x2);
+//    RwIm2DVertexSetScreenY(&v[3], y2);
+//    RwIm2DVertexSetScreenZ(&v[3], nearZ);
 //
-//void iCameraMotionBlurActivate(U32 activate)
-//{
-//    sMotionBlurEnabled = activate;
-//}
-//
-//// The instructions regarding the setting of sMotionBlurEnabled and sMBD.motionBlurAlpha are in the wrong order.
-//void iCameraSetBlurriness(F32 amount)
-//{
-//    if (amount <= lbl_803CE168)
+//    for (S32 i = 0; i < 4; i++)
 //    {
-//        sMotionBlurEnabled = 0;
+//        RwIm2DVertexSetRealRGBA(&v[i], red, green, blue, alpha);
 //    }
-//    else
-//    {
-//        if (amount > lbl_803CE174)
-//        {
-//            amount = lbl_803CE174;
-//        }
-//        sMotionBlurEnabled = 1;
-//        sMBD.motionBlurAlpha = (S32)(lbl_803CE17C * amount + lbl_803CE178);
-//    }
+//
+//    RwIm2DRenderIndexedPrimitive(rwPRIMTYPETRISTRIP, v, 4, indices, 4);
 //}
 
-// Instructions in the wrong order.
-void iScrFxCameraCreated(RwCamera* pCamera)
+void iCameraMotionBlurActivate(U32 activate)
 {
-    sMBD.motionBlurAlpha = 0x90;
+    sMotionBlurEnabled = activate;
+}
+
+// The instructions regarding the setting of sMotionBlurEnabled and sMBD.motionBlurAlpha are in the wrong order.
+void iCameraSetBlurriness(F32 amount)
+{
+    if (amount <= 0.0f)
+    {
+        sMotionBlurEnabled = FALSE;
+    }
+    else
+    {
+        if (amount > 1.0f)
+        {
+            amount = 1.0f;
+        }
+        sMotionBlurEnabled = TRUE;
+
+        sMBD.motionBlurAlpha = 254.0f * amount + 0.5f;
+    }
+}
+
+// Instructions in the wrong order.
+void iScrFxCameraCreated(RwCamera* pCamera) RIMP
+{
+    /*sMBD.motionBlurAlpha = 0x90;
     sMBD.motionBlurFrontBuffer = NULL;
     sMBD.index[0] = 0;
     sMBD.index[1] = 1;
@@ -72,23 +98,62 @@ void iScrFxCameraCreated(RwCamera* pCamera)
     sMBD.index[3] = 0;
     sMBD.index[4] = 2;
     sMBD.index[5] = 3;
-    iScrFxMotionBlurOpen(pCamera);
+    iScrFxMotionBlurOpen(pCamera);*/
 }
 
-//void iScrFxCameraEndScene(RwCamera* pCamera)
-//{
-//    if ((sMotionBlurEnabled != 0) && (sMBD.motionBlurAlpha != 0))
-//    {
-//        iScrFxMotionBlurRender(pCamera, sMBD.motionBlurAlpha & 0xff);
-//    }
-//}
-//
-//void iScrFxPostCameraEnd(RwCamera* pCamera)
-//{
-//    GCMB_SiphonFrameBuffer(pCamera);
-//}
+void iScrFxCameraEndScene(RwCamera* pCamera) RIMP
+{
+    /*if (sMotionBlurEnabled && sMBD.motionBlurAlpha != 0)
+    {
+        iScrFxMotionBlurRender(pCamera, sMBD.motionBlurAlpha & 0xff);
+    }*/
+}
 
-RwRaster* FBMBlur_DebugIntervention(RwCamera* camera, RwRaster* ras)
+void iScrFxPostCameraEnd(RwCamera* pCamera) RIMP
+{
+    //GCMB_SiphonFrameBuffer(pCamera);
+}
+
+static void iCameraOverlayRender(RwCamera* pCamera, RwRaster* ras, RwRGBA col) RIMP
+{
+    //RwRect rect; // from dwarf, not sure where it's used
+    /*RwRaster* raster = FBMBlur_DebugIntervention(pCamera, ras);
+
+    for (S32 i = 0; i < 4; i++)
+    {
+        sMBD.vertex[i].emissiveColor.red = col.red;
+        sMBD.vertex[i].emissiveColor.green = col.green;
+        sMBD.vertex[i].emissiveColor.blue = col.blue;
+        sMBD.vertex[i].emissiveColor.alpha = col.alpha;
+    }
+
+    RwRenderStateSet(rwRENDERSTATETEXTUREFILTER, (void*)TRUE);
+    RwRenderStateSet(rwRENDERSTATEFOGENABLE, (void*)FALSE);
+    RwRenderStateSet(rwRENDERSTATEZTESTENABLE, (void*)FALSE);
+    RwRenderStateSet(rwRENDERSTATEZWRITEENABLE, (void*)FALSE);
+    RwRenderStateSet(rwRENDERSTATETEXTURERASTER, raster);
+    RwRenderStateSet(rwRENDERSTATEVERTEXALPHAENABLE, (void*)TRUE);
+    RwRenderStateSet(rwRENDERSTATESRCBLEND, (void*)rwBLENDSRCALPHA);
+    RwRenderStateSet(rwRENDERSTATEDESTBLEND, (void*)rwBLENDINVSRCALPHA);
+    if (raster != 0)
+    {
+        RwRasterLock(raster, 0, 2);
+    }
+    RwIm2DRenderIndexedPrimitive(rwPRIMTYPETRILIST, sMBD.vertex, 4, sMBD.index, 6);
+    if (raster != 0)
+    {
+        RwRasterUnlock(raster);
+    }
+    RwRenderStateSet(rwRENDERSTATEFOGENABLE, (void*)FALSE);
+    RwRenderStateSet(rwRENDERSTATEZTESTENABLE, (void*)TRUE);
+    RwRenderStateSet(rwRENDERSTATEZWRITEENABLE, (void*)TRUE);
+    RwRenderStateSet(rwRENDERSTATETEXTURERASTER, NULL);
+    RwRenderStateSet(rwRENDERSTATEVERTEXALPHAENABLE, (void*)FALSE);
+    RwRenderStateSet(rwRENDERSTATESRCBLEND, (void*)rwBLENDSRCALPHA);
+    RwRenderStateSet(rwRENDERSTATEDESTBLEND, (void*)rwBLENDINVSRCALPHA);*/
+}
+
+inline RwRaster* FBMBlur_DebugIntervention(RwCamera* camera, RwRaster* ras)
 {
     return ras;
 }
@@ -100,26 +165,28 @@ S32 iScrFxMotionBlurOpen(RwCamera* camera)
 
 S32 iScrFxCameraDestroyed(RwCamera* pCamera)
 {
-    GCMB_KillFrameBufferCopy();
+    // TODO: seil has this return a 1 in his version. Unsure why atm
+
+    return 1;
+
+    /*GCMB_KillFrameBufferCopy();
     if (sMBD.motionBlurFrontBuffer != NULL)
     {
         RwRasterDestroy(sMBD.motionBlurFrontBuffer);
         sMBD.motionBlurFrontBuffer = NULL;
         return 1;
     }
-    return 0;
+    return 0;*/
 }
 
-// WIP.
-//void iScrFxMotionBlurRender(RwCamera* camera, U32 col)
-//{
-//    if (sMBD.motionBlurFrontBuffer != NULL)
-//    {
-//        RwRGBA col;
-//        col.alpha = 0xf8;
-//        iCameraOverlayRender(camera, (RwRaster*)sMBD.motionBlurFrontBuffer, col);
-//    }
-//}
+void iScrFxMotionBlurRender(RwCamera* camera, U32 alpha)
+{
+    if (sMBD.motionBlurFrontBuffer != NULL)
+    {
+        RwRGBA col = { 0xff, 0xff, 0xff, (U8)alpha };
+        iCameraOverlayRender(camera, (RwRaster*)sMBD.motionBlurFrontBuffer, col);
+    }
+}
 
 void GCMB_MakeFrameBufferCopy(const RwCamera* camera)
 {

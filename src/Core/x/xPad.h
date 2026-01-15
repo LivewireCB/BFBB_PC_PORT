@@ -35,21 +35,29 @@ struct _tagPadAnalog
     S8 y;
 };
 
-struct analog_data
-{
-    xVec2 offset;
-    xVec2 dir;
-    F32 mag;
-    F32 ang;
-};
-
 struct _tagxPad
 {
+    struct analog_data
+    {
+        xVec2 offset;
+        xVec2 dir;
+        F32 mag;
+        F32 ang;
+    };
+
     S8 value[22];
+
+    // Offset: 0x16
     S8 last_value[22];
+
+    // Offset: 0x2C
     U32 on;
+
+    // Offset: 0x30
     U32 pressed;
     U32 released;
+
+    // Offset: 0x38
     _tagPadAnalog analog1;
     _tagPadAnalog analog2;
     _tagPadState state;
@@ -101,5 +109,8 @@ void xPadDestroyRumbleChain(S32 idx);
 S32 xPadAddRumble(S32 idx, _tagRumbleType type, F32 time, S32 replace, U32 fxflags);
 
 void xPadAnalogIsDigital(F32, F32);
+
+inline F32 normalize_analog(S32 v, S32 v_min, S32 v_max, S32 dead_center, S32 dead_min,
+                            S32 dead_max);
 
 #endif

@@ -9,25 +9,21 @@ struct xVec3
     F32 y;
     F32 z;
 
-    static  xVec3 m_Null;
-    static  xVec3 m_UnitAxisX;
-    static  xVec3 m_UnitAxisY;
+    static const xVec3 m_Null;
+    static const xVec3 m_UnitAxisX;
+    static const xVec3 m_UnitAxisY;
 
     static xVec3 create(F32 x, F32 y, F32 z);
     static xVec3 create(F32 f);
 
-    xVec3& operator=(F32 f);
-      
-    /*xVec3& xVec3::operator=(F32 f)  
-    {  
-        this->x = f;  
-        this->y = f;  
-        this->z = f;  
-        return *this;  
-    }*/
+    xVec3& operator=(F32 f)
+    {
+        x = y = z = f;
+        return *this;
+    }
     // FIXME: This should not be declared. Declaring it causes the assignment operator for the
     //        anonymous struct "camera" in hook_asset to call it rather than just copy the vec members.
-    /*xVec3& operator=(const xVec3&);*/
+    xVec3& operator=(const xVec3&);
     xVec3 operator+(const xVec3&) const;
     xVec3 operator-(const xVec3&) const;
     xVec3 operator*(F32) const;
@@ -63,11 +59,18 @@ struct xVec3
     F32 length() const;
     F32 length2() const;
     xVec3& invert();
+
+    xVec3 inverse() const
+    {
+        xVec3 inverse = *this;
+        return inverse.invert();
+    }
+
     F32 dot(const xVec3& c) const;
 
     xVec3 cross(const xVec3& c) const
     {
-        xVec3 v = {};
+        xVec3 v = xVec3::m_Null;
 
         v.x = y * c.y - c.y * z;
         v.y = z * c.x - c.z * x;

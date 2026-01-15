@@ -1,34 +1,34 @@
-//#include "xEnt.h"
-//
-//#include "xEvent.h"
-//#include "xString.h"
-//#include "xGroup.h"
-//#include "xstransvc.h"
-//#include "xFX.h"
-//#include "xShadow.h"
-//#include "xMathInlines.h"
-//#include "xMath.h"
-//
-//#include "zBase.h"
-//#include "zPlatform.h"
-//#include "zEntDestructObj.h"
-//#include "zCollGeom.h"
-//#include "zSurface.h"
-//#include "zLight.h"
-//#include "zGrid.h"
-//
-//#include "iMath3.h"
-//#include "iCollide.h"
-//#include "iModel.h"
-//#include "iMath.h"
-//
-//#include <string.h>
-//
-//static F32 nsn_angle = DEG2RAD(30);
-//static F32 sEntityTimePassed;
-//static xBox all_ents_box;
-//static S32 all_ents_box_init;
-//
+#include "xEnt.h"
+
+#include "xEvent.h"
+#include "xString.h"
+#include "xGroup.h"
+#include "xstransvc.h"
+#include "xFX.h"
+#include "xShadow.h"
+#include "xMathInlines.h"
+#include "xMath.h"
+
+#include "zBase.h"
+#include "zPlatform.h"
+#include "zEntDestructObj.h"
+#include "zCollGeom.h"
+#include "zSurface.h"
+#include "zLight.h"
+#include "zGrid.h"
+
+#include "iMath3.h"
+#include "iCollide.h"
+#include "iModel.h"
+#include "iMath.h"
+
+#include <string.h>
+
+static F32 nsn_angle = DEG2RAD(30);
+static F32 sEntityTimePassed;
+static xBox all_ents_box;
+static S32 all_ents_box_init;
+
 //namespace
 //{
 //    namespace anim_coll
@@ -1012,23 +1012,23 @@
 //        }
 //    }
 //}
-//
-//void xEntDefaultBoundUpdate(xEnt* ent, xVec3* pos)
-//{
-//    xBound* bound = &ent->bound;
-//
-//    if (bound->type == XBOUND_TYPE_SPHERE)
-//    {
-//        xVec3Copy(&bound->sph.center, pos);
-//
-//        bound->sph.center.y += 0.7f;
-//        bound->sph.r = 0.7f;
-//    }
-//
-//    xBoundUpdate(bound);
-//    zGridUpdateEnt(ent);
-//}
-//
+
+void xEntDefaultBoundUpdate(xEnt* ent, xVec3* pos)
+{
+    xBound* bound = &ent->bound;
+
+    if (bound->type == XBOUND_TYPE_SPHERE)
+    {
+        xVec3Copy(&bound->sph.center, pos);
+
+        bound->sph.center.y += 0.7f;
+        bound->sph.r = 0.7f;
+    }
+
+    xBoundUpdate(bound);
+    zGridUpdateEnt(ent);
+}
+
 //void xEntDefaultTranslate(xEnt* ent, xVec3* dpos, xMat4x3* dmat)
 //{
 //    if (dmat)
@@ -1902,12 +1902,12 @@
 //{
 //    nsn_angle = angle;
 //}
-//
-//xBox* xEntGetAllEntsBox()
-//{
-//    return &all_ents_box;
-//}
-//
+
+xBox* xEntGetAllEntsBox()
+{
+    return &all_ents_box;
+}
+
 //void xEntAnimateCollision(xEnt& ent, bool on)
 //{
 //    if (on && !(ent.moreFlags & 0x20))

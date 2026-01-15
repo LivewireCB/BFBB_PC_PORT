@@ -19,27 +19,27 @@ struct _tagiTRCPadInfo
     _tagPadInit pad_init;
 };
 
-namespace ROMFont
-{
-    //extern OSFontHeader* mFontData;
-    extern void* mXFBs[2];
-    extern void* mCurrentFrameBuffer;
-    //extern GXRenderModeObj* mRenderMode;
-    extern bool mFirstFrame;
-
-    bool Init();
-    //void InitDisplay(_GXRenderModeObj* gxRender);
-    void InitGX();
-    void InitVI();
-    void RenderBegin();
-    void RenderEnd();
-    void SwapBuffers();
-    void DrawCell(S32 x, S32 y, S32 u, S32 v);
-    void LoadSheet(void* image_ptr);
-    S32 DrawString(S32 param_1, S32 param_2, char* string);
-    S32 GetWidth(char* string);
-    void DrawTextBox(S32 param_1, S32 param_2, S32 param_3, S32 param_4, char* str);
-} // namespace ROMFont
+//namespace ROMFont
+//{
+//    extern OSFontHeader* mFontData;
+//    extern void* mXFBs[2];
+//    extern void* mCurrentFrameBuffer;
+//    extern GXRenderModeObj* mRenderMode;
+//    extern bool mFirstFrame;
+//
+//    BOOL Init();
+//    void InitDisplay(_GXRenderModeObj* gxRender);
+//    void InitGX();
+//    void InitVI();
+//    void RenderBegin();
+//    void RenderEnd();
+//    void SwapBuffers();
+//    void DrawCell(S32 x, S32 y, S32 u, S32 v);
+//    void LoadSheet(void* image_ptr);
+//    S32 DrawString(S32 param_1, S32 param_2, char* string);
+//    S32 GetWidth(char* string);
+//    void DrawTextBox(S32 param_1, S32 param_2, S32 param_3, S32 param_4, char* str);
+//} // namespace ROMFont
 
 // Yes, this is a namespace, not a class.
 namespace iTRCDisk
@@ -70,7 +70,7 @@ namespace iTRCDisk
 namespace ResetButton
 {
     extern bool mResetEnabled;
-    extern bool mWasResetButtonPressed;
+    extern bool mWasResetButtonPressed; // TODO: Decomp has this as a BOOL instead of "bool". changing to "bool" to make it compatible with this repo
     extern void (*mSndKill)();
 
     void EnableReset();

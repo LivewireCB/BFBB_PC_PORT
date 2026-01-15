@@ -1,41 +1,43 @@
-//#include "xsavegame.h"
-//
-//#include <types.h>
-//#include <string.h>
-//#include <stdio.h>
-//
-//#include "xutil.h"
-//#include "xMemMgr.h"
-//#include "isavegame.h"
-//
-//S32 g_xsginit;
-//st_XSAVEGAME_DATA g_xsgdata = {};
-//st_XSAVEGAME_LEADER g_leaders[3] = {};
-//static XSGAutoData g_autodata;
-//
-//S32 xSGStartup()
-//{
-//    if (g_xsginit++ == 0)
-//    {
-//        xUtilStartup();
-//        iSGStartup();
-//        memset(&g_xsgdata, 0, sizeof(st_XSAVEGAME_DATA));
-//    }
-//    xSGAutoSave_Startup();
-//    return g_xsginit;
-//}
-//
-//S32 xSGShutdown()
-//{
-//    g_xsginit--;
-//    if (g_xsginit == 0)
-//    {
-//        iSGShutdown();
-//        xUtilShutdown();
-//    }
-//    return g_xsginit;
-//}
-//
+#include "xsavegame.h"
+
+#include <types.h>
+#include <string.h>
+#include <stdio.h>
+
+#include "xutil.h"
+#include "xMemMgr.h"
+#include "isavegame.h"
+
+S32 g_xsginit;
+st_XSAVEGAME_DATA g_xsgdata = {};
+st_XSAVEGAME_LEADER g_leaders[3] = {};
+static XSGAutoData g_autodata;
+
+S32 xSGStartup() RIMP WIP
+{
+    //if (g_xsginit++ == 0)
+    //{
+        //xUtilStartup();
+        //iSGStartup();
+        //memset(&g_xsgdata, 0, sizeof(st_XSAVEGAME_DATA));
+    //}
+    //xSGAutoSave_Startup();
+    //return g_xsginit;
+
+    return 0;
+}
+
+S32 xSGShutdown()
+{
+    g_xsginit--;
+    if (g_xsginit == 0)
+    {
+        iSGShutdown();
+        xUtilShutdown();
+    }
+    return g_xsginit;
+}
+
 //st_XSAVEGAME_DATA* xSGInit(en_SAVEGAME_MODE mode)
 //{
 //    st_XSAVEGAME_DATA* xsgdata = &g_xsgdata;
@@ -218,23 +220,23 @@
 //{
 //    xsgdata->gslot = gidx;
 //}
-//
-//S32 xSGGameIsEmpty(st_XSAVEGAME_DATA* xsgdata, S32 gidx)
-//{
-//    return xSGGameSize(xsgdata, gidx) <= 0;
-//}
-//
-//S32 xSGGameSize(st_XSAVEGAME_DATA* xsgdata, S32 gidx)
-//{
-//    S32 size = 0;
-//    if (xSG_chdir_gamedir(xsgdata))
-//    {
-//        char* fname = xSG_cm_slotname(xsgdata, gidx);
-//        size = iSGFileSize(xsgdata->isgsess, fname);
-//    }
-//    return size;
-//}
-//
+
+S32 xSGGameIsEmpty(st_XSAVEGAME_DATA* xsgdata, S32 gidx)
+{
+    return xSGGameSize(xsgdata, gidx) <= 0;
+}
+
+S32 xSGGameSize(st_XSAVEGAME_DATA* xsgdata, S32 gidx) WIP
+{
+    S32 size = 0;
+    /*if (xSG_chdir_gamedir(xsgdata))
+    {
+        char* fname = xSG_cm_slotname(xsgdata, gidx);
+        size = iSGFileSize(xsgdata->isgsess, fname);
+    }*/
+    return size;
+}
+
 //char* xSGGameModDate(st_XSAVEGAME_DATA* xsgdata, S32 gidx)
 //{
 //    static char da_date[32] = {};

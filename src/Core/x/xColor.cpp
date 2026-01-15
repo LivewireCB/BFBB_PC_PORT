@@ -7,6 +7,7 @@ const iColor_tag g_CYAN = { 0, 255, 255, 255 };
 const iColor_tag g_YELLOW = { 255, 255, 0, 255 };
 const iColor_tag g_WHITE = { 255, 255, 255, 255 };
 const iColor_tag g_GRAY50 = { 128, 128, 128, 255 };
+const iColor_tag g_GRAY80 = { 204, 204, 204, 255 };
 const iColor_tag g_NEON_RED = { 255, 32, 0, 255 };
 const iColor_tag g_NEON_GREEN = { 32, 255, 0, 255 };
 const iColor_tag g_NEON_BLUE = { 32, 32, 255, 255 };

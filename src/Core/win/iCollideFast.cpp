@@ -1,6 +1,6 @@
-//#include "iCollideFast.h"
-//
-//void iCollideFastInit(xScene* sc)
-//{
-//    return;
-//}
+#include "iCollideFast.h"
+
+void iCollideFastInit(xScene* sc)
+{
+    return;
+}

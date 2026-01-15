@@ -151,16 +151,18 @@ struct xCamAsset : xBaseAsset
 struct xCamera : xBase
 {
     RwCamera* lo_cam;
+    // Offset: 0x14
     xMat4x3 mat;
+    // Offset: 0x54
     xMat4x3 omat;
     xMat3x3 mbasis;
     xBound bound;
     xMat4x3* tgt_mat;
-    xMat4x3* tgt_omat;
+    xMat4x3* tgt_omat; // 0x114
     xBound* tgt_bound;
     xVec3 focus;
     xScene* sc;
-    xVec3 tran_accum;
+    xVec3 tran_accum; // 0x12c
     F32 fov;
     U32 flags;
     F32 tmr;
@@ -171,15 +173,15 @@ struct xCamera : xBase
     F32 ltm_dec;
     F32 dmin;
     F32 dmax;
-    F32 dcur;
+    F32 dcur; // 0x160
     F32 dgoal;
     F32 hmin;
     F32 hmax;
-    F32 hcur;
+    F32 hcur; // 0x170
     F32 hgoal;
     F32 pmin;
     F32 pmax;
-    F32 pcur;
+    F32 pcur; // 0x180
     F32 pgoal;
     F32 depv;
     F32 hepv;
@@ -284,11 +286,13 @@ void xCameraMove(xCamera* cam, const xVec3& loc);
 void xCameraMove(xCamera* cam, const xVec3& loc, F32 maxSpeed);
 void xCameraFOV(xCamera* cam, F32 fov, F32 maxSpeed, F32 dt);
 void xCameraRotate(xCamera* cam, const xMat3x3& m, F32 time, F32 accel, F32 decl);
+void xCameraLook(xCamera* cam, U32 flags, const xQuat* orn_goal, F32 tm, F32 tm_acc, F32 tm_dec);
 void xCameraLookYPR(xCamera* cam, U32 flags, F32 yaw, F32 pitch, F32 roll, F32 tm, F32 tm_acc,
                     F32 tm_dec);
 F32 xCameraGetFOV(const xCamera* cam);
 void xCameraDoCollisions(S32 do_collis, S32 owner);
 void xCameraSetTargetMatrix(xCamera* cam, xMat4x3* mat);
+void xCameraSetTargetOMatrix(xCamera* cam, xMat4x3* mat);
 void xCameraFXShake(F32 maxTime, F32 magnitude, F32 cycleMax, F32 rotate_magnitude, F32 radius,
                     xVec3* epicenter, xVec3* player);
 

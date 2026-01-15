@@ -2,8 +2,7 @@
 #define XPKRSVC_H
 
 #include <types.h>
-//#include <dolphin/os/OSTime.h>
-#include "time.h"
+#include <time.h>
 
 #include "xhipio.h"
 #include "xordarray.h"

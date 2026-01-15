@@ -5,11 +5,12 @@
 #include "xMath3.h"
 #include "xCollide.h"
 
+// Size: 0x4C
 struct xBound
 {
     xQCData qcd;
 
-    U8 type;
+    U8 type; // Offset: 0x20 (or 0x84)
     U8 pad[3];
     union
     {

@@ -8,9 +8,9 @@
 #include "xutil.h"
 #include "xMath.h"
 #include "xMemMgr.h"
-//
-//// Square and JESway: Function relocation issues will resolve themselves when all the functions
-////                    here 100% match, as it is apparently related to the instruction size of each function
+
+// Square and JESway: Function relocation issues will resolve themselves when all the functions
+//                    here 100% match, as it is apparently related to the instruction size of each function
 static st_PACKER_READ_FUNCS g_pkr_read_funcmap_original = { 1,
                                                             PKR_ReadInit,
                                                             PKR_ReadDone,
@@ -29,6 +29,7 @@ static st_PACKER_READ_FUNCS g_pkr_read_funcmap_original = { 1,
                                                             PKR_getPackTimestamp,
                                                             PKR_Disconnect };
 static st_PACKER_READ_FUNCS g_pkr_read_funcmap = g_pkr_read_funcmap_original;
+ 
 st_PACKER_READ_DATA g_readdatainst[16] = {};
 
 st_HIPLOADFUNCS* g_hiprf;

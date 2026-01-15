@@ -1,67 +1,68 @@
 
-//#include "zNPCTypeBossSB2.h"
-//#include "xLightKit.h"
-//#include "zNPCGoalCommon.h"
-//#include <types.h>
-//#include "string.h"
-//#include "iModel.h"
-//#include "xCollide.h"
-//#include "xMath.h"
-//#include "xMath3.h"
-//#include "xstransvc.h"
-//#include "xSnd.h"
-//#include "xVec3.h"
-//#include "xDebug.h"
-//
-//#include "zCamera.h"
-//#include "zEntSimpleObj.h"
-//#include "zEntDestructObj.h"
-//#include "zGlobals.h"
-//#include "zGrid.h"
-//#include "zNPCTypeBossPatrick.h"
-//#include "zRenderState.h"
-//#include "zLightning.h"
-//#include "zNPCTypeRobot.h"
-//#include <xMathInlines.h>
-//
-//#define ANIM_Unknown 0 //0x0
-//#define ANIM_Idle01 1 // 0x4
-//#define ANIM_Idle02 2 // 0x8
-//#define ANIM_Taunt01 3 // 0xC
-//#define ANIM_Hit01 7 //0x1c
-//#define ANIM_Hit02 8 //0x20
-//#define ANIM_Dizzy01 10 //0x28
-//#define ANIM_SmashHitLeft 46
-//#define ANIM_SmashHitRight 47
-//#define ANIM_SmackLeft01 48
-//#define ANIM_SmackRight01 49
-//#define ANIM_ChopLeftBegin 50
-//#define ANIM_ChopLeftLoop 51
-//#define ANIM_ChopLeftEnd 52
-//#define ANIM_ChopRightBegin 53
-//#define ANIM_ChopRightLoop 54
-//#define ANIM_ChopRightEnd 55
-//#define ANIM_SwipeLeftBegin 56
-//#define ANIM_SwipeLeftLoop 57
-//#define ANIM_SwipeLeftEnd 58
-//#define ANIM_SwipeRightBegin 59
-//#define ANIM_SwipeRightLoop 60
-//#define ANIM_SwipeRightEnd 61
-//#define ANIM_ReturnIdle01 62
-//#define ANIM_KarateStart 63
-//#define ANIM_KarateLoop 64
-//#define ANIM_KarateEnd 65
-//
-//#define SOUND_TAUNT 0
-//#define SOUND_KARATE 1
-//#define SOUND_CHOP_WINDUP 2
-//#define SOUND_CHOP_SWING 3
-//#define SOUND_SWIPE 4
-//#define SOUND_KARATE_SLUG 5
-//#define SOUND_CHOP_HIT 6
-//#define SOUND_KARATE_HIT 7
-//#define SOUND_HIT_SLAP 8
-//#define SOUND_HIT_FLAIL 9
+#include "zNPCTypeBossSB2.h"
+#include "new.h"
+#include "xLightKit.h"
+#include "zNPCGoalCommon.h"
+#include <types.h>
+#include "string.h"
+#include "iModel.h"
+#include "xCollide.h"
+#include "xMath.h"
+#include "xMath3.h"
+#include "xstransvc.h"
+#include "xSnd.h"
+#include "xVec3.h"
+#include "xDebug.h"
+
+#include "zCamera.h"
+#include "zEntSimpleObj.h"
+#include "zEntDestructObj.h"
+#include "zGlobals.h"
+#include "zGrid.h"
+#include "zNPCTypeBossPatrick.h"
+#include "zRenderState.h"
+#include "zLightning.h"
+#include "zNPCTypeRobot.h"
+#include <xMathInlines.h>
+
+#define ANIM_Unknown 0 //0x0
+#define ANIM_Idle01 1 // 0x4
+#define ANIM_Idle02 2 // 0x8
+#define ANIM_Taunt01 3 // 0xC
+#define ANIM_Hit01 7 //0x1c
+#define ANIM_Hit02 8 //0x20
+#define ANIM_Dizzy01 10 //0x28
+#define ANIM_SmashHitLeft 46
+#define ANIM_SmashHitRight 47
+#define ANIM_SmackLeft01 48
+#define ANIM_SmackRight01 49
+#define ANIM_ChopLeftBegin 50
+#define ANIM_ChopLeftLoop 51
+#define ANIM_ChopLeftEnd 52
+#define ANIM_ChopRightBegin 53
+#define ANIM_ChopRightLoop 54
+#define ANIM_ChopRightEnd 55
+#define ANIM_SwipeLeftBegin 56
+#define ANIM_SwipeLeftLoop 57
+#define ANIM_SwipeLeftEnd 58
+#define ANIM_SwipeRightBegin 59
+#define ANIM_SwipeRightLoop 60
+#define ANIM_SwipeRightEnd 61
+#define ANIM_ReturnIdle01 62
+#define ANIM_KarateStart 63
+#define ANIM_KarateLoop 64
+#define ANIM_KarateEnd 65
+
+#define SOUND_TAUNT 0
+#define SOUND_KARATE 1
+#define SOUND_CHOP_WINDUP 2
+#define SOUND_CHOP_SWING 3
+#define SOUND_SWIPE 4
+#define SOUND_KARATE_SLUG 5
+#define SOUND_CHOP_HIT 6
+#define SOUND_KARATE_HIT 7
+#define SOUND_HIT_SLAP 8
+#define SOUND_HIT_FLAIL 9
 
 //namespace
 //{
@@ -96,13 +97,13 @@
 //        model->PipeFlags |= 0x6508;
 //    }
 //
-//    F32 max(float maxFloat1, float maxFloat2) //Temp names till file is further
+//    F32 max(F32 f0, F32 f1)
 //    {
-//        if (maxFloat1 > maxFloat2)
+//        if (f0 > f1)
 //        {
-//            return maxFloat1;
+//            return f0;
 //        }
-//        return maxFloat2;
+//        return f1;
 //    }
 //
 //    S32 tweak()
@@ -118,7 +119,7 @@
 //        }
 //    }
 //
-//    S32 play_sound(int, const xVec3*, float)
+//    S32 play_sound(int, const xVec3*, F32)
 //    {
 //        return 0; // to-do
 //    }
@@ -985,7 +986,7 @@
 //    }
 //
 //} // namespace
-
+//
 //xAnimTable* ZNPC_AnimTable_BossSB2()
 //{
 //    // clang-format off
@@ -1130,18 +1131,14 @@
 //    zNPCCommon::Destroy();
 //}
 //
-//void zNPCB_SB2::NewTime(xScene* x, float y)
+//void zNPCB_SB2::NewTime(xScene* x, F32 y)
 //{
 //}
-//
-//void zNPCB_SB2::render_debug()
-//{
-//}
-//
-//void zNPCB_SB2::decompose()
-//{
-//}
-//
+
+void zNPCB_SB2::decompose()
+{
+}
+
 //void zNPCB_SB2::show_nodes() 
 //{
 //    // Haven't found 0x74
@@ -1245,193 +1242,299 @@
 //{
 //    xLightKit_Destroy(&glow_light.kit);
 //}
-//
-//S32 zNPCGoalBossSB2Intro::Enter(float dt, void* updCtxt)
-//{
-//    if (owner.said_intro == 0)
-//    {
-//        owner.say(0);
-//        owner.said_intro = 1;
-//    }
-//    owner.delay = 0.0f;
-//    zEntPlayerControlOff(CONTROL_OWNER_BOSS);
-//    return zNPCGoalCommon::Enter(dt, updCtxt);
-//    
-//}
-//
-//S32 zNPCGoalBossSB2Intro::Exit(float dt, void* updCtxt)
-//{
-//    zEntPlayerControlOn(CONTROL_OWNER_BOSS);
-//    return xGoal::Exit(dt, updCtxt);
-//}
-//
-//S32 zNPCGoalBossSB2Idle::Enter(float dt, void* updCtxt)
-//{
-//    transitioning = 1;
-//    return zNPCGoalCommon::Enter(dt, updCtxt);
-//}
-//
-//S32 zNPCGoalBossSB2Idle::Exit(float dt, void* updCtxt)
-//{
-//    return xGoal::Exit(dt, updCtxt);
-//}
-//
-//S32 zNPCGoalBossSB2Taunt::Enter(float dt, void* updCtxt)
-//{
-//    play_sound(0, &owner.sound_loc.mouth , 1.0f);
-//    owner.flag.face_player = 1;
-//    return zNPCGoalCommon::Enter(dt, updCtxt);
-//}
-//
-//S32 zNPCGoalBossSB2Taunt::Exit(float dt, void* updCtxt)
-//{
-//    return xGoal::Exit(dt, updCtxt);
-//}
-//
-//S32 zNPCGoalBossSB2Dizzy::Enter(float dt, void* updCtxt)
-//{
-//    sicked = 0;
-//    owner.flag.face_player = 0;
-//    owner.delay = 0;
-//    owner.set_vulnerable(false);
-//    return zNPCGoalCommon::Enter(dt, updCtxt);
-//}
-//
-//S32 zNPCGoalBossSB2Dizzy::Exit(float dt, void* updCtxt)
-//{
-//    S32 tempDizzy;
-//    owner.set_vulnerable(true);
-//    if (sicked != false && owner.player_on_ground() == 0)  //Not compared correctly
-//    {
-//        owner.plankton->here_boy();
-//    }
-//    if (owner.life == 1)
-//    {
-//        owner.say(6);
-//    }
-//    else if (owner.flag.dizzy == false)
-//    {
-//        owner.say(0xb);
-//    }
-//    return xGoal::Exit(dt, updCtxt);
-//}
-//
-//S32 zNPCGoalBossSB2Hit::Enter(float dt, void* updCtxt) 
-//{
-//    // Function needs set up differently
-//    // im just dumb
-//
-//    S32 tempHitVar;
-//
-//    owner.flag.face_player = 1;
-//    owner.set_vulnerable(false);
-//
-//    if (owner.flag.dizzy == false) {
-//    if (owner.life < 4){
-//        if (owner.life < 2){
-//            if (owner.life > 0){
-//                owner.say(9);
-//            }
-//        }
-//        else {
-//            owner.say(2);
-//        }
-//    }
-//    else {
-//        owner.say(3);
-//    }
-//    }
-//    else {
-//    owner.say(4);
-//    }
-//
-//return zNPCGoalCommon::Enter(dt, updCtxt);
-//}
-//
-//S32 zNPCGoalBossSB2Hit::Exit(float dt, void* updCtxt)
-//{
-//    owner.set_vulnerable(true);
-//    return xGoal::Exit(dt, updCtxt);
-//}
-//
-//S32 zNPCGoalBossSB2Swipe::Exit(float dt, void* updCtxt)
-//{
-//    owner.flag.face_player = true;
-//    owner.deactivate_hand(owner.active_hand);
-//    return xGoal::Exit(dt, updCtxt);
-//}
-//
+
+void zNPCB_SB2::say(S32)
+{
+}
+
+xFactoryInst* zNPCGoalBossSB2Intro::create(S32 who, RyzMemGrow* grow, void* info)
+{
+    return new (who, grow) zNPCGoalBossSB2Intro(who, *(zNPCB_SB2*)info);
+}
+
+S32 zNPCGoalBossSB2Intro::Enter(F32 dt, void* updCtxt) RIMP
+{
+    if (owner.said_intro == 0)
+    {
+        owner.say(0);
+        owner.said_intro = 1;
+    }
+    owner.delay = 0.0f;
+    //zEntPlayerControlOff(CONTROL_OWNER_BOSS);
+    return zNPCGoalCommon::Enter(dt, updCtxt);
+}
+
+S32 zNPCGoalBossSB2Intro::Exit(F32 dt, void* updCtxt) RIMP
+{
+    //zEntPlayerControlOn(CONTROL_OWNER_BOSS);
+    return xGoal::Exit(dt, updCtxt);
+}
+
+xFactoryInst* zNPCGoalBossSB2Idle::create(S32 who, RyzMemGrow* grow, void* info)
+{
+    return new (who, grow) zNPCGoalBossSB2Idle(who, *(zNPCB_SB2*)info);
+}
+
+S32 zNPCGoalBossSB2Idle::Enter(F32 dt, void* updCtxt)
+{
+    transitioning = 1;
+    return zNPCGoalCommon::Enter(dt, updCtxt);
+}
+
+S32 zNPCGoalBossSB2Idle::Exit(F32 dt, void* updCtxt)
+{
+    return xGoal::Exit(dt, updCtxt);
+}
+
+xFactoryInst* zNPCGoalBossSB2Taunt::create(S32 who, RyzMemGrow* grow, void* info)
+{
+    return new (who, grow) zNPCGoalBossSB2Taunt(who, *(zNPCB_SB2*)info);
+}
+
+S32 zNPCGoalBossSB2Taunt::Enter(F32 dt, void* updCtxt) RIMP
+{
+    //play_sound(0, &owner.sound_loc.mouth , 1.0f);
+    owner.flag.face_player = 1;
+    return zNPCGoalCommon::Enter(dt, updCtxt);
+}
+
+S32 zNPCGoalBossSB2Taunt::Exit(F32 dt, void* updCtxt)
+{
+    return xGoal::Exit(dt, updCtxt);
+}
+
+xFactoryInst* zNPCGoalBossSB2Dizzy::create(S32 who, RyzMemGrow* grow, void* info)
+{
+    return new (who, grow) zNPCGoalBossSB2Dizzy(who, *(zNPCB_SB2*)info);
+}
+
+S32 zNPCGoalBossSB2Dizzy::Enter(F32 dt, void* updCtxt) RIMP
+{
+    sicked = 0;
+    owner.flag.face_player = 0;
+    owner.delay = 0;
+    /*owner.set_vulnerable(false);*/
+    return zNPCGoalCommon::Enter(dt, updCtxt);
+}
+
+S32 zNPCGoalBossSB2Dizzy::Exit(F32 dt, void* updCtxt) RIMP
+{
+    //S32 tempDizzy;
+    //owner.set_vulnerable(true);
+    //if (sicked != false && owner.player_on_ground() == 0)  //Not compared correctly
+    //{
+    //    owner.plankton->here_boy();
+    //}
+    //if (owner.life == 1)
+    //{
+    //    owner.say(6);
+    //}
+    //else if (owner.flag.dizzy == false)
+    //{
+    //    owner.say(0xb);
+    //}
+    return xGoal::Exit(dt, updCtxt);
+}
+
+xFactoryInst* zNPCGoalBossSB2Hit::create(S32 who, RyzMemGrow* grow, void* info)
+{
+    return new (who, grow) zNPCGoalBossSB2Hit(who, *(zNPCB_SB2*)info);
+}
+
+S32 zNPCGoalBossSB2Hit::Enter(F32 dt, void* updCtxt) RIMP
+{
+    // Function needs set up differently
+    // im just dumb
+
+    //S32 tempHitVar;
+
+    /*owner.flag.face_player = 1;
+    owner.set_vulnerable(false);
+
+    if (owner.flag.dizzy == false) {
+    if (owner.life < 4){
+        if (owner.life < 2){
+            if (owner.life > 0){
+                owner.say(9);
+            }
+        }
+        else {
+            owner.say(2);
+        }
+    }
+    else {
+        owner.say(3);
+    }
+    }
+    else {
+    owner.say(4);
+    }*/
+
+return zNPCGoalCommon::Enter(dt, updCtxt);
+}
+
+S32 zNPCGoalBossSB2Hit::Exit(F32 dt, void* updCtxt) RIMP
+{
+    //owner.set_vulnerable(true);
+    return xGoal::Exit(dt, updCtxt);
+}
+
+xFactoryInst* zNPCGoalBossSB2Hunt::create(S32 who, RyzMemGrow* grow, void* info)
+{
+    return new (who, grow) zNPCGoalBossSB2Hunt(who, *(zNPCB_SB2*)info);
+}
+
+xFactoryInst* zNPCGoalBossSB2Swipe::create(S32 who, RyzMemGrow* grow, void* info)
+{
+    return new (who, grow) zNPCGoalBossSB2Swipe(who, *(zNPCB_SB2*)info);
+}
+
+S32 zNPCGoalBossSB2Swipe::Enter(F32 dt, void* updCtxt) RIMP
+{
+    owner.flag.face_player = 1;
+    said = 0;
+    holding = 0;
+    started = 0;
+
+    //owner.choose_hand();
+
+    /*if (owner.active_hand == 0)
+    {
+        begin_anim = g_hash_bossanim[56];
+        loop_anim = g_hash_bossanim[57];
+        end_anim = g_hash_bossanim[58];
+    }
+    else
+    {
+        begin_anim = g_hash_bossanim[59];
+        loop_anim = g_hash_bossanim[60];
+        end_anim = g_hash_bossanim[61];
+    }*/
+
+    return zNPCGoalCommon::Enter(dt, updCtxt);
+}
+
+S32 zNPCGoalBossSB2Swipe::Exit(F32 dt, void* updCtxt) RIMP
+{
+    owner.flag.face_player = true;
+    //owner.deactivate_hand(owner.active_hand);
+    return xGoal::Exit(dt, updCtxt);
+}
+
 //S32 zNPCGoalBossSB2Swipe::can_start() const
 //{
 //    S32 tempStart;
 //    tempStart = owner.player_platform();
 //    return tempStart != 0;
 //}
-//
-//S32 zNPCGoalBossSB2Chop::Enter(F32 dt, void* updCtxt)
-//{
-//    
-//    targetted = 0;
-//    started = 0;
-//    owner.flag.face_player = true;
-//
-//    owner.choose_hand();
-//    owner.activate_hand(owner.active_hand, true);
-//
-//    if (owner.active_hand == 0)
-//    {
-//        begin_anim = g_hash_bossanim[50];
-//        loop_anim = g_hash_bossanim[51];
-//        end_anim = g_hash_bossanim[52];
-//    }
-//    else
-//    {
-//        begin_anim = g_hash_bossanim[53];
-//        loop_anim = g_hash_bossanim[54];
-//        end_anim = g_hash_bossanim[55];
-//    }
-//
-//    return zNPCGoalCommon::Enter(dt, updCtxt);
-//}
-//
-//S32 zNPCGoalBossSB2Chop::Exit(float dt, void* updCtxt)
-//{
-//    owner.deactivate_hand(owner.active_hand);
-//    return xGoal::Exit(dt, updCtxt);
-//}
-//
-//S32 zNPCGoalBossSB2Karate::Exit(float dt, void* updCtxt)
-//{
-//    owner.abandon_slugs();
-//    return xGoal::Exit(dt, updCtxt);
-//}
-//
+
+xFactoryInst* zNPCGoalBossSB2Chop::create(S32 who, RyzMemGrow* grow, void* info)
+{
+    return new (who, grow) zNPCGoalBossSB2Chop(who, *(zNPCB_SB2*)info);
+}
+
+S32 zNPCGoalBossSB2Chop::Enter(F32 dt, void* updCtxt) RIMP
+{
+    targetted = 0;
+    started = 0;
+    owner.flag.face_player = true;
+
+    //owner.choose_hand();
+    //owner.activate_hand(owner.active_hand, true);
+
+    //if (owner.active_hand == 0)
+    //{
+        //begin_anim = g_hash_bossanim[50];
+        //loop_anim = g_hash_bossanim[51];
+        //end_anim = g_hash_bossanim[52];
+    //}
+    //else
+    //{
+        //begin_anim = g_hash_bossanim[53];
+        //loop_anim = g_hash_bossanim[54];
+        //end_anim = g_hash_bossanim[55];
+    //}
+
+    return zNPCGoalCommon::Enter(dt, updCtxt);
+}
+
+S32 zNPCGoalBossSB2Chop::Exit(F32 dt, void* updCtxt) RIMP
+{
+    //owner.deactivate_hand(owner.active_hand);
+    return xGoal::Exit(dt, updCtxt);
+}
+
+xFactoryInst* zNPCGoalBossSB2Karate::create(S32 who, RyzMemGrow* grow, void* info)
+{
+    return new (who, grow) zNPCGoalBossSB2Karate(who, *(zNPCB_SB2*)info);
+}
+
+S32 zNPCGoalBossSB2Karate::Enter(F32 dt, void* updCtxt)
+{
+    return zNPCGoalCommon::Enter(dt, updCtxt);
+}
+
+S32 zNPCGoalBossSB2Karate::Exit(F32 dt, void* updCtxt) RIMP
+{
+    //owner.abandon_slugs();
+    return xGoal::Exit(dt, updCtxt);
+}
+
 //S32 zNPCGoalBossSB2Karate::can_start() const
 //{
 //    S32 tempStart;
 //    tempStart = owner.player_platform();
 //    return tempStart != 0;
 //}
-//
-//S32 zNPCGoalBossSB2Death::Enter(float dt, void* updCtxt)
-//{
-//    owner.decompose();
-//    return zNPCGoalCommon::Enter(dt, updCtxt);
-//}
-//
-//S32 zNPCGoalBossSB2Death::Exit(float dt, void* updCtxt)
-//{
-//    return xGoal::Exit(dt, updCtxt);
-//}
-//
-//S32 zNPCGoalBossSB2Death::Process(en_trantype*, F32, void*, xScene*)
-//{
-//    return 0;
-//}
-//
+
+xFactoryInst* zNPCGoalBossSB2Death::create(S32 who, RyzMemGrow* grow, void* info)
+{
+    return new (who, grow) zNPCGoalBossSB2Death(who, *(zNPCB_SB2*)info);
+}
+
+S32 zNPCGoalBossSB2Death::Enter(F32 dt, void* updCtxt)
+{
+    owner.decompose();
+    return zNPCGoalCommon::Enter(dt, updCtxt);
+}
+
+S32 zNPCGoalBossSB2Death::Exit(F32 dt, void* updCtxt)
+{
+    return xGoal::Exit(dt, updCtxt);
+}
+
+S32 zNPCGoalBossSB2Death::Process(en_trantype*, F32, void*, xScene*)
+{
+    return 0;
+}
+
 //void zNPCB_SB2::choose_hand()
 //{
 //    S32 r = xrand();
 //    S32 b = (r >> 13) & 1;
 //    this->active_hand = (b == 0 ? LEFT_HAND : RIGHT_HAND);
+//}
+//
+//xVec3& zNPCB_SB2::location() const
+//{
+//    return reinterpret_cast<xVec3&>(this->model->Mat->pos);
+//}
+//
+//void zNPCB_SB2::render_debug()
+//{
+//}
+//
+//xVec3& zNPCB_SB2::get_home() const
+//{
+//    return reinterpret_cast<xVec3&>(this->asset->pos);
+//}
+//
+//xVec3& zNPCB_SB2::start_location() const
+//{
+//    return reinterpret_cast<xVec3&>(this->asset->pos);
+//}
+//
+//xVec3& zNPCB_SB2::facing() const
+//{
+//    return reinterpret_cast<xVec3&>(this->model->Mat->at);
 //}

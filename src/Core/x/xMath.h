@@ -1,17 +1,19 @@
 #ifndef XMATH_H
 #define XMATH_H
 
-#include "iMath.h"
+#include <types.h>
 
-#include <cmath>
+#include "iMath.h"
 
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
 #define xabs(x) iabs(x)
 
 #define xeq(a, b, e) (xabs((a) - (b)) <= (e))
+#define xfeq0(x) (((x) >= -1e-5f) && ((x) <= 1e-5f))
 
 #define CLAMP(x, a, b) (MAX((a), MIN((x), (b))))
+#define xlerp(a, b, t) ((a) + (t) * ((b) - (a)))
 
 #define SQR(x) ((x) * (x))
 
@@ -23,6 +25,7 @@
 //     #undef ONEEIGHTY
 //     #define PI _771_1
 //     #define ONEEIGHTY _778_0
+#define HALF_PI 1.5707964f
 #define PI 3.1415927f
 #define ONEEIGHTY 180.0f
 
@@ -32,44 +35,52 @@
 #define FLOAT_MAX 1e38f
 #define FLOAT_MIN -1e38f
 
-struct xFuncPiece
-{
-    F32 coef[5];
-    F32 end;
-    S32 order;
-    xFuncPiece* next;
+#define XRAY3_USE_MIN (1 << 10)
+#define XRAY3_USE_MAX (1 << 11)
+
+struct xFuncPiece {
+  F32 coef[5];
+  F32 end;
+  S32 order;
+  xFuncPiece *next;
 };
 
 F32 xlog(F32 f);
 
 void xMathInit();
 void xMathExit();
-F32 xatof(const char* x);
+F32 xatof(const char *x);
 void xsrand(U32 seed);
 U32 xrand();
 F32 xurand();
-U32 xMathSolveQuadratic(F32 a, F32 b, F32 c, F32* x1, F32* x2);
-U32 xMathSolveCubic(F32 a, F32 b, F32 c, F32 d, F32* x1, F32* x2, F32* x3);
+U32 xMathSolveQuadratic(F32 a, F32 b, F32 c, F32 *x1, F32 *x2);
+U32 xMathSolveCubic(F32 a, F32 b, F32 c, F32 d, F32 *x1, F32 *x2, F32 *x3);
 F32 xAngleClamp(F32 a);
 F32 xAngleClampFast(F32 a);
 F32 xDangleClamp(F32 a);
-void xAccelMove(F32& x, F32& v, F32 a, F32 dt, F32 endx, F32 maxv);
+void xAccelMove(F32 &x, F32 &v, F32 a, F32 dt, F32 endx, F32 maxv);
 F32 xAccelMoveTime(F32 dx, F32 a, F32, F32 maxv);
-void xAccelMove(F32& x, F32& v, F32 a, F32 dt, F32 maxv);
-void xAccelStop(F32& x, F32& v, F32 a, F32 dt);
-F32 xFuncPiece_Eval(xFuncPiece* func, F32 param, xFuncPiece** iterator);
-void xFuncPiece_EndPoints(xFuncPiece* func, F32 pi, F32 pf, F32 fi, F32 ff);
-void xFuncPiece_ShiftPiece(xFuncPiece* shift, xFuncPiece* func, F32 newZero);
+void xAccelMove(F32 &x, F32 &v, F32 a, F32 dt, F32 maxv);
+void xAccelStop(F32 &x, F32 &v, F32 a, F32 dt);
+F32 xFuncPiece_Eval(xFuncPiece *func, F32 param, xFuncPiece **iterator);
+void xFuncPiece_EndPoints(xFuncPiece *func, F32 pi, F32 pf, F32 fi, F32 ff);
+void xFuncPiece_ShiftPiece(xFuncPiece *shift, xFuncPiece *func, F32 newZero);
 F32 xSCurve(F32 t, F32 softness);
 F32 xSCurve(F32 t);
-void xsqrtfast(F32& dst, F32 num);
+void xsqrtfast(F32 &dst, F32 num);
 
 F32 xrmod(F32 ang);
 
-template <class T> T range_limit(T v, T minv, T maxv);
+template <class T> T range_limit(T v, T minv, T maxv) {
+  if (v <= minv) {
+    return minv;
+  }
 
-#define __fabs(x) (x)
-#define __fabsf(x) (x)
-#define __frsqrte(x) (x)
+  if (v >= maxv) {
+    return maxv;
+  }
+
+  return v;
+}
 
 #endif

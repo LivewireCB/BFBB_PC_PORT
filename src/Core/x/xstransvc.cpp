@@ -51,8 +51,8 @@ S32 xSTShutdown()
     return g_straninit;
 }
 
-//// This doesn't seem exactly how HI would have written this, but it OKs
-//// TODO: Try to clean this up?
+// This doesn't seem exactly how HI would have written this, but it OKs
+// TODO: Try to clean this up?
 S32 xSTPreLoadScene(U32 sid, void* userdata, S32 flg_hiphop)
 {
     S32 result;
@@ -355,7 +355,7 @@ S32 xSTGetAssetInfo(U32 aid, st_PKR_ASSET_TOCINFO* tocainfo)
     return rc;
 }
 
-//// Equivalent: scheduling is off with the copy of tocinfo to ainfo
+// Equivalent: scheduling is off with the copy of tocinfo to ainfo
 S32 xSTGetAssetInfoByType(U32 type, S32 idx, st_PKR_ASSET_TOCINFO* ainfo)
 {
     S32 rc = 0;

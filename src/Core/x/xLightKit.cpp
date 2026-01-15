@@ -1,5 +1,6 @@
 #include "xLightKit.h"
 #include "xMath.h"
+#include "rwframesync.h"
 
 #include <types.h>
 #include <string.h>
@@ -120,30 +121,30 @@ xLightKit* gLastLightKit;
 //{
 //    return gLastLightKit;
 //}
-//
-//void xLightKit_Destroy(xLightKit* lkit)
-//{
-//    if (lkit == NULL)
-//    {
-//        return;
-//    }
-//
-//    int i;
-//    xLightKitLight* currLight = lkit->lightList;
-//
-//    for (i = 0; i < lkit->lightCount; currLight++, i++)
-//    {
-//        if (currLight->platLight != NULL)
-//        {
-//            _rwFrameSyncDirty();
-//            RwFrame* tframe = (RwFrame*)(currLight->platLight->object).object.parent;
-//            if (tframe != NULL)
-//            {
-//                _rwObjectHasFrameSetFrame(currLight->platLight, 0);
-//                RwFrameDestroy(tframe);
-//            }
-//            RpLightDestroy(currLight->platLight);
-//            currLight->platLight = 0;
-//        }
-//    }
-//}
+
+void xLightKit_Destroy(xLightKit* lkit)
+{
+    if (lkit == NULL)
+    {
+        return;
+    }
+
+    int i;
+    xLightKitLight* currLight = lkit->lightList;
+
+    for (i = 0; i < lkit->lightCount; currLight++, i++)
+    {
+        if (currLight->platLight != NULL)
+        {
+            _rwFrameSyncDirty();
+            RwFrame* tframe = (RwFrame*)(currLight->platLight->object).object.parent;
+            if (tframe != NULL)
+            {
+                _rwObjectHasFrameSetFrame(currLight->platLight, 0);
+                RwFrameDestroy(tframe);
+            }
+            RpLightDestroy(currLight->platLight);
+            currLight->platLight = 0;
+        }
+    }
+}

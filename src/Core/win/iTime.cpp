@@ -2,9 +2,8 @@
 #include "iSystem.h"
 
 #include <types.h>
-//#include <dolphin.h>
 
-static iTime sStartupTime;
+iTime sStartupTime;
 static F32 sGameTime;
 
 void iTimeInit()
@@ -23,7 +22,7 @@ iTime iTimeGet()
 
 F32 iTimeDiffSec(iTime time)
 {
-    return (F32)time / (GET_BUS_FREQUENCY() / 4);
+    return iTimeToSec(time);
 }
 
 F32 iTimeDiffSec(iTime t0, iTime t1)
@@ -48,15 +47,12 @@ void iTimeSetGame(F32 time)
 
 void iProfileClear(U32 sceneID)
 {
-    // Redacted. :}
 }
 
 void iFuncProfileDump()
 {
-    // Redacted. :}
 }
 
-void iFuncProfileParse(char* elfPath, S32 profile)
+void iFuncProfileParse(char*, S32)
 {
-    // Redacted. :}
 }

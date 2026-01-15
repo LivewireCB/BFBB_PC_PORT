@@ -127,50 +127,50 @@ struct zSceneLevel
     const char* prefix;
 };
 
-//// clang-format off
-//static zSceneLevel sLevelTable[] =
-//{
-//    { "Bikini Bottom", "HB" },
-//    { "Jellyfish Fields", "JF"} ,
-//    { "Downtown Bikini Bottom", "BB" },
-//    { "Goo Lagoon", "GL" },
-//    { "Poseidome", "B1" },
-//    { "Rock Bottom", "RB" },
-//    { "Mermalair", "BC" },
-//    { "Sand Mountain", "SM" },
-//    { "Industrial Park", "B2" },
-//    { "Kelp Forest", "KF" },
-//    { "Flying Dutchman's Graveyard", "GY" },
-//    { "Spongebob's Dream", "DB" },
-//    { "Chum Bucket Lab", "B3" },
-//    { "PLAYGROUND", "PG" },
-//    { "Start", "MN" }
-//};
-//// clang-format on
-//
-//struct zSceneObjectInstanceDesc
-//{
-//    const char* name;
-//    S32 baseType;
-//    U32 assetType;
-//    U32 sizeRuntime;
-//    U32 (*func)(zScene* s, zSceneObjectInstanceDesc* desc, U32 base_idx);
-//    void (*objectInitFunc)(void* ent, void* asset);
-//    U32 (*querySubObjects)(void*);
-//};
-//
-//static U32 zSceneInitFunc_DefaultEnt(zScene* s, zSceneObjectInstanceDesc* desc, U32 base_idx);
-//static U32 zSceneInitFunc_Default(zScene* s, zSceneObjectInstanceDesc* desc, U32 base_idx);
-//static U32 zSceneInitFunc_MovePoint(zScene* s, zSceneObjectInstanceDesc* desc, U32 base_idx);
-//static U32 zSceneInitFunc_SBNPC(zScene* s, zSceneObjectInstanceDesc* desc, U32 base_idx);
-//static U32 zSceneInitFunc_Player(zScene* s, zSceneObjectInstanceDesc* desc, U32 base_idx);
-//static U32 zSceneInitFunc_Camera(zScene* s, zSceneObjectInstanceDesc* desc, U32 base_idx);
-//static U32 zSceneInitFunc_Surface(zScene* s, zSceneObjectInstanceDesc* desc, U32 base_idx);
-//static U32 zSceneInitFunc_Gust(zScene* s, zSceneObjectInstanceDesc* desc, U32 base_idx);
-//static U32 zSceneInitFunc_Volume(zScene* s, zSceneObjectInstanceDesc* desc, U32 base_idx);
-//static U32 zSceneInitFunc_LobMaster(zScene* s, zSceneObjectInstanceDesc* desc, U32 base_idx);
-//static U32 zSceneInitFunc_Dispatcher(zScene* s, zSceneObjectInstanceDesc* desc, U32 base_idx);
-//
+// clang-format off
+static zSceneLevel sLevelTable[] =
+{
+    { "Bikini Bottom", "HB" },
+    { "Jellyfish Fields", "JF"} ,
+    { "Downtown Bikini Bottom", "BB" },
+    { "Goo Lagoon", "GL" },
+    { "Poseidome", "B1" },
+    { "Rock Bottom", "RB" },
+    { "Mermalair", "BC" },
+    { "Sand Mountain", "SM" },
+    { "Industrial Park", "B2" },
+    { "Kelp Forest", "KF" },
+    { "Flying Dutchman's Graveyard", "GY" },
+    { "Spongebob's Dream", "DB" },
+    { "Chum Bucket Lab", "B3" },
+    { "PLAYGROUND", "PG" },
+    { "Start", "MN" }
+};
+// clang-format on
+
+struct zSceneObjectInstanceDesc
+{
+    const char* name;
+    S32 baseType;
+    U32 assetType;
+    U32 sizeRuntime;
+    U32 (*func)(zScene* s, zSceneObjectInstanceDesc* desc, U32 base_idx);
+    void (*objectInitFunc)(void* ent, void* asset);
+    U32 (*querySubObjects)(void*);
+};
+
+static U32 zSceneInitFunc_DefaultEnt(zScene* s, zSceneObjectInstanceDesc* desc, U32 base_idx);
+static U32 zSceneInitFunc_Default(zScene* s, zSceneObjectInstanceDesc* desc, U32 base_idx);
+static U32 zSceneInitFunc_MovePoint(zScene* s, zSceneObjectInstanceDesc* desc, U32 base_idx);
+static U32 zSceneInitFunc_SBNPC(zScene* s, zSceneObjectInstanceDesc* desc, U32 base_idx);
+static U32 zSceneInitFunc_Player(zScene* s, zSceneObjectInstanceDesc* desc, U32 base_idx);
+static U32 zSceneInitFunc_Camera(zScene* s, zSceneObjectInstanceDesc* desc, U32 base_idx);
+static U32 zSceneInitFunc_Surface(zScene* s, zSceneObjectInstanceDesc* desc, U32 base_idx);
+static U32 zSceneInitFunc_Gust(zScene* s, zSceneObjectInstanceDesc* desc, U32 base_idx);
+static U32 zSceneInitFunc_Volume(zScene* s, zSceneObjectInstanceDesc* desc, U32 base_idx);
+static U32 zSceneInitFunc_LobMaster(zScene* s, zSceneObjectInstanceDesc* desc, U32 base_idx);
+static U32 zSceneInitFunc_Dispatcher(zScene* s, zSceneObjectInstanceDesc* desc, U32 base_idx);
+
 //// clang-format off
 //static zSceneObjectInstanceDesc sInitTable[] =
 //{
@@ -365,7 +365,7 @@ struct zSceneLevel
 //        return index;
 //    }
 //} // namespace
-//
+
 struct IDBasePair
 {
     U32 id;
@@ -830,8 +830,8 @@ static S32 nidbps = -1;
 //
 //void add_scene_tweaks();
 //
-//void zSceneInit(U32 theSceneID, S32 reloadInProgress)
-//{
+void zSceneInit(U32 theSceneID, S32 reloadInProgress) RIMP
+{
 //    F32 pdone;
 //    zScene* s;
 //    U32 i;
@@ -1141,8 +1141,8 @@ static S32 nidbps = -1;
 //    xFXSceneInit();
 //    zGame_HackGalleryInit();
 //    iSndSuspendCD(0);
-//}
-//
+}
+
 //void add_scene_tweaks()
 //{
 //}
@@ -3363,11 +3363,11 @@ xBase* zSceneFindObject(U32 gameID)
 //    xSndParentDied((U32)b);
 //    return b;
 //}
-//
-//void zSceneMemLvlChkCB()
-//{
-//}
-//
+
+void zSceneMemLvlChkCB()
+{
+}
+
 //U32 zSceneLeavingLevel()
 //{
 //    // non-matching: instruction order
@@ -3428,17 +3428,17 @@ xBase* zSceneFindObject(U32 gameID)
 //
 //    return sLevelTable[index].prefix;
 //}
-//
-//const char* zSceneGetAreaname(U32)
-//{
-//    return "Temp";
-//}
-//
-//U32 zSceneCalcProgress()
-//{
-//    return globals.player.Inv_Spatula;
-//}
-//
+
+const char* zSceneGetAreaname(U32)
+{
+    return "Temp";
+}
+
+U32 zSceneCalcProgress()
+{
+    return globals.player.Inv_Spatula;
+}
+
 //void zScene_UpdateFlyToInterface(F32 dt)
 //{
 //    zScene* s = globals.sceneCur;
@@ -3446,14 +3446,14 @@ xBase* zSceneFindObject(U32 gameID)
 //    zEntPickup_UpdateFlyToInterface((zEntPickup*)s->baseList[eBaseTypePickup],
 //                                    s->baseCount[eBaseTypePickup], dt);
 //}
-//
-//void zSceneCardCheckStartup_set(S32 needed, S32 available, S32 files)
-//{
-//    bytesNeeded = needed;
-//    availOnDisk = available;
-//    neededFiles = files;
-//}
-//
+
+void zSceneCardCheckStartup_set(S32 needed, S32 available, S32 files)
+{
+    bytesNeeded = needed;
+    availOnDisk = available;
+    neededFiles = files;
+}
+
 //void zSceneEnableVisited(zScene* s)
 //{
 //    U32 uiNameID;
@@ -3478,23 +3478,23 @@ xBase* zSceneFindObject(U32 gameID)
 //        }
 //    }
 //}
-//
-//void zSceneEnableScreenAdj(U32 enable)
-//{
-//    enableScreenAdj = enable;
-//}
-//
-//void zSceneSetOldScreenAdj()
-//{
-//    oldOffsetx = offsetx;
-//    oldOffsety = offsety;
-//}
-//
-//U32 zScene_ScreenAdjustMode()
-//{
-//    return enableScreenAdj;
-//}
-//
+
+void zSceneEnableScreenAdj(U32 enable)
+{
+    enableScreenAdj = enable;
+}
+
+void zSceneSetOldScreenAdj()
+{
+    oldOffsetx = offsetx;
+    oldOffsety = offsety;
+}
+
+U32 zScene_ScreenAdjustMode()
+{
+    return enableScreenAdj;
+}
+
 //xVec3 scale = { 0.2f, -0.7f, 1.5f };
 //
 //void zSceneSpawnRandomBubbles()
@@ -3531,43 +3531,43 @@ xBase* zSceneFindObject(U32 gameID)
 //        zFX_SpawnBubbleMenuTrail(&pos, 1, NULL, NULL);
 //    }
 //}
-//
-//static void zSceneAutoSave()
-//{
-//}
-//
-//void xSystem_GapTrackReport()
-//{
-//}
-//
-//void xDecalDestroy()
-//{
-//}
-//
-//void xDecalRender()
-//{
-//}
-//
-//U32 xBaseIsValid(xBase* xb)
-//{
-//    return xb->baseFlags & 0x4;
-//}
-//
+
+static void zSceneAutoSave()
+{
+}
+
+void xSystem_GapTrackReport()
+{
+}
+
+void xDecalDestroy()
+{
+}
+
+void xDecalRender()
+{
+}
+
+U32 xBaseIsValid(xBase* xb)
+{
+    return xb->baseFlags & 0x4;
+}
+
 //void xModelBucket_RenderAlpha()
 //{
 //    xModelBucket_RenderAlphaBegin();
 //    xModelBucket_RenderAlphaLayer(31);
 //    xModelBucket_RenderAlphaEnd();
 //}
-//
-//void xNPCBasic::Save(xSerial*) const
-//{
-//}
-//
-//void xNPCBasic::Load(xSerial*)
-//{
-//}
-//
+
+void xNPCBasic::Save(xSerial*) const
+{
+}
+
+void xNPCBasic::Load(xSerial*)
+{
+}
+
 //void xQuickCullInit(const xBox* box)
 //{
 //    xQuickCullInit(&xqc_def_ctrl, box);

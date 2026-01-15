@@ -1,51 +1,51 @@
-//#include <types.h>
-//#include "iModel.h"
-//
-//#include "xColor.h"
-//#include "xMathInlines.h"
-//#include "xSnd.h"
-//#include "xstransvc.h"
-//
-//#include "zGlobals.h"
-//#include "zShrapnel.h"
-//#include "zLightning.h"
-//
-//static xMat4x3 tmpMat;
-//static zFrag sFragPool[150];
-//static zFrag sFirstFreeFrag;
-//static zFrag sFirstActiveFrag;
-//static zFrag sProjectileList;
-//static zFrag sLightningList;
-//static zFrag sParticleList;
-//static zFrag sSoundList;
-//static _tagLightningAdd sLightningAddInfo;
-//static zFragProjectileAsset sCinProj;
-//
-//static S32 sNumActiveFrags;
-//static RpAtomic* sCinModel;
-//static void (*sCinCB)(zFrag*, zFragAsset*);
-//static zFrag* sCinFrag;
-//
-//static void zShrapnel_DestructObjInit(zShrapnelAsset* shrap, xModelInstance* parent,
-//                                      xVec3* initOffset, void (*cb)(zFrag*, zFragAsset*));
-//static void zShrapnel_BB03FloorInit(zShrapnelAsset* shrap, xModelInstance* parent,
-//                                    xVec3* initOffset, void (*cb)(zFrag*, zFragAsset*));
-//static void zShrapnel_BB03FloorChildInit(zShrapnelAsset* shrap, xModelInstance* parent,
-//                                         xVec3* initOffset, void (*cb)(zFrag*, zFragAsset*));
-//static void zShrapnel_GlobalRobotInit(zShrapnelAsset* shrap, xModelInstance* parent,
-//                                      xVec3* initOffset, void (*cb)(zFrag*, zFragAsset*));
-//static void zShrapnel_SpongebobInit(zShrapnelAsset* shrap, xModelInstance* parent,
-//                                    xVec3* initOffset, void (*cb)(zFrag*, zFragAsset*));
-//
-//static zShrapnelInitTable sShrapnelTable[6] = {
-//    { "destruct_obj_shrapnel", zShrapnel_DestructObjInit, 0 },
-//    { "bb03_floor_shrapnel", zShrapnel_BB03FloorInit, 0 },
-//    { "bb03_floor_child_shrapnel", zShrapnel_BB03FloorChildInit, 0 },
-//    { "allrobots_shrapnel", zShrapnel_GlobalRobotInit, 0 },
-//    { "spongebob_shrapnel", zShrapnel_SpongebobInit, 0 },
-//    { NULL, NULL, 0 }
-//};
-//
+#include <types.h>
+#include "iModel.h"
+
+#include "xColor.h"
+#include "xMathInlines.h"
+#include "xSnd.h"
+#include "xstransvc.h"
+
+#include "zGlobals.h"
+#include "zShrapnel.h"
+#include "zLightning.h"
+
+static xMat4x3 tmpMat;
+static zFrag sFragPool[150];
+static zFrag sFirstFreeFrag;
+static zFrag sFirstActiveFrag;
+static zFrag sProjectileList;
+static zFrag sLightningList;
+static zFrag sParticleList;
+static zFrag sSoundList;
+static _tagLightningAdd sLightningAddInfo;
+static zFragProjectileAsset sCinProj;
+
+static S32 sNumActiveFrags;
+static RpAtomic* sCinModel;
+static void (*sCinCB)(zFrag*, zFragAsset*);
+static zFrag* sCinFrag;
+
+static void zShrapnel_DestructObjInit(zShrapnelAsset* shrap, xModelInstance* parent,
+                                      xVec3* initOffset, void (*cb)(zFrag*, zFragAsset*));
+static void zShrapnel_BB03FloorInit(zShrapnelAsset* shrap, xModelInstance* parent,
+                                    xVec3* initOffset, void (*cb)(zFrag*, zFragAsset*));
+static void zShrapnel_BB03FloorChildInit(zShrapnelAsset* shrap, xModelInstance* parent,
+                                         xVec3* initOffset, void (*cb)(zFrag*, zFragAsset*));
+static void zShrapnel_GlobalRobotInit(zShrapnelAsset* shrap, xModelInstance* parent,
+                                      xVec3* initOffset, void (*cb)(zFrag*, zFragAsset*));
+static void zShrapnel_SpongebobInit(zShrapnelAsset* shrap, xModelInstance* parent,
+                                    xVec3* initOffset, void (*cb)(zFrag*, zFragAsset*));
+
+static zShrapnelInitTable sShrapnelTable[6] = {
+    { "destruct_obj_shrapnel", zShrapnel_DestructObjInit, 0 },
+    { "bb03_floor_shrapnel", zShrapnel_BB03FloorInit, 0 },
+    { "bb03_floor_child_shrapnel", zShrapnel_BB03FloorChildInit, 0 },
+    { "allrobots_shrapnel", zShrapnel_GlobalRobotInit, 0 },
+    { "spongebob_shrapnel", zShrapnel_SpongebobInit, 0 },
+    { NULL, NULL, 0 }
+};
+
 //zFrag* zFrag_Alloc(zFragType type)
 //{
 //    if (sNumActiveFrags == 150)
@@ -112,51 +112,51 @@
 //        frag->prev->next = frag;
 //    }
 //}
-//
-//// equivalent
-//void zShrapnel_GameInit()
-//{
-//    zShrapnelInitTable* curr = sShrapnelTable;
-//    S32 i = 0;
-//    while (curr->name != NULL)
-//    {
-//        curr->ID = xStrHash(curr->name);
-//        i++;
-//        curr = (zShrapnelInitTable*)(sShrapnelTable + i);
-//    }
-//
-//    sLightningAddInfo.type = 3;
-//    sLightningAddInfo.flags = 0x30;
-//    sLightningAddInfo.thickness = 1.0f;
-//    sLightningAddInfo.color = xColorFromRGBA(255, 255, 255, 255);
-//    sLightningAddInfo.arc_height = 0.1f;
-//
-//    sCinProj.type = eFragProjectile;
-//    sCinProj.id = 0;
-//    sCinProj.parentID[0] = 0;
-//    sCinProj.parentID[1] = 0;
-//    sCinProj.lifetime = 0.0f;
-//    sCinProj.delay = 0.0f;
-//    sCinProj.modelInfoID = 0;
-//    sCinProj.modelFile = NULL;
-//    sCinProj.launch.type = eFragLocBone;
-//    xVec3Init((xVec3*)&sCinProj.launch.info.bone.offset, 0.0f, 0.0f, 0.0f);
-//    sCinProj.launch.info.bone.index = 0;
-//    sCinProj.vel.type = eFragLocBone;
-//    xVec3Init((xVec3*)&sCinProj.vel.info.bone.offset, 0.0f, 0.0f, 0.0f);
-//    sCinProj.vel.info.bone.index = 0;
-//    sCinProj.bounce = 0.0f;
-//    sCinProj.maxBounces = -1;
-//    sCinProj.flags = 0x48;
-//    sCinProj.childID = 0;
-//    sCinProj.child = NULL;
-//    sCinProj.minScale = 1.0f;
-//    sCinProj.maxScale = 1.0f;
-//    sCinProj.scaleCurveID = 0;
-//    sCinProj.scaleCurve = NULL;
-//    sCinProj.gravity = 0.0f;
-//}
-//
+
+// equivalent
+void zShrapnel_GameInit()
+{
+    zShrapnelInitTable* curr = sShrapnelTable;
+    S32 i = 0;
+    while (curr->name != NULL)
+    {
+        curr->ID = xStrHash(curr->name);
+        i++;
+        curr = (zShrapnelInitTable*)(sShrapnelTable + i);
+    }
+
+    sLightningAddInfo.type = 3;
+    sLightningAddInfo.flags = 0x30;
+    sLightningAddInfo.thickness = 1.0f;
+    sLightningAddInfo.color = xColorFromRGBA(255, 255, 255, 255);
+    sLightningAddInfo.arc_height = 0.1f;
+
+    sCinProj.type = eFragProjectile;
+    sCinProj.id = 0;
+    sCinProj.parentID[0] = 0;
+    sCinProj.parentID[1] = 0;
+    sCinProj.lifetime = 0.0f;
+    sCinProj.delay = 0.0f;
+    sCinProj.modelInfoID = 0;
+    sCinProj.modelFile = NULL;
+    sCinProj.launch.type = eFragLocBone;
+    xVec3Init((xVec3*)&sCinProj.launch.info.bone.offset, 0.0f, 0.0f, 0.0f);
+    sCinProj.launch.info.bone.index = 0;
+    sCinProj.vel.type = eFragLocBone;
+    xVec3Init((xVec3*)&sCinProj.vel.info.bone.offset, 0.0f, 0.0f, 0.0f);
+    sCinProj.vel.info.bone.index = 0;
+    sCinProj.bounce = 0.0f;
+    sCinProj.maxBounces = -1;
+    sCinProj.flags = 0x48;
+    sCinProj.childID = 0;
+    sCinProj.child = NULL;
+    sCinProj.minScale = 1.0f;
+    sCinProj.maxScale = 1.0f;
+    sCinProj.scaleCurveID = 0;
+    sCinProj.scaleCurve = NULL;
+    sCinProj.gravity = 0.0f;
+}
+
 //void zShrapnel_ProjectileSceneInit(zFragProjectileAsset* asset)
 //{
 //    if (asset->modelInfoID != 0)
@@ -873,43 +873,43 @@
 //        frag = next;
 //    }
 //}
-//
-//void zFrag_ProjectileRenderer()
-//{
-//    // TODO
-//}
-//
-//static void zShrapnel_DestructObjInit(zShrapnelAsset* shrap, xModelInstance* parent, xVec3* initVel,
-//                                      void (*cb)(zFrag*, zFragAsset*))
-//{
-//    // TODO
-//}
-//
-//static void zShrapnel_BB03FloorInit(zShrapnelAsset* shrap, xModelInstance* parent, xVec3* initVel,
-//                                    void (*cb)(zFrag*, zFragAsset*))
-//{
-//    // TODO
-//}
-//
-//static void BB03FloorChildCB(zFrag* frag, zFragAsset* fasset)
-//{
-//    // TODO
-//}
-//
-//static void zShrapnel_BB03FloorChildInit(zShrapnelAsset* shrap, xModelInstance* parent,
-//                                         xVec3* initVel, void (*cb)(zFrag*, zFragAsset*))
-//{
-//    zShrapnel_DefaultInit(shrap, parent, initVel, BB03FloorChildCB);
-//}
-//
-//static void zShrapnel_GlobalRobotInit(zShrapnelAsset* shrap, xModelInstance* parent, xVec3* initVel,
-//                                      void (*cb)(zFrag*, zFragAsset*))
-//{
-//    // TODO
-//}
-//
-//static void zShrapnel_SpongebobInit(zShrapnelAsset* shrap, xModelInstance* parent, xVec3* initVel,
-//                                    void (*cb)(zFrag*, zFragAsset*))
-//{
-//    // TODO
-//}
+
+void zFrag_ProjectileRenderer()
+{
+    // TODO
+}
+
+static void zShrapnel_DestructObjInit(zShrapnelAsset* shrap, xModelInstance* parent, xVec3* initVel,
+                                      void (*cb)(zFrag*, zFragAsset*))
+{
+    // TODO
+}
+
+static void zShrapnel_BB03FloorInit(zShrapnelAsset* shrap, xModelInstance* parent, xVec3* initVel,
+                                    void (*cb)(zFrag*, zFragAsset*))
+{
+    // TODO
+}
+
+static void BB03FloorChildCB(zFrag* frag, zFragAsset* fasset)
+{
+    // TODO
+}
+
+static void zShrapnel_BB03FloorChildInit(zShrapnelAsset* shrap, xModelInstance* parent,
+                                         xVec3* initVel, void (*cb)(zFrag*, zFragAsset*)) RIMP WIP
+{
+    //zShrapnel_DefaultInit(shrap, parent, initVel, BB03FloorChildCB);
+}
+
+static void zShrapnel_GlobalRobotInit(zShrapnelAsset* shrap, xModelInstance* parent, xVec3* initVel,
+                                      void (*cb)(zFrag*, zFragAsset*))
+{
+    // TODO
+}
+
+static void zShrapnel_SpongebobInit(zShrapnelAsset* shrap, xModelInstance* parent, xVec3* initVel,
+                                    void (*cb)(zFrag*, zFragAsset*))
+{
+    // TODO
+}

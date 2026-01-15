@@ -2,9 +2,11 @@
 #define XMATH3_H
 
 #include "xMath.h"
+#include "xMathInlines.h"
 
 #include "xVec3.h"
 #include "xVec3Inlines.h"
+#include "xIsect.h"
 
 // Size: 0x30
 struct xMat3x3
@@ -28,6 +30,16 @@ struct xSphere
 {
     xVec3 center;
     F32 r;
+
+    xSphere& operator=(const xSphere& rhs)
+    {
+        *(S32*)(&this->center.x) = *(S32*)(&rhs.center.x);
+        *(S32*)(&this->center.y) = *(S32*)(&rhs.center.y);
+        *(S32*)(&this->center.z) = *(S32*)(&rhs.center.z);
+        this->r = rhs.r;
+
+        return *this;
+    }
 };
 
 // Size: 0x18
@@ -35,6 +47,19 @@ struct xBox
 {
     xVec3 upper;
     xVec3 lower;
+
+    xBox& operator=(const xBox& rhs)
+    {
+        *(S32*)(&this->upper.x) = *(S32*)(&rhs.upper.x);
+        *(S32*)(&this->upper.y) = *(S32*)(&rhs.upper.y);
+        *(S32*)(&this->upper.z) = *(S32*)(&rhs.upper.z);
+
+        *(S32*)(&this->lower.x) = *(S32*)(&rhs.lower.x);
+        *(S32*)(&this->lower.y) = *(S32*)(&rhs.lower.y);
+        *(S32*)(&this->lower.z) = *(S32*)(&rhs.lower.z);
+
+        return *this;
+    }
 };
 
 struct xBBox
@@ -50,10 +75,27 @@ struct xCylinder
     F32 h;
 };
 
+struct xCapsule
+{
+    xVec3 start;
+    xVec3 end;
+    F32 r;
+};
+
 struct xQuat
 {
     xVec3 v;
     F32 s;
+
+    xQuat& operator=(const xQuat& rhs)
+    {
+        *(S32*)(&this->v.x) = *(S32*)(&rhs.v.x);
+        *(S32*)(&this->v.y) = *(S32*)(&rhs.v.y);
+        *(S32*)(&this->v.z) = *(S32*)(&rhs.v.z);
+        this->s = rhs.s;
+
+        return *this;
+    }
 };
 
 struct xVec4
@@ -90,6 +132,10 @@ extern const xVec3 g_Onez;
 extern xMat4x3 g_I3;
 
 void xMath3Init();
+void xLine3VecDist2(const xVec3* p1, const xVec3* p2, const xVec3* v, xIsect* isx);
+void xBoxInitBoundOBB(xBox* o, const xBox* b, const xMat4x3* m);
+void xBoxInitBoundCapsule(xBox* b, const xCapsule* c);
+void xBoxFromCone(xBox& box, const xVec3& center, const xVec3& dir, F32 dist, F32 r1, F32 r2);
 void xMat3x3Copy(xMat3x3* o, const xMat3x3* m); // TODO: These functions should be inline
 void xMat4x3Copy(xMat4x3* o, const xMat4x3* m);
 void xMat4x3Mul(xMat4x3* o, const xMat4x3* a, const xMat4x3* b);
@@ -115,11 +161,13 @@ void xQuatToMat(const xQuat* q, xMat3x3* m);
 void xQuatDiff(xQuat* o, const xQuat* a, const xQuat* b);
 F32 xQuatGetAngle(const xQuat* q);
 void xQuatFromMat(xQuat* q, const xMat3x3* m);
+void xQuatToAxisAngle(const xQuat* q, xVec3* a, F32* t);
 void xQuatSlerp(xQuat* q, const xQuat* a, const xQuat* b, F32 t);
 void xQuatConj(xQuat* o, const xQuat* q);
 void xQuatCopy(xQuat*, const xQuat*);
 void xMat3x3LookAt(xMat3x3* m, const xVec3* pos, const xVec3* at);
 F32 xMat3x3LookVec(xMat3x3* m, const xVec3* at);
+F32 xMat3x3LookVec3(xMat3x3& m, const xVec3& at);
 void xBoxInitBoundOBB(xBox* o, const xBox* b, const xMat4x3* m);
 void xBoxUnion(xBox& a, const xBox& b, const xBox& c);
 void xMat3x3Scale(xMat3x3* m, const xVec3* s);
@@ -130,16 +178,20 @@ void xMat3x3SMul(xMat3x3*, const xMat3x3*, F32);
 void xBoxFromLine(xBox& box, const xLine3& line);
 void xBoxFromRay(xBox& box, const xRay3& ray);
 void xMat3x3Identity(xMat3x3* matrix); // TODO: These functions should be inline
+void xBoxFromCircle(xBox& box, const xVec3& center, const xVec3& dir, F32 r);
 S32 xPointInBox(const xBox* b, const xVec3* p);
 void xMat3x3LMulVec(xVec3* o, const xMat3x3* m, const xVec3* v);
 
 void xQuatMul(xQuat* o, const xQuat* a, const xQuat* b);
-void xQuatFlip(xQuat* o1, xQuat* o2);
+void xQuatFlip(xQuat* o1, const xQuat* o2);
 void xQuatNormalize(xQuat* arg01, xQuat* arg02);
+F32 xQuatLength2(const xQuat* q);
 
 void xQuatSMul(xQuat* q, const xQuat* a, F32 t);
 void xQuatAdd(xQuat* q, const xQuat* a, const xQuat* b);
 F32 xQuatDot(const xQuat* a, const xQuat* b);
+
+
 
 inline void xRotCopy(xRot* o, const xRot* r)
 {
@@ -163,6 +215,28 @@ static inline void xMat3x3RMulVec(xVec3* o, const xMat3x3* m, const xVec3* v)
 inline void xMat3x3Rot(xMat3x3* m, const xVec3* a, F32 t)
 {
     xMat3x3RotC(m, a->x, a->y, a->z, t);
+}
+
+inline void xBoxFromCircle(xBox& box, const xVec3& center, const xVec3& dir, F32 r)
+{
+    xVec3 var_30 = {};
+    var_30.x = r * xsqrt(1.0f - SQR(dir.x));
+    var_30.y = r * xsqrt(1.0f - SQR(dir.y));
+    var_30.z = r * xsqrt(1.0f - SQR(dir.z));
+
+    box.upper = center + var_30;
+    box.lower = center - var_30;
+}
+
+inline void xQuatFlip(xQuat* o, const xQuat* q)
+{
+    o->s = -q->s;
+    xVec3Inv(&o->v, &q->v);
+}
+
+inline F32 xQuatLength2(const xQuat* q)
+{
+    return xQuatDot(q, q);
 }
 
 #endif

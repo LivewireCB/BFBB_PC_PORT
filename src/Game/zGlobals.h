@@ -8,20 +8,26 @@
 #include "zEnt.h"
 #include "zEntPlayer.h"
 #include "zScene.h"
+#include "zCutsceneMgr.h"
 
 struct zGlobalSettings
 {
+    // 0x874 in globals
     U16 AnalogMin;
     U16 AnalogMax;
     F32 SundaeTime;
     F32 SundaeMult;
     U32 InitialShinyCount;
     U32 InitialSpatulaCount;
+
+    // 0x888 in globals
     S32 ShinyValuePurple;
     S32 ShinyValueBlue;
     S32 ShinyValueGreen;
     S32 ShinyValueYellow;
     S32 ShinyValueRed;
+
+    // 0x89C in globals
     S32 ShinyValueCombo0;
     S32 ShinyValueCombo1;
     S32 ShinyValueCombo2;
@@ -38,6 +44,8 @@ struct zGlobalSettings
     S32 ShinyValueCombo13;
     S32 ShinyValueCombo14;
     S32 ShinyValueCombo15;
+
+    // 0x8DC in globals
     F32 ComboTimer;
     U32 Initial_Specials;
     U32 TakeDamage;
@@ -95,6 +103,7 @@ struct zGlobalSettings
     F32 SlideAirDblSlowTime;
     F32 SlideVelDblBoost;
     U8 SlideApplyPhysics;
+    // 0x9BD in globals
     U8 PowerUp[2];
     U8 InitialPowerUp[2];
 };
@@ -104,7 +113,6 @@ struct zEntHangable;
 struct zPlatform;
 struct xSurface;
 struct zAssetPickupTable;
-struct zCutsceneMgr;
 
 struct zCheckPoint
 {
@@ -117,19 +125,30 @@ struct zCheckPoint
 
 struct zPlayerGlobals
 {
+    // 0x6E0 in globals
     zEnt ent;
+
+    // 0x7B4 in globals
     xEntShadow entShadow_embedded;
     xShadowSimpleCache simpShadow_embedded;
+
+    // 0x874 in globals
     zGlobalSettings g;
+
+    // 0x9C4 in globals
     zPlayerSettings* s;
     zPlayerSettings sb;
     zPlayerSettings patrick;
     zPlayerSettings sandy;
+
+    // 0x16A0 in globals
     xModelInstance* model_spongebob;
     xModelInstance* model_patrick;
     xModelInstance* model_sandy;
+
+    // 0x16AC in globals
     U32 Visible;
-    U32 Health; 
+    U32 Health; // 0x16b0
     S32 Speed;
     F32 SpeedMult;
     S32 Sneak;
@@ -140,6 +159,8 @@ struct zPlayerGlobals
     S32 Stepping;
     S32 JumpState;
     S32 LastJumpState;
+
+    // 0x16DC in globals
     F32 JumpTimer;
     F32 LookAroundTimer;
     U32 LookAroundRand;
@@ -151,10 +172,12 @@ struct zPlayerGlobals
     F32 ScareTimer;
     xBase* ScareSource;
     F32 CowerTimer;
-    F32 DamageTimer;
+    F32 DamageTimer; // 0x1708
     F32 SundaeTimer;
     F32 ControlOffTimer;
     F32 HelmetTimer;
+
+    // Offset: 0x1718
     U32 WorldDisguise;
     U32 Bounced;
     F32 FallDeathTimer;
@@ -164,6 +187,8 @@ struct zPlayerGlobals
     xEnt* MountChimney;
     F32 MountChimOldY;
     U32 MaxHealth;
+
+    // Offset: 0x173C
     U32 DoMeleeCheck;
     F32 VictoryTimer;
     F32 BadGuyNearTimer;
@@ -172,6 +197,8 @@ struct zPlayerGlobals
     F32 ShockRadius;
     F32 ShockRadiusOld;
     F32 Face_ScareTimer;
+
+    // Offset: 0x175C
     U32 Face_ScareRandom;
     U32 Face_Event;
     F32 Face_EventTimer;
@@ -183,20 +210,22 @@ struct zPlayerGlobals
     F32 IdleSitTimer;
     S32 Transparent;
     zEnt* FireTarget;
-    U32 ControlOff; 
+    U32 ControlOff; // 0x1788
     U32 ControlOnEvent;
+
+    // Offset: 0x1790
     U32 AutoMoveSpeed;
     F32 AutoMoveDist;
     xVec3 AutoMoveTarget;
     xBase* AutoMoveObject;
     zEnt* Diggable;
-    F32 DigTimer; 
+    F32 DigTimer; // 0x17AC
     zPlayerCarryInfo carry;
     zPlayerLassoInfo lassoInfo;
     xModelTag BubbleWandTag[2];
-    xModelInstance* model_wand; 
+    xModelInstance* model_wand; // 0x19E0
     xEntBoulder* bubblebowl;
-    F32 bbowlInitVel;
+    F32 bbowlInitVel; // 0x19E8
     zEntHangable* HangFound;
     zEntHangable* HangEnt;
     zEntHangable* HangEntLast;
@@ -211,6 +240,8 @@ struct zPlayerGlobals
     F32 Jump_CurrGravity;
     F32 Jump_HoldTimer;
     F32 Jump_ChangeTimer;
+
+    // Offset: 0x1AB8
     S32 Jump_CanDouble;
     S32 Jump_CanFloat;
     S32 Jump_SpringboardStart;
@@ -219,6 +250,8 @@ struct zPlayerGlobals
     S32 CanBubbleSpin;
     S32 CanBubbleBounce;
     S32 CanBubbleBash;
+
+    // Offset: 0x1AD8 in globals
     S32 IsJumping;
     S32 IsDJumping;
     S32 IsBubbleSpinning;
@@ -229,18 +262,26 @@ struct zPlayerGlobals
     S32 IsCoptering;
     _zPlayerWallJumpState WallJumpState;
     S32 cheat_mode;
+
+    // Offset: 0x1B00 in globals
     U32 Inv_Shiny;
     U32 Inv_Spatula;
     U32 Inv_PatsSock[LEVEL_COUNT];
     U32 Inv_PatsSock_Max[LEVEL_COUNT];
+
+    // Offset: 0x1B80 in globals
     U32 Inv_PatsSock_CurrentLevel;
     U32 Inv_LevelPickups[LEVEL_COUNT];
     U32 Inv_LevelPickups_CurrentLevel;
+
+    // Offset: 0x1BC4 in globals
     U32 Inv_PatsSock_Total;
     xModelTag BubbleTag;
     xEntDrive drv;
     xSurface* floor_surf;
     xVec3 floor_norm;
+
+    // Offset: 0x1C74 in globals
     S32 slope;
     xCollis earc_coll;
     xSphere head_sph;
@@ -253,30 +294,30 @@ struct zPlayerGlobals
     U32 SlideTrackSliding;
     U32 SlideTrackCount;
     xEnt* SlideTrackEnt[111];
-    U32 SlideNotGroundedSinceSlide; 
+    U32 SlideNotGroundedSinceSlide; //0x1f10
     xVec3 SlideTrackDir;
     xVec3 SlideTrackVel;
-    F32 SlideTrackDecay; 
+    F32 SlideTrackDecay; //0x1f2c
     F32 SlideTrackLean;
-    F32 SlideTrackLand; 
+    F32 SlideTrackLand; // 0x1f34
     U8 sb_model_indices[14];
     xModelInstance* sb_models[14];
-    U32 currentPlayer;
+    U32 currentPlayer; //0x1f80
     xVec3 PredictRotate;
     xVec3 PredictTranslate;
     F32 PredictAngV;
     xVec3 PredictCurrDir;
     F32 PredictCurrVel;
     F32 KnockBackTimer;
-    F32 KnockIntoAirTimer; 
+    F32 KnockIntoAirTimer; // 0x1FB4
 };
 
 struct zGlobals : xGlobals
 {
     zPlayerGlobals player;
-    zAssetPickupTable* pickupTable; 
-    zCutsceneMgr* cmgr;
-    zScene* sceneCur;
+    zAssetPickupTable* pickupTable; // 0x1FB8
+    zCutsceneMgr* cmgr; // 0x1FBC
+    zScene* sceneCur; // 0x1FC0
     zScene* scenePreload;
 };
 

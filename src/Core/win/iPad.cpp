@@ -1,64 +1,62 @@
-//#include <types.h>
-//#include <dolphin.h>
-//
-//#include "xTRC.h"
-//#include "zGlobals.h"
-//
-//#include <dolphin\pad.h>
-//
-//extern xGlobals* xglobals;
-//extern zGlobals globals;
-//
+#include <types.h>
+
+#include "xTRC.h"
+#include "zGlobals.h"
+
+
+extern xGlobals* xglobals;
+extern zGlobals globals;
+
 //PADStatus sPadData[PAD_MAX_CONTROLLERS];
-//
-//S32 iPadInit()
-//{
-//    PADInit();
-//    return 1;
-//}
-//
-//_tagxPad* iPadEnable(_tagxPad* pad, S16 port)
-//{
-//    pad->port = port;
-//    pad->slot = 0;
-//    pad->state = ePad_Enabled;
-//    gTrcPad[pad->port].state = TRC_PadInserted;
-//    pad->flags |= 3;
-//    pad->flags |= 4;
-//    return pad;
-//}
-//
-//S32 iPadConvStick(F32 value)
-//{
-//    F32 clampedValue;
-//    if (value > 40.0f)
-//    {
-//        clampedValue = 40.0f;
-//    }
-//    else if (value < -40.0f)
-//    {
-//        clampedValue = -40.0f;
-//    }
-//    else
-//    {
-//        clampedValue = value;
-//    }
-//
-//    F32 convertedValue = 3.2f * clampedValue;
-//
-//    if (convertedValue > 127.0f)
-//    {
-//        convertedValue = 127.0f;
-//    }
-//    else if (convertedValue < -127.0f)
-//    {
-//        convertedValue = -127.0f;
-//    }
-//
-//    return convertedValue;
-//}
-//
-//S32 iPadUpdate(_tagxPad* pad, U32* on)
+
+S32 iPadInit() // TODO: implement function
+{
+    //PADInit();
+    return 1;
+}
+
+_tagxPad* iPadEnable(_tagxPad* pad, S16 port)
+{
+    pad->port = port;
+    pad->slot = 0;
+    pad->state = ePad_Enabled;
+    gTrcPad[pad->port].state = TRC_PadInserted;
+    pad->flags |= 3;
+    pad->flags |= 4;
+    return pad;
+}
+
+S32 iPadConvStick(F32 value)
+{
+    F32 clampedValue;
+    if (value > 40.0f)
+    {
+        clampedValue = 40.0f;
+    }
+    else if (value < -40.0f)
+    {
+        clampedValue = -40.0f;
+    }
+    else
+    {
+        clampedValue = value;
+    }
+
+    F32 convertedValue = 3.2f * clampedValue;
+
+    if (convertedValue > 127.0f)
+    {
+        convertedValue = 127.0f;
+    }
+    else if (convertedValue < -127.0f)
+    {
+        convertedValue = -127.0f;
+    }
+
+    return convertedValue;
+}
+
+//S32 iPadUpdate(_tagxPad* pad, U32* on) MIMP
 //{
 //    U16 buttons;
 //    U32 temp_on;
@@ -138,18 +136,18 @@
 //    }
 //    return 1;
 //}
-//
-//S32 iPadConvFromGCN(U32 a, U32 b, U32 c)
-//{
-//    // TODO: this can probably be simplified,
-//    // basically a copy of ghidra's output
-//    return c & (S32)(-(a & b) | a & b) >> 0x1f;
-//}
-//
-//void iPadRumbleFx(_tagxPad* p, _tagxRumble* r, F32 time_passed)
-//{
-//}
-//
+
+S32 iPadConvFromGCN(U32 a, U32 b, U32 c)
+{
+    // TODO: this can probably be simplified,
+    // basically a copy of ghidra's output
+    return c & (S32)(-(a & b) | a & b) >> 0x1f;
+}
+
+void iPadRumbleFx(_tagxPad* p, _tagxRumble* r, F32 time_passed)
+{
+}
+
 //void iPadStopRumble()
 //{
 //    PADControlMotor(mPad[globals.currentActivePad].port, 0); // Scheduling memes.
@@ -164,7 +162,7 @@
 //{
 //    PADControlMotor(pad->port, 1);
 //}
-//
-//void iPadKill()
-//{
-//}
+
+void iPadKill()
+{
+}

@@ -1,79 +1,78 @@
-//#include "isavegame.h"
-//
-//#include "zGlobals.h"
-//
-//#include "xMemMgr.h"
-//#include "xSnd.h"
-//
-//#include "iFile.h"
-//#include "iSystem.h"
-//#include "iTRC.h"
-//
-//#include <dolphin.h>
-//#include <stdio.h>
-//#include <string.h>
-//#include <types.h>
-//
-//// Not 100% on what this does or if it's correctly defined for all cases. Seems to be used for allocation alignment
-//#define ALIGN_THING(x, n) (n + x - 1 & -x)
-//
-//// name is a total guess for now
-//struct st_ISG_TPL_TEX
-//{
-//    struct UnkIn
-//    {
-//        U32 unk_0;
-//        U32 unk_4;
-//        void* unk_8;
-//        U32 unk_c;
-//        U32 unk_10[4];
-//        U8 unk_20;
-//        U8 unk_21;
-//        U8 unk_22;
-//        U8 unk_23;
-//    };
-//    struct UnkOut
-//    {
-//        U8 unk_0;
-//        U8 unk_1;
-//        U8 unk_2;
-//        U8 unk_3;
-//        U32 unk_4;
-//        void* unk_8;
-//    };
-//
-//    UnkIn* unk_0;
-//    UnkOut* unk_4;
-//};
-//// WIP. Looks like some sort of header for a file with embedded texture information.
-//struct st_ISG_TPL_TEXPALETTE
-//{
-//    U32 magic;
-//    U32 count;
-//    st_ISG_TPL_TEX* unk_8;
-//};
-//
-//// .bss
-//static char cardwork[2][0xa000];
-//
-//// .sbss
-//static volatile S32 g_isginit;
-//static st_ISG_TPL_TEXPALETTE* g_rawicon;
-//static st_ISG_TPL_TEXPALETTE* g_rawbanr;
-//static U32 g_iconsize;
-//static U32 g_banrsize;
-//static U8 isMounted;
-//
-//// .data
-//static st_ISGSESSION g_isgdata_MAIN = { 0 };
-//static S32 g_legalSectSize[] = { 0x2000, 0, -1 };
-//
+#include "isavegame.h"
+
+#include "zGlobals.h"
+
+#include "xMemMgr.h"
+#include "xSnd.h"
+
+#include "iFile.h"
+#include "iSystem.h"
+#include "iTRC.h"
+
+#include <stdio.h>
+#include <string.h>
+#include <types.h>
+
+// Not 100% on what this does or if it's correctly defined for all cases. Seems to be used for allocation alignment
+#define ALIGN_THING(x, n) (n + x - 1 & -x)
+
+// name is a total guess for now
+struct st_ISG_TPL_TEX
+{
+    struct UnkIn
+    {
+        U32 unk_0;
+        U32 unk_4;
+        void* unk_8;
+        U32 unk_c;
+        U32 unk_10[4];
+        U8 unk_20;
+        U8 unk_21;
+        U8 unk_22;
+        U8 unk_23;
+    };
+    struct UnkOut
+    {
+        U8 unk_0;
+        U8 unk_1;
+        U8 unk_2;
+        U8 unk_3;
+        U32 unk_4;
+        void* unk_8;
+    };
+
+    UnkIn* unk_0;
+    UnkOut* unk_4;
+};
+// WIP. Looks like some sort of header for a file with embedded texture information.
+struct st_ISG_TPL_TEXPALETTE
+{
+    U32 magic;
+    U32 count;
+    st_ISG_TPL_TEX* unk_8;
+};
+
+// .bss
+static char cardwork[2][0xa000];
+
+// .sbss
+static volatile S32 g_isginit;
+static st_ISG_TPL_TEXPALETTE* g_rawicon;
+static st_ISG_TPL_TEXPALETTE* g_rawbanr;
+static U32 g_iconsize;
+static U32 g_banrsize;
+static U8 isMounted;
+
+// .data
+static st_ISGSESSION g_isgdata_MAIN = { 0 };
+static S32 g_legalSectSize[] = { 0x2000, 0, -1 };
+
 //static S32 iSG_start_your_engines();
 //static S32 iSG_chk_icondata();
 //static S32 iSG_load_icondata();
 //static void iSG_discard_icondata();
 //static S32 iSG_mc_unmount(S32 slot);
-//
+
 //S32 iSGStartup()
 //{
 //    if (g_isginit++ != 0)
@@ -85,62 +84,62 @@
 //    iSG_load_icondata();
 //    return g_isginit;
 //}
-//
-//S32 iSGShutdown()
-//{
-//    iSG_discard_icondata();
-//    return 1;
-//}
-//
-//char* iSGMakeName(en_NAMEGEN_TYPE type, const char* base, S32 idx)
-//{
-//    static volatile S32 rotate = 0; // fakematch??
-//    static char rotatebuf[8][32] = { 0 };
-//
-//    const char* fmt_sd = "%s%02d";
-//    char* use_buf = rotatebuf[rotate++];
-//    if (rotate == 8)
-//    {
-//        rotate = 0;
-//    }
-//
-//    *use_buf = NULL;
-//    switch (type)
-//    {
-//    case ISG_NGTYP_GAMEFILE:
-//
-//        if (base != NULL)
-//        {
-//            sprintf(use_buf, fmt_sd, base, idx);
-//        }
-//        else
-//        {
-//            sprintf(use_buf, fmt_sd, "SpongeBob", idx);
-//        }
-//        break;
-//    case ISG_NGTYP_GAMEDIR:
-//    case ISG_NGTYP_CONFIG:
-//    case ISG_NGTYP_ICONTHUM:
-//        break;
-//    }
-//
-//    return use_buf;
-//}
-//
-//static const char* __deadstripped()
-//{
-//    return "Slot %c\0"
-//           "Memory Card Slot %c\0"
-//           "Nintendo GameCube Memory Card in Slot %c\0"
-//           "Nintendo GameCube%s Memory Card in Slot %c\0"
-//           "^\0"
-//           "Nintendo GameCube%s Memory Card\0"
-//           "is damaged and cannot be used\0"
-//           "unsupprted sector size\0"
-//           "is formatted for another market\0"
-//           "encountered unexpected error (%d)";
-//}
-//
+
+S32 iSGShutdown() RIMP
+{
+    //iSG_discard_icondata();
+    return 0;
+}
+
+char* iSGMakeName(en_NAMEGEN_TYPE type, const char* base, S32 idx)
+{
+    static volatile S32 rotate = 0; // fakematch??
+    static char rotatebuf[8][32] = { 0 };
+
+    const char* fmt_sd = "%s%02d";
+    char* use_buf = rotatebuf[rotate++];
+    if (rotate == 8)
+    {
+        rotate = 0;
+    }
+
+    *use_buf = NULL;
+    switch (type)
+    {
+    case ISG_NGTYP_GAMEFILE:
+
+        if (base != NULL)
+        {
+            sprintf(use_buf, fmt_sd, base, idx);
+        }
+        else
+        {
+            sprintf(use_buf, fmt_sd, "SpongeBob", idx);
+        }
+        break;
+    case ISG_NGTYP_GAMEDIR:
+    case ISG_NGTYP_CONFIG:
+    case ISG_NGTYP_ICONTHUM:
+        break;
+    }
+
+    return use_buf;
+}
+
+static const char* __deadstripped()
+{
+    return "Slot %c\0"
+           "Memory Card Slot %c\0"
+           "Nintendo GameCube Memory Card in Slot %c\0"
+           "Nintendo GameCube%s Memory Card in Slot %c\0"
+           "^\0"
+           "Nintendo GameCube%s Memory Card\0"
+           "is damaged and cannot be used\0"
+           "unsupprted sector size\0"
+           "is formatted for another market\0"
+           "encountered unexpected error (%d)";
+}
+
 //st_ISGSESSION* iSGSessionBegin(void* cltdata, void (*chgfunc)(void*, en_CHGCODE), S32 monitor)
 //{
 //    iTRCDisk::CheckDVDAndResetState();
@@ -168,7 +167,7 @@
 //
 //    memset(isgdata, 0, sizeof(st_ISGSESSION));
 //}
-//
+
 //S32 iSGTgtCount(st_ISGSESSION* isgdata, S32* max)
 //{
 //    s32 memSize = 0;

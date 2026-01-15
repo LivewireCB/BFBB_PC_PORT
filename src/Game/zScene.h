@@ -44,6 +44,7 @@ void zSceneUpdateSFXWidgets();
 void zSceneSwitch(_zPortal* p, S32 forceSameScene);
 void zSceneSave(zScene* ent, xSerial* s);
 void zSceneLoad(zScene* ent, xSerial* s);
+void zSceneReset();
 void zSceneSetup();
 void zSceneUpdate(F32 dt);
 void zSceneRender();
@@ -68,5 +69,7 @@ void zSceneEnableScreenAdj(U32 enable);
 void zSceneSetOldScreenAdj();
 U32 zScene_ScreenAdjustMode();
 void zSceneSpawnRandomBubbles();
+
+U32 zScene_ScreenAdjustMode();
 
 #endif

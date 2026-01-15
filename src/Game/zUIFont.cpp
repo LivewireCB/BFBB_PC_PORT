@@ -1,16 +1,16 @@
-//#include "zUIFont.h"
-//
-//#include "zSaveLoad.h"
-//
-//#include "xTextAsset.h"
-//#include "xstransvc.h"
-//#include "xMath2.h"
-//#include "xString.h"
-//#include "xFont.h"
-//#include "xTRC.h"
-//#include "xEvent.h"
-//#include "xColor.h"
-//
+#include "zUIFont.h"
+
+#include "zSaveLoad.h"
+
+#include "xTextAsset.h"
+#include "xstransvc.h"
+#include "xMath2.h"
+#include "xString.h"
+#include "xFont.h"
+#include "xTRC.h"
+#include "xEvent.h"
+#include "xColor.h"
+
 //static const basic_rect<F32> _855_0 = { 0, 0, 0, 0 }; // remove when decomping zUIFont_Render
 //
 //extern F32 _930;
@@ -438,11 +438,6 @@
 //        tb.render(true);
 //    }
 //}
-//
-//F32 xtextbox::yextent(F32 max, S32& size, bool cache) const
-//{
-//    return yextent(max, size, temp_layout(cache), 0, -1);
-//}
-//
+
 //__declspec(section ".sdata2") static F32 _930 = 0.5f;
 //__declspec(section ".sdata2") static F64 _932_0 = 4.503599627370496e15;

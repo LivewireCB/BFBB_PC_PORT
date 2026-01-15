@@ -1,119 +1,119 @@
-//#include "zNPCTypeCommon.h"
-//
-//#include <types.h>
-//#include <string.h>
-//
-//#include "zEntCruiseBubble.h"
-//#include "zEntTeleportBox.h"
-//#include "zGlobals.h"
-//#include "zNPCTypes.h"
-//#include "zNPCSndTable.h"
-//#include "zNPCSndLists.h"
-//#include "zNPCSupport.h"
-//#include "zNPCFXCinematic.h"
-//
-//#include "iModel.h"
-//#include "iSnd.h"
-//
-//#include "xString.h"
-//#include "xDebug.h"
-//
-//// Finish porting code from bfbbpc repo
-//
-//#define Unknown 0
-//#define LassoGuide_Grab01 1
-//#define LassoGuide_Hold01 2
-//
-//extern char zNPCTypeCommon_strings[];
-//static char* g_strz_lassanim[3] = { "Unknown", "LassoGuide_Grab01", "LassoGuide_Hold01" };
-//extern S32 g_hash_lassanim[3];
-//extern volatile S32 g_skipDescent;
+#include "zNPCTypeCommon.h"
+
+#include <types.h>
+#include <string.h>
+
+#include "zEntCruiseBubble.h"
+#include "zEntTeleportBox.h"
+#include "zGlobals.h"
+#include "zNPCTypes.h"
+#include "zNPCSndTable.h"
+#include "zNPCSndLists.h"
+#include "zNPCSupport.h"
+#include "zNPCFXCinematic.h"
+
+#include "iModel.h"
+#include "iSnd.h"
+
+#include "xString.h"
+#include "xDebug.h"
+
+// Finish porting code from bfbbpc repo
+
+#define Unknown 0
+#define LassoGuide_Grab01 1
+#define LassoGuide_Hold01 2
+
+extern char zNPCTypeCommon_strings[];
+static char* g_strz_lassanim[3] = { "Unknown", "LassoGuide_Grab01", "LassoGuide_Hold01" };
+extern S32 g_hash_lassanim[3];
+extern volatile S32 g_skipDescent;
 //extern NPCConfig* g_ncfghead;
 //static zNPCSettings* g_dflt_npcsettings;
-//extern F32 lbl_803CE4C0;
-//extern S32 g_flg_wonder;
-//extern S32 g_isConversation;
-//extern xBase* g_ownerConversation;
-//extern F32 g_tmr_talkless;
-//
-//static char* g_strz_params[NPC_PARM_NOMORE] = {
-//    "Empty",
-//    "MoveSpeed",
-//    "TurnSpeed",
-//    "FactorAccel",
-//    "FactorDrift",
-//    "FactorMass",
-//    "FactorGravKnock",
-//    "FactorElasticity",
-//    "BoundMainIsBox",
-//    "BoundMainCenter",
-//    "BoundMainExtent",
-//    "HitPoints",
-//    "ScaleModel",
-//    "DetectRadius",
-//    "DetectHeight",
-//    "DetectOffset",
-//    "AttackRadius",
-//    "AttackFOV",
-//    "SoundRadius",
-//    "DelayFidget",
-//    "AttackPeriod",
-//    "StunTime",
-//    "AlertTime",
-//    "VtxAttackBase",
-//    "VtxAttack",
-//    "VtxAttack1",
-//    "VtxAttack2",
-//    "VtxAttack3",
-//    "VtxAttack4",
-//    "VtxEyeball",
-//    "VtxDmgSmokeA",
-//    "VtxDmgSmokeB",
-//    "VtxDmgSmokeC",
-//    "VtxDmgFlameA",
-//    "VtxDmgFlameB",
-//    "VtxDmgFlameC",
-//    "VtxPropel",
-//    "VtxExhaust",
-//    "VtxGen01",
-//    "VtxGen02",
-//    "VtxGen03",
-//    "VtxGen04",
-//    "VtxGen05",
-//    "AttackSize01",
-//    "AttackFrames01",
-//    "AttackFrames01a",
-//    "AttackFrames01b",
-//    "AttackFrames02",
-//    "AttackFrames02a",
-//    "AttackFrames02b",
-//    "AttackFrames03",
-//    "AttackFrames03a",
-//    "AttackFrames03b",
-//    "EsteemSlotA",
-//    "EsteemSlotB",
-//    "EsteemSlotC",
-//    "EsteemSlotD",
-//    "EsteemSlotE",
-//    "DistShadowCast",
-//    "ShadowCacheRadius",
-//    "ShadowRasterRadius",
-//    "TestCount",
-//    "EndTag_INIOnly",
-//    "FirstMovepoint",
-//    "EndTag_PropsOnly",
-//    "Bogus_Share",
-//    "EndTag_Shared",
-//};
-//
-//static en_npcparm mdlVertToParm[NPC_MDLVERT_NOMORE] = {
-//    NPC_PARM_VTX_ATTACKBASE, NPC_PARM_VTX_ATTACK,    NPC_PARM_VTX_ATTACK1,   NPC_PARM_VTX_ATTACK2,
-//    NPC_PARM_VTX_ATTACK3,    NPC_PARM_VTX_ATTACK4,   NPC_PARM_VTX_EYEBALL,   NPC_PARM_VTX_DMGSMOKEA,
-//    NPC_PARM_VTX_DMGSMOKEB,  NPC_PARM_VTX_DMGSMOKEC, NPC_PARM_VTX_DMGFLAMEA, NPC_PARM_VTX_DMGFLAMEB,
-//    NPC_PARM_VTX_DMGFLAMEC,  NPC_PARM_VTX_PROPEL,    NPC_PARM_VTX_EXHAUST,   NPC_PARM_VTX_GEN01,
-//    NPC_PARM_VTX_GEN02,      NPC_PARM_VTX_GEN03,     NPC_PARM_VTX_GEN04,     NPC_PARM_VTX_GEN05,
-//};
-//
+extern F32 lbl_803CE4C0;
+extern S32 g_flg_wonder;
+extern S32 g_isConversation;
+extern xBase* g_ownerConversation;
+extern F32 g_tmr_talkless;
+
+static char* g_strz_params[NPC_PARM_NOMORE] = {
+    "Empty",
+    "MoveSpeed",
+    "TurnSpeed",
+    "FactorAccel",
+    "FactorDrift",
+    "FactorMass",
+    "FactorGravKnock",
+    "FactorElasticity",
+    "BoundMainIsBox",
+    "BoundMainCenter",
+    "BoundMainExtent",
+    "HitPoints",
+    "ScaleModel",
+    "DetectRadius",
+    "DetectHeight",
+    "DetectOffset",
+    "AttackRadius",
+    "AttackFOV",
+    "SoundRadius",
+    "DelayFidget",
+    "AttackPeriod",
+    "StunTime",
+    "AlertTime",
+    "VtxAttackBase",
+    "VtxAttack",
+    "VtxAttack1",
+    "VtxAttack2",
+    "VtxAttack3",
+    "VtxAttack4",
+    "VtxEyeball",
+    "VtxDmgSmokeA",
+    "VtxDmgSmokeB",
+    "VtxDmgSmokeC",
+    "VtxDmgFlameA",
+    "VtxDmgFlameB",
+    "VtxDmgFlameC",
+    "VtxPropel",
+    "VtxExhaust",
+    "VtxGen01",
+    "VtxGen02",
+    "VtxGen03",
+    "VtxGen04",
+    "VtxGen05",
+    "AttackSize01",
+    "AttackFrames01",
+    "AttackFrames01a",
+    "AttackFrames01b",
+    "AttackFrames02",
+    "AttackFrames02a",
+    "AttackFrames02b",
+    "AttackFrames03",
+    "AttackFrames03a",
+    "AttackFrames03b",
+    "EsteemSlotA",
+    "EsteemSlotB",
+    "EsteemSlotC",
+    "EsteemSlotD",
+    "EsteemSlotE",
+    "DistShadowCast",
+    "ShadowCacheRadius",
+    "ShadowRasterRadius",
+    "TestCount",
+    "EndTag_INIOnly",
+    "FirstMovepoint",
+    "EndTag_PropsOnly",
+    "Bogus_Share",
+    "EndTag_Shared",
+};
+
+static en_npcparm mdlVertToParm[NPC_MDLVERT_NOMORE] = {
+    NPC_PARM_VTX_ATTACKBASE, NPC_PARM_VTX_ATTACK,    NPC_PARM_VTX_ATTACK1,   NPC_PARM_VTX_ATTACK2,
+    NPC_PARM_VTX_ATTACK3,    NPC_PARM_VTX_ATTACK4,   NPC_PARM_VTX_EYEBALL,   NPC_PARM_VTX_DMGSMOKEA,
+    NPC_PARM_VTX_DMGSMOKEB,  NPC_PARM_VTX_DMGSMOKEC, NPC_PARM_VTX_DMGFLAMEA, NPC_PARM_VTX_DMGFLAMEB,
+    NPC_PARM_VTX_DMGFLAMEC,  NPC_PARM_VTX_PROPEL,    NPC_PARM_VTX_EXHAUST,   NPC_PARM_VTX_GEN01,
+    NPC_PARM_VTX_GEN02,      NPC_PARM_VTX_GEN03,     NPC_PARM_VTX_GEN04,     NPC_PARM_VTX_GEN05,
+};
+
 //xFactoryInst* ZNPC_Create_Common(S32 who, RyzMemGrow* grow, void*)
 //{
 //    zNPCCommon* com = NULL;
@@ -232,7 +232,7 @@
 //    this->InitBounds();
 //}
 //
-//void zNPCCommon::InitBounds() //NONMATCH("https://decomp.me/scratch/JPhdS")
+//void zNPCCommon::InitBounds()
 //{
 //    NPCConfig* cfg = this->cfg_npc;
 //    xVec3 half = {};
@@ -422,7 +422,7 @@
 //    }
 //}
 //
-//void zNPCCommon::Reset() //NONMATCH("https://decomp.me/scratch/cl84A")
+//void zNPCCommon::Reset()
 //{
 //    xSceneID2Name(globals.sceneCur, this->id);
 //
@@ -748,7 +748,7 @@
 //void zNPCCommon::Move(xScene* xscn, F32 dt, xEntFrame* frm)
 //{
 //    bool retval = false;
-//    if ((npcset.useNavSplines) && ((flg_move) & 8))
+//    if ((npcset.useNavSplines) && ((flg_move)&8))
 //        if (this->drv_data && (this->drv_data->driver || this->drv_data->odriver))
 //        {
 //            retval = true;
@@ -783,7 +783,7 @@
 //    xNPCBasic::Process(xscn, dt);
 //}
 //
-//void zNPCCommon::BUpdate(xVec3* pos) //NONMATCH("https://decomp.me/scratch/zpv2r")
+//void zNPCCommon::BUpdate(xVec3* pos)
 //{
 //    NPCConfig* cfg = this->cfg_npc;
 //
@@ -816,7 +816,7 @@
 //    zGridUpdateEnt(this);
 //}
 //
-//F32 zNPCCommon::BoundAsRadius(S32 useCfg) const //NONMATCH("https://decomp.me/scratch/rCFqE")
+//F32 zNPCCommon::BoundAsRadius(S32 useCfg) const
 //{
 //    F32 rad = 1.0f;
 //
@@ -1328,34 +1328,34 @@
 //
 //    this->Damage(what, from, vec_hit);
 //}
-//
-//void zNPCCommon::VelStop() //NONMATCH("https://decomp.me/scratch/YizcX")
-//{
-//    this->spd_throttle = 0.0f;
-//    this->frame->dvel.x = 0.0f;
-//    this->frame->dvel.y = 0.0f;
-//    this->frame->dvel.z = 0.0f;
-//    this->frame->vel.x = 0.0f;
-//    this->frame->vel.y = 0.0f;
-//    this->frame->vel.z = 0.0f;
-//    this->frame->mode |= 0xC;
-//
-//    if (!this->drv_data)
-//    {
-//        this->frame->dpos.x = 0.0f;
-//        this->frame->dpos.y = 0.0f;
-//        this->frame->dpos.z = 0.0f;
-//        this->frame->mode |= 0x2;
-//    }
-//    else if (!this->drv_data->driver)
-//    {
-//        this->frame->dpos.x = 0.0f;
-//        this->frame->dpos.y = 0.0f;
-//        this->frame->dpos.z = 0.0f;
-//        this->frame->mode |= 0x2;
-//    }
-//}
-//
+
+void zNPCCommon::VelStop()
+{
+    this->spd_throttle = 0.0f;
+    this->frame->dvel.x = 0.0f;
+    this->frame->dvel.y = 0.0f;
+    this->frame->dvel.z = 0.0f;
+    this->frame->vel.x = 0.0f;
+    this->frame->vel.y = 0.0f;
+    this->frame->vel.z = 0.0f;
+    this->frame->mode |= 0xC;
+
+    if (!this->drv_data)
+    {
+        this->frame->dpos.x = 0.0f;
+        this->frame->dpos.y = 0.0f;
+        this->frame->dpos.z = 0.0f;
+        this->frame->mode |= 0x2;
+    }
+    else if (!this->drv_data->driver)
+    {
+        this->frame->dpos.x = 0.0f;
+        this->frame->dpos.y = 0.0f;
+        this->frame->dpos.z = 0.0f;
+        this->frame->mode |= 0x2;
+    }
+}
+
 //F32 zNPCCommon::ThrottleAdjust(F32 dt, F32 spd_want, F32 accel)
 //{
 //    NPCConfig* cfg = this->cfg_npc;
@@ -1434,7 +1434,6 @@
 //}
 //
 //F32 zNPCCommon::TurnToFace(F32 dt, const xVec3* dir_want, F32 useTurnRate)
-////NONMATCH("https://decomp.me/scratch/KRonE")
 //{
 //    F32 f29 = (useTurnRate < 0.0f) ? (dt * this->cfg_npc->spd_turnMax) : (dt * useTurnRate);
 //    F32 f30 = NPCC_dir_toXZAng(dir_want);
@@ -1848,74 +1847,74 @@
 //
 //    return result;
 //}
-//
-//void zNPCCommon::GiveReward()
-//{
-//    S32 i;
-//    U32 s;
-//    NPCConfig* cfg = this->cfg_npc;
-//    U32 shinies[5];
-//    S32 esteem;
-//
-//    if (this->SelfType() != NPC_TYPE_ARFDOG)
-//    {
-//        if ((this->SelfType() & 0xFFFFFF00) == 'NTT\0')
-//        {
-//            zCombo_Add(1);
-//        }
-//        else
-//        {
-//            zCombo_Add(3);
-//        }
-//    }
-//
-//    for (i = 0, s = 0; i < 5; i++)
-//    {
-//        esteem = cfg->cnt_esteem[i];
-//        if (esteem >= 1)
-//        {
-//            if (esteem == globals.player.g.ShinyValuePurple)
-//            {
-//                shinies[s] = 0;
-//                s++;
-//            }
-//            else if (esteem == globals.player.g.ShinyValueBlue)
-//            {
-//                shinies[s] = 1;
-//                s++;
-//            }
-//            else if (esteem == globals.player.g.ShinyValueGreen)
-//            {
-//                shinies[s] = 2;
-//                s++;
-//            }
-//            else if (esteem == globals.player.g.ShinyValueYellow)
-//            {
-//                shinies[s] = 3;
-//                s++;
-//            }
-//            else if (esteem == globals.player.g.ShinyValueRed)
-//            {
-//                shinies[s] = 4;
-//                s++;
-//            }
-//            else
-//            {
-//                shinies[i] = 4;
-//                s++;
-//                break;
-//            }
-//        }
-//    }
-//
-//    if (s)
-//    {
-//        zEntPickup_SpawnNRewards(shinies, s, *this->Pos());
-//    }
-//
-//    this->PlayerKiltMe();
-//}
-//
+
+void zNPCCommon::GiveReward() RIMP
+{
+    S32 i;
+    U32 s;
+    NPCConfig* cfg = this->cfg_npc;
+    U32 shinies[5];
+    S32 esteem;
+
+    //if (this->SelfType() != NPC_TYPE_ARFDOG)
+    //{
+        //if ((this->SelfType() & 0xFFFFFF00) == 'NTT\0')
+        //{
+            //zCombo_Add(1);
+        //}
+        //else
+        //{
+            //zCombo_Add(3);
+        //}
+    //}
+
+    for (i = 0, s = 0; i < 5; i++)
+    {
+        esteem = cfg->cnt_esteem[i];
+        if (esteem >= 1)
+        {
+            if (esteem == globals.player.g.ShinyValuePurple)
+            {
+                shinies[s] = 0;
+                s++;
+            }
+            else if (esteem == globals.player.g.ShinyValueBlue)
+            {
+                shinies[s] = 1;
+                s++;
+            }
+            else if (esteem == globals.player.g.ShinyValueGreen)
+            {
+                shinies[s] = 2;
+                s++;
+            }
+            else if (esteem == globals.player.g.ShinyValueYellow)
+            {
+                shinies[s] = 3;
+                s++;
+            }
+            else if (esteem == globals.player.g.ShinyValueRed)
+            {
+                shinies[s] = 4;
+                s++;
+            }
+            else
+            {
+                shinies[i] = 4;
+                s++;
+                break;
+            }
+        }
+    }
+
+    if (s)
+    {
+        //zEntPickup_SpawnNRewards(shinies, s, *this->Pos());
+    }
+
+    //this->PlayerKiltMe();
+}
+
 //void zNPCPlyrSnd_Reset()
 //{
 //    g_tmr_talkless = 10.0f;
@@ -1951,7 +1950,7 @@
 //    }
 //}
 //
-//void zNPCCommon::ISeePlayer() //NONMATCH("https://decomp.me/scratch/M08oY")
+//void zNPCCommon::ISeePlayer()
 //{
 //    en_xEventTags ven = eEventUnknown;
 //
@@ -2153,7 +2152,7 @@
 //    this->GetParm(pid, (void*)val);
 //}
 //
-//void zNPCCommon::GetParm(en_npcparm pid, void* val) //NONMATCH("https://decomp.me/scratch/dg7eV")
+//void zNPCCommon::GetParm(en_npcparm pid, void* val)
 //{
 //    char** names = g_strz_params;
 //    xModelAssetParam* pmdata = this->parmdata;
@@ -2266,7 +2265,6 @@
 //}
 //
 //void zNPCCommon::GetParmDefault(en_npcparm pid, void* val)
-////NONMATCH("https://decomp.me/scratch/mNHLS")
 //{
 //    // Should be a S32?
 //    S32 result = 1;
@@ -2429,7 +2427,7 @@
 //U32 zNPCCommon::CanDoSplines()
 //{
 //    bool retval = false;
-//    if ((npcset.useNavSplines) && ((flg_move) & 8))
+//    if ((npcset.useNavSplines) && ((flg_move)&8))
 //    {
 //        retval = true;
 //    }
@@ -2443,7 +2441,7 @@
 //    return nav_first;
 //}
 //
-//void zNPCCommon::MvptReset(zMovePoint* nav_goto) //NONMATCH("https://decomp.me/scratch/lhUW9")
+//void zNPCCommon::MvptReset(zMovePoint* nav_goto)
 //{
 //    if (nav_goto)
 //    {
@@ -2462,7 +2460,7 @@
 //    this->dst_curspline = 0.0f;
 //}
 //
-//S32 zNPCCommon::MvptCycle() //NONMATCH("https://decomp.me/scratch/CGooj")
+//S32 zNPCCommon::MvptCycle()
 //{
 //    zMovePoint* nav_tmp = NULL;
 //
@@ -2517,7 +2515,6 @@
 //}
 //
 //S32 zNPCCommon::HaveLOSToPos(xVec3* pos, F32 dist, xScene* xscn, xBase* tgt, xCollis* colCallers)
-////NONMATCH("https://decomp.me/scratch/wxm2S")
 //{
 //    S32 result;
 //    xRay3 ray = {};
@@ -2665,51 +2662,51 @@
 //        minst = minst->Next;
 //    }
 //}
-//
-//S32 zNPCCommon::AnimStart(U32 animID, S32 forceRestart)
-//{
-//    static S32 dumptable = 0;
-//    if (dumptable)
-//    {
-//        dumptable = 0;
-//        this->AnimGetTable();
-//    }
-//
-//    xAnimState* r3_ = this->AnimCurState();
-//    if (r3_ && r3_->ID == animID && !forceRestart)
-//    {
-//        return r3_->ID;
-//    }
-//
-//    xAnimTable* r3 = this->AnimGetTable();
-//    xAnimTransition* da_tran = r3->TransitionList;
-//
-//    while (da_tran)
-//    {
-//        if (da_tran->Dest->ID == animID)
-//        {
-//            break;
-//        }
-//        da_tran = da_tran->Next;
-//    }
-//
-//    if (da_tran)
-//    {
-//        xAnimPlayStartTransition(this->model->Anim, da_tran);
-//    }
-//    else
-//    {
-//        xSceneID2Name(globals.sceneCur, this->id);
-//    }
-//
-//    if (da_tran)
-//    {
-//        return da_tran->Dest->ID;
-//    }
-//
-//    return 0;
-//}
-//
+
+S32 zNPCCommon::AnimStart(U32 animID, S32 forceRestart)
+{
+    static S32 dumptable = 0;
+    if (dumptable)
+    {
+        dumptable = 0;
+        this->AnimGetTable();
+    }
+
+    xAnimState* r3_ = this->AnimCurState();
+    if (r3_ && r3_->ID == animID && !forceRestart)
+    {
+        return r3_->ID;
+    }
+
+    xAnimTable* r3 = this->AnimGetTable();
+    xAnimTransition* da_tran = r3->TransitionList;
+
+    while (da_tran)
+    {
+        if (da_tran->Dest->ID == animID)
+        {
+            break;
+        }
+        da_tran = da_tran->Next;
+    }
+
+    if (da_tran)
+    {
+        xAnimPlayStartTransition(this->model->Anim, da_tran);
+    }
+    else
+    {
+        xSceneID2Name(globals.sceneCur, this->id);
+    }
+
+    if (da_tran)
+    {
+        return da_tran->Dest->ID;
+    }
+
+    return 0;
+}
+
 //void zNPCCommon::AnimSetState(U32 animID, F32 time)
 //{
 //    xAnimTable* r3 = this->AnimGetTable();
@@ -2733,17 +2730,17 @@
 //
 //    return this->model->Anim->Single;
 //}
-//
-//xAnimState* zNPCCommon::AnimCurState()
-//{
-//    if (!this->model->Anim && (this->SelfType() & 0xFFFFFF00) == 'NTT\0')
-//    {
-//        return NULL;
-//    }
-//
-//    return this->model->Anim->Single->State;
-//}
-//
+
+xAnimState* zNPCCommon::AnimCurState()
+{
+    if (!this->model->Anim && (this->SelfType() & 0xFFFFFF00) == 'NTT\0')
+    {
+        return NULL;
+    }
+
+    return this->model->Anim->Single->State;
+}
+
 //zNPCSettings* zNPCSettings_Find(U32 id)
 //{
 //    zNPCSettings* set = NULL;
@@ -2762,7 +2759,7 @@
 //    return set;
 //}
 //
-//void zNPCCommon::Vibrate(F32 ds2_cur, F32 ds2_max) //NONMATCH("https://decomp.me/scratch/A5HIP")
+//void zNPCCommon::Vibrate(F32 ds2_cur, F32 ds2_max)
 //{
 //    F32 rat = ds2_cur / MAX(ds2_max, 1.0f);
 //
@@ -2824,20 +2821,20 @@
 //    }
 //    //return retval;
 //}
-//
-//U32 zNPCCommon::AnimCurStateID()
-//{
-//    xAnimState* state = AnimCurState();
-//    if (state != NULL)
-//    {
-//        return state->ID;
-//    }
-//    else
-//    {
-//        return 0;
-//    }
-//}
-//
+
+U32 zNPCCommon::AnimCurStateID()
+{
+    xAnimState* state = AnimCurState();
+    if (state != NULL)
+    {
+        return state->ID;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
 //F32 zNPCCommon::AnimDuration(xAnimState* ast)
 //{
 //    if (ast == 0)
@@ -2857,7 +2854,7 @@
 //    return model->Anim->Single->Time;
 //}
 //
-//void zNPCSettings_MakeDummy() //NONMATCH("https://decomp.me/scratch/amPtL")
+//void zNPCSettings_MakeDummy()
 //{
 //    static zNPCSettings dum;
 //    dum.id = 0xFEEDCAFE;
@@ -3098,12 +3095,12 @@
 //{
 //    ModelScaleSet(vec->x, vec->y, vec->z);
 //}
-//
-//xAnimTable* zNPCCommon::AnimGetTable()
-//{
-//    return model->Anim->Table;
-//}
-//
+
+xAnimTable* zNPCCommon::AnimGetTable()
+{
+    return model->Anim->Table;
+}
+
 //zNPCLassoInfo* zNPCCommon::PRIV_GetLassoData()
 //{
 //    return NULL;
@@ -3113,23 +3110,23 @@
 //{
 //    npc_duplodude = duper;
 //}
-//
-//void zNPCCommon::SpeakBegin()
-//{
-//}
-//
-//void zNPCCommon::SpeakEnd()
-//{
-//}
-//
-//void zNPCCommon::SpeakStart(U32 param_1, U32 param_2, S32 param_3)
-//{
-//}
-//
-//void zNPCCommon::SpeakStop()
-//{
-//}
-//
+
+void zNPCCommon::SpeakBegin()
+{
+}
+
+void zNPCCommon::SpeakEnd()
+{
+}
+
+void zNPCCommon::SpeakStart(U32 param_1, U32 param_2, S32 param_3)
+{
+}
+
+void zNPCCommon::SpeakStop()
+{
+}
+
 //F32 zNPCCommon::GenShadCacheRad()
 //{
 //    return lbl_803CE4C0;
@@ -3215,8 +3212,40 @@
 //{
 //    return FindGoal(goal) != NULL;
 //}
-//
-//U32 xSndIsPlaying(U32 assetID, U32 parid)
-//{
-//    return iSndIsPlaying(assetID, parid) & 0xff;
-//}
+
+U32 xSndIsPlaying(U32 assetID, U32 parid)
+{
+    return iSndIsPlaying(assetID, parid) & 0xff;
+}
+
+S32 zNPCCommon::SndPlayFromAFX(zAnimFxSound* afxsnd, U32* sid_played)
+{
+    /*en_NPC_SOUND sndtype;
+    F32 radius;
+    U32 aidToPlay;
+    U32 xsid;
+    NPCSndProp* sprop;
+
+    sndtype = NPCS_SndTypeFromHash(afxsnd->ID, this->cfg_npc->snd_trax, this->cfg_npc->snd_traxShare);
+    if (!NPCS_SndOkToPlay(sndtype)) {
+        return -1;
+    }
+
+    sprop = NPCS_SndFindProps(sndtype);
+    radius = this->cfg_npc->rad_sound;
+
+    if (sndtype == NPC_STYP_BOGUS) {
+        aidToPlay = afxsnd->ID;
+    }
+    else {
+        aidToPlay = NPCS_SndPickSimilar(sndtype, this->cfg_npc->snd_trax, this->cfg_npc->snd_traxShare);
+    }
+
+    xsid = this->SndStart(aidToPlay, sprop, radius);
+
+    if (sid_played) {
+        *sid_played = xsid;
+    }*/
+
+    return 1;
+}

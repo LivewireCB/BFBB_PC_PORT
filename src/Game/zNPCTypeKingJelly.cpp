@@ -1,48 +1,48 @@
-//#include "zNPCTypeKingJelly.h"
-//
-//#include "xColor.h"
-//#include "zNPCGoalCommon.h"
-//#include <types.h>
-//#include "string.h"
-//
-//#define f1868 1.0f
-//#define f1869 0.0f
-//#define f2105 0.2f
-//#define f2106 0.1f
-//
-//#define ANIM_Unknown 0 // 0x0
-//#define ANIM_Idle01 1 // 0x04
-//#define ANIM_Idle02 2 // 0x08
-//#define ANIM_Idle03 3 // 0xC
-//#define ANIM_Fidget01 4 //
-//#define ANIM_Fidget02 5
-//#define ANIM_Fidget03 6
-//#define ANIM_Taunt01 7 // 0x1c
-//#define ANIM_Attack01 8 //0x20
-//#define ANIM_Damage01 9 //0x24
-//#define ANIM_Damage02 10 //0x28
-//#define ANIM_Death01 11 //0x2c
-//#define ANIM_AttackWindup01 12 //0x30
-//#define ANIM_AttackLoop01 13 //0x34
-//#define ANIM_AttackEnd01 14 //0x38
-//#define ANIM_SpawnKids01 15 //0x3C
-//#define ANIM_Attack02Windup01 16
-//#define ANIM_Attack02Loop01 17
-//#define ANIM_Attack02End01 18
-//#define ANIM_LassoGrab01 19
-//
-//#define SOUND_AMBIENT_RING 0
-//#define SOUND_BIRTH 1
-//#define SOUND_CHARGE 2
-//#define SOUND_CHEER 3
-//#define SOUND_GRUNT 4
-//#define SOUND_LAND 5
-//#define SOUND_MOVE 6
-//#define SOUND_OSCILLATE 7
-//#define SOUND_RISE 8
-//#define SOUND_TAUNT 9
-//#define SOUND_WAVE_RING 10
-//
+#include "zNPCTypeKingJelly.h"
+
+#include "xColor.h"
+#include "zNPCGoalCommon.h"
+#include <types.h>
+#include "string.h"
+
+#define f1868 1.0f
+#define f1869 0.0f
+#define f2105 0.2f
+#define f2106 0.1f
+
+#define ANIM_Unknown 0 // 0x0
+#define ANIM_Idle01 1 // 0x04
+#define ANIM_Idle02 2 // 0x08
+#define ANIM_Idle03 3 // 0xC
+#define ANIM_Fidget01 4 //
+#define ANIM_Fidget02 5
+#define ANIM_Fidget03 6
+#define ANIM_Taunt01 7 // 0x1c
+#define ANIM_Attack01 8 //0x20
+#define ANIM_Damage01 9 //0x24
+#define ANIM_Damage02 10 //0x28
+#define ANIM_Death01 11 //0x2c
+#define ANIM_AttackWindup01 12 //0x30
+#define ANIM_AttackLoop01 13 //0x34
+#define ANIM_AttackEnd01 14 //0x38
+#define ANIM_SpawnKids01 15 //0x3C
+#define ANIM_Attack02Windup01 16
+#define ANIM_Attack02Loop01 17
+#define ANIM_Attack02End01 18
+#define ANIM_LassoGrab01 19
+
+#define SOUND_AMBIENT_RING 0
+#define SOUND_BIRTH 1
+#define SOUND_CHARGE 2
+#define SOUND_CHEER 3
+#define SOUND_GRUNT 4
+#define SOUND_LAND 5
+#define SOUND_MOVE 6
+#define SOUND_OSCILLATE 7
+#define SOUND_RISE 8
+#define SOUND_TAUNT 9
+#define SOUND_WAVE_RING 10
+
 //namespace
 //{
 //    S32 boss_cam()
@@ -1517,61 +1517,61 @@
 //void zNPCKingJelly::reset_curtain()
 //{
 //}
-//
-//S32 zNPCGoalKJIdle::Exit(float dt, void* updCtxt)
-//{
-//    zNPCKingJelly& kj = *(zNPCKingJelly*)this->psyche->clt_owner;
-//    kill_sound(6);
-//    kj.flag.stop_moving = 1;
-//    return xGoal::Exit(dt, updCtxt);
-//}
-//
-//S32 zNPCGoalKJBored::Enter(float dt, void* updCtxt)
-//{
-//    zNPCKingJelly& kj = *(zNPCKingJelly*)this->psyche->clt_owner;
-//    //play_sound(int, const xVec3*);
-//    play_sound(3, kj.model->anim_coll.verts); // kj.model is correct? dont know the xVec3*
-//    play_sound(3, kj.model->anim_coll.verts); // same as above
-//    return zNPCGoalCommon::Enter(dt, updCtxt);
-//}
-//
-//S32 zNPCGoalKJBored::Exit(float dt, void* updCtxt)
-//{
-//    return xGoal::Exit(dt, updCtxt);
-//}
-//
-//S32 zNPCGoalKJSpawnKids::Enter(float dt, void* updCtxt)
-//{
-//    zNPCKingJelly& kj = *(zNPCKingJelly*)this->psyche->clt_owner;
-//    count_children(kj.round);
-//    return zNPCGoalCommon::Enter(dt, updCtxt);
-//}
-//
-//S32 zNPCGoalKJSpawnKids::Exit(float dt, void* updCtxt)
-//{
-//    zNPCKingJelly& kj = *(zNPCKingJelly*)this->psyche->clt_owner;
-//    if (spawn_count < child_count) //0x58 child_count
-//    {
-//        kj.generate_spawn_particles();
-//        kj.spawn_children(kj.round, child_count - spawn_count);
-//    }
-//    return zNPCGoalCommon::Exit(dt, updCtxt);
-//}
-//
-//S32 zNPCGoalKJTaunt::Enter(float dt, void* updCtxt)
-//{
-//    zNPCKingJelly& kj = *(zNPCKingJelly*)this->psyche->clt_owner;
-//    //play_sound(int, const xVec3*);
-//    play_sound(9, kj.model->anim_coll.verts); // kj.model is correct? dont know the xVec3*
-//    play_sound(9, kj.model->anim_coll.verts); // same as above
-//    return zNPCGoalCommon::Enter(dt, updCtxt);
-//}
-//
-//S32 zNPCGoalKJTaunt::Exit(float dt, void* updCtxt)
-//{
-//    return xGoal::Exit(dt, updCtxt);
-//}
-//
+
+S32 zNPCGoalKJIdle::Exit(float dt, void* updCtxt) RIMP WIP
+{
+    zNPCKingJelly& kj = *(zNPCKingJelly*)this->psyche->clt_owner;
+    //kill_sound(6);
+    kj.flag.stop_moving = 1;
+    return xGoal::Exit(dt, updCtxt);
+}
+
+S32 zNPCGoalKJBored::Enter(float dt, void* updCtxt) RIMP WIP
+{
+    zNPCKingJelly& kj = *(zNPCKingJelly*)this->psyche->clt_owner;
+    //play_sound(int, const xVec3*);
+    //play_sound(3, kj.model->anim_coll.verts); // kj.model is correct? dont know the xVec3*
+    //play_sound(3, kj.model->anim_coll.verts); // same as above
+    return zNPCGoalCommon::Enter(dt, updCtxt);
+}
+
+S32 zNPCGoalKJBored::Exit(float dt, void* updCtxt)
+{
+    return xGoal::Exit(dt, updCtxt);
+}
+
+S32 zNPCGoalKJSpawnKids::Enter(float dt, void* updCtxt) RIMP
+{
+    zNPCKingJelly& kj = *(zNPCKingJelly*)this->psyche->clt_owner;
+    //count_children(kj.round);
+    return zNPCGoalCommon::Enter(dt, updCtxt);
+}
+
+S32 zNPCGoalKJSpawnKids::Exit(float dt, void* updCtxt) RIMP
+{
+    zNPCKingJelly& kj = *(zNPCKingJelly*)this->psyche->clt_owner;
+    if (spawn_count < child_count) //0x58 child_count
+    {
+        //kj.generate_spawn_particles();
+        //kj.spawn_children(kj.round, child_count - spawn_count);
+    }
+    return zNPCGoalCommon::Exit(dt, updCtxt);
+}
+
+S32 zNPCGoalKJTaunt::Enter(float dt, void* updCtxt) RIMP
+{
+    zNPCKingJelly& kj = *(zNPCKingJelly*)this->psyche->clt_owner;
+    //play_sound(int, const xVec3*);
+    //play_sound(9, kj.model->anim_coll.verts); // kj.model is correct? dont know the xVec3*
+    //play_sound(9, kj.model->anim_coll.verts); // same as above
+    return zNPCGoalCommon::Enter(dt, updCtxt);
+}
+
+S32 zNPCGoalKJTaunt::Exit(float dt, void* updCtxt)
+{
+    return xGoal::Exit(dt, updCtxt);
+}
+
 //// void zNPCKingJelly::start_blink()
 //// {
 ////     blink.active = 1;
@@ -1580,65 +1580,78 @@
 ////     // 0x24 model
 ////     // 0x44 render
 //// }
-//
-//S32 zNPCGoalKJDamage::Process(en_trantype* trantype, F32 dt, void* updCtxt, xScene* xscn)
-//{
-//    zNPCKingJelly& kj = *(zNPCKingJelly*)this->psyche->clt_owner;
-//    return 0;
-//}
-//
-//S32 zNPCGoalKJShockGround::Exit(F32 dt, void* updCtxt)
-//{
-//    zNPCKingJelly& kj = *(zNPCKingJelly*)this->psyche->clt_owner;
-//    if (kj.flag.charging != 0)
-//    {
-//        kj.end_charge();
-//    }
-//    kj.create_ambient_rings();
-//    kj.disable_tentacle_damage = 0;
-//    return xGoal::Exit(dt, updCtxt);
-//}
-//
-//S32 zNPCGoalKJDamage::Enter(F32 dt, void* updCtxt)
-//{
-//    zNPCKingJelly& kj = *(zNPCKingJelly*)this->psyche->clt_owner;
-//    //play_sound(int, const xVec3*);
-//    play_sound(4, kj.model->anim_coll.verts); // kj.model is correct? dont know the xVec3*
-//    play_sound(4, kj.model->anim_coll.verts); // same as above
-//    kj.disable_tentacle_damage = 1;
-//    return zNPCGoalCommon::Enter(dt, updCtxt);
-//}
-//
-//S32 zNPCGoalKJDamage::Exit(F32 dt, void* updCtxt)
-//{
-//    // Needs to be a reference, casting as a pointer doesn't work.
-//    // Would never have gotten this if not for DWARF data.
-//    zNPCKingJelly& kj = *(zNPCKingJelly*)this->psyche->clt_owner;
-//
-//    kj.update_round();
-//    kj.disable_tentacle_damage = false;
-//
-//    return xGoal::Exit(dt, updCtxt);
-//}
-//
-//void zNPCKingJelly::update_round()
-//{
-//}
-//
-//S32 zNPCGoalKJDeath::Enter(float dt, void* updCtxt)
-//{
-//    zNPCKingJelly& kj = *(zNPCKingJelly*)this->psyche->clt_owner;
-//    kj.decompose();
-//    kj.post_decompose();
-//    return zNPCGoalCommon::Enter(dt, updCtxt);
-//}
-//
-//S32 zNPCGoalKJDeath::Exit(float dt, void* updCtxt)
-//{
-//    return xGoal::Exit(dt, updCtxt);
-//}
-//
-//S32 zNPCGoalKJDeath::Process(en_trantype* trantype, float dt, void* updCtxt, xScene* xscn)
-//{
-//    return xGoal::Process(trantype, dt, updCtxt, xscn);
-//}
+
+S32 zNPCGoalKJDamage::Process(en_trantype* trantype, F32 dt, void* updCtxt, xScene* xscn)
+{
+    zNPCKingJelly& kj = *(zNPCKingJelly*)this->psyche->clt_owner;
+    return 0;
+}
+
+S32 zNPCGoalKJShockGround::Process(en_trantype* trantype, F32 dt, void* updCtxt, xScene* xscn)
+{
+    zNPCKingJelly& kj = *(zNPCKingJelly*)this->psyche->clt_owner;
+    return 0;
+}
+
+S32 zNPCGoalKJShockGround::Enter(F32 dt, void* updCtxt) RIMP WIP
+{
+    zNPCKingJelly& kj = *(zNPCKingJelly*)this->psyche->clt_owner;
+
+    return zNPCGoalCommon::Enter(dt, updCtxt);
+}
+
+S32 zNPCGoalKJShockGround::Exit(F32 dt, void* updCtxt)  RIMP
+{
+    zNPCKingJelly& kj = *(zNPCKingJelly*)this->psyche->clt_owner;
+    if (kj.flag.charging != 0)
+    {
+        //kj.end_charge();
+    }
+    //kj.create_ambient_rings();
+    kj.disable_tentacle_damage = 0;
+    return xGoal::Exit(dt, updCtxt);
+}
+
+S32 zNPCGoalKJDamage::Enter(F32 dt, void* updCtxt) RIMP WIP
+{
+    zNPCKingJelly& kj = *(zNPCKingJelly*)this->psyche->clt_owner;
+    //play_sound(int, const xVec3*);
+    //play_sound(4, kj.model->anim_coll.verts); // kj.model is correct? dont know the xVec3*
+    //play_sound(4, kj.model->anim_coll.verts); // same as above
+    kj.disable_tentacle_damage = 1;
+    return zNPCGoalCommon::Enter(dt, updCtxt);
+}
+
+S32 zNPCGoalKJDamage::Exit(F32 dt, void* updCtxt)
+{
+    // Needs to be a reference, casting as a pointer doesn't work.
+    // Would never have gotten this if not for DWARF data.
+    zNPCKingJelly& kj = *(zNPCKingJelly*)this->psyche->clt_owner;
+
+    kj.update_round();
+    kj.disable_tentacle_damage = false;
+
+    return xGoal::Exit(dt, updCtxt);
+}
+
+void zNPCKingJelly::update_round()
+{
+}
+
+S32 zNPCGoalKJDeath::Enter(float dt, void* updCtxt) RIMP
+{
+    zNPCKingJelly& kj = *(zNPCKingJelly*)this->psyche->clt_owner;
+    //kj.decompose();
+    //kj.post_decompose();
+    return zNPCGoalCommon::Enter(dt, updCtxt);
+}
+
+S32 zNPCGoalKJDeath::Exit(float dt, void* updCtxt)
+{
+    return xGoal::Exit(dt, updCtxt);
+}
+
+S32 zNPCGoalKJDeath::Process(en_trantype* trantype, float dt, void* updCtxt, xScene* xscn)
+{
+    return xGoal::Process(trantype, dt, updCtxt, xscn);
+}

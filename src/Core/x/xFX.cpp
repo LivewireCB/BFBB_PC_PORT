@@ -1,42 +1,50 @@
-//#include "xFX.h"
-//
-//#include "xDebug.h"
-//#include "xstransvc.h"
-//
-//#include "xScrFx.h"
-//#include "iMath.h"
-//#include "zEntPickup.h"
-//#include "zParEmitter.h"
-//#include "zSurface.h"
-//#include "zFX.h"
-//#include "zGlobals.h"
-//#include "zRumble.h"
-//
-//#include <string.h>
-//#include <rpmatfx.h>
-//#include <rwplcore.h>
-//#include <rpskin.h>
-//
-///* boot.HIP texture IDs */
-//#define ID_gloss_edge 0xB8C2351E
-//#define ID_rainbowfilm_smooth32 0x741B0566
-//
-//extern const char _stringBase0_7[];
-//
-//RpAtomicCallBackRender gAtomicRenderCallBack = NULL;
-//F32 EnvMapShininess = 1.0f;
-//RpLight* MainLight = NULL;
-//
-//static U32 num_fx_atomics = 0;
-//
-//static U32 xfx_initted = 0;
-//
-//xFXStreak sStreakList[10];
-//
-//static void LightResetFrame(RpLight* light);
-//
-//void xFXInit()
-//{
+#include "xFX.h"
+
+#include "iFX.h"
+#include "iMath.h"
+
+#include "xDebug.h"
+#include "xstransvc.h"
+#include "xScrFx.h"
+
+#include "zEntPickup.h"
+#include "zParEmitter.h"
+#include "zSurface.h"
+#include "zFX.h"
+#include "zGlobals.h"
+#include "zRumble.h"
+
+#include <string.h>
+#include <rpmatfx.h>
+#include <rwplcore.h>
+#include <rpskin.h>
+
+// no clue why this file is so out of order
+
+/* boot.HIP texture IDs */
+#define ID_gloss_edge 0xB8C2351E
+#define ID_rainbowfilm_smooth32 0x741B0566
+
+extern const char _stringBase0_7[];
+
+/* Global variables from .comm segment */
+xFXRing ringlist[RING_COUNT];
+xFXStreak sStreakList[10];
+xFXShine sShineList[2];
+
+RpAtomicCallBackRender gAtomicRenderCallBack = NULL;
+RpLight* MainLight = NULL;
+F32 EnvMapShininess = 1.0f;
+
+/* End global variables */
+
+static U32 num_fx_atomics = 0;
+static U32 xfx_initted = 0;
+
+static void LightResetFrame(RpLight* light);
+
+void xFXInit() RIMP
+{
 //    if (!xfx_initted)
 //    {
 //        xfx_initted = 1;
@@ -63,11 +71,40 @@
 //        xFXanimUVCreate();
 //        xFXAuraInit();
 //    }
-//}
-//
-//static U32 Im3DBufferPos = 0;
-//static RwTexture* g_txtr_drawRing = NULL;
-//
+}
+
+static U32 Im3DBufferPos = 0;
+static RwTexture* g_txtr_drawRing = NULL;
+
+static xFXBubbleParams defaultBFX = {
+    // pass1, pass2, pass3, padding
+    1, 1, 1, 0,
+    // pass1_alpha, pass2_alpha, pass3_alpha, pass1_fbsk
+    0, 0, 192, 0xFFFFFFFF,
+    // fresnel_map, fresnel_map_coeff
+    ID_gloss_edge, 0.75f,
+    // env_map, env_map_coeff
+    ID_rainbowfilm_smooth32, 0.5f
+};
+
+static U32 bfx_curr = 0;
+static xFXBubbleParams* BFX = &defaultBFX;
+
+static U32 sFresnelMap = 0;
+static U32 sEnvMap = 0;
+static S32 sTweaked = 0;
+
+static RxPipeline* xFXanimUVPipeline = NULL;
+F32 xFXanimUVRotMat0[2] = { 1.0f, 0.0f };
+F32 xFXanimUVRotMat1[2] = { 0.0f, 1.0f };
+F32 xFXanimUVTrans[2] = { 0.0f, 0.0f };
+F32 xFXanimUVScale[2] = { 1.0f, 1.0f };
+F32 xFXanimUV2PRotMat0[2] = { 1.0f, 0.0f };
+F32 xFXanimUV2PRotMat1[2] = { 0.0f, 1.0f };
+F32 xFXanimUV2PTrans[2] = { 0.0f, 0.0f };
+F32 xFXanimUV2PScale[2] = { 1.0f, 1.0f };
+RwTexture* xFXanimUV2PTexture = NULL;
+
 //static void DrawRingSetup()
 //{
 //    g_txtr_drawRing = (RwTexture*)xSTFindAsset(ID_rainbowfilm_smooth32, NULL);
@@ -82,80 +119,80 @@
 //{
 //    // todo: uses int-to-float conversion
 //}
-//
-//xFXRing* xFXRingCreate(const xVec3* pos, const xFXRing* params)
-//{
-//    xFXRing* ring = &ringlist[0];
-//
-//    if (!pos || !params)
-//    {
-//        return NULL;
-//    }
-//
-//    for (S32 i = 0; i < RING_COUNT; i++, ring++)
-//    {
-//        if (ring->time <= 0.0f)
-//        {
-//            // non-matching: 1.0f is only loaded once
-//
-//            memcpy(ring, params, sizeof(xFXRing));
-//
-//            ring->time = 0.001f;
-//            ring->pos = *pos;
-//            ring->ring_radius_delta *= 1.0f / ring->lifetime;
-//            ring->ring_height_delta *= 1.0f / ring->lifetime;
-//            ring->ring_tilt_delta *= 1.0f / ring->lifetime;
-//
-//            return ring;
-//        }
-//    }
-//
-//    return NULL;
-//}
-//
-//static void xFXRingUpdate(F32 dt)
-//{
-//    xFXRing* ring = &ringlist[0];
-//
-//    if ((F32)iabs(dt) < 0.001f)
-//    {
-//        return;
-//    }
-//
-//    for (S32 i = 0; i < RING_COUNT; i++, ring++)
-//    {
-//        if (ring->time <= 0.0f)
-//        {
-//            continue;
-//        }
-//
-//        F32 lifetime = ring->lifetime;
-//
-//        if (lifetime < dt)
-//        {
-//            lifetime = dt;
-//        }
-//
-//        ring->time += dt;
-//
-//        F32 t = ring->time / lifetime;
-//
-//        // non-matching: float scheduling
-//
-//        if (t > 1.0f)
-//        {
-//            ring->time = 0.0f;
-//
-//            if (ring->parent)
-//            {
-//                *ring->parent = NULL;
-//            }
-//
-//            ring->parent = NULL;
-//        }
-//    }
-//}
-//
+
+xFXRing* xFXRingCreate(const xVec3* pos, const xFXRing* params)
+{
+    xFXRing* ring = &ringlist[0];
+
+    if (!pos || !params)
+    {
+        return NULL;
+    }
+
+    for (S32 i = 0; i < RING_COUNT; i++, ring++)
+    {
+        if (ring->time <= 0.0f)
+        {
+            // non-matching: 1.0f is only loaded once
+
+            memcpy(ring, params, sizeof(xFXRing));
+
+            ring->time = 0.001f;
+            ring->pos = *pos;
+            ring->ring_radius_delta *= 1.0f / ring->lifetime;
+            ring->ring_height_delta *= 1.0f / ring->lifetime;
+            ring->ring_tilt_delta *= 1.0f / ring->lifetime;
+
+            return ring;
+        }
+    }
+
+    return NULL;
+}
+
+static void xFXRingUpdate(F32 dt)
+{
+    xFXRing* ring = &ringlist[0];
+
+    if ((F32)iabs(dt) < 0.001f)
+    {
+        return;
+    }
+
+    for (S32 i = 0; i < RING_COUNT; i++, ring++)
+    {
+        if (ring->time <= 0.0f)
+        {
+            continue;
+        }
+
+        F32 lifetime = ring->lifetime;
+
+        if (lifetime < dt)
+        {
+            lifetime = dt;
+        }
+
+        ring->time += dt;
+
+        F32 t = ring->time / lifetime;
+
+        // non-matching: float scheduling
+
+        if (t > 1.0f)
+        {
+            ring->time = 0.0f;
+
+            if (ring->parent)
+            {
+                *ring->parent = NULL;
+            }
+
+            ring->parent = NULL;
+        }
+    }
+}
+
 //void xFXRingRender()
 //{
 //    S32 i;
@@ -169,12 +206,12 @@
 //        }
 //    }
 //}
-//
-//static RpMaterial* MaterialSetEnvMap(RpMaterial* material, void* data);
-//static RpMaterial* MaterialSetBumpMap(RpMaterial* material, void* data);
-//static RpMaterial* MaterialSetBumpEnvMap(RpMaterial* material, RwTexture* env, F32 shininess,
-//                                         RwTexture* bump, F32 bumpiness);
-//
+
+static RpMaterial* MaterialSetEnvMap(RpMaterial* material, void* data);
+static RpMaterial* MaterialSetBumpMap(RpMaterial* material, void* data);
+static RpMaterial* MaterialSetBumpEnvMap(RpMaterial* material, RwTexture* env, F32 shininess,
+                                         RwTexture* bump, F32 bumpiness);
+
 //void xFX_SceneEnter(RpWorld* world)
 //{
 //    S32 i;
@@ -284,21 +321,21 @@
 //
 //    num_fx_atomics = 0;
 //}
-//
-//void xFX_SceneExit(RpWorld*)
-//{
-//}
-//
-//void xFXUpdate(F32 dt)
-//{
-//    xFXRingUpdate(dt);
-//    xFXRibbonUpdate(dt);
-//    xFXAuraUpdate(dt);
-//}
-//
-//static const RwV3d _1168 = { 1, 0, 0 };
-//static const RwV3d _1169 = { 0, 1, 0 };
-//
+
+void xFX_SceneExit(RpWorld*)
+{
+}
+
+void xFXUpdate(F32 dt)
+{
+    xFXRingUpdate(dt);
+    xFXRibbonUpdate(dt);
+    xFXAuraUpdate(dt);
+}
+
+static const RwV3d _1168 = { 1, 0, 0 };
+static const RwV3d _1169 = { 0, 1, 0 };
+
 //static void LightResetFrame(RpLight* light)
 //{
 //    // non-matching: lwzu instruction
@@ -337,12 +374,12 @@
 //    AtomicDisableMatFX(atomic);
 //    return atomic;
 //}
-//
-//void xFXPreAllocMatFX(RpClump* clump)
-//{
-//    RpClumpForAllAtomics(clump, PreAllocMatFX_cb, NULL);
-//}
-//
+
+void xFXPreAllocMatFX(RpClump* clump) RIMP
+{
+    //RpClumpForAllAtomics(clump, PreAllocMatFX_cb, NULL);
+}
+
 //RpMaterial* MaterialSetShininess(RpMaterial* material, void*)
 //{
 //    RpMatFXMaterialFlags flags = RpMatFXMaterialGetEffects(material);
@@ -396,70 +433,92 @@
 //    }
 //    return NULL;
 //}
-//
-//void xFXAuraAdd(void*, xVec3*, iColor_tag*, F32)
-//{
-//}
-//
-//void xFXAuraInit()
-//{
-//}
-//
-//void xFXAuraUpdate(F32)
-//{
-//}
-//
+
+void xFXAuraAdd(void*, xVec3*, iColor_tag*, F32)
+{
+}
+
+void xFXAuraInit()
+{
+}
+
+void xFXAuraUpdate(F32)
+{
+}
+
 //U32 xFXanimUVCreate()
 //{
-//    return 0;
+//    if (xFXanimUVPipeline == NULL)
+//    {
+//        xFXanimUVPipeline = iFXanimUVCreatePipe();
+//    }
+//    return (-(U32)xFXanimUVPipeline | (U32)xFXanimUVPipeline) >> 0x1f;
 //}
 //
-//struct xFXBubbleParams
+//namespace
 //{
-//    U32 pass1 : 1;
-//    U32 pass2 : 1;
-//    U32 pass3 : 1;
-//    U32 padding : 5;
-//    U8 pass1_alpha;
-//    U8 pass2_alpha;
-//    U8 pass3_alpha;
-//    U32 pass1_fbmsk;
-//    U32 fresnel_map;
-//    F32 fresnel_map_coeff;
-//    U32 env_map;
-//    F32 env_map_coeff;
-//};
+//    struct vert_data
+//    {
+//        xVec3 loc;
+//        xVec3 norm;
+//        RwRGBA color;
+//        RwTexCoords uv;
+//        F32 depth;
+//    };
 //
-//static xFXBubbleParams defaultBFX = {
-//    // pass1, pass2, pass3, padding
-//    1, 1, 1, 0,
-//    // pass1_alpha, pass2_alpha, pass3_alpha, pass1_fbsk
-//    0, 0, 192, 0xFFFFFFFF,
-//    // fresnel_map, fresnel_map_coeff
-//    ID_gloss_edge, 0.75f,
-//    // env_map, env_map_coeff
-//    ID_rainbowfilm_smooth32, 0.5f
-//};
+//    struct tri_data
+//    {
+//        vert_data vert[3];
+//    };
 //
-//static U32 bfx_curr = 0;
-//static xFXBubbleParams* BFX = &defaultBFX;
+//    // TODO: Check all lerp return types. Only the first is in dwarf
+//    void lerp(vert_data& v, F32 frac, const vert_data& v0, const vert_data& v1);
+//    void lerp(RwTexCoords& unk0, F32 unk1, const RwTexCoords& unk2, const RwTexCoords& unk3);
+//    F32 lerp(F32& unk0, F32 unk1, F32 unk2, F32 unk3);
+//    void lerp(RwRGBA& unk0, F32 unk1, RwRGBA unk2, RwRGBA unk3);
+//    void lerp(U8& unk0, F32 unk1, U8 unk2, U8 unk3);
+//    void lerp(xVec3& unk0, F32 unk1, const xVec3& unk2, const xVec3& unk3);
 //
-//static U32 sFresnelMap = 0;
-//static U32 sEnvMap = 0;
-//static S32 sTweaked = 0;
+//    void lerp(vert_data& v, F32 frac, const vert_data& v0, const vert_data& v1)
+//    // Yes, These are the actual parameter names for this function from the dwarf
+//    {
+//        lerp(v.loc, frac, v0.loc, v1.loc);
+//        lerp(v.norm, frac, v0.norm, v1.norm);
+//        lerp(v.color, frac, v0.color, v1.color);
+//        lerp(v.uv, frac, v0.uv, v1.uv);
+//    }
 //
-//xFXRing ringlist[RING_COUNT];
+//    void lerp(RwTexCoords& unk0, F32 unk1, const RwTexCoords& unk2, const RwTexCoords& unk3)
+//    {
+//        lerp(unk0.u, unk1, unk2.u, unk3.u);
+//        lerp(unk0.v, unk1, unk2.v, unk3.v);
+//    }
 //
-//static RxPipeline* xFXanimUVPipeline = NULL;
-//F32 xFXanimUVRotMat0[2] = { 1.0f, 0.0f };
-//F32 xFXanimUVRotMat1[2] = { 0.0f, 1.0f };
-//F32 xFXanimUVTrans[2] = { 0.0f, 0.0f };
-//F32 xFXanimUVScale[2] = { 1.0f, 1.0f };
-//F32 xFXanimUV2PRotMat0[2] = { 1.0f, 0.0f };
-//F32 xFXanimUV2PRotMat1[2] = { 0.0f, 1.0f };
-//F32 xFXanimUV2PTrans[2] = { 0.0f, 0.0f };
-//F32 xFXanimUV2PScale[2] = { 1.0f, 1.0f };
-//RwTexture* xFXanimUV2PTexture = NULL;
+//    F32 lerp(F32& unk0, F32 unk1, F32 unk2, F32 unk3)
+//    {
+//        return (unk0 = unk2 + (unk3 - unk2) * unk1);
+//    }
+//
+//    void lerp(RwRGBA& unk0, F32 unk1, RwRGBA unk2, RwRGBA unk3)
+//    {
+//        lerp(unk0.red, unk1, unk2.red, unk3.red);
+//        lerp(unk0.green, unk1, unk2.green, unk3.green);
+//        lerp(unk0.blue, unk1, unk2.blue, unk3.blue);
+//        lerp(unk0.alpha, unk1, unk2.alpha, unk3.alpha);
+//    }
+//
+//    void lerp(U8& unk0, F32 unk1, U8 unk2, U8 unk3)
+//    {
+//    }
+//
+//    void lerp(xVec3& unk0, F32 unk1, const xVec3& unk2, const xVec3& unk3)
+//    {
+//        lerp(unk0.x, unk1, unk2.x, unk3.x);
+//        lerp(unk0.y, unk1, unk2.y, unk3.y);
+//        lerp(unk0.z, unk1, unk2.z, unk3.z);
+//    }
+//
+//} // namespace
 //
 //namespace
 //{
@@ -561,34 +620,34 @@
 //                                                                   "BLENDSRCALPHASAT\0"
 //                                                                   "FX|Ribbon";
 //
-//void xFXStartup()
-//{
-//}
-//
-//void xFXShutdown()
-//{
-//}
-//
-//void xFXSceneInit()
-//{
-//}
-//
-//void xFXSceneSetup()
-//{
-//}
-//
-//void xFXSceneReset()
-//{
-//}
-//
-//void xFXScenePrepare()
-//{
-//}
-//
-//void xFXSceneFinish()
-//{
-//}
-//
+void xFXStartup()
+{
+}
+
+void xFXShutdown()
+{
+}
+
+void xFXSceneInit()
+{
+}
+
+void xFXSceneSetup()
+{
+}
+
+void xFXSceneReset()
+{
+}
+
+void xFXScenePrepare()
+{
+}
+
+void xFXSceneFinish()
+{
+}
+
 //void xFXanimUV2PSetTexture(RwTexture* tex)
 //{
 //    xFXanimUV2PTexture = tex;
@@ -622,22 +681,91 @@
 //    xFXanimUVTrans[1] = translation->y;
 //}
 //
-//void xFXStreakUpdate(U32, const xVec3*, const xVec3*)
+//void xFXStreakUpdate(U32 id, const xVec3* a, const xVec3* b)
 //{
+//    xFXStreak* s;
 //}
 //
-//void xFXStreakStart(F32, F32, F32, U32, const iColor_tag*, const iColor_tag*, S32)
+//U32 xFXStreakStart(F32 frequency, F32 alphaFadeRate, F32 alphaStart, U32 textureID,
+//                   const iColor_tag* edge_a, const iColor_tag* edge_b, S32 taper)
 //{
-//}
+//    for (U32 i = 0; i < 10; i++)
+//    {
+//        if (sStreakList[i].flags == 0x0)
+//        {
+//            sStreakList[i].flags = 0x1;
 //
-//void xFXStreakStop(U32)
-//{
-//}
+//            if (taper != 0)
+//            {
+//                sStreakList[i].flags |= 0x4;
+//            }
 //
-//void xFXStreakUpdate(F32)
-//{
-//}
+//            sStreakList[i].frequency = frequency;
+//            sStreakList[i].alphaFadeRate = alphaFadeRate;
+//            sStreakList[i].alphaStart = alphaStart;
+//            sStreakList[i].head = 0;
+//            sStreakList[i].elapsed = 0.0f;
+//            sStreakList[i].lifetime = 0.0f;
+//            sStreakList[i].textureRasterPtr = NULL;
+//            sStreakList[i].texturePtr = NULL;
 //
+//            for (S32 j = 0; j < 50; j++)
+//            {
+//                sStreakList[i].elem[j].flag = 0x0;
+//            }
+//
+//            if (edge_a != NULL)
+//            {
+//                sStreakList[i].color_a = *edge_a;
+//            }
+//            else
+//            {
+//                sStreakList[i].color_a.a = 255;
+//                sStreakList[i].color_a.b = 255;
+//                sStreakList[i].color_a.g = 255;
+//                sStreakList[i].color_a.r = 255;
+//            }
+//
+//            if (edge_b != NULL)
+//            {
+//                sStreakList[i].color_b = *edge_a;
+//            }
+//            else
+//            {
+//                sStreakList[i].color_b.a = 255;
+//                sStreakList[i].color_b.b = 255;
+//                sStreakList[i].color_b.g = 255;
+//                sStreakList[i].color_b.r = 255;
+//            }
+//
+//            if (textureID == 0)
+//            {
+//                textureID = xStrHash("fx_streak1");
+//            }
+//
+//            sStreakList[i].texturePtr = (RwTexture*)xSTFindAsset(textureID, NULL);
+//            if (sStreakList[i].texturePtr != NULL)
+//            {
+//                sStreakList[i].textureRasterPtr = RwTextureGetRaster(sStreakList[i].texturePtr);
+//            }
+//            else
+//            {
+//                return 0;
+//            }
+//        }
+//    }
+//
+//    return 10;
+//}
+
+void xFXStreakStop(U32)
+{
+}
+
+void xFXStreakUpdate(F32)
+{
+}
+
 //void xParInterp::set(F32 value1, F32 value2, F32 freq, U32 interp)
 //{
 //    this->val[0] = value1;
@@ -656,27 +784,52 @@
 //
 //void xFXShineInit()
 //{
+//    for (S32 i = 0; i < 2; i++)
+//    {
+//        memset(&sShineList[0], 0, sizeof(xFXShine));
+//        sShineList[i] = sShineList[i];
+//    }
 //}
-//
-//U32 xFXShineStart(const xVec3*, F32, F32, F32, F32, U32, const iColor_tag*, const iColor_tag*, F32,
-//                  S32)
+
+U32 xFXShineStart(const xVec3*, F32, F32, F32, F32, U32, const iColor_tag*, const iColor_tag*, F32,
+                  S32)
+{
+    return 2;
+}
+
+//namespace
 //{
-//    return 2;
-//}
+//    S32 compare_ribbons(const void* e1, const void* e2)
+//    {
+//        return 0;
+//    }
 //
-//void xFXShineUpdate(F32)
-//{
-//}
+//    void sort_ribbons()
+//    {
+//    }
 //
-//void xFXShineRender()
-//{
-//}
+//    void activate_ribbon(xFXRibbon*)
+//    {
+//    }
 //
+//    void deactivate_ribbon(xFXRibbon*)
+//    {
+//    }
+//} // namespace
+
+void xFXShineUpdate(F32)
+{
+}
+
+void xFXShineRender()
+{
+}
+
 //static void RenderRotatedBillboard(xVec3* pos, _xFXAuraAngle* rot, U32 count, F32 width, F32 height,
 //                                   iColor_tag tint, U32 flipUV)
 //{
 //}
-//
+
 //void xFXAuraRender()
 //{
 //    // TODO: Fix function
@@ -976,21 +1129,37 @@
 //    return material;
 //}
 //
-//RpAtomic* xFXanimUVAtomicSetup(RpAtomic*)
+//RpAtomic* xFXanimUVAtomicSetup(RpAtomic* atomic)
 //{
-//    return NULL;
+//    if (atomic == 0)
+//    {
+//        return atomic;
+//    }
+//    if (xFXanimUVPipeline == 0)
+//    {
+//        return atomic;
+//    }
+//    atomic->pipeline = xFXanimUVPipeline;
+//    return atomic;
 //}
 //
 //void xFXRenderProximityFade(const xModelInstance&, F32, F32)
 //{
 //}
 //
-//void xFXanimUV2PSetAngle(F32)
+//void xFXanimUV2PSetAngle(F32 angle)
 //{
+//    xFXanimUV2PRotMat0[0] = isin(angle);
+//    angle = xFXanimUV2PRotMat0[0];
+//    xFXanimUV2PRotMat0[1] = xFXanimUV2PRotMat0[0];
+//    xFXanimUV2PRotMat1[0] = icos(angle);
+//    xFXanimUV2PRotMat1[1] = xFXanimUV2PRotMat1[0];
 //}
 //
-//void xFXanimUV2PSetTranslation(const xVec3*)
+//void xFXanimUV2PSetTranslation(const xVec3* trans)
 //{
+//    xFXanimUV2PTrans[0] = trans->x;
+//    xFXanimUV2PTrans[1] = trans->y;
 //}
 //
 //RpAtomic* xFXShinyRender(RpAtomic* atomic)
@@ -1100,23 +1269,26 @@
 //
 //void xFXRibbonSceneEnter()
 //{
-//}
+//    xDebugRemoveTweak("FX|Ribbon");
 //
-//void xFXRibbonUpdate(F32)
-//{
+//    active_ribbons_size = 0;
 //}
-//
-//void xFXRibbon::init(const char*, const char*)
-//{
-//}
-//
-//void tier_queue<xFXRibbon::joint_data>::clear()
-//{
-//}
-//
+
+void xFXRibbonUpdate(F32)
+{
+}
+
+void xFXRibbon::init(const char*, const char*)
+{
+}
+
+void tier_queue<xFXRibbon::joint_data>::clear()
+{
+}
+
 //void xFXRibbon::set_default_config()
 //{
-//    cfg.life_time = 0.0f;
+//    cfg.life_time = 1.0f;
 //    cfg.blend_src = 5;
 //    cfg.blend_dst = 6;
 //    cfg.pivot = 0.5f;
@@ -1133,16 +1305,62 @@
 //    }
 //}
 //
-//void xFXRibbon::set_texture(const char*)
+//void xFXRibbon::set_raster(RwRaster* rast)
 //{
+//    this->raster = rast;
+//    if (activated <= 0)
+//    {
+//        return;
+//    }
+//    ribbons_dirty = true;
+//}
+
+void xFXRibbon::set_texture(RwTexture*)
+{
+}
+
+void xFXRibbon::set_texture(U32 id)
+{
+}
+
+//void xFXRibbon::set_texture(const char* name)
+//{
+//    xStrHash(name);
+//    set_texture((U32)name);
 //}
 //
-//void xFXRibbon::set_texture(RwTexture*)
+//void xFXRibbon::set_curve(const curve_node* curve, size_t size)
 //{
+//    curve_size = size;
+//    (this->curve) = ((curve_node*)curve);
+//    xFXRibbon::debug_update_curve();
+//    xFXRibbon::update_curve_tweaks();
+//}
+
+void xFXRibbon::insert(const xVec3&, const xVec3&, F32, F32, U32)
+{
+}
+
+void xFXRibbon::insert(const xVec3&, F32, F32, F32, U32)
+{
+}
+
+//void xFXRibbon::activate()
+//{
+//    if (activated == 0)
+//    {
+//        activate_ribbon(this);
+//        activated = 1;
+//    }
 //}
 //
-//void xFXRibbon::set_texture(U32)
+//void xFXRibbon::deactivate()
 //{
+//    if (activated != 0)
+//    {
+//        deactivate_ribbon(this);
+//        activated = 0;
+//    }
 //}
 //
 //void xFXRibbon::start_render()
@@ -1151,31 +1369,19 @@
 //    RwRenderStateSet(rwRENDERSTATEDESTBLEND, (void*)cfg.blend_dst);
 //    RwRenderStateSet(rwRENDERSTATETEXTURERASTER, (void*)raster);
 //}
-//
-//void xFXRibbon::insert(const xVec3&, const xVec3&, F32, F32, U32)
-//{
-//}
-//
-//void xFXRibbon::insert(const xVec3&, F32, F32, F32, U32)
-//{
-//}
-//
-//void xFXRibbon::set_curve(const xFXRibbon::curve_node*, unsigned long)
-//{
-//}
-//
-//void xFXRibbon::update_curve_tweaks()
-//{
-//}
-//
-//void xFXRibbon::debug_init(const char*, const char*)
-//{
-//}
-//
-//void xFXRibbon::debug_update_curve()
-//{
-//}
-//
-//void xFXRibbon::debug_update(F32)
-//{
-//}
+
+void xFXRibbon::update_curve_tweaks()
+{
+}
+
+void xFXRibbon::debug_init(const char*, const char*)
+{
+}
+
+void xFXRibbon::debug_update_curve()
+{
+}
+
+void xFXRibbon::debug_update(F32)
+{
+}

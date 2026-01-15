@@ -16,16 +16,17 @@ enum eStartupErrors
     eNoController,
 };
 
-//void main(S32 argc, char** argv);
+void main(S32 argc, char** argv);
 void iEnvStartup();
-void zMainOutputMgrSetup();
-void zMainInitGlobals();
-void zMainParseINIGlobals(xIniFile* ini);
-void zMainMemLvlChkCB();
+static void zMainOutputMgrSetup();
+static void zMainInitGlobals();
+static void zMainParseINIGlobals(xIniFile* ini);
+static void zMainMemLvlChkCB();
 void zMainShowProgressBar();
-void zMainLoop();
-void zMainReadINI();
+static void zMainLoop();
+static void zMainReadINI();
 void zMainFirstScreen(int);
-void zMainLoadFontHIP();
+static void zMainLoadFontHIP();
+void zMainMemCardSpaceQuery();
 
 #endif

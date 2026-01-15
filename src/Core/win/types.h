@@ -50,6 +50,8 @@ typedef double F64;
 // Decomp-related annotations
 // (these don't do anything to the code, but they can be Ctrl+F'd easily)
 #define WIP // Function is not fully implemented/decomped yet
+#define RIMP // Function needs to be reimplemented
 #define NONMATCH(decompme) // Function is fully decomped, but not matching (must have decomp.me link!)
+#define MIMP // function needed for main menu
 
 #define ENABLE_WIP_CODE 0 // Use to disable part of a function, usually code that depends on unimplemented functions

@@ -5,16 +5,22 @@
 #include <rwcore.h>
 
 #include "xDebug.h"
+#include "xFX.h"
 #include "xMath.h"
 #include "xSnd.h"
+#include "xShadow.h"
 #include "xPad.h"
 #include "xMemMgr.h"
+#include "xstransvc.h"
+
+#include "iSystem.h"
 #include "iFile.h"
 #include "iTime.h"
 #include "iTRC.h"
 
 #include <SDL.h>
-#include <SDL_syswm.h>
+#include <SDL_system.h>
+#include <SDL_video.h>
 
 #include <rwcore.h>
 #include <rpworld.h>
@@ -29,11 +35,6 @@
 #include <stdlib.h>
 
 #define RES_ARENA_SIZE 0x60000
-RwVideoMode sVideoMode;
-static SDL_Window* window;
-static U32 shouldQuit = 0;
-static RwEngineOpenParams openParams;
-static RwDebugHandler oldDebugHandler;
 
 extern U32 mem_base_alloc;
 extern U32 add;
@@ -45,46 +46,41 @@ extern void* MemoryFunctions[4];
 extern U16 last_error;
 //extern OSContext* last_context;
 
-//// Taken from iSystem.s
-//// Defining these here makes the stringBase0 offsets match in the later functions.
-//static char* str1 = "Level %d, Warning $03d: %s\n";
-//static char* str2 = "FPE: Invalid operation: ";
-//static char* str3 = "SNaN\n";
-//static char* str4 = "Infinity - Infinity\n";
-//static char* str5 = "Infinity / Infinity\n";
-//static char* str6 = "0 / 0\n";
-//static char* str7 = "Infinity * 0\n";
-//static char* str8 = "Invalid compare\n";
-//static char* str9 = "Software request\n";
-//static char* str10 = "Invalid square root\n";
-//static char* str11 = "Invalid integer convert\n";
-//static char* str12 = "FPE: Overflow\n";
-//static char* str13 = "FPE: Underflow\n";
-//static char* str14 = "FPE: Zero division\n";
-//static char* str15 = "FPE: Inexact result\n";
-//static char* str16 = "iSystem.cpp";
-//static char* str17 = "Unable to initialize memory system.\n";
-//static char* str18 = "(With apologies to Jim Morrison) This the end, my only friend, The End.";
-//static char* str19 = "%s.rw3";
-//
-//void** psGetMemoryFunctions()
-//{
-//    return MemoryFunctions;
-//}
+#define RES_ARENA_SIZE 0x60000
 
-//void iVSync()
-//{
-//    //VIWaitForRetrace();
-//}
-//
-//U16 my_dsc(U16 dsc)
-//{
-//    return dsc;
-//}
+RwVideoMode sVideoMode;
 
-U32 RenderWareInit() { return 0; }
-void TRCInit() {}
+static SDL_Window* window;
+static U32 shouldQuit = 0;
 
+static RwEngineOpenParams openParams;
+
+static RwDebugHandler oldDebugHandler;
+
+static U32 RenderWareInit();
+static void RenderWareExit();
+
+
+static void psDebugMessageHandler(RwDebugType type, const RwChar* str)
+{
+    printf("%s\n", str);
+
+    if (oldDebugHandler) {
+        oldDebugHandler(type, str);
+    }
+}
+
+void iVSync() WIP
+{
+    SDL_Delay(1000 / VBLANKS_PER_SEC);
+}
+
+static void TRCInit() WIP
+{
+}
+
+
+// TODO: reimplement commented out functions
 void iSystemInit(U32 options)
 {
     shouldQuit = 0;
@@ -94,19 +90,15 @@ void iSystemInit(U32 options)
         exit(-1);
     }
 
-    window = SDL_CreateWindow(GAME_NAME,
-        SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-        FB_XRES, FB_YRES,
-        SDL_WINDOW_SHOWN);
+    window = SDL_CreateWindow(GAME_NAME, FB_XRES, FB_YRES, 0);
     if (!window) {
         fprintf(stderr, "Failed to create SDL window! SDL Error: %s\n", SDL_GetError());
         exit(-1);
     }
 
-    SDL_SysWMinfo wmInfo;
-    SDL_VERSION(&wmInfo.version);
-    SDL_GetWindowWMInfo(window, &wmInfo);
-    HWND hwnd = wmInfo.info.win.window;
+
+    // TODO: MAKE SURE THIS IS EXACTLY EQUIVALENT TO THE OLD REPOS VERSION.
+    HWND hwnd = (HWND)SDL_GetPointerProperty(SDL_GetWindowProperties(window), SDL_PROP_WINDOW_WIN32_HWND_POINTER, NULL);
 
     openParams.displayID = (void*)hwnd;
 
@@ -115,13 +107,168 @@ void iSystemInit(U32 options)
     iFileInit();
     iTimeInit();
     xPadInit();
-    xSndInit();
+    //xSndInit();
     TRCInit();
     RenderWareInit();
     xMathInit();
     xMath3Init();
 }
 
+void iSystemExit()
+{
+    xDebugExit();
+    xMathExit();
+    RenderWareExit();
+    xSndExit();
+    xPadKill();
+    iFileExit();
+    iTimeExit();
+    xMemExit();
+
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+
+    printf("(With apologies to Jim Morrison) This the end, my only friend, The End.");
+    exit(0);
+}
+
+static U32 RWAttachPlugins()
+{
+    if (!RpWorldPluginAttach()) return 1;
+    if (!RpCollisionPluginAttach()) return 1;
+    if (!RpSkinPluginAttach()) return 1;
+    if (!RpHAnimPluginAttach()) return 1;
+    if (!RpMatFXPluginAttach()) return 1;
+    if (!RpUserDataPluginAttach()) return 1;
+    if (!RpPTankPluginAttach()) return 1;
+
+    return 0;
+}
+
+static RwTexture* TextureRead(const char* name, const char* maskName);
+
+static U32 RenderWareInit()
+{
+    if (!RwEngineInit(NULL, 0, RES_ARENA_SIZE)) {
+        return 1;
+    }
+
+    RwResourcesSetArenaSize(RES_ARENA_SIZE);
+
+#ifdef RWDEBUG
+    oldDebugHandler = RwDebugSetHandler(psDebugMessageHandler);
+    RwDebugSendMessage(rwDEBUGMESSAGE, GAME_NAME, "Debugging Initialized");
+#endif
+
+    if (RWAttachPlugins()) return 1;
+
+    if (!RwEngineOpen(&openParams)) {
+        RwEngineTerm();
+        return 1;
+    }
+
+    RwEngineGetVideoModeInfo(&sVideoMode, RwEngineGetCurrentVideoMode());
+
+    if (!RwEngineStart()) {
+        RwEngineClose();
+        RwEngineTerm();
+        return 1;
+    }
+
+    RwTextureSetReadCallBack(TextureRead);
+
+    RwRenderStateSet(rwRENDERSTATECULLMODE, (void*)rwCULLMODECULLBACK);
+
+    xShadowInit();
+    xFXInit();
+
+    RwTextureSetMipmapping(TRUE);
+    RwTextureSetAutoMipmapping(TRUE);
+
+    return 0;
+}
+
+static void RenderWareExit()
+{
+    RwEngineStop();
+    RwEngineClose();
+    RwEngineTerm();
+}
+
+static RwTexture* TextureRead(const RwChar* name, const RwChar* maskName)
+{
+    char tmpname[256];
+    S32 npWidth = 0;
+    S32 npHeight = 0;
+    S32 npDepth = 0;
+    S32 npFormat = 0;
+    RwImage* img = NULL;
+    RwRaster* rast = NULL;
+    RwTexture* result;
+#ifdef GAMECUBE
+    RwGameCubeRasterExtension* ext = NULL;
+#endif
+    U32 assetid;
+    U32 tmpsize;
+
+    sprintf(tmpname, "%s.rw3", name);
+    assetid = xStrHash(tmpname);
+    result = (RwTexture*)xSTFindAsset(assetid, &tmpsize);
+
+#ifdef GAMECUBE
+    if (result && result->raster && result->raster->depth < 8) {
+        ext = RwGameCubeRasterGetExtension(result->raster);
+        if (!ext || ext->format != 14) {
+            result = NULL;
+        }
+    }
+#endif
+
+    if (result) {
+        strcpy(result->name, name);
+        strcpy(result->mask, maskName);
+    }
+
+    return result;
+}
+
+void iSystemPollEvents()
+{
+    SDL_Event e;
+    while (SDL_PollEvent(&e)) {
+        switch (e.type) {
+        case SDL_EVENT_QUIT:
+            shouldQuit = 1;
+#if 1
+            exit(0);
+#endif
+            break;
+        }
+    }
+}
+
+U32 iSystemShouldQuit()
+{
+    return shouldQuit;
+}
+
+U32 iSystemIsFullScreen()
+{
+    return 0;
+}
+
+// TODO: The functions below are all from the actual decomp. The chances of these being reused arent great, but ill leave them here just in case
+
+//void** psGetMemoryFunctions()
+//{
+//    return MemoryFunctions;
+//}
+
+//U16 my_dsc(U16 dsc)
+//{
+//    return dsc;
+//}
+//
 //void FloatingPointErrorHandler(U16 last, OSContext* ctxt, U64 unk1, U64 unk2)
 //{
 //    U32 uVar2;
@@ -324,13 +471,13 @@ void iSystemInit(U32 options)
 //    return td.mon + 1;
 //}
 //
-//// Template for future use. TODO
+// //Template for future use. TODO
 //char* iGetCurrFormattedDate(char* input)
 //{
 //    return NULL;
 //}
 //
-//// WIP.
+// //WIP.
 //char* iGetCurrFormattedTime(char* input)
 //{
 //    OSTime ticks = OSGetTime();

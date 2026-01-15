@@ -1,3 +1,4 @@
+//#include "xVec3Inlines.h"
 //#include <types.h>
 //
 //#include "xAnim.h"
@@ -6,6 +7,7 @@
 //#include "xCamera.h"
 //#include "xMath3.h"
 //#include "xDebug.h"
+//#include "xJaw.h"
 //
 //#include "zEnt.h"
 //#include "zFX.h"
@@ -16,7 +18,6 @@
 //#include "xMarkerAsset.h"
 //#include "zCamera.h"
 //#include "zGrid.h"
-//#include "zAssetTypes.h"
 //
 //extern const char bossSandyStrings[];
 //
@@ -145,30 +146,30 @@
 //{
 //    // clang-format off
 //    S32 ourAnims[25] = {
-//        Idle01, 
-//        Idle02, 
-//        Taunt01, 
-//        Run01, 
-//        Walk01, 
-//        Melee01, 
-//        Hit01, 
-//        Hit02, 
+//        Idle01,
+//        Idle02,
+//        Taunt01,
+//        Run01,
+//        Walk01,
+//        Melee01,
+//        Hit01,
+//        Hit02,
 //        GetUp01,
-//        Dizzy01, 
-//        ElbowDrop01, 
-//        Leap01, 
-//        Leap02, 
+//        Dizzy01,
+//        ElbowDrop01,
+//        Leap01,
+//        Leap02,
 //        Leap03 ,
-//        Leap04, 
-//        Sit01, 
+//        Leap04,
+//        Sit01,
 //        SitShock01,
-//        CLBegin01, 
-//        CLLoop01, 
+//        CLBegin01,
+//        CLLoop01,
 //        CLEnd01,
 //        NoHeadIdle01,
-//        NoHeadWaving01, 
+//        NoHeadWaving01,
 //        NoHeadGetUp01,
-//        NoHeadShotUp01, 
+//        NoHeadShotUp01,
 //        NoHeadShock01,
 //    };
 //    // clang-format on
@@ -315,14 +316,81 @@
 //    zNPCCommon::Init(asset);
 //    sSandyPtr = this;
 //
-//    round = 1;
-//    firstTimeR1Csn = 1;
-//    boundFlags = (U32*)xMemAlloc(gActiveHeap, 13 * sizeof(U32), 0x0);
-//    boundList = (xEnt**)xMemAlloc(gActiveHeap, 13 * sizeof(xEnt*), 0x0);
+//    this->round = 1;
+//    this->firstTimeR1Csn = 1;
+//    this->boundFlags = (U32*)xMemAlloc(gActiveHeap, 13 * sizeof(U32), 0x0);
+//    this->boundList = (xEnt**)xMemAlloc(gActiveHeap, 13 * sizeof(xEnt*), 0x0);
+//    this->curveNode[0].time = 0.0f;
+//    this->curveNode[0].scale = 1.0f;
+//    colorPicker = 255.0f;
+//    this->curveNode[1].color.a = 0xff;
+//    this->curveNodeAlpha = 1.0f;
+//    this->laserShow.set_curve(&this->curveNode[0], 0x6);
+//    this->laserShow.cfg.life_time = 0.5f;
+//    this->laserShow.cfg.blend_src = 0x5;
+//    this->laserShow.cfg.blend_dst = 0x2;
+//    this->laserShow.refresh_config();
+//    this->laserShow.set_texture(xStrHash("lightning"));
 //
-//    for (i = 0; i < 13; i++)
+//    for (i = 0; i < 30; i++)
 //    {
+//        sNFSoundValue[i] = xStrHash(sNFSoundLabel[i]);
 //    }
+//
+//    this->iconVert[0].objVertex.x = 1.0f;
+//    this->iconVert[0].objVertex.y = 0.0f;
+//    this->iconVert[0].objVertex.z = 1.0f;
+//    this->iconVert[1].objVertex.x = -1.0f;
+//    this->iconVert[1].objVertex.y = 1.0f;
+//    this->iconVert[1].objVertex.z = 1.0f;
+//    this->iconVert[2].objVertex.x = 0.0f;
+//    this->iconVert[2].objVertex.y = -1.0f;
+//    this->iconVert[2].objVertex.z = -1.0f;
+//    this->iconVert[3].objVertex.x = -1.0f;
+//    this->iconVert[3].objVertex.y = 0.0f;
+//    this->iconVert[3].objVertex.z = -1.0f;
+//    this->iconVert[0].c.preLitColor.red = 0xff;
+//    this->iconVert[0].c.preLitColor.green = 0xff;
+//    this->iconVert[0].c.preLitColor.blue = 0xff;
+//    this->iconVert[0].c.preLitColor.alpha = 0xff;
+//    this->iconVert[1].c.preLitColor.red = 0xff;
+//    this->iconVert[1].c.preLitColor.green = 0xff;
+//    this->iconVert[1].c.preLitColor.blue = 0xff;
+//    this->iconVert[1].c.preLitColor.alpha = 0xff;
+//    this->iconVert[2].c.preLitColor.red = 0xff;
+//    this->iconVert[2].c.preLitColor.green = 0xff;
+//    this->iconVert[2].c.preLitColor.blue = 0xff;
+//    this->iconVert[2].c.preLitColor.alpha = 0xff;
+//    this->iconVert[3].c.preLitColor.red = 0xff;
+//    this->iconVert[3].c.preLitColor.green = 0xff;
+//    this->iconVert[3].c.preLitColor.blue = 0xff;
+//    this->iconVert[3].c.preLitColor.alpha = 0xff;
+//    this->iconVert[0].u = 0.0f;
+//    this->iconVert[1].u = 1.0f;
+//    this->iconVert[2].u = 0.0f;
+//    this->iconVert[3].u = 1.0f;
+//    this->iconVert[0].v = 0.0f;
+//    this->iconVert[1].v = 0.0f;
+//    this->iconVert[2].v = 1.0f;
+//    this->iconVert[3].v = 1.0f;
+//    this->wireLight[0] = 0;
+//    this->wireLight[1] = 0;
+//
+//    xDebugAddTweak("NPC|zNPCBSandy|Newsfish", "Speak", &newsfish_cb, 0, 0);
+//    xDebugAddSelectTweak("NPC|zNPCBSandy|NewsfishComment", &sCurrNFSound, 0, &sNFSoundValue[0], 0x1e, 0, 0, 0);
+//    xDebugAddTweak("NPC|zNPCBSandy|Shockwave|Do It", "Go", &shockwave_cb, 0, 0);
+//
+//    this->shockwaveGrowthRate = 20.0f;
+//    this->shockwaveMaxRadius = 10.0f;
+//
+//    xDebugAddTweak("NPC|zNPCBSandy|Shockwave|GrowthRate", &this->shockwaveGrowthRate, 0.0f, 1000000000.0f, 0, 0, 0);
+//    xDebugAddTweak("NPC|zNPCBSandy|Shockwave|MaxRadius", &this->shockwaveMaxRadius, 0.0f, 1000000000.0f, 0, 0, 0);
+//
+//    this->edropShockwaveTime = 2.25f;
+//    this->edropTurnMinTime = 1.0f;
+//
+//    xDebugAddTweak("NPC|zNPCBSandy|ElbowDrop|ShockwaveTime", &this->edropShockwaveTime, 0.0f, 1000000000.0f, 0, 0, 0);
+//    xDebugAddTweak("NPC|zNPCBSandy|ElbowDrop|TurnTime", &this->edropTurnMinTime, 0.0f, 1000000000.0f, 0, 0, 0);
 //}
 //
 //void zNPCBSandy::Setup()
@@ -432,6 +500,140 @@
 //
 //    psy->BrainEnd();
 //    psy->SetSafety('NGB1');
+//}
+//
+//void zNPCBSandy::Reset()
+//{
+//    S32 i;
+//    S32 j;
+//    RwTexture* tempTex;
+//    char objName[32];
+//    U32 size;
+//    xMarkerAsset* marker;
+//    xAnimState* state;
+//    xModelInstance* currModel;
+//    xVec3 endPnt;
+//
+//    zNPCCommon::Reset();
+//
+//    this->firstUpdate = 0x1;
+//    this->bossFlags = 0x400;
+//    *this->boundFlags = 0;
+//
+//    this->dustEddieEmitter = zParEmitterFind("PAREMIT_DUST_SWIRL");
+//    this->shockwaveEmitter = zParEmitterFind("PAREMIT_SHOCKWAVE");
+//    this->headBoulder = (xEntBoulder*)zSceneFindObject(xStrHash("SANDY_HEAD_BOULDER"));
+//    this->headBoulder->bound.box.box.upper.x = 1.25f;
+//    this->headBoulder->localCenter.x = 0.0f;
+//    this->headBoulder->localCenter.y = 0.036f;
+//    this->headBoulder->localCenter.z = 0.11f;
+//
+//    xDebugAddTweak("NPC|zNPCBSandy|headBoulder|radius", &this->headBoulder->bound.sph.r, 0.1f, 10.0f, 0, 0, 0);
+//    xDebugAddTweak("NPC|zNPCBSandy|headBoulder|center|x", &this->headBoulder->bound.sph.center.x, -10.0f, 10.0f, 0, 0, 0);
+//    xDebugAddTweak("NPC|zNPCBSandy|headBoulder|center|y", &this->headBoulder->bound.sph.center.y, -10.0f, 10.0f, 0, 0, 0);
+//    xDebugAddTweak("NPC|zNPCBSandy|headBoulder|center|z", &this->headBoulder->bound.sph.center.z, -10.0f, 10.0f, 0, 0, 0);
+//    xDebugAddTweak("NPC|zNPCBSandy|headBoulder|localCener|x", &this->headBoulder->localCenter.x, -10.0f, 10.0f, 0, 0, 0);
+//    xDebugAddTweak("NPC|zNPCBSandy|headBoulder|localCener|y", &this->headBoulder->localCenter.y, -10.0f, 10.0f, 0, 0, 0);
+//    xDebugAddTweak("NPC|zNPCBSandy|headBoulder|localCener|z", &this->headBoulder->localCenter.z, -10.0f, 10.0f, 0, 0, 0);
+//
+//    this->hangingScoreboard = (xEnt*)zSceneFindObject(xStrHash("SO_SCOREBOARD"));
+//    this->bustedScoreboard = (xEnt*)zSceneFindObject(xStrHash("SCOREBOARD_BUSTED"));
+//    this->crashedScoreboard = (xEnt*)zSceneFindObject(xStrHash("SCOREBOARD_HAZARD"));
+//    this->scoreboardShrap = (zShrapnelAsset*)xSTFindAsset(xStrHash("pdome_scoreboard_shrapnel"), 0);
+//    this->sboardSecondShrap = (zShrapnelAsset*)xSTFindAsset(xStrHash("pdome_scoreboard_secondary_shrapnel"), 0);
+//    this->sboardThirdShrap = (zShrapnelAsset*)xSTFindAsset(xStrHash("pdome_scoreboard_tertiary_shrapnel"), 0);
+//    this->lightRigShrap = (zShrapnelAsset*)xSTFindAsset(xStrHash("pdome_scaffolding_shrapnel"), 0);
+//    this->lightRig[0] = (xEnt*)zSceneFindObject(xStrHash("SO_LIGHTRIG01"));
+//    this->lightRig[1] = (xEnt*)zSceneFindObject(xStrHash("SO_LIGHTRIG010"));
+//    this->lightRig[2] = (xEnt*)zSceneFindObject(xStrHash("SO_LIGHTRIG0100"));
+//    this->lightRig[3] = (xEnt*)zSceneFindObject(xStrHash("SO_LIGHTRIG01000"));
+//    this->round1Csn = (zCutsceneMgr*)zSceneFindObject(xStrHash("CSNMGR_ROUND1"));
+//    this->round2Csn = (zCutsceneMgr*)zSceneFindObject(xStrHash("CSNMGR_ROUND2"));
+//    this->round3Csn = (zCutsceneMgr*)zSceneFindObject(xStrHash("CSNMGR_ROUND3"));
+//    this->targetRaster = 0;
+//    this->helmetRaster = 0;
+//    this->feetRaster = 0;
+//
+//    RwRaster** x;
+//
+//    if (x = (RwRaster**)xSTFindAsset(xStrHash("target"), 0))
+//    {
+//        this->helmetRaster = *x;
+//    }
+//
+//    if (x = (RwRaster**)xSTFindAsset(xStrHash("target_foot"), 0))
+//    {
+//        this->feetRaster = *x;
+//    }
+//
+//    crashedScoreboard->chkby += 0xef;
+//
+//    xVec3Copy(&this->ringCorner[0], (xVec3*)xSTFindAsset(xStrHash("CORNER_00"), &size));
+//    xVec3Add(&this->ringEdgeCenter[0], &this->ringCorner[0], 0);
+//    xVec3SMulBy(&this->ringEdgeCenter[0], 0.5f);
+//    xVec3Sub(&this->ropeNormal[0], 0, &this->ringCorner[0]);
+//
+//    this->ropeNormal[0].y = this->ropeNormal[0].z;
+//    this->ropeNormal[0].z = -this->ropeNormal[0].x;
+//    this->ropeNormal[0].x = this->ropeNormal[0].y;
+//    this->ropeNormal[0].y = 0.0f;
+//
+//    xVec3Normalize(&this->ropeNormal[0], &this->ropeNormal[0]);
+//    xVec3Copy(&this->bouncePoint[0], &this->ringEdgeCenter[0]);
+//    xVec3AddScaled(&this->bouncePoint[0], &this->ringEdgeCenter[0], 6.042f);
+//    strcpy(objName, "ROPE_0_0");
+//
+//    this->ropeObject[0][0] = (xEnt*)zSceneFindObject(xStrHash(objName));
+//    this->ropeObject[0][0]->model->PipeFlags |= 4;
+//
+//    strcmp(this->ropeObject[0][0]->model->Anim->Table->StateList->Name, "Idle01");
+//    strcpy(objName, "ROPE_0_LO");
+//    this-> ropeObjectLo[0] = (xEnt*)zSceneFindObject(xStrHash(objName));
+//    this->ropeSbDamaged = (xEnt*)zSceneFindObject(xStrHash("ROPE_4_LO_DAMAGED"));
+//    strcpy(objName, "TURNBUCKLE_OBJ_00");
+//    this->turnbuckle[0] = (xEnt*)zSceneFindObject(xStrHash(objName));
+//    sRadiusOfRing = xVec3Length(&endPnt) * 0.125f + sRadiusOfRing;
+//
+//    sLeftLegSpring.bound->type = 0;
+//    sRightLegSpring.bound->type = 0;
+//    sLeftArmSpring.bound->type = 0;
+//    sRightArmSpring.bound->type = 0;
+//
+//    zEntEvent(headBoulder, 0x25);
+//
+//    this->timeToNextBolt[0] = 0.0f;
+//    this->jawData = xJaw_FindData(xStrHash("SpongebobPoseidome 44"));
+//
+//    zNPCBSandy::InitFX();
+//
+//    if (this->psy_instinct)
+//    {
+//        this->psy_instinct->GoalSet(0x4e474231, 0);
+//    }
+//
+//    nfFlags = 0;
+//    xVec3Init(&endPnt, 0.0f, 0.0f, 0.0f);
+//
+//    this->sparks[4].start = &endPnt;
+//    this->sparks[4].end = &endPnt;
+//
+//    if (!this->wireLight[0])
+//    {
+//        this->wireLight[0] = zLightningAdd(&this->sparks[4]);
+//    }
+//
+//    this->sparks[4].start = 0;
+//    this->sparks[4].end = 0;
+//    this->sparks[5].start = 0;
+//    this->sparks[5].end = 0;
+//
+//    if (!this->wireLight[1])
+//    {
+//        this->wireLight[1] = zLightningAdd(&this->sparks[5]);
+//    }
+//
+//    this->sparks[5].start = 0;
+//    this->sparks[5].end = 0;
 //}
 //
 //void zNPCBSandy::ParseINI()
@@ -563,6 +765,127 @@
 //    {
 //        BDErecord[i].BDEminst = NULL;
 //    }
+//}
+//
+//void zNPCBSandy::CalcMagnetizeInfo()
+//{
+//    xMat4x3 boneMat;
+//    xQuatFromMat(&this->qBoulder, (xMat3x3*)this->headBoulder->model->Mat);
+//    xVec3Copy(&this->pBoulder, (xVec3*)&this->headBoulder->model->Mat->pos);
+//    xMat4x3Mul(&boneMat, (xMat4x3*)&this->model->Mat[sBone[1]], (xMat4x3*)this->model->Mat);
+//    xQuatFromMat(&this->qHead, &boneMat);
+//    xMat3x3RMulVec(&this->pHead, &boneMat, &sBoneOffset[1]);
+//    xVec3AddTo(&this->pHead, &boneMat.pos);
+//    magnetizeTime = xVec3Dist(&this->pHead, &this->pBoulder) * 0.1f;
+//}
+//
+//void zNPCBSandy::InitFX()
+//{
+//    this->timeToNextBolt[0] = 0.0f;
+//    this->timeToNextBolt[1] = 0.0f;
+//    this->maxLightningWait[0] = 0.0f;
+//    this->maxLightningWait[1] = 0.0f;
+//
+//    xMat4x3Copy((xMat4x3*)&this->sparkTransform[0][0], (xMat4x3*)&this->hangingScoreboard->model->Mat);
+//    xMat4x3Copy((xMat4x3*)&this->sparkTransform[0][1], (xMat4x3*)&this->hangingScoreboard->model->Mat);
+//    xMat4x3Copy((xMat4x3*)&this->sparkTransform[1][0], (xMat4x3*)&this->crashedScoreboard->model->Mat);
+//    xVec3SMul((xVec3*)&this->sparkTransform[1][1], (xVec3*)&this->crashedScoreboard->model->Mat, 0.8f);
+//    xVec3SMul((xVec3*)&this->sparkTransform[1][1].up, (xVec3*)&this->crashedScoreboard->model->Mat->at, -0.8f);
+//    xVec3SMul((xVec3*)&this->sparkTransform[1][1].at, (xVec3*)&this->crashedScoreboard->model->Mat->up, 0.8f);
+//    xVec3Copy((xVec3*)&this->sparkTransform[1][1].pos, (xVec3*)&this->crashedScoreboard->model->Mat->pos);
+//    xVec3AddScaled((xVec3*)&this->sparkTransform[1][1].pos, (xVec3*)&this->crashedScoreboard->model->Mat->up, 4.5f);
+//    xVec3AddScaled((xVec3*)&this->sparkTransform[1][1].pos, (xVec3*)&this->crashedScoreboard->model->Mat->at, 5.0f);
+//    xVec3Init((xVec3*)&this->endPoints[0][0], -2.0f, 2.0f, 0.0f);
+//    xVec3Init((xVec3*)&this->endPoints[0][1], 2.0f, 2.0f, 0.0f);
+//
+//    this->sparks[0].type = 0x3;
+//    this->sparks[0].setup_degrees = 66.0f;
+//    this->sparks[0].move_degrees = 66.0f;
+//    this->sparks[0].rot_radius = 66.0f;
+//    this->sparks[0].total_points = 0x10;
+//    this->sparks[0].end_points = 0;
+//    this->sparks[0].time = 0.25f;
+//    this->sparks[0].arc_height = -1.5f;
+//    this->sparks[0].thickness = 1.0f;
+//    this->sparks[0].color.r = 0xa0;
+//    this->sparks[0].color.g = 0xa0;
+//    this->sparks[0].color.b = 0xff;
+//    this->sparks[0].color.a = 0xc8;
+//    this->sparks[0].rand_radius = 13.0f;
+//    this->sparks[0].flags = 0x1c28;
+//
+//    xVec3Init((xVec3*)&this->endPoints[0][2], -2.0f, 2.0f, 0.0f);
+//    xVec3Init((xVec3*)&this->endPoints[0][3], 2.0f, 2.0f, 0.0f);
+//
+//    this->sparks[1].type = 0x3;
+//    this->sparks[1].setup_degrees = 66.0f;
+//    this->sparks[1].move_degrees = 66.0f;
+//    this->sparks[1].rot_radius = 66.0f;
+//    this->sparks[1].total_points = 0x10;
+//    this->sparks[1].end_points = 0;
+//    this->sparks[1].time = 0.25f;
+//    this->sparks[1].arc_height = -1.5f;
+//    this->sparks[1].thickness = 1.0f;
+//    this->sparks[1].color.r = 0xc8;
+//    this->sparks[1].color.g = 0xc8;
+//    this->sparks[1].color.b = 0x37;
+//    this->sparks[1].color.a = 0xc8;
+//    this->sparks[1].rand_radius = 13.0f;
+//    this->sparks[1].flags = 0x1c28;
+//
+//    xVec3Init((xVec3*)&this->endPoints[1][0], 0.0f, 2.0f, 0.0f);
+//    xVec3Init((xVec3*)&this->endPoints[1][1], 3.5f, 2.0f, 0.0f);
+//
+//    this->sparks[2].type = 0x3;
+//    this->sparks[2].setup_degrees = 66.0f;
+//    this->sparks[2].move_degrees = 66.0f;
+//    this->sparks[2].rot_radius = 66.0f;
+//    this->sparks[2].total_points = 0x8;
+//    this->sparks[2].end_points = 0;
+//    this->sparks[2].time = 0.25f;
+//    this->sparks[2].arc_height = -1.5f;
+//    this->sparks[2].thickness = 1.0f;
+//    this->sparks[2].color.r = 0xa0;
+//    this->sparks[2].color.g = 0xa0;
+//    this->sparks[2].color.b = 0xff;
+//    this->sparks[2].color.a = 0xc8;
+//    this->sparks[2].rand_radius = 13.0f;
+//    this->sparks[2].flags = 0x1c20;
+//
+//    xVec3Init((xVec3*)&this->endPoints[1][2], 0.0f, 2.0f, 0.0f);
+//    xVec3Init((xVec3*)&this->endPoints[1][3], 3.5f, 2.0f, 0.0f);
+//
+//    this->sparks[3].type = 0x3;
+//    this->sparks[3].zeus_normal_offset = 1.0f;
+//    this->sparks[3].zeus_back_offset = -1.0f;
+//    this->sparks[3].zeus_side_offset = 0.0f;
+//    this->sparks[3].total_points = 0xa;
+//    this->sparks[3].end_points = 0;
+//    this->sparks[3].time = 0.25f;
+//    this->sparks[3].arc_height = -2.5f;
+//    this->sparks[3].thickness = 1.0f;
+//    this->sparks[3].color.r = 0xc8;
+//    this->sparks[3].color.g = 0xc8;
+//    this->sparks[3].color.b = 0x37;
+//    this->sparks[3].color.a = 0xc8;
+//    this->sparks[3].rand_radius = 15.0f;
+//    this->sparks[3].flags = 0x1c20;
+//    this->sparks[4].type = 0x3;
+//    this->sparks[4].color.r = 0xc8;
+//    this->sparks[4].color.g = 0xc8;
+//    this->sparks[4].color.b = 0xc8;
+//    this->sparks[4].color.a = 0xff;
+//    this->sparks[4].time = 1.0f;
+//    this->sparks[4].thickness = 1.0f;
+//    this->sparks[4].flags = 0x110;
+//    this->sparks[5].type = 0x3;
+//    this->sparks[5].color.r = 0x32;
+//    this->sparks[5].color.g = 0x32;
+//    this->sparks[5].color.b = 0xc8;
+//    this->sparks[5].color.a = 0xff;
+//    this->sparks[5].time = 1.0f;
+//    this->sparks[5].thickness = 1.0f;
+//    this->sparks[5].flags = 0x110;
 //}
 //
 //static void UpdateSandyBossCam(zNPCBSandy* sandy, F32 dt)
@@ -1364,7 +1687,7 @@
 //    zNPCBSandy* sandy = (zNPCBSandy*)psyche->clt_owner;
 //    U32 numHints;
 //    xVec3 newAt;
-//    float lerpFactor;
+//    F32 lerpFactor;
 //    xMat4x3 boneMat;
 //    xQuat q;
 //
@@ -1507,6 +1830,32 @@
 //    }
 //
 //    return xGoal::Process(trantype, dt, updCtxt, xscn);
+//}
+//
+//S32 zNPCGoalBossSandyElbowDrop::Exit(F32 dt, void* updCtxt)
+//{
+//    sElbowDropTimer = 0.0f;
+//    sElbowDropThreshold = 0.0f;
+//    sChaseTimer = 0.0f;
+//    return xGoal::Exit(dt, updCtxt);
+//}
+//
+//S32 zNPCGoalBossSandyLeap::Exit(F32 dt, void* updCtxt)
+//{
+//    sChaseTimer = 0.0f;
+//    return xGoal::Exit(dt, updCtxt);
+//}
+//
+//S32 zNPCGoalBossSandyGetUp::Process(en_trantype* trantype, F32 dt, void* updCtxt, xScene* scene)
+//{
+//    timeInGoal += dt;
+//    return xGoal::Process(trantype, dt, updCtxt, scene);
+//}
+//
+//S32 zNPCGoalBossSandyRunToRope::Exit(F32 dt, void* updCtxt)
+//{
+//    sChaseTimer = 0.0f;
+//    return xGoal::Exit(dt, updCtxt);
 //}
 //
 //void xBinaryCamera::add_tweaks(char const*)

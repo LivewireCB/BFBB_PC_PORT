@@ -1,17 +1,17 @@
-//#include "zPickupTable.h"
-//
-//#include "zGlobals.h"
-//#include "xString.h"
-//
-//struct PickupTranslEntry
-//{
-//    char* tname;
-//    U32 hval;
-//    U8 type;
-//    U8 subtype;
-//    U16 flags;
-//};
-//
+#include "zPickupTable.h"
+
+#include "zGlobals.h"
+#include "xString.h"
+
+struct PickupTranslEntry
+{
+    char* tname;
+    U32 hval;
+    U8 type;
+    U8 subtype;
+    U16 flags;
+};
+
 //// clang-format off
 //static PickupTranslEntry ptranstbl[] =
 //{
@@ -40,27 +40,27 @@
 //
 //static U32 ptranstbl_size = sizeof(ptranstbl) / sizeof(ptranstbl[0]);
 //
-//void zPickupTableInit()
-//{
-//    zAssetPickup* ptbl = (zAssetPickup*)(globals.pickupTable + 1);
-//    U32 i, j;
-//
-//    for (i = 0; i < ptranstbl_size; i++)
-//    {
-//        ptranstbl[i].hval = xStrHash(ptranstbl[i].tname);
-//
-//        for (j = 0; j < globals.pickupTable->Count; j++)
-//        {
-//            if (ptbl[j].pickupHash == ptranstbl[i].hval)
-//            {
-//                break;
-//            }
-//        }
-//
-//        if (j != globals.pickupTable->Count)
-//        {
-//            ptbl[j].pickupType = ptranstbl[i].type;
-//            ptbl[j].pickupIndex = ptranstbl[i].subtype;
-//        }
-//    }
-//}
+void zPickupTableInit() RIMP
+{
+    /*zAssetPickup* ptbl = (zAssetPickup*)(globals.pickupTable + 1);
+    U32 i, j;
+
+    for (i = 0; i < ptranstbl_size; i++)
+    {
+        ptranstbl[i].hval = xStrHash(ptranstbl[i].tname);
+
+        for (j = 0; j < globals.pickupTable->Count; j++)
+        {
+            if (ptbl[j].pickupHash == ptranstbl[i].hval)
+            {
+                break;
+            }
+        }
+
+        if (j != globals.pickupTable->Count)
+        {
+            ptbl[j].pickupType = ptranstbl[i].type;
+            ptbl[j].pickupIndex = ptranstbl[i].subtype;
+        }
+    }*/
+}

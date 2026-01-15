@@ -1,47 +1,54 @@
-//#include "iSnd.h"
-//
-//#include <types.h>
-//#include <dolphin/ax.h>
-//
-//#include "intrin.h"
-//
-//#include "iMix.h"
-//#include "xCutscene.h"
-//#include "xSnd.h"
-//#include "xMath.h"
-//
-//extern vinfo voices[58];
-//extern char soundInited;
-//extern S32 SoundFlags;
-//extern F32 _1262;
-//extern F32 _1263;
-//extern volatile S32 fc;
-//
-//void arq_callback(long)
-//{
-//    if (!soundInited)
-//    {
-//        return;
-//    }
-//    SoundFlags = 0;
-//}
-//
-//void iSndExit()
-//{
-//    soundInited = 0;
-//    AXQuit();
-//}
-//
-////not sure where this type is from.
-//void iSndSetEnvironmentalEffect(isound_effect)
-//{
-//    return;
-//}
-//
-//void iSndInitSceneLoaded()
-//{
-//}
-//
+#include "iSnd.h"
+
+#include <types.h>
+
+#include "intrin.h"
+
+#include "xCutscene.h"
+#include "xSnd.h"
+#include "xMath.h"
+
+vinfo voices[58];
+char soundInited;
+S32 SoundFlags;
+extern F32 _1262;
+extern F32 _1263;
+volatile S32 fc;
+
+
+// TODO: investigate return type could be bool or S32?
+S32 iSndIsPlaying(U32 assetID, U32 parid) WIP
+{
+    return false;
+}
+
+// TODO: Implement all of these; or dont, i dont care about sound
+
+void arq_callback(long)
+{
+    if (!soundInited)
+    {
+        return;
+    }
+    SoundFlags = 0;
+}
+
+void iSndExit() WIP
+{
+    soundInited = 0;
+    //AXQuit(); 
+}
+
+//not sure where this type is from.
+void iSndSetEnvironmentalEffect(isound_effect)
+{
+    return;
+}
+
+void iSndInitSceneLoaded()
+{
+}
+
 //U32 iVolFromX(F32 param1)
 //{
 //    float f = MAX(param1, 1e-20f);
@@ -61,7 +68,7 @@
 //
 //void iSndVolUpdate(xSndVoiceInfo* info, vinfo* vinfo)
 //{
-//    MIXUnMute((int*)vinfo->voice);
+//    MIXUnMute(vinfo->voice);
 //    xSndInternalUpdateVoicePos(info);
 //    if ((info->flags & 8) != 0)
 //    {
@@ -88,11 +95,11 @@
 //        }
 //    }
 //}
-//
-//void iSndStartStereo(U32 id1, U32 id2, F32 pitch)
-//{
-//}
-//
+
+void iSndStartStereo(U32 id1, U32 id2, F32 pitch)
+{
+}
+
 //void iSndStereo(U32 i)
 //{
 //    if (i == 0)
@@ -120,11 +127,11 @@
 //        iSndUpdate();
 //    }
 //}
-//
-//void iSndSuspendCD(U32)
-//{
-//}
-//
+
+void iSndSuspendCD(U32)
+{
+}
+
 //void iSndMessWithEA(sDSPADPCM* param1)
 //{
 //    if (param1 != NULL)
@@ -145,16 +152,16 @@
 //
 //    return a;
 //}
-//
-//void sndloadcb(tag_xFile* tag)
-//{
-//    SoundFlags = 0;
-//}
-//
-//void iSndSetExternalCallback(void (*func_ptr)(U32))
-//{
-//}
-//
+
+void sndloadcb(tag_xFile* tag)
+{
+    SoundFlags = 0;
+}
+
+void iSndSetExternalCallback(void (*func_ptr)(U32))
+{
+}
+
 //void iSndMyAXFree(_AXVPB** param1)
 //{
 //    if (param1 != NULL && *param1 != NULL)
@@ -163,3 +170,37 @@
 //        *param1 = NULL;
 //    }
 //}
+
+void iSndPause(U32 snd, U32 pause) WIP
+{
+}
+
+void iSndInit() WIP
+{
+}   
+
+void iSndUpdate() WIP
+{
+}
+
+void iSndStop(U32 snd) WIP
+{
+}   
+
+void iSndSetPitch(U32 snd, F32 pitch) WIP
+{
+}
+
+void iSndSetVol(U32 snd, F32 vol) WIP
+{
+}
+
+F32 iSndGetVol(U32 snd) WIP
+{
+    return 0.0f;
+}
+
+S32 iSndLoadSounds(void*) WIP
+{
+    return 0;
+}

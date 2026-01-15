@@ -243,11 +243,11 @@
 //
 //    return 0;
 //}
-//
-//void zEntPickup_Startup()
-//{
-//}
-//
+
+void zEntPickup_Startup()
+{
+}
+
 //void zEntPickupInit(void* ent, void* asset)
 //{
 //    zEntPickupInit((zEntPickup*)ent, (xEntAsset*)asset);
@@ -1655,4 +1655,3 @@
 //    xMat3x3RotC(&var_38, _x, _y, _z, t);
 //    xMat3x3Mul(o, m, &var_38);
 //}
-		

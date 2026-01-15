@@ -1,3 +1,3 @@
-//#include "ngcrad3d.h"
-//
-//#include <types.h>
+#include "ngcrad3d.h"
+
+#include <types.h>

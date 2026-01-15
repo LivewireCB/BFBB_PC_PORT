@@ -1,16 +1,16 @@
-//#include "zGameState.h"
-//
-//#include "..\Core\x\xSnd.h"
-//#include "..\Core\x\xEvent.h"
-//#include "..\Core\x\xserializer.h"
-//
-//#include "zGlobals.h"
-//#include "zGame.h"
-//
-//S32 gGameState = eGameState_Dead;
-//eGameMode gGameMode;
-//_GameOstrich gGameOstrich;
-//
+#include "zGameState.h"
+
+#include "..\Core\x\xSnd.h"
+#include "..\Core\x\xEvent.h"
+#include "..\Core\x\xserializer.h"
+
+#include "zGlobals.h"
+#include "zGame.h"
+
+S32 gGameState = eGameState_Dead;
+eGameMode gGameMode;
+_GameOstrich gGameOstrich;
+
 //// clang-format off
 //static U32 sGameMode_DispatchTable[eGameMode_Count] =
 //{
@@ -193,9 +193,9 @@
 //        }
 //    }
 //}
-//
-//void zGameStateSwitch(S32 theNewState)
-//{
+
+void zGameStateSwitch(S32 theNewState) RIMP
+{
 //    S32 stateOld = gGameState;
 //    U32 theEvent = 0;
 //
@@ -249,10 +249,10 @@
 //    {
 //        zEntEventAllOfType(theEvent, eBaseTypeDispatcher);
 //    }
-//}
-//
-//void zGameModeSwitch(eGameMode modeNew)
-//{
+}
+
+void zGameModeSwitch(eGameMode modeNew) RIMP
+{
 //    eGameMode modeOld = gGameMode;
 //
 //    bool pausing =
@@ -282,4 +282,4 @@
 //    gGameMode = modeNew;
 //
 //    zEntEventAllOfType(sGameMode_DispatchTable[modeNew], eBaseTypeDispatcher);
-//}
+}

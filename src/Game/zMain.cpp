@@ -1,8 +1,8 @@
 #include "zEntPlayer.h"
 #include "zGlobals.h"
 #include "zMain.h"
-//
-//#include <PowerPC_EABI_Support/MSL_C/MSL_Common/printf.h>
+
+//#include <printf.h>
 #include <types.h>
 
 #include "iSystem.h"
@@ -10,132 +10,125 @@
 #include "zVar.h"
 #include "zAssetTypes.h"
 #include "xTRC.h"
-#include "iTime.h"
 #include "zDispatcher.h"
 #include "xserializer.h"
 #include "xScrFX.h"
-#include "xFont.h"
 #include "xFX.h"
-//#include "xParMgr.h"
-//#include "zParCmd.h"
-//#include "zCameraTweak.h"
-//#include "zShrapnel.h"
-//#include "zNPCMgr.h"
+#include "xParMgr.h"
+#include "zParCmd.h"
+#include "zCameraTweak.h"
+#include "zShrapnel.h"
+#include "zNPCMgr.h"
 #include "xCamera.h"
-//#include "zCamera.h"
-//#include "zCutsceneMgr.h"
-//#include "zEntPlayerBungeeState.h"
-//#include "zEntPlayerOOBState.h"
+#include "zCamera.h"
+#include "xColor.h"
+#include "zCutsceneMgr.h"
+#include "zEntPlayerBungeeState.h"
+#include "zEntPlayerOOBState.h"
 #include "zMenu.h"
+#include "zPickupTable.h"
+#include "iTime.h"
 #include "xstransvc.h"
 #include "xutil.h"
 
-#include <SDL.h>
-
 zGlobals globals;
-xGlobals* xglobals;
+xGlobals* xglobals = &globals;
 
-S32 percentageDone;
+S32 percentageDone = 0;
 _tagxPad* gDebugPad;
 static S32 sShowMenuOnBoot = 1;
 S32 gGameSfxReport;
-static st_SERIAL_PERCID_SIZE* g_xser_sizeinfo;
+static st_SERIAL_PERCID_SIZE g_xser_sizeinfo[3] = {
+    { 'PLYR', 328 },
+    { 'CNTR', 480 },
+    { 0 }
+};
 
-void zLedgeAdjust(zLedgeGrabParams* params);
+static void zLedgeAdjust(zLedgeGrabParams* params);
 void zMainMemCardRenderText(const char*, bool);
 void RenderText(const char*, bool);
 
-extern "C" {
-
-	int main(int argc, char** argv)
-	{
-        memset(&globals, 0, sizeof(globals));
-        globals.firstStartPressed = true;
-
-        iSystemInit(FALSE);
-        zMainOutputMgrSetup();
-        xMemRegisterBaseNotifyFunc(zMainMemLvlChkCB);
-        zMainInitGlobals();
-        var_init();
-        zAssetStartup();
-        zMainLoadFontHIP();
-        xfont::init();
-//
-//#if SHOW_COPYRIGHT_SCREEN
-//        zMainFirstScreen(1);
-//#endif
-//
-//        zMainShowProgressBar();
-//
-//        xTRCInit();
-//        zMainReadINI();
-//        iFuncProfileParse("scooby.elf", globals.profile);
-//        xUtilStartup();
-//        xSerialStartup(128, g_xser_sizeinfo);
-//        zDispatcher_Startup();
-//        xScrFxInit();
-//        xFXStartup();
-//
-//        zMainShowProgressBar();
-//
-//        xParMgrInit();
-//        zParCmdInit();
-//        iEnvStartup();
-//        zEntPickup_Startup();
-//        zCameraTweakGlobal_Init();
-//
-//        globals.option_vibration = true;
-//        globals.pad0 = xPadEnable(globals.currentActivePad);
-//        globals.pad1 = NULL;
-//        gDebugPad = NULL;
-//        xPadRumbleEnable(globals.currentActivePad, globals.option_vibration);
-//
-//        xSGStartup();
-//        xDebugTimestampScreen();
-//        zShrapnel_GameInit();
-//
-//        zMainShowProgressBar();
-//
-//        xBehaveMgr_Startup();
-//        zNPCMgr_Startup();
-//
-//        // MAIN LOOP
-//        zMainLoop();
-//
-//        zNPCMgr_Shutdown();
-//        xBehaveMgr_Shutdown();
-//        zAssetShutdown();
-//        xFXShutdown();
-//        zDispatcher_Shutdown();
-//        xSGShutdown();
-//        xSerialShutdown();
-//        xUtilShutdown();
-//        iSystemExit();
-//
-        return 0;
-	}
-}
-void zMainOutputMgrSetup()
+void main(S32 argc, char** argv)
 {
-    iTime tim = iTimeGet();
-    iTimeDiffSec(tim);
-    iTimeGet();
+    U32 options;
+    S32 i;
+    char* tmpStr;
+
+    memset(&globals, 0, sizeof(globals));
+    globals.firstStartPressed = TRUE;
+    iSystemInit(FALSE); // 0x6d2
+    zMainOutputMgrSetup();
+    xMemRegisterBaseNotifyFunc(zMainMemLvlChkCB);
+    zMainInitGlobals();
+    var_init();
+    zAssetStartup();
+    zMainLoadFontHIP();
+    xfont::init();
+    zMainFirstScreen(1);
+    zMainShowProgressBar();
+    xTRCInit();
+    zMainReadINI();
+    iFuncProfileParse(tmpStr = "scooby.elf", globals.profile);
+    xUtilStartup();
+    xSerialStartup(128, (st_SERIAL_PERCID_SIZE*)&g_xser_sizeinfo); // TODO: seils code just has g_zser_sizeinfo. No cast or &
+    zDispatcher_Startup();
+    xScrFxInit();
+    xFXStartup();
+    zMainShowProgressBar();
+    xParMgrInit();
+    zParCmdInit();
+    iEnvStartup();
+    zEntPickup_Startup();
+    zCameraTweakGlobal_Init();
+    globals.option_vibration = 1; // 0x6c0
+    globals.pad0 = xPadEnable(globals.currentActivePad); // 0x6d1
+    globals.pad1 = 0;
+    gDebugPad = 0;
+    xPadRumbleEnable(globals.currentActivePad, globals.option_vibration); //  0x6d1, 0x6c0
+    xSGStartup();
+    //xDebugTimestampScreen();
+    zShrapnel_GameInit();
+    zMainShowProgressBar();
+    xBehaveMgr_Startup();
+    zNPCMgr_Startup();
+    zMainLoop();
+    zNPCMgr_Shutdown();
+    xBehaveMgr_Shutdown();
+    zAssetShutdown();
+    xFXShutdown();
+    zDispatcher_Shutdown();
+    xSGShutdown();
+    xSerialShutdown();
+    xUtilShutdown();
+    iSystemExit();
 }
 
-void zMainInitGlobals()
+void zMainOutputMgrSetup() RIMP
+{
+    /*iTime tim = iTimeGet();
+    iTimeDiffSec(tim);
+    iTimeGet();*/
+}
+
+void zMainInitGlobals() RIMP
 {
     memset(&globals, 0, sizeof(zGlobals));
     globals.sceneFirst = 1;
-    iTime tim = iTimeGet();
+    /*iTime tim = iTimeGet();
     iTimeDiffSec(tim);
-    iTimeGet();
+    iTimeGet();*/
 }
 
-//void ParseFloatList(F32* dest, char* strbuf, S32 max)
+//static void ParseFloatList(F32* dest, char* strbuf, S32 max)
 //{
 //    xStrParseFloatList(dest, strbuf, max);
 //}
-
+//
+//void zLedgeAdjust(zLedgeGrabParams* params)
+//{
+//    params->animGrab *= (1.0f / 30);
+//}
+//
 //void zMainParseINIGlobals(xIniFile* ini)
 //{
 //    F32 fVar1;
@@ -605,174 +598,318 @@ void zMainInitGlobals()
 //    globals.player.patrick.pcType = ePlayer_Patrick;
 //    globals.player.sandy.pcType = ePlayer_Sandy;
 //}
-//
-void zMainMemLvlChkCB() WIP
+
+void zMainMemLvlChkCB()
 {
-    //zSceneMemLvlChkCB();
+    zSceneMemLvlChkCB();
 }
 
-void zLedgeAdjust(zLedgeGrabParams* params)
+void zMainShowProgressBar()
 {
-    params->animGrab *= (1.0f / 30);
+    if (!zMenuIsFirstBoot()) return;
+
+    if (percentageDone > 100) percentageDone = 100;
+
+    S32 spotToInsertColor = percentageDone / 10;
+    char textBuffer[64];
+    char beforeColor[64];
+    char afterColor[64];
+
+    char loadingText[12];
+    strcpy(loadingText, "Loading...");
+
+    memset(textBuffer, 0, sizeof(textBuffer));
+    memset(afterColor, 0, sizeof(afterColor));
+
+    strcpy(beforeColor, loadingText);
+    beforeColor[spotToInsertColor] = '\0';
+    memcpy(afterColor, loadingText + spotToInsertColor, strlen(loadingText) - spotToInsertColor);
+
+    sprintf(textBuffer, "{font=0}{h*2}{w*2}%s{color=FFFFFFFF}%s{~:c}", beforeColor, afterColor);
+
+    zMainMemCardRenderText(textBuffer, true);
+
+    percentageDone += 10;
 }
 
-//void zMainShowProgressBar()
-//{
-//    S32 progBar;
-//    size_t str;
-//    char loadingText[12];
-//    char auStack_cc[64];
-//    char acStack_8c[64];
-//    char formattedStr[72];
-//
-//    if (zMenuIsFirstBoot() != 0)
-//    {
-//        if (100 < percentageDone)
-//        {
-//            percentageDone = 100;
-//        }
-//        progBar = percentageDone / 10;
-//        strcpy(loadingText, "Loading...");
-//        memset(formattedStr, 0, 0x40);
-//        memset(acStack_8c, 0, 0x40);
-//        strcpy(auStack_cc, loadingText);
-//        auStack_cc[progBar] = '\0';
-//        str = strlen(loadingText);
-//        memcpy(auStack_cc, acStack_8c + progBar, progBar); // 3rd arg should have progBar - sVar2
-//        sprintf(formattedStr, "{font=0}{h*2}{w*2}%s{color=FFFFFFFF}%s{~:c}", auStack_cc,
-//                acStack_8c);
-//        zMainMemCardRenderText(formattedStr, '\x01');
-//        percentageDone = percentageDone + 10;
-//    }
-//}
-//
-//void zMainLoop()
-//{
-//    iTime time;
-//    S64 t;
-//    U32* preinit;
-//    RpAtomic* modl;
-//    //RpAtomic* modl;
-//    //RpAtomic* modl;
-//    U32 newGameSceneID;
-//    U32 iconDataSize;
-//    void* iconData;
-//    U32 gameSceneID;
-//    U32 menuModeID;
-//    //int8 @5697;
-//    U32 preinit_bubble_matfx[6];
-//    U32 preinit_shiny_models[8];
-//    U32 preinit_ADC_models[10];
-//
-//    zMainShowProgressBar();
-//    xMemPushBase();
-//    time = iTimeGet();
-//    xUtil_idtag2string('BOOT', 0);
-//    iTimeDiffSec(time);
-//    xSTPreLoadScene('BOOT', NULL, 0x1);
-//    time = iTimeGet();
-//    xUtil_idtag2string('BOOT', 0);
-//    iTimeDiffSec(time);
-//    xSTQueueSceneAssets('BOOT', 1);
-//    time = iTimeGet();
-//    xUtil_idtag2string('BOOT', 0);
-//    iTimeDiffSec(time);
-//
-//    do
-//    {
-//        xSTLoadStep(time);
-//    } while (time < 1.0f);
-//
-//    xSTDisconnect('BOOT', 1);
-//    time = iTimeGet();
-//    xUtil_idtag2string('BOOT', 0);
-//    iTimeDiffSec(time);
-//    zMainShowProgressBar();
-//    xSTPreLoadScene('PLAT', 0, 1);
-//    xSTQueueSceneAssets('PLAT', 1);
-//
-//    do
-//    {
-//        xSTLoadStep(time);
-//    } while (time < 1.0f);
-//
-//    xSTDisconnect(0x504c4154, 1);
-//    zMainShowProgressBar();
-//    iTimeGet();
-//    xShadowSimple_Init();
-//    globals.pickupTable = (zAssetPickupTable*)xSTFindAssetByType('PLAT', 0, 0);
-//    // globals.pickupTable = zPickupTableInit();
-//    // zPickupTableInit hasnt been implemented yet
-//    xMemPushBase();
-//    time = iTimeGet();
-//    xUtil_idtag2string('MNU4', 0);
-//    iTimeDiffSec(time);
-//    xSTPreLoadScene('MNU4', 0, 1);
-//    time = iTimeGet();
-//    xUtil_idtag2string('MNU4', 0);
-//    iTimeDiffSec(time);
-//    xSTQueueSceneAssets('MNU4', 1);
-//    time = iTimeGet();
-//    xUtil_idtag2string('MNU4', 0);
-//    iTimeDiffSec(time);
-//    do
-//    {
-//        xSTLoadStep(time);
-//    } while (time < 1.0f);
-//    xSTDisconnect('MNU4', 1);
-//    zMainShowProgressBar();
-//    time = iTimeGet();
-//    xUtil_idtag2string('MNU4', 0);
-//    iTimeDiffSec(time);
-//    xMemPushBase();
-//    time = iTimeGet();
-//    xUtil_idtag2string('MNU5', 0);
-//    iTimeDiffSec(time);
-//    xSTPreLoadScene('MNU5', 0, 1);
-//    time = iTimeGet();
-//    xUtil_idtag2string('MNU5', 0);
-//    iTimeDiffSec(time);
-//    xSTQueueSceneAssets('MNU5', 1);
-//    time = iTimeGet();
-//    xUtil_idtag2string('MNU5', 0);
-//    iTimeDiffSec(time);
-//    do
-//    {
-//        xSTLoadStep(time);
-//    } while (time < 1.0f);
-//    xSTDisconnect('MNU5', 1);
-//    zMainShowProgressBar();
-//    time = iTimeGet();
-//    xUtil_idtag2string('MNU5', 0);
-//    iTimeDiffSec(time);
-//    xModelInit();
-//    xModelPoolInit(0x20, 0x40);
-//    xModelPoolInit(0x28, 8);
-//    xModelPoolInit(0x38, 1);
-//}
-//
-//void zMainReadINI()
-//{
-//    char* str;
-//    void* buf;
-//    U32 size;
-//    xIniFile* ini;
-//    U32 local_18[2];
-//
-//    str = (char*)iFileLoad("SB.INI", 0, (U32*)local_18);
-//    if (str = NULL)
-//    {
-//        xIniGetString(xIniParse(0, 0), "patrick.MoveSpeed", 0);
-//    }
-//}
-
-void zMainFirstScreen(int)
+static void zMainLoop() WIP
 {
+    zMainShowProgressBar();
+
+    xMemPushBase();
+
+    //iTime t;
+
+    //t = iTimeGet();
+    //xUtil_idtag2string(IDTAG('B','O','O','T'));
+    //iTimeDiffSec(t);
+
+    xSTPreLoadScene(IDTAG('B', 'O', 'O', 'T'), NULL, XST_OPTS_HIP);
+
+    //t = iTimeGet();
+    //xUtil_idtag2string(IDTAG('B','O','O','T'));
+    //iTimeDiffSec(t);
+
+    xSTQueueSceneAssets(IDTAG('B', 'O', 'O', 'T'), XST_OPTS_HIP);
+
+    //t = iTimeGet();
+    //xUtil_idtag2string(IDTAG('B','O','O','T'));
+    //iTimeDiffSec(t);
+
+    while (xSTLoadStep(IDTAG('B', 'O', 'O', 'T')) < 1.0f) {}
+
+    xSTDisconnect(IDTAG('B', 'O', 'O', 'T'), XST_OPTS_HIP);
+
+    //t = iTimeGet();
+    //xUtil_idtag2string(IDTAG('B','O','O','T'));
+    //iTimeDiffSec(t);
+
+    zMainShowProgressBar();
+
+    xSTPreLoadScene(IDTAG('P', 'L', 'A', 'T'), NULL, XST_OPTS_HIP);
+    xSTQueueSceneAssets(IDTAG('P', 'L', 'A', 'T'), XST_OPTS_HIP);
+    while (xSTLoadStep(IDTAG('P', 'L', 'A', 'T')) < 1.0f) {}
+    xSTDisconnect(IDTAG('P', 'L', 'A', 'T'), XST_OPTS_HIP);
+
+    zMainShowProgressBar();
+
+    //iTimeGet();
+
+    xShadowSimple_Init();
+
+    globals.pickupTable = (zAssetPickupTable*)xSTFindAssetByType('PICK', 0, NULL);
+    zPickupTableInit();
+
+    xMemPushBase();
+
+    //t = iTimeGet();
+    //xUtil_idtag2string(IDTAG('M','N','U','4'));
+    //iTimeDiffSec(t);
+
+    xSTPreLoadScene(IDTAG('M', 'N', 'U', '4'), NULL, XST_OPTS_HIP);
+
+    //t = iTimeGet();
+    //xUtil_idtag2string(IDTAG('M','N','U','4'));
+    //iTimeDiffSec(t);
+
+    xSTQueueSceneAssets(IDTAG('M', 'N', 'U', '4'), XST_OPTS_HIP);
+
+    //t = iTimeGet();
+    //xUtil_idtag2string(IDTAG('M','N','U','4'));
+    //iTimeDiffSec(t);
+
+    while (xSTLoadStep(IDTAG('M', 'N', 'U', '4')) < 1.0f) {}
+
+    xSTDisconnect(IDTAG('M', 'N', 'U', '4'), XST_OPTS_HIP);
+
+    zMainShowProgressBar();
+
+    //t = iTimeGet();
+    //xUtil_idtag2string(IDTAG('M','N','U','4'));
+    //iTimeDiffSec(t);
+
+    xMemPushBase();
+
+    //t = iTimeGet();
+    //xUtil_idtag2string(IDTAG('M','N','U','5'));
+    //iTimeDiffSec(t);
+
+    xSTPreLoadScene(IDTAG('M', 'N', 'U', '5'), NULL, XST_OPTS_HIP);
+
+    //t = iTimeGet();
+    //xUtil_idtag2string(IDTAG('M','N','U','5'));
+    //iTimeDiffSec(t);
+
+    xSTQueueSceneAssets(IDTAG('M', 'N', 'U', '5'), XST_OPTS_HIP);
+
+    //t = iTimeGet();
+    //xUtil_idtag2string(IDTAG('M','N','U','5'));
+    //iTimeDiffSec(t);
+
+    while (xSTLoadStep(IDTAG('M', 'N', 'U', '5')) < 1.0f) {}
+
+    xSTDisconnect(IDTAG('M', 'N', 'U', '5'), XST_OPTS_HIP);
+
+    zMainShowProgressBar();
+
+    //t = iTimeGet();
+    //xUtil_idtag2string(IDTAG('M','N','U','5'));
+    //iTimeDiffSec(t);
+
+    xModelInit();
+    xModelPoolInit(32, 64);
+    xModelPoolInit(40, 8);
+    xModelPoolInit(56, 1);
+
+    static U32 preinit_bubble_matfx[] = {
+        0xDBD033BC,
+        0x452279A2,
+        0xC17F4BCC,
+        0x0CF9267A,
+        0x5C009D14,
+        0
+    };
+
+    for (U32* preinit = preinit_bubble_matfx; *preinit != 0; preinit++) {
+        RpAtomic* modl = (RpAtomic*)xSTFindAsset(*preinit, NULL);
+        if (modl) {
+            xFXPreAllocMatFX(RpAtomicGetClump(modl));
+        }
+    }
+
+    static U32 menuModeID = IDTAG('M', 'N', 'U', '3');
+    static U32 gameSceneID = (globals.sceneStart[0] << 24) |
+        (globals.sceneStart[1] << 16) |
+        (globals.sceneStart[2] << 8) |
+        (globals.sceneStart[3] << 0);
+
+    U32 newGameSceneID = gameSceneID;
+
+    //xUtil_idtag2string(gameSceneID);
+
+    xMemPushBase();
+
+    zMainShowProgressBar();
+
+    zMainMemCardSpaceQuery();
+
+    while (true) {
+        zMainShowProgressBar();
+
+        xSerialWipeMainBuffer();
+        zCutSceneNamesTable_clearAll();
+
+        zMainShowProgressBar();
+
+        if (sShowMenuOnBoot) {
+            zMenuInit(menuModeID);
+
+            zMainShowProgressBar();
+            zMainShowProgressBar();
+
+            zMenuSetup();
+
+#if ENABLE_WIP_CODE
+            xFX_SceneEnter(globals.sceneCur->env->geom->world);
+#endif
+
+            newGameSceneID = zMenuLoop();
+
+            zMenuExit();
+
+            if (iSystemShouldQuit()) break;
+        }
+        else {
+            sShowMenuOnBoot = 1;
+            globals.firstStartPressed = true;
+
+            zGameModeSwitch(eGameMode_Game);
+            zGameStateSwitch(0);
+        }
+
+        if (newGameSceneID == 0) {
+            zVarNewGame();
+            iTimeSetGame(0.0f);
+
+            gameSceneID = (globals.sceneStart[0] << 24) |
+                (globals.sceneStart[1] << 16) |
+                (globals.sceneStart[2] << 8) |
+                (globals.sceneStart[3] << 0);
+        }
+        else {
+            gameSceneID = newGameSceneID;
+
+            iTimeSetGame(0.0f);
+        }
+
+        zGameInit(gameSceneID);
+        zGameSetup();
+
+        iProfileClear(gameSceneID);
+
+        zGameLoop();
+        zGameExit();
+
+        if (iSystemShouldQuit()) break;
+    }
 }
 
-void zMainMemCardSpaceQuery()
+void zMainReadINI() RIMP
 {
-    S32 bytesNeeded;
+    /*char* str;
+    void* buf;
+    U32 size;
+    xIniFile* ini;
+    U32 local_18[2];
+
+    str = (char*)iFileLoad("SB.INI", 0, (U32*)local_18);
+    if (str = NULL)
+    {
+        xIniGetString(xIniParse(0, 0), "patrick.MoveSpeed", 0);
+    }*/
+}
+
+void zMainFirstScreen(S32 mode)
+{
+    RwCamera* cam = iCameraCreate(FB_XRES, FB_YRES, 0);
+    RwRGBA bg = { 0, 0, 0, 0 };
+
+    for (S32 i = 0; i < 2; i++) {
+        RwCameraClear(cam, &bg, rwCAMERACLEARIMAGE | rwCAMERACLEARZ);
+        RwCameraBeginUpdate(cam);
+
+        if (mode != 0) {
+            char text[] = "Game and Software \xA9 2003 THQ Inc. \xA9 2003 Viacom "
+                "International Inc. All rights reserved.\n\n"
+                "Nickelodeon, SpongeBob SquarePants and all related "
+                "titles, logos, and characters are trademarks of Viacom "
+                "International Inc. Created by Stephen Hillenburg.\n\n"
+                "Exclusively published by THQ Inc. Developed by Heavy "
+                "Iron. Portions of this software are Copyright 1998 - "
+                "2003 Criterion Software Ltd. and its Licensors. THQ, "
+                "Heavy Iron and the THQ logo are trademarks and/or "
+                "registered trademarks of THQ Inc. All rights reserved.\n\n"
+                "All other trademarks, logos and copyrights are property "
+                "of their respective owners.\n\n"
+                "Unofficial PC port by Heavy Iron Modding";
+
+            iColor_tag color = { 255, 230, 0, 200 };
+            xtextbox tb = xtextbox::create(
+                xfont::create(1, NSCREENX(19.0f), NSCREENY(22.0f), 0.0f, color, screen_bounds),
+                screen_bounds, 0x2, 0.0f, 0.0f, 0.0f, 0.0f
+            );
+            tb.set_text(text);
+            /*
+                        tb.set_text("It is a serious crime to copy video games according to copyright law. "
+                                    "Please refer to your Nintendo game instruction booklet for further information.\n\n"
+                                    "{r=1.0}{g=1.0}{b=1.0}{w=.5}{h=.5}{tex:sbjail;src=0,0.16,1,0.74}");
+            */
+            tb.bounds = screen_bounds;
+            tb.bounds.contract(0.1f);
+            tb.bounds.h = tb.yextent(true);
+            tb.bounds.y = 0.5f - tb.bounds.h * 0.5f;
+            tb.render(true);
+        }
+
+        RwCameraEndUpdate(cam);
+        RwCameraShowRaster(cam, NULL, 0);
+    }
+
+    S32 vbl = VBLANKS_PER_SEC * 3;
+    while (--vbl) {
+        iSystemPollEvents();
+        if (iSystemShouldQuit()) break;
+
+        iTRCDisk::CheckDVDAndResetState();
+        iVSync();
+    }
+
+    iCameraDestroy(cam);
+}
+
+void zMainMemCardSpaceQuery() RIMP
+{
+    /*S32 bytesNeeded;
     S32 availOnDisk;
     S32 neededFiles;
     S32 do_chk;
@@ -780,65 +917,69 @@ void zMainMemCardSpaceQuery()
     U8 formatInProgress;
     U8 formatFailed;
     eStartupErrors startupError;
-    S32 status;
+    S32 status;*/
 }
 
-//void zMainMemCardQueryPost(S32 needed, S32 available, S32 neededFiles, S32 unk0)
-//{
-//    RwCamera* cam = 0;
-//    RwRGBA* colour = 0;
-//    RwInt32 clearMode = 3;
-//
-//    cam = iCameraCreate(640, 480, 0);
-//    RwCameraClear(cam, colour, clearMode);
-//    RwCameraBeginUpdate(cam);
-//    render_mem_card_no_space(needed, available, neededFiles, unk0);
-//    RwCameraEndUpdate(cam);
-//    RwCameraShowRaster(cam, NULL, 1);
-//    iCameraDestroy(cam);
-//}
-//
-//void zMainMemCardRenderText(const char* a, bool enabled)
-//{
-//    RwCamera* cam = 0;
-//    RwRGBA* colour = 0;
-//    RwInt32 clearMode = 3;
-//
-//    cam = iCameraCreate(640, 480, 0);
-//    RwCameraClear(cam, colour, clearMode);
-//    RwCameraBeginUpdate(cam);
-//    RenderText(a, enabled);
-//    RwCameraEndUpdate(cam);
-//    RwCameraShowRaster(cam, NULL, 1);
-//    iCameraDestroy(cam);
-//}
-//
+static void zMainMemCardQueryPost(S32 needed, S32 available, S32 neededFiles, S32 unk0) RIMP
+{
+    /*RwCamera* cam = nullptr;
+    RwRGBA colour = {};
+    RwInt32 clearMode = 3;
+
+    cam = iCameraCreate(640, 480, 0);
+    RwCameraClear(cam, &colour, clearMode);
+    RwCameraBeginUpdate(cam);
+    render_mem_card_no_space(needed, available, neededFiles, unk0);
+    RwCameraEndUpdate(cam);
+    RwCameraShowRaster(cam, NULL, 1);
+    iCameraDestroy(cam);*/
+}
+
+void zMainMemCardRenderText(const char* text, bool enabled)
+{
+    RwRGBA bg = { 0, 0, 0, 0 };
+    RwCamera* cam = iCameraCreate(FB_XRES, FB_YRES, 0);
+
+    RwCameraClear(cam, &bg, rwCAMERACLEARIMAGE | rwCAMERACLEARZ);
+    RwCameraBeginUpdate(cam);
+
+    RenderText(text, enabled);
+
+    RwCameraEndUpdate(cam);
+    RwCameraShowRaster(cam, NULL, 0);
+
+    iCameraDestroy(cam);
+}
+
 void zMainLoadFontHIP()
 {
-    iTime time;
-
     xMemPushBase();
-    time = iTimeGet();
-    //xUtil_idtag2string('FONT', 0);
-    iTimeDiffSec(time);
-    xSTPreLoadScene('FONT', NULL, 0x1);
-    time = iTimeGet();
-    //xUtil_idtag2string('FONT', 0);
-    iTimeDiffSec(time);
-    xSTQueueSceneAssets('FONT', 1);
-    time = iTimeGet();
-    //xUtil_idtag2string('FONT', 0);
-    iTimeDiffSec(time);
 
-    do
-    {
-        xSTLoadStep(time);
-    } while (time < 1.0f);
+    //iTime t;
 
-    xSTDisconnect('FONT', 1);
-    time = iTimeGet();
-    //xUtil_idtag2string('FONT', 0);
-    iTimeDiffSec(time);
+    //t = iTimeGet();
+    //xUtil_idtag2string(IDTAG('F','O','N','T'));
+    //iTimeDiffSec(t);
+
+    xSTPreLoadScene(IDTAG('F', 'O', 'N', 'T'), NULL, XST_OPTS_HIP);
+
+    //t = iTimeGet();
+    //xUtil_idtag2string(IDTAG('F','O','N','T'));
+    //iTimeDiffSec(t);
+
+    xSTQueueSceneAssets(IDTAG('F', 'O', 'N', 'T'), XST_OPTS_HIP);
+
+    //t = iTimeGet();
+    //xUtil_idtag2string(IDTAG('F','O','N','T'));
+    //iTimeDiffSec(t);
+
+    while (xSTLoadStep(IDTAG('F', 'O', 'N', 'T')) < 1.0f) {}
+
+    xSTDisconnect(IDTAG('F', 'O', 'N', 'T'), XST_OPTS_HIP);
+
+    //t = iTimeGet();
+    //xUtil_idtag2string(IDTAG('F','O','N','T'));
+    //iTimeDiffSec(t);
 }
 
 void iEnvStartup()

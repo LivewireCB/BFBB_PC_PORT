@@ -5,31 +5,11 @@
 #include "xMath.h"
 
 #include <types.h>
+#include <fastmath.h>
 
- xVec3 xVec3::m_Null = { 0.0f, 0.0f, 0.0f };
- xVec3 xVec3::m_UnitAxisX = { 1.0f, 0.0f, 0.0f };
- xVec3 xVec3::m_UnitAxisY = { 0.0f, 1.0f, 0.0f };
-
- xVec3& xVec3::operator=(F32 f)  
- {  
-     this->x = f;  
-     this->y = f;  
-     this->z = f;  
-     return *this;  
- }
-
- xVec3& xVec3::operator*=(F32 f) 
- {
-    x *= f, y *= f, z *= f; 
-    return *this; 
- }
-
- F32 xVec3Dist(const xVec3* a, const xVec3* b)
- {
-     F32 d;
-     xVec3DistMacro(a, b, &d);
-     return d;
- }
+const xVec3 xVec3::m_Null = { 0.0f, 0.0f, 0.0f };
+const xVec3 xVec3::m_UnitAxisX = { 1.0f, 0.0f, 0.0f };
+const xVec3 xVec3::m_UnitAxisY = { 0.0f, 1.0f, 0.0f };
 
 F32 xVec3Normalize(xVec3* o, const xVec3* v)
 {
@@ -59,7 +39,7 @@ F32 xVec3Normalize(xVec3* o, const xVec3* v)
     }
     else
     {
-        //len = xsqrt(len2);
+        len = xsqrt(len2);
         F32 inv_len = 1.0f / len;
         o->x = v->x * inv_len;
         o->y = v->y * inv_len;
@@ -105,12 +85,12 @@ F32 xVec3NormalizeFast(xVec3* o, const xVec3* v)
     return len;
 }
 
-void xVec3Copy(register xVec3* dst, const register xVec3* src)
+void xVec3Copy(xVec3* o, const xVec3* v)
 {
-    //PSVECCopy(dst, src);
+    o->x = v->x, o->y = v->y, o->z = v->z;
 }
 
-//asm F32 xVec3Dot(const register xVec3* a, const register xVec3* b)
-//{
-//    PSVECDotProduct(a, b)
-//}
+F32 xVec3Dot(const xVec3* vec1, const xVec3* vec2)
+{
+    return vec1->x * vec2->x + vec1->y * vec2->y + vec1->z * vec2->z;
+}

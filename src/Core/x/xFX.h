@@ -10,7 +10,7 @@
 #include <rwcore.h>
 #include <rpworld.h>
 
-class xModelInstance;
+struct xModelInstance;
 
 struct xFXRing
 {
@@ -84,17 +84,20 @@ struct xFXRibbon
     void debug_update(F32);
     void insert(const xVec3&, const xVec3&, F32, F32, unsigned int);
     void insert(const xVec3&, F32, F32, F32, U32);
+    void activate();
+    void deactivate();
     void start_render();
+    void set_raster(RwRaster*);
 };
 
-class xFXStreakElem
+struct xFXStreakElem
 {
     U32 flag;
     xVec3 p[2];
     F32 a;
 };
 
-class xFXStreak
+struct xFXStreak
 {
     U32 flags;
     F32 frequency;
@@ -110,8 +113,58 @@ class xFXStreak
     xFXStreakElem elem[50];
 };
 
+class xFXShineElem
+{
+    U32 flag;
+    xVec3 p;
+    xVec3 vel;
+    F32 lifetime;
+    F32 a;
+    iColor_tag cola;
+    iColor_tag colb;
+};
+
+class xFXShine
+{
+    U32 flags;
+    xVec3* ppos;
+    xVec3 pos;
+    F32 spd;
+    F32 width;
+    F32 frequency;
+    F32 elapsed;
+    F32 lifetimeElemMax;
+    F32 lifetimeMax;
+    F32 lifetime;
+    F32 rotateSpeed;
+    F32 rotateZ;
+    iColor_tag color_a;
+    iColor_tag color_b;
+    RwTexture* texturePtr;
+    RwRaster* textureRasterPtr;
+    xFXShineElem elem[100];
+};
+
+struct xFXBubbleParams
+{
+    U32 pass1 : 1;
+    U32 pass2 : 1;
+    U32 pass3 : 1;
+    U32 padding : 5;
+    U8 pass1_alpha;
+    U8 pass2_alpha;
+    U8 pass3_alpha;
+    U32 pass1_fbmsk;
+    U32 fresnel_map;
+    F32 fresnel_map_coeff;
+    U32 env_map;
+    F32 env_map_coeff;
+};
+
 #define RING_COUNT 8
 
+extern xFXStreak sStreakList[10];
+extern xFXShine sShineList[2];
 extern xFXRing ringlist[RING_COUNT];
 
 void xFXStartup();
@@ -147,6 +200,7 @@ void xFXStreakInit();
 void xFXStreakUpdate(F32 dt);
 void xFXStreakUpdate(U32 streakID, const xVec3*, const xVec3*);
 void xFXStreakRender();
+U32 xFXStreakStart(F32 frequency, F32 alphaFadeRate, F32 alphaStart, U32 textureID, const iColor_tag* edge_a, const iColor_tag* edge_b, S32 taper);
 void xFXStreakStop(U32);
 void xFXShineInit();
 void xFXShineUpdate(F32 dt);

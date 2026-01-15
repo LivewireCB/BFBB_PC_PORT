@@ -1,99 +1,108 @@
-//#include "zMenu.h"
-//
-//#include <string.h>
-//
-//#include "iColor.h"
-//#include "iSystem.h"
-//#include "iTime.h"
-//#include "iTRC.h"
-//
-//#include "xCutscene.h"
-//#include "xDebug.h"
-//#include "xEvent.h"
-//#include "xMath.h"
-//#include "xPad.h"
-//#include "xsavegame.h"
-//#include "xScrFx.h"
-//#include "xSFX.h"
-//#include "xSnd.h"
-//#include "xSkyDome.h"
-//#include "xString.h"
-//#include "xTRC.h"
-//
-//#include "zCamera.h"
-//#include "zFMV.h"
-//#include "zGame.h"
-//#include "zGameExtras.h"
-//#include "zGameState.h"
-//#include "zGlobals.h"
-//#include "zMusic.h"
-//#include "zSaveLoad.h"
-//
-//bool menu_fmv_played;
-//
-//static S32 sFirstBoot = 1;
-//
-//// TODO: This probably wasn't volatile in the original code, but we have 100%
-//// matching code for all of the functions which use it with it marked as
-//// volatile, so leave it that way for now.
-//static volatile S32 card;
-//static S32 sInMenu;
-//static S32 corruptFileCount;
-//static char corruptFiles[3][64];
-//
-//static volatile F32 time_elapsed = 1.0f / 100.0f;
-//static volatile F32 holdTmr = 10.0f;
-//static volatile F32 time_last;
-//static volatile F32 time_current;
-//static volatile F32 sAttractMode_timer;
-//
-//S32 zMenuRunning()
-//{
-//    return sInMenu;
-//}
-//
-//void zMenuInit(U32 theSceneID)
-//{
-//    sInMenu = 1;
-//    xsrand(iTimeGet());
-//    iTimeGet();
-//    xrand();
-//    zSceneInit(theSceneID, 0);
-//    xCameraInit(&globals.camera, 0x280, 0x1e0);
-//    zCameraReset(&globals.camera);
-//    xCameraSetScene(&globals.camera, globals.sceneCur);
-//    zMusicInit();
-//}
-//
-//void zMenuExit()
-//{
-//    zMusicKill();
-//    xSndStopAll(-5);
-//    xCameraExit(&globals.camera);
-//    zSceneExit(0);
-//    sInMenu = 0;
-//}
-//
-//void zMenuSetup()
-//{
-//    globals.player.MaxHealth = 3;
-//    zSceneSetup();
-//    sAttractMode_timer = 48.264f;
-//    zGameSetupPlayer();
-//    zEnvStartingCamera(gCurEnv);
-//    xCameraUpdate(&globals.camera, -1.0f);
-//    xSkyDome_Setup();
-//    zEntEventAll(NULL, 0, eEventSceneBegin, NULL);
-//    zEntEventAll(NULL, 0, eEventRoomBegin, NULL);
-//    if (globals.updateMgr)
-//    {
-//        xUpdateCull_Update(globals.updateMgr, eEventDispatcher_PadVibrateOn);
-//    }
-//    zEntEvent(&globals.player.ent, 8);
-//}
-//
+#include "zMenu.h"
+
+#include <string.h>
+
+#include "iColor.h"
+#include "iSystem.h"
+#include "iTime.h"
+#include "iTRC.h"
+
+#include "xCutscene.h"
+#include "xDebug.h"
+#include "xEvent.h"
+#include "xMath.h"
+#include "xPad.h"
+#include "xsavegame.h"
+#include "xScrFx.h"
+#include "xSFX.h"
+#include "xSnd.h"
+#include "xSkyDome.h"
+#include "xString.h"
+#include "xTRC.h"
+
+#include "zCamera.h"
+#include "zFMV.h"
+#include "zGame.h"
+#include "zGameExtras.h"
+#include "zGameState.h"
+#include "zGlobals.h"
+#include "zMusic.h"
+#include "zSaveLoad.h"
+
+bool menu_fmv_played;
+
+static S32 sFirstBoot = 1;
+
+// TODO: This probably wasn't volatile in the original code, but we have 100%
+// matching code for all of the functions which use it with it marked as
+// volatile, so leave it that way for now.
+static volatile S32 card;
+static S32 sInMenu;
+static S32 corruptFileCount;
+static char corruptFiles[3][64];
+
+static volatile F32 time_elapsed = 1.0f / 100.0f;
+static volatile F32 holdTmr = 10.0f;
+static volatile F32 time_last;
+static volatile F32 time_current;
+static volatile F32 sAttractMode_timer;
+
+S32 zMenuRunning()
+{
+    return sInMenu;
+}
+
+void zMenuInit(U32 theSceneID) RIMP
+{
+    sInMenu = 1;
+    xsrand((U32)iTimeGet());
+    xrand();
+    zSceneInit(theSceneID, 0);
+    xCameraInit(&globals.camera, FB_XRES, FB_YRES);
+    zCameraReset(&globals.camera);
+    xCameraSetScene(&globals.camera, globals.sceneCur);
+    //zMusicInit();
+}
+
+void zMenuExit() RIMP
+{
+    /*zMusicKill();
+    xSndStopAll(-5);
+    xCameraExit(&globals.camera);
+    zSceneExit(0);
+    sInMenu = 0;*/
+}
+
+void zMenuSetup() RIMP
+{
+    /*globals.player.MaxHealth = 3;
+    zSceneSetup();
+    sAttractMode_timer = 48.264f;
+    zGameSetupPlayer();
+    zEnvStartingCamera(gCurEnv);
+    xCameraUpdate(&globals.camera, -1.0f);
+    xSkyDome_Setup();
+    zEntEventAll(NULL, 0, eEventSceneBegin, NULL);
+    zEntEventAll(NULL, 0, eEventRoomBegin, NULL);
+    if (globals.updateMgr)
+    {
+        xUpdateCull_Update(globals.updateMgr, eEventDispatcher_PadVibrateOn);
+    }
+    zEntEvent(&globals.player.ent, 8);*/
+}
+
 //void zMenuFirstBootSet(S32 value);
-//
+
+U32 zMenuLoop() WIP
+{
+    while (true) {
+        iSystemPollEvents();
+        if (iSystemShouldQuit()) break;
+    }
+
+    return 0;
+}
+
 //// Equivalent
 //// Scheduling is a mess. Some float constants are being pushed onto the stack
 //U32 zMenuLoop()
@@ -322,16 +331,16 @@
 //    }
 //    return retVal;
 //}
-//
-//U32 zMenuGetCorruptFiles(char name[][64])
-//{
-//    for (int i = 0; i < corruptFileCount; ++i)
-//    {
-//        strcpy(name[i], corruptFiles[i]);
-//    }
-//    return corruptFileCount;
-//}
-//
+
+U32 zMenuGetCorruptFiles(char name[][64])
+{
+    for (int i = 0; i < corruptFileCount; ++i)
+    {
+        strcpy(name[i], corruptFiles[i]);
+    }
+    return corruptFileCount;
+}
+
 //bool zMenuCardCheckStartup(S32* bytesNeeded, S32* availOnDisk, S32* neededFiles)
 //{
 //    st_XSAVEGAME_DATA* ldinst = xSGInit(XSG_MODE_SAVE);
@@ -470,12 +479,12 @@
 //    xSGDone(ldinst);
 //    return !rc;
 //}
-//
-//S32 zMenuGetBadCard()
-//{
-//    return card + 1;
-//}
-//
+
+S32 zMenuGetBadCard()
+{
+    return card + 1;
+}
+
 //// Floating point assignments are out of order.
 //void zMenuFMVPlay(char* filename, U32 buttons, F32 time, bool skippable, bool lockController)
 //{
@@ -487,13 +496,13 @@
 //        sAttractMode_timer = 48.264f;
 //    }
 //}
-//
-//S32 zMenuIsFirstBoot()
-//{
-//    return sFirstBoot;
-//}
-//
-//void zMenuFirstBootSet(S32 value)
-//{
-//    sFirstBoot = value;
-//}
+
+S32 zMenuIsFirstBoot()
+{
+    return sFirstBoot;
+}
+
+void zMenuFirstBootSet(S32 value)
+{
+    sFirstBoot = value;
+}

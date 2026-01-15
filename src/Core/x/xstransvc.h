@@ -3,6 +3,8 @@
 
 #include "xpkrsvc.h"
 
+
+
 struct st_STRAN_SCENE
 {
     U32 scnid;
@@ -18,6 +20,10 @@ struct st_STRAN_DATA
     st_STRAN_SCENE hipscn[16];
     U32 loadlock;
 };
+
+#define XST_OPTS_HIP (1<<0)
+#define XST_OPTS_HOP (2<<0)
+#define XST_OPTS_MASKHH (3<<0)
 
 S32 xSTStartup(st_PACKER_ASSETTYPE* handlers);
 S32 xSTPreLoadScene(U32 sid, void* userdata, S32 flg_hiphop);

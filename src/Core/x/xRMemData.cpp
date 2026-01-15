@@ -1,38 +1,38 @@
-//#include "xRMemData.h"
-//#include "xMemMgr.h"
-//
-//#include <types.h>
-//#include <string.h>
-//
-//void* RyzMemData::operator new(size_t size, S32 amt, RyzMemGrow* growCtxt)
-//{
-//    S32 dogrow = true;
-//    if (growCtxt == NULL)
-//    {
-//        dogrow = false;
-//    }
-//    else if (growCtxt->IsEnabled() == 0)
-//    {
-//        dogrow = false;
-//    }
-//
-//    void* mem;
-//    if (dogrow)
-//    {
-//        mem = xMemGrowAllocSize(size);
-//    }
-//    else
-//    {
-//        mem = xMemAllocSize(size);
-//    }
-//    memset(mem, 0, 4);
-//    return mem;
-//}
-//
-//void RyzMemData::operator delete(void* p)
-//{
-//}
-//
+#include "xRMemData.h"
+#include "xMemMgr.h"
+
+#include <types.h>
+#include <string.h>
+
+void* RyzMemData::operator new(size_t size, S32 amt, RyzMemGrow* growCtxt)
+{
+    S32 dogrow = true;
+    if (growCtxt == NULL)
+    {
+        dogrow = false;
+    }
+    else if (growCtxt->IsEnabled() == 0)
+    {
+        dogrow = false;
+    }
+
+    void* mem;
+    if (dogrow)
+    {
+        mem = xMemGrowAllocSize(size);
+    }
+    else
+    {
+        mem = xMemAllocSize(size);
+    }
+    memset(mem, 0, 4);
+    return mem;
+}
+
+void RyzMemData::operator delete(void* p)
+{
+}
+
 //RyzMemGrow* RyzMemGrow::Init(xBase* growuser)
 //{
 //    char* dat;

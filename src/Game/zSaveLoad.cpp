@@ -1,23 +1,25 @@
-//#include "zSaveLoad.h"
-//
-//#include <types.h>
-//#include <string.h>
-//#include <stdio.h>
-//
-//#include "iSystem.h"
-//
-//#include "zUI.h"
-//#include "zGlobals.h"
-//#include "zGameState.h"
-//#include "zHud.h"
-//#include "zCamera.h"
-//#include "zGame.h"
-//#include "xParMgr.h"
-//#include "xCutscene.h"
-//#include "xDebug.h"
-//#include "xString.h"
-//#include "xTRC.h"
-//#include "xutil.h"
+#include "zSaveLoad.h"
+
+#include <types.h>
+#include <string.h>
+#include <stdio.h>
+
+#include "iSystem.h"
+
+#include "zUI.h"
+#include "zGlobals.h"
+#include "zGameState.h"
+#include "zHud.h"
+#include "zCamera.h"
+#include "zGame.h"
+#include "xParMgr.h"
+#include "xCutscene.h"
+#include "xDebug.h"
+#include "xString.h"
+#include "xTRC.h"
+#include "xutil.h"
+
+//zSaveLoadGame zSaveLoadGameTable[3];
 //
 //U32 saveSuccess;
 //F32 time_last;

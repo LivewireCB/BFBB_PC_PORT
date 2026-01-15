@@ -1,10 +1,16 @@
 #ifndef IMATH_H
 #define IMATH_H
 
-#include "types.h"
-#include <cmath>
+#include <types.h>
+#include <intrin.h>
 
-#define iabs(x) std::fabsf((x))
+#ifdef __MWERKS__
+#define iabs(x) (float)(__fabs((float)x))
+#else
+#define iabs(x) fabsf(x)
+#endif
+
+#define __fabs(x) (x)
 
 F32 isin(F32 x);
 F32 icos(F32 x);

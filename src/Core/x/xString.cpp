@@ -1,11 +1,12 @@
 #include "xString.h"
+#include "rwplcore.h"
 #include "xMath.h"
 
 #include <types.h>
 
 U32 xStrHash(const char* str)
 {
-    U32 hash = 0;
+    /*U32 hash = 0;
     U32 i;
 
     while (i = *str, i != NULL)
@@ -14,7 +15,16 @@ U32 xStrHash(const char* str)
         str++;
     }
 
-    return hash;
+    return hash;*/
+
+    U32 i = 0;
+    while (*str) {
+        char c = *str;
+        str++;
+        c -= (c & (c >> 1)) & 0x20;
+        i = c + i * 131;
+    }
+    return i;
 }
 
 U32 xStrHash(const char* str, size_t size)
@@ -47,55 +57,54 @@ U32 xStrHashCat(U32 prefix, const char* str)
     return hash;
 }
 
-char* xStrupr(char* string)
-{
-    char* p = string;
-
-    while (*p != '\0')
-    {
-        *p = (*p >= 'a' && *p <= 'z' ? *p - 32 : *p);
-
-        p++;
-    }
-
-    return string;
-}
-
 char* xStrTok(char* string, const char* control, char** nextoken)
 {
     U8* str;
-    const U8* ctrl = (const U8*)control;
+    U8* ctrl;
     U8 map[32];
-    S32 count = 0;
+    S32 count;
 
-    while (count < 32) {
-        map[count] = 0;
-        count++;
+    for (S32 i = 0; i < 32; i++)
+    {
+        map[i] = 0;
     }
 
-    do {
-        map[*ctrl >> 3] |= (U8)(1 << (*ctrl & 0x7));
-    } while (*ctrl++);
+    ctrl = (U8*)control;
 
-    if (string) str = (U8*)string;
-    else str = (U8*)*nextoken;
+    do
+    {
+        map[*ctrl >> 3] |= 1 << (*ctrl & 0x7);
+    } while (*ctrl++ != '\0');
 
-    while ((map[*str >> 3] & (1 << (*str & 0x7))) && *str) {
+    str = (string) ? (U8*)string : (U8*)*nextoken;
+
+    while (map[(*str >> 3) & 0x1F] & (1 << (*str & 0x7)) && *str != '\0')
+    {
         str++;
     }
+
     string = (char*)str;
 
-    while (*str) {
-        if (map[*str >> 3] & (1 << (*str & 0x7))) {
-            *str = 0;
+    while (*str != '\0')
+    {
+        if (map[(*str >> 3) & 0x1F] & (1 << (*str & 0x7)))
+        {
+            *str = '\0';
             str++;
             break;
         }
+
         str++;
     }
+
     *nextoken = (char*)str;
 
-    return (string == (char*)str) ? NULL : string;
+    if (string == (char*)str)
+    {
+        string = NULL;
+    }
+
+    return string;
 }
 
 char* xStrTokBuffer(const char* string, const char* control, void* buffer)
@@ -139,118 +148,135 @@ char* xStrTokBuffer(const char* string, const char* control, void* buffer)
     return (string == (const char*)str) ? NULL : (char*)(nextoken + 1);
 }
 
-S32 xStricmp(const char* string1, const char* string2)
+char* xStrupr(char* string)
 {
-    S32 result = 0;
+    char* p = string;
 
-    while (xtoupper(*string1) == xtoupper(*string2) && result == 0) {
-        if (!*string1 || !*string2) {
-            result = 1;
-        }
-        else {
-            string1++;
-            string2++;
-        }
+    while (*p != '\0')
+    {
+        *p = (*p >= 'a' && *p <= 'z' ? *p - 32 : *p);
+
+        p++;
     }
 
-    result = 0;
-    if (*string1 != *string2) {
-        result = 1;
-        if (xtoupper(*string1) < xtoupper(*string2)) result = -1;
-    }
-
-    return result;
+    return string;
 }
+
+namespace
+{
+    U32 tolower(char param_1);
+    U32 tolower(S32 param_1);
+} // namespace
 
 S32 xStrParseFloatList(F32* dest, const char* strbuf, S32 max)
 {
-    char* str;
-    if (!(str = (char*)strbuf)) return 0;
-
-    S32 index = 0;
+    char* str = (char*)strbuf;
+    S32 index;
     S32 digits;
-    S32 negate;
-    char tmpc;
+    bool negate;
     char* numstart;
-    while (*str && index < max) {
-        while (*str == '\t' ||
-            *str == ' ' ||
-            *str == '+' ||
-            *str == '[' ||
-            *str == ']' ||
-            *str == '{' ||
-            *str == '}' ||
-            *str == '(' ||
-            *str == ')' ||
-            *str == ',' ||
-            *str == ':' ||
-            *str == ';') {
+    char savech;
+
+    if (!str)
+    {
+        return 0;
+    }
+
+    for (index = 0; *str != '\0' && index < max; index++)
+    {
+        while (*str == '\t' || *str == ' ' || *str == '[' || *str == ']' || *str == '{' ||
+               *str == '}' || *str == '(' || *str == ')' || *str == '+' || *str == ',' ||
+               *str == ':' || *str == ';')
+        {
             str++;
         }
 
-        if (!*str) return index;
-
-        if (*str == '-') {
-            negate = 1;
-            str++;
-            while (*str == '\t' || *str == ' ') str++;
+        if (*str == '\0')
+        {
+            return index;
         }
-        else {
-            negate = 0;
+
+        if (*str == '-')
+        {
+            negate = TRUE;
+            str++;
+
+            while (*str == '\t' || *str == ' ')
+            {
+                str++;
+            }
+        }
+        else
+        {
+            negate = FALSE;
         }
 
         numstart = str;
         digits = 0;
-        while ((*str >= '0' && *str <= '9') ||
-            *str == '.' ||
-            *str == 'e' ||
-            *str == 'E' ||
-            *str == 'f') {
-            if (*str >= '0' && *str <= '9') digits++;
+
+        while ((*str >= '0' && *str <= '9') || *str == '.' || *str == 'E' || *str == 'e' ||
+               *str == 'f')
+        {
+            if (*str >= '0' && *str <= '9')
+            {
+                digits++;
+            }
+
             str++;
         }
-        if (digits == 0) return index;
 
-        tmpc = *str;
-        *str = '\0';
-
-        dest[index] = xatof(numstart);
-        if (negate) {
-            dest[index] = -dest[index];
+        if (digits == 0)
+        {
+            return index;
         }
 
-        *str = tmpc;
-        index++;
+        savech = *str;
+
+        *str = '\0';
+        *dest = xatof(numstart);
+
+        if (negate)
+        {
+            *dest = -*dest;
+        }
+
+        *str = savech;
+        dest++;
     }
 
     return index;
 }
 
-namespace {
-    inline S32 tolower(S32 c)
-    {
-        return c | ((c >> 1) & 0x20);
-    }
-
-    inline S32 tolower(char c)
-    {
-        return tolower((S32)c);
-    }
-}
-
-S32 imemcmp(const void* d1, const void* d2, size_t size) NONMATCH("https://decomp.me/scratch/E56sp")
+S32 imemcmp(void const* d1, void const* d2, size_t size)
 {
-    const char* s1 = (const char*)d1;
-    const char* s2 = (const char*)d2;
-    for (size_t i = 0; i < size; i++) {
-        S32 c1 = tolower(*s1);
-        S32 c2 = tolower(*s2);
-        if (c1 != c2) return c1 - c2;
-        s2++;
-        s1++;
+    const char* s1 = (char*)d1;
+    const char* s2 = (char*)d2;
+
+    for (size_t i = 0; i < size; i++)
+    {
+        S32 cval1 = tolower(s1[i]);
+        S32 cval2 = tolower(s2[i]);
+        if (cval1 != cval2)
+        {
+            return cval1 - cval2;
+        }
     }
+
     return 0;
 }
+
+namespace
+{
+    U32 tolower(char param_1)
+    {
+        return tolower((S32)param_1);
+    }
+
+    U32 tolower(S32 param_1)
+    {
+        return param_1 | ((param_1 >> 1) & 32);
+    }
+} // End anonymous namespace
 
 S32 icompare(const substr& s1, const substr& s2)
 {
@@ -258,7 +284,7 @@ S32 icompare(const substr& s1, const substr& s2)
     S32 result = imemcmp(s1.text, s2.text, len);
     switch (result)
     {
-        case 0:
+    case 0:
         if (s1.size == s2.size)
         {
             result = 0;
@@ -449,4 +475,27 @@ const char* find_char(const substr& s, const substr& cs) NONMATCH("https://decom
     }
 
     return NULL;
+}
+
+S32 xStricmp(const char* string1, const char* string2)
+{
+    S32 result = 0;
+
+    while (xtoupper(*string1) == xtoupper(*string2) && result == 0) {
+        if (!*string1 || !*string2) {
+            result = 1;
+        }
+        else {
+            string1++;
+            string2++;
+        }
+    }
+
+    result = 0;
+    if (*string1 != *string2) {
+        result = 1;
+        if (xtoupper(*string1) < xtoupper(*string2)) result = -1;
+    }
+
+    return result;
 }

@@ -13,5 +13,9 @@ bool zMenuCardCheckStartup(S32* bytesNeeded, S32* availOnDisk, S32* neededFiles)
 S32 zMenuGetBadCard();
 U32 zMenuGetCorruptFiles(char name[][64]);
 S32 zMenuIsFirstBoot();
+void zMenuInit(U32 theSceneID);
+void zMenuSetup();
+U32 zMenuLoop();
+void zMenuExit();
 
 #endif

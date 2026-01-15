@@ -55,9 +55,9 @@ void zEntSetup(zEnt* ent);
 void zEntInit(zEnt* ent, xEntAsset* asset, U32 type);
 
 // TODO: Misplaced Inlines/Weak functions
-void xModelAnimCollStop(xModelInstance& m);
-xMat4x3* xEntGetFrame(const xEnt* ent);
-void xSndPlay3D(U32 id, F32 vol, F32 pitch, U32 priority, U32 flags, const xVec3* pos,
+ void xModelAnimCollStop(xModelInstance& m);
+ xMat4x3* xEntGetFrame(const xEnt* ent);
+ void xSndPlay3D(U32 id, F32 vol, F32 pitch, U32 priority, U32 flags, const xVec3* pos,
                      F32 radius, sound_category category, F32 delay);
 
 #endif

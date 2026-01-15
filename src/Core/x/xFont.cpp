@@ -1,4 +1,4 @@
-#include "xFont.h"
+﻿#include "xFont.h"
 
 #include "xMath.h"
 #include "xstransvc.h"
@@ -7,15 +7,12 @@
 #include "xTimer.h"
 #include "xTextAsset.h"
 #include "xModelBucket.h"
-#include "xString.h"
 
 #include "iTime.h"
 #include "zScene.h"
 
 #include <string.h>
 #include <stdio.h>
-#include <xVec3.h>
-//#include <PowerPC_EABI_Support\MSL_C\MSL_Common\strtoul.h>
 
 /* xtextbox flags */
 
@@ -37,11 +34,6 @@
 #define YJUSTIFY_CENTER 0x8
 #define YJUSTIFY_MASK (YJUSTIFY_TOP | YJUSTIFY_BOTTOM | YJUSTIFY_CENTER)
 
-extern substr _1615;
-extern substr _1616;
-extern xtextbox::tag_entry_list _1642;
-
-static const basic_rect<F32> screen_bounds = { 0, 0, 1, 1 };
 
 namespace
 {
@@ -94,60 +86,125 @@ namespace
     {
         "font_sb",
         "font1_sb",
-#if 1 // needed until .sdata2 is decomped
-        "font_numbers\0 \t\n{}=*+:;,"
-#else
         "font_numbers"
+    };
+
+#ifdef _WIN32
+#pragma warning( push )
+#pragma warning( disable : 4838 ) // conversion from 'char' to 'U8' requires a narrowing conversion
 #endif
+
+    font_asset default_font_assets[4] = {
+        {
+            1,
+            0, 0, 18, 22,
+            14, 0,
+            0, 0,
+            0x1,
+            {
+                '~', '{', '}', '#',
+                'A', 'B', 'C', 'D',
+                'E', 'F', 'G', 'H',
+                'I', 'J', 'K', 'L',
+                'M', 'N', 'O', 'P',
+                'Q', 'R', 'S', 'T',
+                'U', 'V', 'W', 'X',
+                'Y', 'Z', '0', '1',
+                '2', '3', '4', '5',
+                '6', '7', '8', '9',
+                '?', '!', '.', ',',
+                '-', ':', '_', '"',
+                '\'','&', '(', ')',
+                '<', '>', '/', '%',
+                '�', '�', '�', '�',
+                '�', '�', '�', '�',
+                '�', '�', '�', '�',
+                '�', '�', '+'
+            },
+            {}
+        },
+        {
+            0,
+            0, 0, 18, 22,
+            14, 0,
+            1, 0,
+            0,
+            {
+                'A', 'B', 'C', 'D',
+                'E', 'F', 'G', 'H',
+                'I', 'J', 'K', 'L',
+                'M', 'N', 'O', 'P',
+                'Q', 'R', 'S', 'T',
+                'U', 'V', 'W', 'X',
+                'Y', 'Z', 'a', 'b',
+                'c', 'd', 'e', 'f',
+                'g', 'h', 'i', 'j',
+                'k', 'l', 'm', 'n',
+                'o', 'p', 'q', 'r',
+                's', 't', 'u', 'v',
+                'w', 'x', 'y', 'z',
+                '0', '1', '2', '3',
+                '4', '5', '6', '7',
+                '8', '9', '?', '!',
+                '.', ',', ';', ':',
+                '+', '-', '=', '/',
+                '&', '(', ')', '%',
+                '"', '\'','_', '<',
+                '>', '*', '[', ']',
+                '�', '�', '�', '�',
+                '�', '�', '�', '�',
+                '�', '�', '�', '�',
+                '�', '�', '�', '�',
+                '�', '�', '�', '�',
+                '�', '�', '�', '�',
+                '�', '�', '�', '~',
+                '�', '�', '�', '@',
+                '|'
+            },
+            {}
+        },
+        {
+            1,
+            148, 232, 6, 8,
+            18, 0,
+            0, 0,
+            0x9,
+            {
+                '0', '1', '2', '3',
+                '4', '5', '6', '7',
+                '8', '9', 'A', 'B',
+                'C', 'D', 'E', 'F',
+                'G', 'H', 'I', 'J',
+                'K', 'L', 'M', 'N',
+                'O', 'P', 'Q', 'R',
+                'S', 'T', 'U', 'V',
+                'W', 'X', 'Y', 'Z',
+                ',', '.', '/', '*',
+                '+', '-', '=', ':',
+                ';', '%', '<', '>',
+                '[', ']', '|', '(',
+                ')', '_'
+            },
+            {}
+        },
+        {
+            2,
+            0, 0, 32, 32,
+            4, 0,
+            0, 0,
+            0,
+            {
+                '1', '2', '3', '4',
+                '5', '6', '7', '8',
+                '9', '0', '/'
+            },
+            {}
+        }
     };
 
-    font_asset default_font_assets[4] =
-    {
-        // font1_sb (SpongeBob font)
-        1, 0, 0, 18, 22, 14, 0, 0, 0, 0x1,
-        {
-            '~', '{', '}', '#', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
-            'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
-            'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '?', '!',
-            '.', ',', '-', ':', '_', '"', '\'', '&', '(', ')', '<', '>', '/', '%',
-            '\xFC', '\xFB', '\xF9', '\xE2', '\xE4', '\xE0', '\xEA', '\xE8', '\xE9',
-            '\xEE', '\xF6', '\xF4', '\xE7', '\xDF', '\x2B'
-        },
-        {},
-
-        // font_sb (Arial font)
-        0, 0, 0, 18, 22, 14, 0, 1, 0, 0,
-        {
-            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
-            'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b',
-            'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
-            'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3',
-            '4', '5', '6', '7', '8', '9', '?', '!', '.', ',', ';', ':', '+', '-',
-            '=', '/', '&', '(', ')', '%', '"', '\'', '_', '<', '>', '*', '[', ']',
-            '\xDC', '\xDB', '\xD9', '\xC2', '\xC4', '\xC0', '\xCA', '\xC8', '\xC9',
-            '\xCE', '\xD6', '\xD4', '\xC7', '\xDF', '\xFC', '\xFB', '\xF9', '\xE2',
-            '\xE4', '\xE0', '\xEA', '\xE8', '\xE9', '\xEE', '\xF6', '\xF4', '\xE7',
-            '~', '\xA9', '\xAE', '\x99', '@', '\x7C'
-        },
-        {},
-
-        // font1_sb (System font)
-        1, 148, 232, 6, 8, 18, 0, 0, 0, 0x9,
-        {
-            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D',
-            'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
-            'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ',', '.', '/', '*', '+', '-',
-            '=', ':', ';', '%', '<', '>', '[', ']', '|', '(', ')', '_'
-        },
-        {},
-
-        // font_numbers (SpongeBob numbers font)
-        2, 0, 0, 32, 32, 4, 0, 0, 0, 0,
-        {
-            '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '/'
-        },
-        {}
-    };
+#ifdef _WIN32
+#pragma warning( pop )
+#endif
     // clang-format on
 
     font_data active_fonts[4];
@@ -215,65 +272,51 @@ namespace
     bool reset_font_spacing(font_asset& a)
     {
         RwTexture* tex = (RwTexture*)xSTFindAsset(a.tex_id, NULL);
-
-        if (!tex)
-        {
-            return false;
-        }
+        if (!tex) return false;
 
         basic_rect<S32> char_bounds;
         char_bounds.w = a.du;
         char_bounds.h = a.dv;
 
         U8 baseline_count[256];
-        memset(baseline_count, 0, 256);
+        memset(baseline_count, 0, sizeof(baseline_count));
 
         a.baseline = 0;
 
         S32 width = RwRasterGetWidth(RwTextureGetRaster(tex));
-        RwImage* image = RwImageCreate(width, RwRasterGetHeight(RwTextureGetRaster(tex)), 32);
-
-        if (!image)
-        {
-            return false;
-        }
+        S32 height = RwRasterGetHeight(RwTextureGetRaster(tex));
+        RwImage* image = RwImageCreate(width, height, 32);
+        if (!image) return false;
 
         RwImageAllocatePixels(image);
         RwImageSetFromRaster(image, RwTextureGetRaster(tex));
 
-        iColor_tag* bits = (iColor_tag*)RwImageGetPixels(image);
-
-        for (S32 i = 0; a.char_set[i] != '\0'; i++)
-        {
-            if (a.flags & 0x4)
-            {
-                char_bounds.x = a.u + char_bounds.w * (i / a.line_size);
-                char_bounds.y = a.v + char_bounds.h * (i % a.line_size);
+        const iColor_tag* bits = (const iColor_tag*)RwImageGetPixels(image);
+        for (S32 i = 0; a.char_set[i] != '\0'; i++) {
+            if (a.flags & 0x4) {
+                char_bounds.x = a.u + i / a.line_size * char_bounds.w;
+                char_bounds.y = a.v + i % a.line_size * char_bounds.h;
             }
-            else
-            {
-                char_bounds.x = a.u + char_bounds.w * (i % a.line_size);
-                char_bounds.y = a.v + char_bounds.h * (i / a.line_size);
+            else {
+                char_bounds.x = a.u + i % a.line_size * char_bounds.w;
+                char_bounds.y = a.v + i / a.line_size * char_bounds.h;
             }
 
-            basic_rect<S32> r =
-                find_bounds(bits + width * char_bounds.y + char_bounds.x, char_bounds, width);
+            const iColor_tag* p = bits + width * char_bounds.y + char_bounds.x;
+            basic_rect<S32> r = find_bounds(p, char_bounds, width);
 
-            if (a.flags & 0x8)
-            {
+            if (a.flags & 0x8) {
                 a.char_pos[i].offset = 0;
                 a.char_pos[i].size = char_bounds.w;
             }
-            else
-            {
+            else {
                 a.char_pos[i].offset = r.x - char_bounds.x;
                 a.char_pos[i].size = r.w;
             }
 
             S32 baseline = r.y - char_bounds.y + r.h + 1;
 
-            if (++baseline_count[baseline] > baseline_count[a.baseline])
-            {
+            if (++baseline_count[baseline] > baseline_count[a.baseline]) {
                 a.baseline = baseline;
             }
         }
@@ -282,6 +325,39 @@ namespace
         return true;
     }
 
+    // FIXME: Float conversions seem to need work
+    //basic_rect<F32> get_tex_bounds(const font_data& fd, U8 c) WIP
+    //    // fix __typeof__ not working
+    //{
+    //    typedef __typeof__(((struct font_asset){0}).char_pos[0]) char_pos_t;
+
+    //    F32 boundX;
+    //    F32 boundY;
+    //    F32 boundW;
+    //    F32 boundH;
+    //    char_pos_t* temp_r8;
+
+    //    if (fd.asset->flags & 0x4)
+    //    {
+    //        boundX = (F32)(c / fd.asset->line_size);
+    //        boundY = (F32)(c % fd.asset->line_size);
+    //    }
+    //    else
+    //    {
+    //        boundY = (F32)(c / fd.asset->line_size);
+    //        boundX = (F32)(c % fd.asset->line_size);
+    //    }
+
+    //    temp_r8 = &fd.asset->char_pos[c];
+    //    boundX = (F32)(temp_r8->offset + (fd.asset->du * boundX + (F32)fd.asset->u));
+    //    boundW = (F32)temp_r8->size - 0.5f;
+    //    boundY = ((F32)fd.asset->dv * boundY) + (F32)fd.asset->v;
+    //    boundH = (F32)fd.asset->dv - 0.5f;
+
+    //    basic_rect<F32> result = { boundX, boundY, boundW, boundH };
+    //    result.scale((F32)fd.asset->dv, (F32)fd.asset->v);
+    //    return result;
+    //}
 
     basic_rect<F32> get_tex_bounds(const font_data& fd, U8 i) NONMATCH("https://decomp.me/scratch/j5ds6")
     {
@@ -306,11 +382,6 @@ namespace
         return r;
     };
 
-    
-
-#if 0
-    basic_rect<F32> get_bounds(const font_data& fd, U8 c);
-#else
     basic_rect<F32> get_bounds(const font_data& fd, U8 i)
     {
         const font_asset& a = *fd.asset;
@@ -323,13 +394,7 @@ namespace
 
         return r;
     }
-#endif
 
-
-
-#if 0
-    bool init_font_data(font_data& fd);
-#else
     bool init_font_data(font_data& fd) NONMATCH("https://decomp.me/scratch/8uMna")
     {
         const font_asset& a = *fd.asset;
@@ -386,15 +451,14 @@ namespace
 
         return true;
     }
-#endif
 
-    void start_tex_render(U32 font_id)
+    void start_tex_render(U32 font)
     {
-        font_data& fd = active_fonts[font_id];
-
-        rcz = 1.0f / RwCameraGetNearClipPlane(RwCameraGetCurrentCamera());
+        RwCamera* cam = RwCameraGetCurrentCamera();
+        rcz = 1.0f / RwCameraGetNearClipPlane(cam);
         nsz = RwIm2DGetNearScreenZ();
 
+        const font_data& fd = active_fonts[font];
         xfont::set_render_state(fd.raster);
     }
 
@@ -496,10 +560,6 @@ namespace
         }
     }
 
-
-    static U32 next_order_967;
-    static signed char init_968;
-
     xModelInstance* load_model(U32 id)
     {
         static U32 next_order = 0;
@@ -548,7 +608,6 @@ namespace
 
         return &model;
     }
-
 } // namespace
 
 void xfont::init()
@@ -759,36 +818,25 @@ void xfont::irender(const char* text, F32 x, F32 y) const
 
 static const basic_rect<F32> _1107 = {};
 
-void xfont::irender(const char* text, size_t text_size, F32 x, F32 y) const
+void xfont::irender(const char* text, size_t text_size, F32 x, F32 y) const NONMATCH("https://decomp.me/scratch/RLMbg")
 {
-    if (!text)
-    {
-        return;
-    }
+    if (!text) return;
 
-    font_data& fd = active_fonts[id];
-
+    const font_data& fd = active_fonts[id];
     set_tex_raster(fd.raster);
 
-    basic_rect<F32> bounds = { x, y, width, height };
-    U32 i = 0;
+    basic_rect<F32> bounds = {};
+    bounds.x = x, bounds.y = y, bounds.w = width, bounds.h = height;
 
-    // non-matching: color not stored in r28
-
-    while (i < text_size && text[i] != '\0')
-    {
-        char c = text[i];
-
+    const char* s = text;
+    for (size_t i = 0; i < text_size && *s != '\0'; i++, s++) {
+        U32 c = *s;
         char_render(c, id, bounds, clip, color);
 
         U32 charIndex = fd.char_index[c];
-
-        if (charIndex != 255)
-        {
+        if (charIndex != 255) {
             bounds.x += fd.bounds[charIndex].w * width + space;
         }
-
-        i++;
     }
 }
 
@@ -940,18 +988,17 @@ namespace
         return a.s.text + a.s.size;
     }
 
-    const char* parse_next_jot(xtextbox::jot& a, const xtextbox& tb, const xtextbox& ctb,
-                               const char* text, size_t text_size)
+    const char* parse_next_jot(xtextbox::jot& a, const xtextbox& tb, const xtextbox& ctb, const char* text, size_t text_size)
     {
-        const char* ret;
+        char c = text[0];
+        const char* next;
 
-        if (text[0] != '{' || !(ret = parse_next_tag_jot(a, tb, ctb, text, text_size)))
-        {
-            ret = parse_next_text_jot(a, tb, ctb, text, text_size);
+        if (c != '{' || !(next = parse_next_tag_jot(a, tb, ctb, text, text_size))) {
+            next = parse_next_text_jot(a, tb, ctb, text, text_size);
         }
 
-        a.flag.merge = a.flag.merge && !(tb.flags & FLAG_UNK80);
-        return ret;
+        a.flag.merge = a.flag.merge && !(tb.flags & 0x80);
+        return next;
     }
 
     struct tex_args
@@ -1002,37 +1049,28 @@ namespace
     void load_tex_args(tex_args& ta, const substr& s)
     {
         xtextbox::tag_entry_list el = xtextbox::read_tag(s);
-        xtextbox::tag_entry* e;
+        if (el.size == 0) return;
 
-        if (el.size == 0)
-        {
-            return;
-        }
-
-        e = &el.entries[0];
-
-        if (e->op == ':' || (e->args_size == 1 && e->args[0].size))
-        {
-            substr& name = e->args[0];
+        const xtextbox::tag_entry* e = &el.entries[0];
+        if (e->op == ':' || (e->args_size == 1 && e->args[0].size != 0)) {
+            const substr& name = e->args[0];
             U32 id;
-
-            if (name.size == 10 && imemcmp(name.text, "0x", 2) == 0)
-            {
+            if (name.size == 10 && imemcmp(name.text, "0x", 2) == 0) {
                 id = atox(substr::create(name.text + 2, 8));
             }
-            else
-            {
+            else {
                 id = xStrHash(name.text, name.size);
             }
 
             RwTexture* texture = (RwTexture*)xSTFindAsset(id, NULL);
-
-            if (texture && texture->raster && texture->raster->width > 0 &&
-                texture->raster->height > 0 && texture->raster->width <= 4096 &&
-                texture->raster->height <= 4096)
-            {
+            if (texture &&
+                texture->raster &&
+                texture->raster->width > 0 &&
+                texture->raster->height > 0 &&
+                texture->raster->width <= 4096 &&
+                texture->raster->height <= 4096) {
                 RwTextureSetFilterMode(texture, rwFILTERLINEAR);
-                ta.raster = texture->raster;
+                ta.raster = RwTextureGetRaster(texture);
             }
         }
 
@@ -1040,72 +1078,49 @@ namespace
         el.size--;
 
         e = xtextbox::find_entry(el, substr::create("rot", 3));
-
-        if (e && e->op == '=' && e->args_size == 1)
-        {
+        if (e && e->op == '=' && e->args_size == 1) {
             xtextbox::read_list(*e, &ta.rot, 1);
         }
 
         e = xtextbox::find_entry(el, substr::create("src", 3));
-
-        if (e && e->op == '=' && e->args_size == 4)
-        {
-            xtextbox::read_list(*e, (F32*)&ta.src, 4);
+        if (e && e->op == '=' && e->args_size == 4) {
+            xtextbox::read_list(*e, &ta.src.x, 4);
         }
 
         e = xtextbox::find_entry(el, substr::create("dst", 3));
-
-        if (e && e->op == '=' && e->args_size == 4)
-        {
-            xtextbox::read_list(*e, (F32*)&ta.dst, 4);
+        if (e && e->op == '=' && e->args_size == 4) {
+            xtextbox::read_list(*e, &ta.dst.x, 4);
         }
 
         e = xtextbox::find_entry(el, substr::create("off", 3));
-
-        if (e && e->op == '=' && e->args_size == 2)
-        {
-            xtextbox::read_list(*e, (F32*)&ta.off, 2);
+        if (e && e->op == '=' && e->args_size == 2) {
+            xtextbox::read_list(*e, &ta.off.x, 2);
         }
 
         e = xtextbox::find_entry(el, substr::create("scale", 5));
-
-        if (e && e->op == '=' && e->args_size == 1)
-        {
-            if (icompare(e->args[0], substr::create("font", 4)) == 0)
-            {
+        if (e && e->op == '=' && e->args_size == 1) {
+            if (icompare(e->args[0], substr::create("font", 4)) == 0) {
                 ta.scale = tex_args::SCALE_FONT;
             }
-            else if (icompare(e->args[0], substr::create("screen", 6)) == 0)
-            {
+            else if (icompare(e->args[0], substr::create("screen", 6)) == 0) {
                 ta.scale = tex_args::SCALE_SCREEN;
             }
-            else if (icompare(e->args[0], substr::create("size", 4)) == 0)
-            {
+            else if (icompare(e->args[0], substr::create("size", 4)) == 0) {
                 ta.scale = tex_args::SCALE_SIZE;
             }
-            else if (icompare(e->args[0], substr::create("font_width", 10)) == 0)
-            {
+            else if (icompare(e->args[0], substr::create("font_width", 10)) == 0) {
                 ta.scale = tex_args::SCALE_FONT_WIDTH;
             }
-            else if (icompare(e->args[0], substr::create("font_height", 11)) == 0)
-            {
+            else if (icompare(e->args[0], substr::create("font_height", 11)) == 0) {
                 ta.scale = tex_args::SCALE_FONT_HEIGHT;
             }
-            else if (icompare(e->args[0], substr::create("screen_width", 12)) == 0)
-            {
+            else if (icompare(e->args[0], substr::create("screen_width", 12)) == 0) {
                 ta.scale = tex_args::SCALE_SCREEN_WIDTH;
             }
-#if 1 // needed until .sdata2 is decomped
-            else if (icompare(e->args[0], substr::create("screen_height\0=:+*;}\0,;}", 13)) ==
-#else
-            else if (icompare(e->args[0], substr::create("screen_height", 13)) ==
-#endif
-                     0) // screen_height
-            {
+            else if (icompare(e->args[0], substr::create("screen_height", 13)) == 0) {
                 ta.scale = tex_args::SCALE_SCREEN_HEIGHT;
             }
-            else
-            {
+            else {
                 ta.scale = tex_args::SCALE_FONT;
             }
         }
@@ -1123,58 +1138,41 @@ namespace
     void load_model_args(model_args& ma, const substr& s)
     {
         xtextbox::tag_entry_list el = xtextbox::read_tag(s);
-        xtextbox::tag_entry* e;
+        if (el.size == 0) return;
 
-        if (!el.size)
-        {
-            return;
-        }
-
-        e = &el.entries[0];
-
-        if (e->op == ':' || (e->args_size == 1 && e->args[0].size))
-        {
-            substr& name = e->args[0];
-
-            ma.model = load_model(xStrHash(name.text, name.size));
+        const xtextbox::tag_entry* e = &el.entries[0];
+        if (e->op == ':' || (e->args_size == 1 && e->args[0].size != 0)) {
+            const substr& name = e->args[0];
+            U32 id = xStrHash(name.text, name.size);
+            ma.model = load_model(id);
         }
 
         el.entries++;
         el.size--;
 
         e = xtextbox::find_entry(el, substr::create("rot", 3));
-
-        if (e && e->op == '=' && e->args_size == 3)
-        {
-            xtextbox::read_list(*e, (F32*)&ma.rot, 3);
+        if (e && e->op == '=' && e->args_size == 3) {
+            xtextbox::read_list(*e, &ma.rot.x, 3);
         }
 
         e = xtextbox::find_entry(el, substr::create("dst", 3));
-
-        if (e && e->op == '=' && e->args_size == 4)
-        {
-            xtextbox::read_list(*e, (F32*)&ma.dst, 4);
+        if (e && e->op == '=' && e->args_size == 4) {
+            xtextbox::read_list(*e, &ma.dst.x, 4);
         }
 
         e = xtextbox::find_entry(el, substr::create("off", 3));
-
-        if (e && e->op == '=' && e->args_size == 2)
-        {
-            xtextbox::read_list(*e, (F32*)&ma.off, 2);
+        if (e && e->op == '=' && e->args_size == 2) {
+            xtextbox::read_list(*e, &ma.off.x, 2);
         }
 
         e = xtextbox::find_entry(el, substr::create("scale", 5));
-
-        if (e && e->op == '=' && e->args_size == 1)
-        {
-            if (icompare(e->args[0], substr::create("screen", 6)) == 0)
-            {
+        if (e && e->op == '=' && e->args_size == 1) {
+            if (icompare(e->args[0], substr::create("screen", 6)) == 0) {
                 ma.scale = model_args::SCALE_SCREEN;
             }
-            else
-            {
+            else {
                 ma.scale = model_args::SCALE_FONT;
-            }
+            } // model_args::SCALE_SIZE unused?
         }
     }
 
@@ -1277,26 +1275,73 @@ namespace
         xtextbox::layout tl;
     };
 
-//#ifdef GAMECUBE
-//#define TL_CACHE_COUNT 1
-//#else
-//#ifdef PS2
-//#define TL_CACHE_COUNT 3
-//#endif
-//#endif
-    #define TL_CACHE_COUNT 1
+#ifdef GAMECUBE
+#define TL_CACHE_COUNT 1
+#else
+#ifdef PS2
+#define TL_CACHE_COUNT 3
+#else
+#define TL_CACHE_COUNT 3 // just made this value up for windows cus idk what it does yet. Considering this is based off GC it should probably be 1
+#endif
+#endif
 
     tl_cache_entry tl_cache[TL_CACHE_COUNT];
 } // namespace
 
-#if 1
+const size_t MAX_CACHE = 1;
 
-#else
-xtextbox::layout& xtextbox::temp_layout(bool cache) const
+
+xtextbox::layout& xtextbox::temp_layout(bool cache) const NONMATCH("https://decomp.me/scratch/Ok3UW")
 {
-    // todo: uses int-to-float conversion
+    iTime r29 = iTimeFromSec(1.0f);
+    iTime cur_time = iTimeGet();
+    bool refresh = false;
+    size_t index = 0;
+
+    if (cache) {
+        if (tl_cache[0].tl.changed(*this)) {
+            index = 1;
+        }
+    }
+    else {
+        index = 1;
+    }
+
+    tweaker::log_cache(index > 1);
+
+    if (index >= 1) {
+        refresh = true;
+        index = 0;
+
+        for (size_t i = 0; i < MAX_CACHE; i++) {
+            if (r29 < cur_time - tl_cache[i].last_used) {
+                index = i;
+            }
+            else {
+                S32 used = tl_cache[i].used;
+                if (tl_cache[i].tl.dynamics_size != 0) used -= 10;
+                if (tl_cache[i].tl.jots_size() > 50) used += 10;
+                if (used < 1000000000) index = i;
+            }
+        }
+    }
+
+    tl_cache_entry& e = tl_cache[index];
+    if (refresh) {
+        e.used = 0;
+        e.tl.refresh(*this, true);
+    }
+    else {
+        e.tl.tb = *this;
+    }
+
+    if (cache) {
+        e.used++;
+        e.last_used = cur_time;
+    }
+
+    return e.tl;
 }
-#endif
 
 void xtextbox::render(layout& l, S32 begin_jot, S32 end_jot) const
 {
@@ -1326,165 +1371,113 @@ xtextbox::callback xtextbox::text_cb = { xtextbox::text_render, NULL, NULL };
         }                                                                                          \
     }
 
-//#ifndef NON_MATCHING
-static substr arg_buffer_1611[32];
-static xtextbox::tag_entry entry_buffer_1612[16];
+const xtextbox::tag_entry_list _1642 = {};
 
-//#else
 xtextbox::tag_entry_list xtextbox::read_tag(const substr& s)
 {
-    static substr arg_buffer[32];
-    static xtextbox::tag_entry entry_buffer[16];
-
-    U32 entries_used = 0;
-    U32 args_used = 0;
-
+    size_t args_used = 0;
+    size_t entries_used = 0;
     substr it = s;
-
-    skip_char(it, '{');
+    const char* d = find_char(it, '{');
+    if (d) {
+        it.size -= d + 1 - it.text;
+        it.text = d + 1;
+    }
 
     substr delims = { "=:+*;}", 6 };
     substr sub_delims = { ",;}", 3 };
 
-    while (it.size)
-    {
-        tag_entry& entry = entry_buffer[entries_used];
+    static substr arg_buffer[32];
+    static tag_entry entry_buffer[16];
 
+    while (it.size) {
+        tag_entry& entry = entry_buffer[entries_used];
         entry.args_size = 0;
         entry.op = 0;
         entry.name.text = it.text;
 
         const char* d = find_char(it, delims);
-
-        entry.name.size = (d) ? it.size : d - it.text;
+        entry.name.size = !d ? it.size : d - it.text;
 
         trim_ws(entry.name);
+        if (entry.name.size) entries_used++;
 
-        if (entry.name.size)
-        {
-            entries_used++;
-        }
+        if (!d || *d == '}') break;
 
-        if (!d || *d == '}')
-        {
-            break;
-        }
+        it.size -= d + 1 - it.text;
+        it.text = d + 1;
 
-        skip_char_ptr(it, d);
-
-        if (*d != ';')
-        {
-            substr& arg = arg_buffer[args_used];
-
+        if (*d != ';') {
             entry.op = *d;
-            entry.args = &arg;
+            entry.args = arg_buffer + args_used;
 
-            while (it.size)
-            {
+            while (it.size) {
+                substr& arg = arg_buffer[args_used];
                 arg.text = it.text;
 
                 const char* d = find_char(it, sub_delims);
-
-                if (!d)
-                {
+                if (!d) {
                     arg.size = it.size;
                     it.size = 0;
                 }
-                else
-                {
+                else {
                     arg.size = d - it.text;
                     it.size -= arg.size + 1;
                     it.text += arg.size + 1;
                 }
 
                 trim_ws(arg);
-
-                if (arg.size)
-                {
-                    // non-matching: missing addi instruction
+                if (arg.size) {
                     args_used++;
                     entry.args_size++;
                 }
 
-                if (!d || *d == '}')
-                {
+                if (!d || *d == '}') {
                     it.size = 0;
                     break;
                 }
-                else if (*d == ';')
-                {
-                    break;
-                }
+
+                if (*d == ';') break;
             }
         }
     }
 
-    tag_entry_list ret = { entry_buffer, entries_used };
-    ret.size = entries_used;
-
+    xtextbox::tag_entry_list ret = { entry_buffer, entries_used };
     return ret;
 }
-//#endif
 
-xtextbox::tag_entry* xtextbox::find_entry(const tag_entry_list& el, const substr& name)
+const xtextbox::tag_entry* xtextbox::find_entry(const tag_entry_list& el, const substr& name) NONMATCH("https://decomp.me/scratch/VCWdJ")
 {
-    // non-matching: el.size and el.entries are not cached at the beginning
-
-    for (size_t i = 0; i < el.size; i++)
-    {
-        tag_entry& e = el.entries[i];
-
-        if (icompare(name, e.name) == 0)
-        {
+    for (size_t i = 0; i < el.size; i++) {
+        const tag_entry& e = el.entries[i];
+        if (icompare(name, e.name) == 0) {
             return &e;
         }
     }
-
     return NULL;
 }
 
-size_t xtextbox::read_list(const tag_entry& e, F32* v, size_t vsize)
+size_t xtextbox::read_list(const tag_entry& e, F32* v, size_t vsize) NONMATCH("https://decomp.me/scratch/skY56")
 {
-    size_t total = e.args_size;
-
-    if (vsize < total)
-    {
-        total = vsize;
-    }
-
-    // non-matching: e.args is not stored in r31
-
-    for (size_t i = 0; i < total; i++)
-    {
+    size_t total = MIN(vsize, e.args_size);
+    for (size_t i = 0; i < total; i++) {
         v[i] = xatof(e.args[i].text);
     }
-
     return total;
 }
 
-size_t xtextbox::read_list(const tag_entry& e, S32* v, size_t vsize)
+size_t xtextbox::read_list(const tag_entry& e, S32* v, size_t vsize) NONMATCH("https://decomp.me/scratch/SC5cl")
 {
-    size_t total = e.args_size;
-
-    if (vsize < total)
-    {
-        total = vsize;
-    }
-
-    // non-matching: e.args is not stored in r31
-
-    for (size_t i = 0; i < total; i++)
-    {
+    size_t total = MIN(vsize, e.args_size);
+    for (size_t i = 0; i < total; i++) {
         v[i] = atoi(e.args[i].text);
     }
-
     return total;
 }
 
 void xtextbox::clear_layout_cache()
 {
-    for (U32 index = 0; index < TL_CACHE_COUNT; index++)
-    {
+    for (size_t index = 0; index < MAX_CACHE; index++) {
         tl_cache[index].tl.clear();
     }
 }
@@ -1500,110 +1493,84 @@ void xtextbox::layout::refresh(const xtextbox& tb, bool force)
 
 void xtextbox::layout::refresh_end(const xtextbox& tb)
 {
-    size_t texts_size = this->tb.texts_size;
-
-    if (texts_size > tb.texts_size)
-    {
+    if (this->tb.texts_size > tb.texts_size) {
+        size_t start_text = this->tb.texts_size;
         this->tb = tb;
-        calc(tb, texts_size);
+        calc(tb, start_text);
     }
 }
 
 void xtextbox::layout::clear()
 {
-    dynamics_size = 0;
-    context_buffer_size = 0;
-    _lines_size = 0;
-    _jots_size = 0;
+    _jots_size = _lines_size = context_buffer_size = dynamics_size = 0;
     tb = xtextbox::create();
 }
 
 void xtextbox::layout::trim_line(jot_line& line)
 {
-    // non-matching: mtctr and bdnz not generated
-
-    for (S32 i = line.last - 1; i >= line.first; i--)
-    {
+    for (S32 i = line.last - 1; i >= (S32)line.first; i--) {
         jot& a = _jots[i];
-
-        if (!a.flag.ethereal)
-        {
-            if (a.flag.invisible)
-            {
+        if (!a.flag.ethereal) {
+            if (a.flag.invisible) {
                 erase_jots(i, i + 1);
                 line.last--;
             }
-
             break;
         }
     }
 
-    for (S32 i = line.first; i < line.last; i++)
-    {
+    for (size_t i = line.first; i < line.last; i++) {
         jot& a = _jots[i];
-
-        if (!a.flag.ethereal)
-        {
-            if (a.flag.invisible)
-            {
+        if (!a.flag.ethereal) {
+            if (a.flag.invisible) {
                 erase_jots(i, i + 1);
             }
-
             break;
         }
     }
 }
 
-void xtextbox::layout::erase_jots(size_t begin_jot, size_t end_jot)
+void xtextbox::layout::erase_jots(size_t first, size_t last)
 {
-    if (end_jot >= _jots_size)
-    {
-        _jots_size = begin_jot;
+    if (last >= _jots_size) {
+        _jots_size = first;
         return;
     }
 
-    size_t erase_size = end_jot - begin_jot;
+    size_t offset = last - first;
+    _jots_size -= offset;
 
-    _jots_size -= erase_size;
-
-    for (size_t i = begin_jot; i < _jots_size; i++)
-    {
-        _jots[i] = _jots[i + erase_size];
+    for (size_t i = first; i < _jots_size; i++) {
+        jot& a = _jots[i];
+        a = _jots[i + offset];
     }
 }
 
 void xtextbox::layout::merge_line(jot_line& line)
 {
     size_t d = line.first;
-    size_t i = line.first + 1;
-
-    while (i != line.last)
-    {
+    for (size_t i = line.first + 1; i != line.last; i++) {
         jot& a1 = _jots[d];
         jot& a2 = _jots[i];
-
-        if (!a1.flag.ethereal && !a2.flag.ethereal && a1.flag.merge && a2.flag.merge &&
-            a1.cb == a2.cb)
-        {
+        if (!a1.flag.ethereal &&
+            !a2.flag.ethereal &&
+            a1.flag.merge &&
+            a2.flag.merge &&
+            a1.cb == a2.cb) {
             a1.s.size = a2.s.text - a1.s.text + a2.s.size;
             a1.bounds |= a2.bounds;
             a1.intersect_flags(a2);
         }
-        else
-        {
+        else {
             d++;
-
-            if (d != i)
-            {
+            if (d != i) {
                 _jots[d] = a2;
             }
         }
-
-        i++;
     }
-
-    erase_jots(d + 1, line.last);
-    line.last = d + 1;
+    d++;
+    erase_jots(d, line.last);
+    line.last = d;
 }
 
 void xtextbox::layout::bound_line(jot_line& line)
@@ -1645,41 +1612,30 @@ bool xtextbox::layout::fit_line()
 {
     jot_line& line = _lines[_lines_size];
 
-    if (line.bounds.w > tb.bounds.w)
-    {
-        switch (tb.flags & WRAP_MASK)
-        {
-        case WRAP_CHAR:
-        {
-            if (line.last > line.first + 1)
-            {
+    if (line.bounds.w > tb.bounds.w) {
+        switch (tb.flags & 0x30) {
+        case 0x10:
+            if (line.last > line.first + 1) {
                 line.last--;
             }
-
             break;
-        }
-        case WRAP_NONE:
-        {
+        case 0x20:
             return false;
-        }
         default:
         {
-            for (S32 i = (S32)line.last - 1; i > (S32)line.first; i--)
-            {
-                if (_jots[i].flag.word_break)
-                {
+            for (S32 i = line.last - 1; i > (S32)line.first; i--) {
+                jot& a = _jots[i];
+                if (a.flag.word_break) {
                     line.last = i + 1;
                     break;
                 }
-                else if (_jots[i - 1].flag.word_end)
-                {
+                else if (_jots[i - 1].flag.word_end) {
                     line.last = i;
                     break;
                 }
             }
 
-            if (line.last <= line.first)
-            {
+            if (line.last <= line.first) {
                 line.last = line.first + 1;
             }
 
@@ -1874,219 +1830,144 @@ void xtextbox::layout::calc(const xtextbox& ctb, size_t start_text)
 
 void xtextbox::layout::render(const xtextbox& ctb, S32 begin_jot, S32 end_jot)
 {
-    if (begin_jot < 0)
-    {
-        begin_jot = 0;
-    }
-
-    if (end_jot < begin_jot)
-    {
-        end_jot = _jots_size;
-    }
-
-    if (begin_jot >= end_jot)
-    {
-        return;
-    }
+    if (begin_jot < 0) begin_jot = 0;
+    if (end_jot < begin_jot) end_jot = _jots_size;
+    if (begin_jot >= end_jot) return;
 
     tb = ctb;
     start_render(ctb);
 
     S32 begin_line = 0;
-
-    while (true)
-    {
-        if (begin_line >= (S32)_lines_size)
-        {
+    while (true) {
+        if (begin_line >= (S32)_lines_size) {
             stop_render(ctb);
-            return;
-        }
-
-        if ((S32)_lines[begin_line].last > begin_jot)
-        {
             break;
         }
 
-        begin_line++;
-    }
+        if ((S32)_lines[begin_line].last <= begin_jot) {
+            begin_line++;
+        }
+        else {
+            for (S32 i = 0; i < begin_jot; i++) {
+                jot& j = _jots[i];
+                if (j.cb && j.cb->render_update) {
+                    j.cb->render_update(j, tb, ctb);
+                }
+            }
 
-    for (S32 i = 0; i < begin_jot; i++)
-    {
-        jot& j = _jots[i];
+            F32 top = _lines[begin_line].bounds.y;
+            size_t li = begin_line - 1;
+            S32 line_last = -1;
+            F32 x, y;
 
-        if (j.cb && j.cb->render_update)
-        {
-            j.cb->render_update(j, tb, ctb);
+            for (S32 i = begin_jot; i < end_jot; i++) {
+                if (i >= line_last) {
+                    li++;
+
+                    const jot_line& line = _lines[li];
+                    line_last = line.last;
+                    x = tb.bounds.x + line.bounds.x;
+                    y = tb.bounds.y + line.bounds.y + line.baseline - top;
+
+                    U32 xj = tb.flags & 0x3;
+                    if (xj == 2) {
+                        x += (tb.bounds.w - line.bounds.w) * 0.5f;
+                    }
+                    else if (xj == 1) {
+                        x += tb.bounds.w - line.bounds.w;
+                    }
+
+                    if (line.page_break && end_jot > line_last) {
+                        end_jot = line_last;
+                    }
+                }
+
+                jot& j = _jots[i];
+                if (j.cb) {
+                    if (j.cb->render_update) {
+                        j.cb->render_update(j, tb, ctb);
+                    }
+                    if (!j.flag.ethereal && !j.flag.invisible && j.cb->render) {
+                        j.cb->render(j, tb, x + j.bounds.x, y);
+                    }
+                }
+            }
+
+            stop_render(ctb);
+            break;
         }
     }
-
-    F32 top = _lines[begin_line].bounds.y;
-    U32 li = begin_line - 1;
-    S32 line_last = -1;
-    F32 x, y;
-
-    for (S32 i = begin_jot; i < end_jot; i++)
-    {
-        if (i >= line_last)
-        {
-            li++;
-            jot_line& line = _lines[li];
-
-            line_last = line.last;
-
-            x = tb.bounds.x + line.bounds.x;
-            y = tb.bounds.y + line.bounds.y + line.baseline - top;
-
-            U32 xj = tb.flags & XJUSTIFY_MASK;
-
-            if (xj == XJUSTIFY_CENTER)
-            {
-                x += 0.5f * (tb.bounds.w - line.bounds.w);
-            }
-            else if (xj == XJUSTIFY_RIGHT)
-            {
-                x += tb.bounds.w - line.bounds.w;
-            }
-
-            if (line.page_break && end_jot > line_last)
-            {
-                end_jot = line_last;
-            }
-        }
-
-        jot& j = _jots[i];
-
-        if (j.cb)
-        {
-            if (j.cb->render_update)
-            {
-                j.cb->render_update(j, tb, ctb);
-            }
-
-            if (!j.flag.ethereal && !j.flag.invisible && j.cb->render)
-            {
-                j.cb->render(j, tb, x + j.bounds.x, y);
-            }
-        }
-    }
-
-    stop_render(ctb);
 }
 
 // this is different than the one in xMath.h
 #define min(a, b) ((a) >= (b) ? (b) : (a))
 
-F32 xtextbox::layout::yextent(F32 max, S32& size, S32 begin_jot, S32 end_jot) const
+F32 xtextbox::layout::yextent(F32 max, S32& size, S32 begin_jot, S32 end_jot) const NONMATCH("https://decomp.me/scratch/AQKtE")
 {
     size = 0;
-
-    if (begin_jot < 0)
-    {
-        begin_jot = 0;
-    }
-
-    if (end_jot < begin_jot)
-    {
-        end_jot = _jots_size;
-    }
-
-    if (begin_jot >= end_jot)
-    {
-        return 0.0f;
-    }
+    if (begin_jot < 0) begin_jot = 0;
+    if (end_jot < begin_jot) end_jot = _jots_size;
+    if (begin_jot >= end_jot) return 0.0f;
 
     S32 begin_line = 0;
+    while (true) {
+        if (begin_line >= (S32)_lines_size) return 0.0f;
 
-    while (true)
-    {
-        if (begin_line >= (S32)_lines_size)
-        {
-            return 0.0f;
+        if ((S32)_lines[begin_line].last <= begin_jot) {
+            begin_line++;
         }
+        else {
+            F32 top = _lines[begin_line].bounds.y;
+            max += top;
 
-        if ((S32)_lines[begin_line].last > begin_jot)
-        {
-            break;
+            S32 i = begin_line;
+            while (true) {
+                if (i == (S32)_lines_size) break;
+                const jot_line& line = _lines[i];
+                if (line.bounds.y + line.bounds.h > max) {
+                    i--;
+                    break;
+                }
+                if ((S32)line.last >= end_jot) break;
+                if (line.page_break) break;
+                i++;
+            }
+            if (i < begin_line) return 0.0f;
+
+            const jot_line& line = _lines[i];
+
+            size = ((S32)line.last >= end_jot ? end_jot : line.last) - begin_jot;
+            return line.bounds.y + line.bounds.h - top;
         }
-
-        begin_line++;
     }
-
-    // non-matching: wrong float registers
-    F32 top = _lines[begin_line].bounds.y;
-    S32 i = begin_line;
-
-    while (true)
-    {
-        if (i == (S32)_lines_size)
-        {
-            break;
-        }
-
-        // non-matching: r11 missing
-        const jot_line& line = _lines[i];
-
-        if (line.bounds.y + line.bounds.h > max + top)
-        {
-            i--;
-            break;
-        }
-
-        if ((S32)line.last >= end_jot)
-        {
-            break;
-        }
-
-        if (line.page_break)
-        {
-            break;
-        }
-
-        i++;
-    }
-
-    if (i < begin_line)
-    {
-        return 0.0f;
-    }
-
-    const jot_line& line = _lines[i];
-
-    size = min((S32)line.last, end_jot) - begin_jot;
-
-    return line.bounds.y + line.bounds.h - top;
 }
 
 bool xtextbox::layout::changed(const xtextbox& ctb)
 {
-    U32 flags1 = tb.flags & (WRAP_MASK | FLAG_UNK40);
-    U32 flags2 = ctb.flags & (WRAP_MASK | FLAG_UNK40);
+    U32 flags1 = tb.flags & 0x70;
+    U32 flags2 = ctb.flags & 0x70;
 
-    if (tb.text_hash != ctb.text_hash || tb.font.id != ctb.font.id ||
-        tb.font.width != ctb.font.width || tb.font.height != ctb.font.height ||
-        tb.font.space != ctb.font.space || tb.bounds.w != ctb.bounds.w || flags1 != flags2 ||
-        tb.line_space != ctb.line_space)
-    {
+    if (tb.text_hash != ctb.text_hash ||
+        tb.font.id != ctb.font.id ||
+        tb.font.width != ctb.font.width ||
+        tb.font.height != ctb.font.height ||
+        tb.font.space != ctb.font.space ||
+        tb.bounds.w != ctb.bounds.w ||
+        flags1 != flags2 ||
+        tb.line_space != ctb.line_space) {
         return true;
     }
 
     S32 i = dynamics_size;
-
-    while (i > 0)
-    {
+    while (i > 0) {
         i--;
 
         jot& j = _jots[dynamics[i]];
-        U32 oldval = xStrHash((char*)j.context, j.context_size);
-
+        U32 oldval = xStrHash((const char*)j.context, j.context_size);
         parse_next_jot(j, tb, ctb, j.s.text, j.s.size);
+        U32 val = xStrHash((const char*)j.context, j.context_size);
 
-        U32 val = xStrHash((char*)j.context, j.context_size);
-
-        if (val != oldval)
-        {
-            return true;
-        }
+        if (val != oldval) return true;
     }
 
     return false;
@@ -2096,15 +1977,13 @@ namespace
 {
     void update_tag_alpha(const xtextbox::jot& j, xtextbox& tb, const xtextbox&)
     {
-        tb.font.color.a = 255.0f * (F32&)j.context + 0.5f;
+        tb.font.color.a = (U8)((F32&)j.context * 255.0f + 0.5f);
     }
 
     void update_tag_reset_alpha(const xtextbox::jot&, xtextbox& tb, const xtextbox& ctb)
     {
         tb.font.color.a = ctb.font.color.a;
     }
-
-    static const xtextbox::callback cb_2178 = { NULL, update_tag_alpha, update_tag_alpha };
 
     void parse_tag_alpha(xtextbox::jot& a, const xtextbox& tb, const xtextbox& ctb, const xtextbox::split_tag& ti)
     {
@@ -2144,15 +2023,13 @@ namespace
 
     void update_tag_red(const xtextbox::jot& j, xtextbox& tb, const xtextbox&)
     {
-        tb.font.color.r = 255.0f * (F32&)j.context + 0.5f;
+        tb.font.color.r = (U8)((F32&)j.context * 255.0f + 0.5f);
     }
 
     void update_tag_reset_red(const xtextbox::jot&, xtextbox& tb, const xtextbox& ctb)
     {
         tb.font.color.r = ctb.font.color.r;
     }
-
-    static const xtextbox::callback cb_2217 = { NULL, update_tag_red, update_tag_red };
 
     void parse_tag_red(xtextbox::jot& a, const xtextbox& tb, const xtextbox& ctb, const xtextbox::split_tag& ti)
     {
@@ -2191,15 +2068,13 @@ namespace
 
     void update_tag_green(const xtextbox::jot& j, xtextbox& tb, const xtextbox&)
     {
-        tb.font.color.g = 255.0f * (F32&)j.context + 0.5f;
+        tb.font.color.g = (U8)((F32&)j.context * 255.0f + 0.5f);
     }
 
     void update_tag_reset_green(const xtextbox::jot&, xtextbox& tb, const xtextbox& ctb)
     {
         tb.font.color.g = ctb.font.color.g;
     }
-
-    static const xtextbox::callback cb_2255 = { NULL, update_tag_green, update_tag_green };
 
     void parse_tag_green(xtextbox::jot& a, const xtextbox& tb, const xtextbox& ctb, const xtextbox::split_tag& ti)
     {
@@ -2239,15 +2114,13 @@ namespace
 
     void update_tag_blue(const xtextbox::jot& j, xtextbox& tb, const xtextbox&)
     {
-        tb.font.color.b = 255.0f * (F32&)j.context + 0.5f;
+        tb.font.color.b = (U8)((F32&)j.context * 255.0f + 0.5f);
     }
 
     void update_tag_reset_blue(const xtextbox::jot&, xtextbox& tb, const xtextbox& ctb)
     {
         tb.font.color.b = ctb.font.color.b;
     }
-
-    static const xtextbox::callback cb_2293 = { NULL, update_tag_blue, update_tag_blue };
 
     void parse_tag_blue(xtextbox::jot& a, const xtextbox& tb, const xtextbox& ctb, const xtextbox::split_tag& ti)
     {
@@ -2294,50 +2167,31 @@ namespace
         tb.font.width = ctb.font.width;
     }
 
-    void parse_tag_width(xtextbox::jot& a, const xtextbox& tb, const xtextbox&,
-                         const xtextbox::split_tag& ti)
+    void parse_tag_width(xtextbox::jot& a, const xtextbox& tb, const xtextbox& ctb, const xtextbox::split_tag& ti)
     {
-        static const xtextbox::callback cb = { NULL, update_tag_width, update_tag_width };
         F32& v = (F32&)a.context;
 
-        if (ti.value.size == 0 || ti.action.size == 0)
-        {
-            return;
-        }
+        if (ti.value.size == 0 || ti.action.size == 0) return;
 
         v = xatof(ti.value.text);
 
-        switch (ti.action.text[0])
-        {
+        switch (ti.action.text[0]) {
         case '=':
-        {
             break;
-        }
         case '+':
-        {
             v += tb.font.width;
             break;
-        }
         case '*':
-        {
             v *= tb.font.width;
             break;
-        }
         default:
-        {
             return;
         }
-        }
 
-        if (v < 0.0f)
-        {
-            v = 0.0f;
-        }
-        else if (v > 1.0f)
-        {
-            v = 1.0f;
-        }
+        if (v < 0.0f) v = 0.0f;
+        else if (v > 1.0f) v = 1.0f;
 
+        static xtextbox::callback cb = { NULL, update_tag_width, update_tag_width };
         a.cb = &cb;
     }
 
@@ -2359,50 +2213,31 @@ namespace
         tb.font.height = ctb.font.height;
     }
 
-    void parse_tag_height(xtextbox::jot& a, const xtextbox& tb, const xtextbox&,
-                          const xtextbox::split_tag& ti)
+    void parse_tag_height(xtextbox::jot& a, const xtextbox& tb, const xtextbox& ctb, const xtextbox::split_tag& ti)
     {
-        static const xtextbox::callback cb = { NULL, update_tag_height, update_tag_height };
         F32& v = (F32&)a.context;
 
-        if (ti.value.size == 0 || ti.action.size == 0)
-        {
-            return;
-        }
+        if (ti.value.size == 0 || ti.action.size == 0) return;
 
         v = xatof(ti.value.text);
 
-        switch (ti.action.text[0])
-        {
+        switch (ti.action.text[0]) {
         case '=':
-        {
             break;
-        }
         case '+':
-        {
             v += tb.font.height;
             break;
-        }
         case '*':
-        {
             v *= tb.font.height;
             break;
-        }
         default:
-        {
             return;
         }
-        }
 
-        if (v < 0.0f)
-        {
-            v = 0.0f;
-        }
-        else if (v > 1.0f)
-        {
-            v = 1.0f;
-        }
+        if (v < 0.0f) v = 0.0f;
+        else if (v > 1.0f) v = 1.0f;
 
+        static xtextbox::callback cb = { NULL, update_tag_height, update_tag_height };
         a.cb = &cb;
     }
 
@@ -2424,50 +2259,31 @@ namespace
         tb.left_indent = ctb.left_indent;
     }
 
-    void parse_tag_left_indent(xtextbox::jot& a, const xtextbox& tb, const xtextbox&,
-                               const xtextbox::split_tag& ti)
+    void parse_tag_left_indent(xtextbox::jot& a, const xtextbox& tb, const xtextbox& ctb, const xtextbox::split_tag& ti)
     {
-        static const xtextbox::callback cb = { NULL, update_tag_left_indent, NULL };
         F32& v = (F32&)a.context;
 
-        if (ti.value.size == 0 || ti.action.size == 0)
-        {
-            return;
-        }
+        if (ti.value.size == 0 || ti.action.size == 0) return;
 
         v = xatof(ti.value.text);
 
-        switch (ti.action.text[0])
-        {
+        switch (ti.action.text[0]) {
         case '=':
-        {
             break;
-        }
         case '+':
-        {
             v += tb.left_indent;
             break;
-        }
         case '*':
-        {
             v *= tb.left_indent;
             break;
-        }
         default:
-        {
             return;
         }
-        }
 
-        if (v < -1.0f)
-        {
-            v = -1.0f;
-        }
-        else if (v > 1.0f)
-        {
-            v = 1.0f;
-        }
+        if (v < 0.0f) v = 0.0f;
+        else if (v > 1.0f) v = 1.0f;
 
+        static xtextbox::callback cb = { NULL, update_tag_left_indent, update_tag_left_indent };
         a.cb = &cb;
     }
 
@@ -2488,50 +2304,31 @@ namespace
         tb.right_indent = ctb.right_indent;
     }
 
-    void parse_tag_right_indent(xtextbox::jot& a, const xtextbox& tb, const xtextbox&,
-                                const xtextbox::split_tag& ti)
+    void parse_tag_right_indent(xtextbox::jot& a, const xtextbox& tb, const xtextbox& ctb, const xtextbox::split_tag& ti)
     {
-        static const xtextbox::callback cb = { NULL, update_tag_right_indent, NULL };
         F32& v = (F32&)a.context;
 
-        if (ti.value.size == 0 || ti.action.size == 0)
-        {
-            return;
-        }
+        if (ti.value.size == 0 || ti.action.size == 0) return;
 
         v = xatof(ti.value.text);
 
-        switch (ti.action.text[0])
-        {
+        switch (ti.action.text[0]) {
         case '=':
-        {
             break;
-        }
         case '+':
-        {
             v += tb.right_indent;
             break;
-        }
         case '*':
-        {
             v *= tb.right_indent;
             break;
-        }
         default:
-        {
             return;
         }
-        }
 
-        if (v < -1.0f)
-        {
-            v = -1.0f;
-        }
-        else if (v > 1.0f)
-        {
-            v = 1.0f;
-        }
+        if (v < 0.0f) v = 0.0f;
+        else if (v > 1.0f) v = 1.0f;
 
+        static xtextbox::callback cb = { NULL, update_tag_right_indent, update_tag_right_indent };
         a.cb = &cb;
     }
 
@@ -2552,50 +2349,31 @@ namespace
         tb.tab_stop = ctb.tab_stop;
     }
 
-    void parse_tag_tab_stop(xtextbox::jot& a, const xtextbox& tb, const xtextbox&,
-                            const xtextbox::split_tag& ti)
+    void parse_tag_tab_stop(xtextbox::jot& a, const xtextbox& tb, const xtextbox& ctb, const xtextbox::split_tag& ti)
     {
-        static const xtextbox::callback cb = { NULL, update_tag_tab_stop, NULL };
         F32& v = (F32&)a.context;
 
-        if (ti.value.size == 0 || ti.action.size == 0)
-        {
-            return;
-        }
+        if (ti.value.size == 0 || ti.action.size == 0) return;
 
         v = xatof(ti.value.text);
 
-        switch (ti.action.text[0])
-        {
+        switch (ti.action.text[0]) {
         case '=':
-        {
             break;
-        }
         case '+':
-        {
             v += tb.tab_stop;
             break;
-        }
         case '*':
-        {
             v *= tb.tab_stop;
             break;
-        }
         default:
-        {
             return;
         }
-        }
 
-        if (v < 0.0f)
-        {
-            v = 0.0f;
-        }
-        else if (v > 1.0f)
-        {
-            v = 1.0f;
-        }
+        if (v < 0.0f) v = 0.0f;
+        else if (v > 1.0f) v = 1.0f;
 
+        static xtextbox::callback cb = { NULL, update_tag_tab_stop, update_tag_tab_stop };
         a.cb = &cb;
     }
 
@@ -2616,50 +2394,31 @@ namespace
         tb.font.space = ctb.font.space;
     }
 
-    void parse_tag_xspace(xtextbox::jot& a, const xtextbox& tb, const xtextbox&,
-                          const xtextbox::split_tag& ti)
+    void parse_tag_xspace(xtextbox::jot& a, const xtextbox& tb, const xtextbox& ctb, const xtextbox::split_tag& ti)
     {
-        static const xtextbox::callback cb = { NULL, update_tag_xspace, update_tag_xspace };
         F32& v = (F32&)a.context;
 
-        if (ti.value.size == 0 || ti.action.size == 0)
-        {
-            return;
-        }
+        if (ti.value.size == 0 || ti.action.size == 0) return;
 
         v = xatof(ti.value.text);
 
-        switch (ti.action.text[0])
-        {
+        switch (ti.action.text[0]) {
         case '=':
-        {
             break;
-        }
         case '+':
-        {
             v += tb.font.space;
             break;
-        }
         case '*':
-        {
             v *= tb.font.space;
             break;
-        }
         default:
-        {
             return;
         }
-        }
 
-        if (v < -1.0f)
-        {
-            v = -1.0f;
-        }
-        else if (v > 1.0f)
-        {
-            v = 1.0f;
-        }
+        if (v < 0.0f) v = 0.0f;
+        else if (v > 1.0f) v = 1.0f;
 
+        static xtextbox::callback cb = { NULL, update_tag_xspace, update_tag_xspace };
         a.cb = &cb;
     }
 
@@ -2681,50 +2440,31 @@ namespace
         tb.line_space = ctb.line_space;
     }
 
-    void parse_tag_yspace(xtextbox::jot& a, const xtextbox& tb, const xtextbox&,
-                          const xtextbox::split_tag& ti)
+    void parse_tag_yspace(xtextbox::jot& a, const xtextbox& tb, const xtextbox& ctb, const xtextbox::split_tag& ti)
     {
-        static const xtextbox::callback cb = { NULL, update_tag_yspace, NULL };
         F32& v = (F32&)a.context;
 
-        if (ti.value.size == 0 || ti.action.size == 0)
-        {
-            return;
-        }
+        if (ti.value.size == 0 || ti.action.size == 0) return;
 
         v = xatof(ti.value.text);
 
-        switch (ti.action.text[0])
-        {
+        switch (ti.action.text[0]) {
         case '=':
-        {
             break;
-        }
         case '+':
-        {
             v += tb.line_space;
             break;
-        }
         case '*':
-        {
             v *= tb.line_space;
             break;
-        }
         default:
-        {
             return;
         }
-        }
 
-        if (v < -1.0f)
-        {
-            v = -1.0f;
-        }
-        else if (v > 1.0f)
-        {
-            v = 1.0f;
-        }
+        if (v < 0.0f) v = 0.0f;
+        else if (v > 1.0f) v = 1.0f;
 
+        static xtextbox::callback cb = { NULL, update_tag_yspace, update_tag_yspace };
         a.cb = &cb;
     }
 
@@ -2757,66 +2497,41 @@ namespace
         tb.font.color = ctb.font.color;
     }
 
-    void parse_tag_color(xtextbox::jot& a, const xtextbox& tb, const xtextbox&,
-                         const xtextbox::split_tag& ti)
+    void parse_tag_color(xtextbox::jot& a, const xtextbox& tb, const xtextbox& ctb, const xtextbox::split_tag& ti)
     {
-        static const xtextbox::callback cb = { NULL, update_tag_color, update_tag_color };
         iColor_tag& color = (iColor_tag&)a.context;
 
-        if (ti.value.size < 6 || ti.action.size == 0)
-        {
-            return;
+        if (ti.value.size < 6 || ti.action.size == 0) return;
+
+        U32 v = atox(ti.value);
+        if (ti.value.size < 8) {
+            v = (v & 0xFF000000) | (tb.font.color.a << 24);
         }
 
-        size_t v = atox(ti.value);
-
-        if (ti.value.size < 8)
-        {
-            v = (v & 0xff000000) | (tb.font.color.a << 24);
-        }
-
-        switch (ti.action.text[0])
-        {
+        switch (ti.action.text[0]) {
         case '=':
-        {
-            color.a = v >> 24 & 0xff;
-            color.r = v >> 16 & 0xff;
-            color.g = v >> 8 & 0xff;
-            color.b = v & 0xff;
+            color.a = (v & 0xFF000000) >> 24;
+            color.r = (v & 0x00FF0000) >> 16;
+            color.g = (v & 0x0000FF00) >> 8;
+            color.b = (v & 0x000000FF) >> 0;
             break;
-        }
         case '+':
-        {
-            U32 temp;
-
-            temp = (v >> 24 & 0xff) + tb.font.color.a;
-            color.a = (temp <= 255) ? temp : 255;
-
-            temp = (v >> 16 & 0xff) + tb.font.color.r;
-            color.r = (temp <= 255) ? temp : 255;
-
-            temp = (v >> 8 & 0xff) + tb.font.color.g;
-            color.g = (temp <= 255) ? temp : 255;
-
-            temp = (v & 0xff) + tb.font.color.b;
-            color.b = (temp <= 255) ? temp : 255;
-
+            color.a = MIN(255, ((v & 0xFF000000) >> 24) + tb.font.color.a);
+            color.r = MIN(255, ((v & 0x00FF0000) >> 16) + tb.font.color.r);
+            color.g = MIN(255, ((v & 0x0000FF00) >> 8) + tb.font.color.g);
+            color.b = MIN(255, ((v & 0x000000FF) >> 0) + tb.font.color.b);
             break;
-        }
         case '*':
-        {
-            color.a = (v >> 24 & 0xff) * tb.font.color.a / 255;
-            color.r = (v >> 16 & 0xff) * tb.font.color.r / 255;
-            color.g = (v >> 8 & 0xff) * tb.font.color.g / 255;
-            color.b = (v & 0xff) * tb.font.color.b / 255;
+            color.a = ((v & 0xFF000000) >> 24) * tb.font.color.a / 255;
+            color.r = ((v & 0x00FF0000) >> 16) * tb.font.color.r / 255;
+            color.g = ((v & 0x0000FF00) >> 8) * tb.font.color.g / 255;
+            color.b = ((v & 0x000000FF) >> 0) * tb.font.color.b / 255;
             break;
-        }
         default:
-        {
             return;
         }
-        }
 
+        static xtextbox::callback cb = { NULL, update_tag_color, update_tag_color };
         a.cb = &cb;
     }
 
@@ -2838,21 +2553,14 @@ namespace
         tb.font.id = ctb.font.id;
     }
 
-    void parse_tag_font(xtextbox::jot& a, const xtextbox& tb, const xtextbox&,
-                        const xtextbox::split_tag& ti)
+    void parse_tag_font(xtextbox::jot& a, const xtextbox& tb, const xtextbox& ctb, const xtextbox::split_tag& ti)
     {
-        static const xtextbox::callback cb = { NULL, update_tag_font, update_tag_font };
+        if (ti.action.size < 1 || ti.action.text[0] != '=' || ti.value.size == 0) return;
+
         U32& id = (U32&)a.context;
-
-        if (ti.action.size < 1 || ti.action.text[0] != '=' || ti.value.size == 0)
-        {
-            return;
-        }
-
         id = atoi(ti.value.text);
-
-        if (id < active_fonts_size)
-        {
+        if (id < active_fonts_size) {
+            static xtextbox::callback cb = { NULL, update_tag_font, update_tag_font };
             a.cb = &cb;
         }
     }
@@ -2874,34 +2582,25 @@ namespace
         tb.flags = (tb.flags & ~WRAP_MASK) | (ctb.flags & WRAP_MASK);
     }
 
-    void parse_tag_wrap(xtextbox::jot& a, const xtextbox& tb, const xtextbox&,
-                        const xtextbox::split_tag& ti)
+    void parse_tag_wrap(xtextbox::jot& a, const xtextbox& tb, const xtextbox& ctb, const xtextbox::split_tag& ti)
     {
-        static const xtextbox::callback cb = { NULL, update_tag_wrap, NULL };
+        if (ti.action.size < 1 || ti.action.text[0] != '=' || ti.value.size != 4) return;
+
         U32& flags = (U32&)a.context;
-
-        if (ti.action.size < 1 || ti.action.text[0] != '=' || ti.value.size != 4)
-        {
+        if (imemcmp(ti.value.text, "word", 4) == 0) {
+            flags = 0;
+        }
+        else if (imemcmp(ti.value.text, "char", 4) == 0) {
+            flags = 0x10;
+        }
+        else if (imemcmp(ti.value.text, "none", 4) == 0) {
+            flags = 0x20;
+        }
+        else {
             return;
         }
 
-        if (imemcmp(ti.value.text, "word", 4) == 0)
-        {
-            flags = WRAP_WORD;
-        }
-        else if (imemcmp(ti.value.text, "char", 4) == 0)
-        {
-            flags = WRAP_CHAR;
-        }
-        else if (imemcmp(ti.value.text, "none", 4) == 0)
-        {
-            flags = WRAP_NONE;
-        }
-        else
-        {
-            return;
-        }
-
+        static xtextbox::callback cb = { NULL, update_tag_wrap, update_tag_wrap };
         a.cb = &cb;
     }
 
@@ -2922,34 +2621,25 @@ namespace
         tb.flags = (tb.flags & ~XJUSTIFY_MASK) | (ctb.flags & XJUSTIFY_MASK);
     }
 
-    void parse_tag_xjustify(xtextbox::jot& a, const xtextbox& tb, const xtextbox&,
-                            const xtextbox::split_tag& ti)
+    void parse_tag_xjustify(xtextbox::jot& a, const xtextbox& tb, const xtextbox& ctb, const xtextbox::split_tag& ti)
     {
-        static const xtextbox::callback cb = { NULL, NULL, update_tag_xjustify };
+        if (ti.action.size < 1 || ti.action.text[0] != '=') return;
+
         U32& flags = (U32&)a.context;
-
-        if (ti.action.size < 1 || ti.action.text[0] != '=')
-        {
+        if (icompare(ti.value, substr::create("left", 4)) == 0) {
+            flags = 0;
+        }
+        else if (icompare(ti.value, substr::create("center", 6)) == 0) {
+            flags = 0x2;
+        }
+        else if (icompare(ti.value, substr::create("right", 5)) == 0) {
+            flags = 0x1;
+        }
+        else {
             return;
         }
 
-        if (icompare(ti.value, substr::create("left", 4)) == 0)
-        {
-            flags = XJUSTIFY_LEFT;
-        }
-        else if (icompare(ti.value, substr::create("center", 6)) == 0)
-        {
-            flags = XJUSTIFY_CENTER;
-        }
-        else if (icompare(ti.value, substr::create("right", 5)) == 0)
-        {
-            flags = XJUSTIFY_RIGHT;
-        }
-        else
-        {
-            return;
-        }
-
+        static xtextbox::callback cb = { NULL, update_tag_xjustify, update_tag_xjustify };
         a.cb = &cb;
     }
 
@@ -2970,34 +2660,25 @@ namespace
         tb.flags = (tb.flags & ~YJUSTIFY_MASK) | (ctb.flags & YJUSTIFY_MASK);
     }
 
-    void parse_tag_yjustify(xtextbox::jot& a, const xtextbox& tb, const xtextbox&,
-                            const xtextbox::split_tag& ti)
+    void parse_tag_yjustify(xtextbox::jot& a, const xtextbox& tb, const xtextbox& ctb, const xtextbox::split_tag& ti)
     {
-        static const xtextbox::callback cb = { NULL, NULL, update_tag_yjustify };
+        if (ti.action.size < 1 || ti.action.text[0] != '=') return;
+
         U32& flags = (U32&)a.context;
-
-        if (ti.action.size < 1 || ti.action.text[0] != '=')
-        {
+        if (icompare(ti.value, substr::create("top", 4)) == 0) { // BUG: "top" is 3 chars, not 4
+            flags = 0;
+        }
+        else if (icompare(ti.value, substr::create("center", 4)) == 0) { // BUG: "center" is 6 chars, not 4
+            flags = 0x8;
+        }
+        else if (icompare(ti.value, substr::create("bottom", 4)) == 0) { // BUG: "bottom" is 6 chars, not 4
+            flags = 0x4;
+        }
+        else {
             return;
         }
 
-        if (icompare(ti.value, substr::create("top", 4)) == 0)
-        {
-            flags = YJUSTIFY_TOP;
-        }
-        else if (icompare(ti.value, substr::create("center", 4)) == 0)
-        {
-            flags = YJUSTIFY_CENTER;
-        }
-        else if (icompare(ti.value, substr::create("bottom", 4)) == 0)
-        {
-            flags = YJUSTIFY_BOTTOM;
-        }
-        else
-        {
-            return;
-        }
-
+        static xtextbox::callback cb = { NULL, update_tag_yjustify, update_tag_yjustify };
         a.cb = &cb;
     }
 
@@ -3014,7 +2695,7 @@ namespace
         a.s.text = ti.tag.text;
         a.s.size = 1;
 
-        char c = a.s.text[0];
+        unsigned char c = a.s.text[0];
 
         a.reset_flags();
         a.bounds = tb.font.bounds(c);
@@ -3079,7 +2760,8 @@ namespace
         frame.flags = 0;
 
         xModelSetFrame(mtc.model, &frame);
-        xModelSetMaterialAlpha(mtc.model, tb.font.color.a);
+        // Ternary probably from some macro
+        xModelSetMaterialAlpha(mtc.model, (true) ? tb.font.color.a : 0);
 
         tex_flush();
 
@@ -3094,54 +2776,41 @@ namespace
         RwRenderStateSet(rwRENDERSTATEZTESTENABLE, (void*)FALSE);
     }
 
-    void parse_tag_model(xtextbox::jot& a, const xtextbox& tb, const xtextbox&,
-                         const xtextbox::split_tag& ti)
+    void parse_tag_model(xtextbox::jot& a, const xtextbox& tb, const xtextbox& ctb, const xtextbox::split_tag& ti)
     {
-        static const xtextbox::callback cb = { render_tag_model, NULL, NULL };
-
         load_model_args(def_model_args, ti.tag);
+        if (!def_model_args.model) return;
 
-        if (def_model_args.model)
-        {
-            model_tag_context& mtc = *(model_tag_context*)a.context;
+        model_tag_context& mtc = *(model_tag_context*)a.context;
+        mtc.model = def_model_args.model;
+        mtc.rot = def_model_args.rot;
+        mtc.rot *= DEG2RAD(1.0f);
+        mtc.dst = def_model_args.dst;
 
-            mtc.model = def_model_args.model;
-            mtc.rot = def_model_args.rot;
-            mtc.rot *= 0.017453292f;
-            mtc.dst = def_model_args.dst;
+        const xSphere* o = xModelGetLocalSBound(mtc.model);
+        mtc.o = *o;
+        mtc.dst.y -= def_model_args.off.y;
 
-            xSphere& o = *xModelGetLocalSBound(mtc.model);
-            mtc.o = o;
+        a.bounds.assign(0.0f, -def_model_args.off.y, def_model_args.off.x, def_model_args.off.y);
 
-            mtc.dst.y -= def_model_args.off.y;
-
-            a.bounds.assign(0.0f, -def_model_args.off.y, def_model_args.off.x,
-                            def_model_args.off.y);
-
-            switch (def_model_args.scale)
-            {
-            case model_args::SCALE_SIZE:
-            {
-                mtc.dst.scale(mtc.o.r);
-                a.bounds.scale(mtc.o.r);
-                break;
-            }
-            case model_args::SCALE_SCREEN:
-            {
-                break;
-            }
-            default:
-            {
-                mtc.dst.scale(tb.font.width, tb.font.height);
-                a.bounds.scale(tb.font.width, tb.font.height);
-                break;
-            }
-            }
-
-            a.reset_flags();
-            a.context_size = sizeof(model_tag_context);
-            a.cb = &cb;
+        switch (def_model_args.scale) {
+        case model_args::SCALE_SCREEN:
+            break;
+        case model_args::SCALE_SIZE:
+            mtc.dst.scale(mtc.o.r);
+            a.bounds.scale(mtc.o.r);
+            break;
+        default:
+            mtc.dst.scale(tb.font.width, tb.font.height);
+            a.bounds.scale(tb.font.width, tb.font.height);
+            break;
         }
+
+        a.reset_flags();
+        a.context_size = sizeof(model_tag_context);
+
+        static xtextbox::callback cb = { render_tag_model, NULL, NULL };
+        a.cb = &cb;
     }
 
     void reset_tag_model(xtextbox::jot&, const xtextbox&, const xtextbox&,
@@ -3172,80 +2841,61 @@ namespace
 
     xVec2 get_texture_size(RwRaster& raster);
 
-    void parse_tag_tex(xtextbox::jot& j, const xtextbox& tb, const xtextbox&,
-                       const xtextbox::split_tag& ti)
+    void parse_tag_tex(xtextbox::jot& a, const xtextbox& tb, const xtextbox& ctb, const xtextbox::split_tag& ti) NONMATCH("https://decomp.me/scratch/5tB1p")
     {
-        static const xtextbox::callback cb = { render_tag_tex, NULL, NULL };
-
         load_tex_args(def_tex_args, ti.tag);
+        if (!def_tex_args.raster) return;
 
-        if (def_tex_args.raster)
-        {
-            tex_tag_context& ttc = *(tex_tag_context*)j.context;
+        tex_tag_context& ttc = *(tex_tag_context*)a.context;
+        ttc.raster = def_tex_args.raster;
+        ttc.rot = def_tex_args.rot;
+        ttc.src = def_tex_args.src;
+        ttc.dst = def_tex_args.dst;
+        ttc.dst.y -= def_tex_args.off.y;
 
-            ttc.raster = def_tex_args.raster;
-            ttc.rot = def_tex_args.rot;
-            ttc.src = def_tex_args.src;
-            ttc.dst = def_tex_args.dst;
-            ttc.dst.y -= def_tex_args.off.y;
+        a.bounds.assign(0.0f, -def_tex_args.off.y, def_tex_args.off.x, def_tex_args.off.y);
 
-            j.bounds.assign(0.0f, -def_tex_args.off.y, def_tex_args.off.x, def_tex_args.off.y);
-
-            xVec2 size;
-
-            switch (def_tex_args.scale)
-            {
-            case tex_args::SCALE_SCREEN:
-            {
-                size.assign(1.0f, 1.0f);
-                break;
-            }
-            case tex_args::SCALE_SIZE:
-            {
-                size = get_texture_size(*ttc.raster);
-                break;
-            }
-            case tex_args::SCALE_FONT_WIDTH:
-            {
-                size = get_texture_size(*ttc.raster);
-                size.y *= tb.font.width / size.x;
-                size.x = tb.font.width;
-                break;
-            }
-            case tex_args::SCALE_FONT_HEIGHT:
-            {
-                size = get_texture_size(*ttc.raster);
-                size.x *= tb.font.height / size.y;
-                size.y = tb.font.height;
-                break;
-            }
-            case tex_args::SCALE_SCREEN_WIDTH:
-            {
-                size = get_texture_size(*ttc.raster);
-                size.y *= 1.0f / size.x;
-                size.x = 1.0f;
-                break;
-            }
-            case tex_args::SCALE_SCREEN_HEIGHT:
-            {
-                size = get_texture_size(*ttc.raster);
-                size.x *= 1.0f / size.y;
-                size.y = 1.0f;
-                break;
-            }
-            default:
-            {
-                size.assign(tb.font.width, tb.font.height);
-                break;
-            }
-            }
-
-            ttc.dst.scale(size.x, size.y);
-            j.bounds.scale(size.x, size.y);
-            j.reset_flags();
-            j.context_size = sizeof(tex_tag_context);
-            j.cb = &cb;
+        xVec2 scale;
+        switch (def_tex_args.scale) {
+        case tex_args::SCALE_SCREEN:
+            scale.assign(1.0f, 1.0f);
+            break;
+        case tex_args::SCALE_SIZE:
+            scale = get_texture_size(*ttc.raster);
+            break;
+        case tex_args::SCALE_FONT_WIDTH:
+            scale = get_texture_size(*ttc.raster);
+            scale.y *= tb.font.width / scale.x;
+            scale.x = tb.font.width;
+            break;
+        case tex_args::SCALE_FONT_HEIGHT:
+            scale = get_texture_size(*ttc.raster);
+            scale.x *= tb.font.height / scale.y;
+            scale.y = tb.font.height;
+            break;
+        case tex_args::SCALE_SCREEN_WIDTH:
+            scale = get_texture_size(*ttc.raster);
+            scale.y *= 1.0f / scale.x;
+            scale.x = 1.0f;
+            break;
+        case tex_args::SCALE_SCREEN_HEIGHT:
+            scale = get_texture_size(*ttc.raster);
+            scale.x *= 1.0f / scale.y;
+            scale.y = 1.0f;
+            break;
+        default:
+            scale.assign(tb.font.width, tb.font.height);
+            break;
         }
+
+        ttc.dst.scale(scale.x, scale.y);
+
+        a.bounds.scale(scale.x, scale.y);
+        a.reset_flags();
+        a.context_size = sizeof(tex_tag_context);
+
+        static xtextbox::callback cb = { render_tag_tex, NULL, NULL };
+        a.cb = &cb;
     }
 } // namespace
 
@@ -3253,8 +2903,11 @@ namespace
 {
     xVec2 get_texture_size(RwRaster& raster)
     {
-        xVec2 vec = { raster.width / 640.0f, raster.height / 480.0f };
-        return vec;
+        xVec2 ret = {
+        (F32)RwRasterGetWidth(&raster) / FB_XRES,
+        (F32)RwRasterGetHeight(&raster) / FB_YRES
+        };
+        return ret;
     }
 
     void reset_tag_tex(xtextbox::jot&, const xtextbox&, const xtextbox&, const xtextbox::split_tag&)
@@ -3262,56 +2915,40 @@ namespace
         reset_tex_args(def_tex_args);
     }
 
-    void parse_tag_insert(xtextbox::jot& j, const xtextbox&, const xtextbox&,
-                          const xtextbox::split_tag& ti)
+    void parse_tag_insert(xtextbox::jot& j, const xtextbox& tb, const xtextbox& ctb, const xtextbox::split_tag& ti)
     {
         j.reset_flags();
         j.flag.invisible = j.flag.ethereal = true;
 
-        if (ti.action.size != 1 || ti.action.text[0] != ':' || ti.value.size == 0)
-        {
-            return;
-        }
+        if (ti.action.size != 1 || ti.action.text[0] != ':' || ti.value.size == 0) return;
 
         U32 id = xStrHash(ti.value.text, ti.value.size);
+        if (id == 0) return;
 
-        if (id)
-        {
-            xTextAsset* ta = (xTextAsset*)xSTFindAsset(id, NULL);
+        xTextAsset* ta = (xTextAsset*)xSTFindAsset(id, NULL);
+        if (!ta) return;
 
-            if (ta)
-            {
-                j.context = (char*)xTextAssetGetText(ta);
-                j.context_size = ta->len;
-                j.flag.insert = true;
-            }
-        }
+        j.context = (void*)xTextGetString(ta);
+        j.context_size = ta->len;
+        j.flag.insert = true;
     }
 
-    void parse_tag_insert_hash(xtextbox::jot& j, const xtextbox&, const xtextbox&,
-                               const xtextbox::split_tag& ti)
+    void parse_tag_insert_hash(xtextbox::jot& j, const xtextbox& tb, const xtextbox& ctb, const xtextbox::split_tag& ti)
     {
         j.reset_flags();
         j.flag.invisible = j.flag.ethereal = true;
 
-        if (ti.action.size != 1 || ti.action.text[0] != ':' || ti.value.size == 0)
-        {
-            return;
-        }
+        if (ti.action.size != 1 || ti.action.text[0] != ':' || ti.value.size == 0) return;
 
         U32 id = atox(ti.value);
+        if (id == 0) return;
 
-        if (id)
-        {
-            xTextAsset* ta = (xTextAsset*)xSTFindAsset(id, NULL);
+        xTextAsset* ta = (xTextAsset*)xSTFindAsset(id, NULL);
+        if (!ta) return;
 
-            if (ta)
-            {
-                j.context = (char*)xTextAssetGetText(ta);
-                j.context_size = ta->len;
-                j.flag.insert = true;
-            }
-        }
+        j.context = (void*)xTextGetString(ta);
+        j.context_size = ta->len;
+        j.flag.insert = true;
     }
 
     void parse_tag_pop(xtextbox::jot&, const xtextbox&, const xtextbox&,
@@ -3323,44 +2960,34 @@ namespace
         }
     }
 
-    void parse_tag_timer(xtextbox::jot& j, const xtextbox&, const xtextbox&,
-                         const xtextbox::split_tag& ti)
+    void parse_tag_timer(xtextbox::jot& j, const xtextbox& tb, const xtextbox& ctb, const xtextbox::split_tag& ti)
     {
         j.reset_flags();
         j.flag.invisible = j.flag.ethereal = true;
 
-        if (ti.action.size != 1 || ti.action.text[0] != ':' || ti.value.size == 0)
-        {
-            return;
-        }
+        if (ti.action.size != 1 || ti.action.text[0] != ':' || ti.value.size == 0) return;
 
         U32 id = xStrHash(ti.value.text, ti.value.size);
+        if (id == 0) return;
 
-        if (id)
-        {
-            xTimer* ta = (xTimer*)zSceneFindObject(id);
+        const xTimer* ta = (const xTimer*)zSceneFindObject(id);
+        if (!ta) return;
 
-            if (ta)
-            {
-                j.flag.insert = j.flag.dynamic = true;
+        j.flag.insert = j.flag.dynamic = true;
 
-                char buffer[64];
-                U32 sec = (U32)ta->secondsLeft + 1;
-                U32 mn = sec / 60;
-
-                if (mn)
-                {
-                    sprintf(buffer, "%d:%02d", mn, sec - mn * 60);
-                }
-                else
-                {
-                    sprintf(buffer, "%02d", sec);
-                }
-
-                sprintf((char*)j.context, "%.*s", 15, buffer);
-                j.context_size = 16;
-            }
+        char buffer[64];
+        U32 sec = (U32)ta->secondsLeft + 1;
+        U32 mn = sec / 60;
+        if (mn) {
+            sprintf(buffer, "%d:%02d", mn, sec % 60);
         }
+        else {
+            sprintf(buffer, "%02d", sec);
+        }
+
+        char* text = (char*)j.context;
+        sprintf(text, "%.*s", 15, buffer);
+        j.context_size = 16;
     }
 
     // clang-format off
@@ -3425,8 +3052,7 @@ void xtextbox::register_tags(const tag_type* t, size_t size)
 {
     const tag_type *s1, *s2, *end1, *end2;
 
-    s1 = format_tags;
-    end1 = s1 + format_tags_size;
+    end1 = (s1 = format_tags) + format_tags_size;
     s2 = t;
     end2 = t + size;
 
@@ -3514,24 +3140,25 @@ namespace
 
 void render_fill_rect(const basic_rect<F32>& bounds, iColor_tag color)
 {
-    if (!bounds.empty())
-    {
-        F32 rcz = 1.0f / RwCameraGetNearClipPlane(RwCameraGetCurrentCamera());
-        F32 nsz = RwIm2DGetNearScreenZ();
+    if (bounds.empty()) return;
 
-        xfont::set_render_state(NULL);
+    F32 rcz, nsz;
+    RwCamera* cam;
+    RwIm2DVertex vert[4];
 
-        RwIm2DVertex vert[4];
-        basic_rect<F32> r = bounds;
+    cam = RwCameraGetCurrentCamera();
+    rcz = 1.0f / RwCameraGetNearClipPlane(cam);
+    nsz = RwIm2DGetNearScreenZ();
 
-        // non-matching: float scheduling
+    xfont::set_render_state(NULL);
 
-        r.scale(640.0f, 480.0f);
+    basic_rect<F32> r = bounds;
+    r.scale(FB_XRES, FB_YRES);
 
-        set_rect_verts(vert, r.x, r.y, r.w, r.h, color, rcz, nsz);
-        RwIm2DRenderPrimitive(rwPRIMTYPETRISTRIP, vert, 4);
-        xfont::restore_render_state();
-    }
+    set_rect_verts(vert, r.x, r.y, r.w, r.h, color, rcz, nsz);
+    RwIm2DRenderPrimitive(rwPRIMTYPETRISTRIP, vert, 4);
+
+    xfont::restore_render_state();
 }
 
 namespace
@@ -3555,141 +3182,15 @@ namespace
     }
 } // namespace
 
-template<> basic_rect<F32>& basic_rect<F32>::scale(F32 x, F32 y)
-{
-    return scale(x, y, x, y);
-}
-
-template<> basic_rect<F32>& basic_rect<F32>::scale(F32 x, F32 y, F32 w, F32 h)
-{
-    this->x *= x;
-    this->y *= y;
-    this->w *= w;
-    this->h *= h;
-    return *this;
-}
-
-template<> basic_rect<F32>& basic_rect<F32>::assign(F32 x, F32 y, F32 w, F32 h)
-{
-    this->x = x;
-    this->y = y;
-    this->w = w;
-    this->h = h;
-    return *this;
-}
-
-template<> bool basic_rect<F32>::empty() const
-{
-    return (w <= 0.0f || h <= 0.0f);
-}
-
-template<> void basic_rect<F32>::clip(basic_rect<F32>& a, basic_rect<F32>& b) const
-{
-    F32 bwaw = b.w / a.w;
-    F32 bwah = b.h / a.h;
-
-    if (a.x < x)
-    {
-        F32 xax = x - a.x;
-        F32 bwawxax = bwaw * xax;
-        a.x = x;
-        a.w -= xax;
-        b.x += bwawxax;
-        b.w -= bwawxax;
-    }
-
-    if (a.y < y)
-    {
-        F32 yay = y - a.y;
-        F32 bwahyay = bwah * yay;
-        a.y = y;
-        a.h -= yay;
-        b.y += bwahyay;
-        b.h -= bwahyay;
-    }
-
-    F32 axaw = a.x + a.w;
-    F32 xw = x + w;
-
-    if (axaw > xw)
-    {
-        F32 bwawaxawxw = bwaw * (axaw - xw);
-        b.w -= bwawaxawxw;
-        a.w = x + w - a.x;
-    }
-
-    F32 ayah = a.y + a.h;
-    F32 yh = y + h;
-
-    if (ayah > yh)
-    {
-        F32 bwahayahyh = bwah * (ayah - yh);
-        b.h -= bwahayahyh;
-        a.h = y + h - a.y;
-    }
-}
-
-template<> basic_rect<F32>& basic_rect<F32>::operator|=(const basic_rect<F32>& other)
-{
-    F32 x1, y1, x2, y2;
-    F32 _x1, _y1, _x2, _y2;
-
-    this->get_bounds(x1, y1, x2, y2);
-    other.get_bounds(_x1, _y1, _x2, _y2);
-
-    if (x1 > _x1)
-    {
-        x1 = _x1;
-    }
-
-    if (y1 > _y1)
-    {
-        y1 = _y1;
-    }
-
-    if (x2 < _x2)
-    {
-        x2 = _x2;
-    }
-
-    if (y2 < _y2)
-    {
-        y2 = _y2;
-    }
-
-    set_bounds(x1, y1, x2, y2);
-
-    return *this;
-}
-
-template <> void basic_rect<F32>::set_bounds(F32 x1, F32 y1, F32 x2, F32 y2)
-{
-    x = x1;
-    w = x2 - x1;
-    y = y1;
-    h = y2 - y1;
-}
-
-template<> void basic_rect<F32>::get_bounds(F32& x1, F32& y1, F32& x2, F32& y2) const
-{
-    x1 = x;
-    x2 = x + w;
-    y1 = y;
-    y2 = y + h;
-}
-
-template<> basic_rect<F32>& basic_rect<F32>::move(F32 x, F32 y)
-{
-    this->x += x;
-    this->y += y;
-    return *this;
-}
-
-template<> basic_rect<F32>& basic_rect<F32>::scale(F32 s)
-{
-    return scale(s, s, s, s);
-}
-
+//basic_rect<F32>& basic_rect<F32>::assign(F32 x, F32 y, F32 w, F32 h)
+//{
+//    this->x = x;
+//    this->y = y;
+//    this->w = w;
+//    this->h = h;
+//    return *this;
+//}
+ 
 xVec2& xVec2::assign(F32 x, F32 y)
 {
     this->x = x;
@@ -3697,13 +3198,9 @@ xVec2& xVec2::assign(F32 x, F32 y)
     return *this;
 }
 
-static substr _427;
-
 substr substr::create(const char* text, size_t size)
 {
-    substr s = _427;
-    s.text = text;
-    s.size = size;
+    substr s = { text, size };
     return s;
 }
 
@@ -3801,46 +3298,6 @@ xtextbox::tag_type* xtextbox::find_format_tag(const substr& s)
 size_t xtextbox::layout::jots_size() const
 {
     return _jots_size;
-}
-
-xtextbox xtextbox::create()
-{
-    return create(xfont::create(), screen_bounds, 0, 0.0f, 0.0f, 0.0f, 0.0f);
-}
-
-xtextbox xtextbox::create(const xfont& font, const basic_rect<F32>& bounds, U32 flags, F32 line_space, F32 tab_stop, F32 left_indent, F32 right_indent)
-{
-    xtextbox r;
-    r.font = font;
-    r.bounds = bounds;
-    r.flags = flags;
-    r.line_space = line_space;
-    r.tab_stop = tab_stop;
-    r.left_indent = left_indent;
-    r.right_indent = right_indent;
-    r.texts_size = 0;
-    r.text_hash = 0;
-    r.cb = &text_cb;
-    return r;
-}
-
-
-
-xfont xfont::create()
-{
-    return create(0, 0.0f, 0.0f, 0.0f, g_WHITE, screen_bounds);
-}
-
-xfont xfont::create(U32 id, F32 width, F32 height, F32 space, iColor_tag color, const basic_rect<F32>& clip)
-{
-    xfont r;
-    r.id = id;
-    r.width = width;
-    r.height = height;
-    r.space = space;
-    r.color = color;
-    r.clip = clip;
-    return r;
 }
 
 void xtextbox::jot::intersect_flags(const jot& other)

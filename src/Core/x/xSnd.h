@@ -112,7 +112,6 @@ enum sound_listener_type
 
 extern xSndGlobals gSnd;
 
-void xSndInit();
 void xSndSceneInit();
 void xSndResume();
 void xSndUpdate();

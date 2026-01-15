@@ -531,6 +531,7 @@
 //    void ShieldFX(F32 dt);
 //};
 //
+//void PlayTheFiddle();
 //void zNPCRobot_SceneReset();
 //void ZNPC_Robot_Startup();
 //void ZNPC_Robot_Shutdown();

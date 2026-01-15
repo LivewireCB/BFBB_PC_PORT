@@ -1,27 +1,27 @@
-//#include "zNPCSpawner.h"
-//
-//#include <types.h>
-//
-//#include "zEvent.h"
-//#include "xDraw.h"
-//#include "zNPCSupport.h"
-//#include "zGlobals.h"
-//#include "xMathInlines.h"
-//#include "zNPCTypeRobot.h"
-//
+#include "zNPCSpawner.h"
+
+#include <types.h>
+
+#include "zEvent.h"
+#include "xDraw.h"
+#include "zNPCSupport.h"
+#include "zGlobals.h"
+#include "xMathInlines.h"
+#include "zNPCTypeRobot.h"
+
 //static SMDepot g_smdepot = {};
-//static S32 g_drawSpawnBounds;
-//
-//extern F32 _805_Spawner; // 5.0f
-//
-//void zNPCSpawner_Startup()
-//{
-//}
-//
-//void zNPCSpawner_Shutdown()
-//{
-//}
-//
+static S32 g_drawSpawnBounds;
+
+extern F32 _805_Spawner; // 5.0f
+
+void zNPCSpawner_Startup()
+{
+}
+
+void zNPCSpawner_Shutdown()
+{
+}
+
 //void zNPCSpawner_ScenePrepare()
 //{
 //    SMDepot* depot = &g_smdepot;

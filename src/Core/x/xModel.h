@@ -12,7 +12,6 @@
 #include "xModelBucket.h"
 
 struct xModelBucket;
-struct xModelInstance;
 
 struct xModelPool
 {
@@ -26,26 +25,36 @@ struct xModelInstance
     xModelInstance* Next;
     xModelInstance* Parent;
     xModelPool* Pool;
-    xAnimPlay* Anim; 
+    xAnimPlay* Anim; // 0xC
+
+    // Offset: 0x10
     RpAtomic* Data;
     U32 PipeFlags;
     F32 RedMultiplier;
     F32 GreenMultiplier;
+
+    // Offset: 0x20
     F32 BlueMultiplier;
     F32 Alpha;
     F32 FadeStart;
     F32 FadeEnd;
+
+    // Offset: 0x30
     xSurface* Surf;
     xModelBucket** Bucket;
     xModelInstance* BucketNext;
     xLightKit* LightKit;
+
+    // Offset: 0x40
     void* Object;
-    U16 Flags; 
-    U8 BoneCount; 
-    U8 BoneIndex; 
-    U8* BoneRemap; 
-    RwMatrix* Mat; 
-    xVec3 Scale; 
+    U16 Flags; // 0x44
+    U8 BoneCount; // 0x46
+    U8 BoneIndex; // 0x47
+    U8* BoneRemap; // 0x48
+    RwMatrix* Mat; // 0x4C
+
+    // Offset: 0x50
+    xVec3 Scale; // 0x704 in globals
     U32 modelID;
     U32 shadowID;
     RpAtomic* shadowmapAtomic;
@@ -116,9 +125,10 @@ struct xModelPipeInfo
 extern S32 xModelPipeNumTables;
 extern S32 xModelPipeCount[16];
 extern xModelPipeInfo* xModelPipeData[16];
-static S32 xModelLookupCount;
-static xModelPipeLookup* xModelLookupList;
+extern S32 xModelLookupCount;
+extern xModelPipeLookup* xModelLookupList;
 extern S32 xModelInstStaticAlloc;
+extern S32 xModelBucketEnabled;
 
 U32 xModelGetPipeFlags(RpAtomic* model);
 void xModelInit();
@@ -137,11 +147,14 @@ void xModelSetMaterialAlpha(xModelInstance* modelInst, U8 alpha);
 void xModelUpdate(xModelInstance* modelInst, F32 timeDelta);
 xMat4x3* xModelGetFrame(xModelInstance* modelInst);
 void xModelEval(xModelInstance* modelInst);
+void xModelMaterialMul(xModelInstance* model, F32 rm, F32 gm, F32 bm);
+void xModelResetMaterial(xModelInstance* model);
 void xModel_SceneEnter(RpWorld* world);
 void xModel_SceneExit(RpWorld* world);
 xSphere* xModelGetLocalSBound(xModelInstance* model);
 void xModelGetBoneMat(xMat4x3& mat, const xModelInstance& model, size_t index);
 void xModelInstanceUpgradeBrotherShared(xModelInstance* inst, U32 flags);
+xVec3 xModelGetBoneLocation(xModelInstance& model, U32 index);
 
 inline void xModelSetFrame(xModelInstance* modelInst, const xMat4x3* frame)
 {
@@ -154,4 +167,3 @@ inline xMat4x3* xModelGetFrame(xModelInstance* modelInst)
 }
 
 #endif
-

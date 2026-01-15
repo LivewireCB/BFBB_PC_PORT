@@ -1,11 +1,11 @@
-//#include "xGroup.h"
-//
-//#include "xMath.h"
-//#include "xMemMgr.h"
-//#include "zScene.h"
-//
-//#include <types.h>
-//
+#include "xGroup.h"
+
+#include "xMath.h"
+#include "xMemMgr.h"
+#include "zScene.h"
+
+#include <types.h>
+
 //void xGroupInit(void* b, void* asset)
 //{
 //    xGroupInit((xBase*)b, (xGroupAsset*)asset);
@@ -65,12 +65,12 @@
 //{
 //    xBaseSave((xBase*)ent, s);
 //}
-//
-//void xGroupLoad(xGroup* ent, xSerial* s)
-//{
-//    xBaseLoad((xBase*)ent, s);
-//}
-//
+
+void xGroupLoad(xGroup* ent, xSerial* s)
+{
+    xBaseLoad((xBase*)ent, s);
+}
+
 //void xGroupReset(xGroup* ent)
 //{
 //    xBaseReset((xBase*)ent, (xBaseAsset*)ent->asset);
@@ -175,12 +175,12 @@
 //    // but presumably it's different from the good path.
 //    return 0;
 //}
-//
-//U32 xGroupGetCount(xGroup* g)
-//{
-//    return g->asset->itemCount;
-//}
-//
+
+U32 xGroupGetCount(xGroup* g)
+{
+    return g->asset->itemCount;
+}
+
 //xBase* xGroupGetItemPtr(xGroup* g, U32 index)
 //{
 //    if ((g->flg_group & 1) == 0)

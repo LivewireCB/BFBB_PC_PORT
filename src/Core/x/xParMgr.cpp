@@ -1,32 +1,33 @@
-//#include "iParMgr.h"
-//
-//#include "xPar.h"
-//#include "xParMgr.h"
-//
-//#include <types.h>
-//
-//volatile static U32 sFrameCount;
-//static S32 sParMgrInit;
-//
-//void xParMgrInit()
-//{
-//    if (sParMgrInit == 0)
-//    {
-//        xParMemInit();
-//        iParMgrInit();
-//        sParMgrInit = 1;
-//    }
-//    else
-//    {
-//        xParMgrKillAllParticles();
-//        iParMgrInit();
-//    }
-//}
-//
-//void xParMgrKillAllParticles()
-//{
-//}
-//
+#include "iParMgr.h"
+
+#include "xPar.h"
+#include "xParMgr.h"
+
+#include <types.h>
+
+volatile static U32 sFrameCount;
+static S32 sParMgrInit;
+
+void xParMgrInit() WIP
+// iParMgrInit hasnt been decomped yet
+{
+    if (sParMgrInit == 0)
+    {
+        xParMemInit();
+        //iParMgrInit();
+        sParMgrInit = 1;
+    }
+    else
+    {
+        xParMgrKillAllParticles();
+        //iParMgrInit();
+    }
+}
+
+void xParMgrKillAllParticles()
+{
+}
+
 //void xParMgrUpdate(F32 elapsedTime)
 //{
 //    iParMgrUpdate(elapsedTime);

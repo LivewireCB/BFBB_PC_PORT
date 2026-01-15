@@ -43,7 +43,7 @@ struct xCollis
     U32 oid;
     void* optr;
     xModelInstance* mptr;
-    F32 dist;
+    F32 dist; // 0x10
     xVec3 norm;
     xVec3 tohit;
     xVec3 depen;
@@ -76,23 +76,38 @@ struct xSweptSphere
     xVec3 end;
     F32 radius;
     F32 dist;
+    // Offset: 0x20
     xiMat4x3Union basis;
     xiMat4x3Union invbasis;
+    // Offset: 0xa0
     xBox box;
+    // Offset: 0xb8
     xQCData qcd;
+    // Offset: 0xd8
     F32 boxsize;
     F32 curdist;
+    // Offset: 0xe0
     xVec3 contact;
     xVec3 polynorm;
     U32 oid;
     void* optr;
+    // Offset: 0x100
     xModelInstance* mptr;
     S32 hitIt;
     xVec3 worldPos;
     xVec3 worldContact;
+    // Offset: 0x120
     xVec3 worldNormal;
+    // Offset: 0x12c
     xVec3 worldTangent;
+    // Offset: 0x138
     xVec3 worldPolynorm;
+};
+
+struct SweptSphereCollParam
+{
+    RpGeometry* geometry;
+    xSweptSphere* sws;
 };
 
 enum _xCollsIdx
@@ -109,7 +124,9 @@ enum _xCollsIdx
 struct xScene;
 
 void xCollideInit(xScene* sc);
+void xCollideCalcTri(xCollis::tri_data&, const xModelInstance&, const xVec3&, const xVec3&);
 S32 xSweptSphereToBox(xSweptSphere* sws, xBox* box, xMat4x3* mat);
+S32 xSweptSphereToEnv(xSweptSphere* sws, xEnv* env);
 S32 xSweptSphereToModel(xSweptSphere* sws, RpAtomic* model, RwMatrix* mat);
 S32 xSweptSphereToScene(xSweptSphere* sws, xScene* sc, xEnt* mover, U8 collType);
 void xSweptSpherePrepare(xSweptSphere* sws, xVec3* start, xVec3* end, F32 radius);
@@ -135,10 +152,62 @@ void xVec3AddScaled(xVec3*, const xVec3*, F32);
 xVec3 xCollisTriHit(const xCollis::tri_data& tri, const xModelInstance& model);
 bool xModelAnimCollDirty(const xModelInstance& cm);
 void xModelAnimCollRefresh(const xModelInstance& cm);
+void xModelAnimCollRestore(const xModelInstance& cm);
+void xModelAnimCollApply(const xModelInstance& cm);
 
-inline bool xSphereHitsVCircle(const xSphere& s, const xVec3& c, F32 r)
+_xCollsIdx xCollideGetCollsIdx(const xCollis* coll, const xVec3* tohit, const xMat3x3* mat);
+
+inline void xParabolaEvalPos(const xParabola* p, xVec3* pos, F32 time)
 {
-    return xSphereHitsVCircle(s.center, s.r, c, r);
+    xVec3Copy(pos, &p->initPos);
+    xVec3AddScaled(pos, &p->initVel, time);
+    pos->y -= 0.5f * p->gravity * time * time;
+}
+
+inline void xParabolaEvalVel(const xParabola* p, xVec3* vel, F32 time)
+{
+    xVec3Copy(vel, &p->initVel);
+    vel->y -= p->gravity * time;
+}
+
+inline bool xSphereHitsSphere(const xVec3& loc1, F32 r1, const xVec3& loc2, F32 r2)
+{
+    F32 dist2 = (loc2 - loc1).length2();
+    F32 max_dist = r1 + r2;
+    return dist2 <= SQR(max_dist);
+}
+
+inline bool xSphereHitsSphere(const xSphere& o1, const xSphere& o2)
+{
+    return xSphereHitsSphere(o1.center, o1.r, o2.center, o2.r);
+}
+
+inline bool xSphereHitsBox(const xVec3& c, F32 r, const xBox& b)
+{
+    return c.x + r >= b.lower.x && c.y + r >= b.lower.y && c.z + r >= b.lower.z &&
+           c.x - r <= b.upper.x && c.y - r <= b.upper.y && c.z - r <= b.upper.z;
+}
+
+inline bool xSphereHitsBox(const xSphere& o, const xBox& b)
+{
+    return xSphereHitsBox(o.center, o.r, b);
+}
+
+inline bool xSphereHitsOBB(const xVec3& c, F32 r, const xBox& b, const xMat4x3& mat)
+{
+    xVec3 lc;
+    xMat4x3Tolocal(&lc, &mat, &c);
+    return xSphereHitsBox(lc, r, b);
+}
+
+inline bool xSphereHitsOBB(const xSphere& o, const xBox& b, const xMat4x3& mat)
+{
+    return xSphereHitsOBB(o.center, o.r, b, mat);
+}
+
+inline bool xSphereHitsVCircle(const xSphere& o, const xVec3& cc, F32 cr)
+{
+    return xSphereHitsVCircle(o.center, o.r, cc, cr);
 }
 
 #endif

@@ -1,61 +1,61 @@
-//#include "xMath.h"
-//#include "xMathInlines.h"
-//#include "zGlobals.h"
-//#include "zNPCGoalStd.h"
-//#include "zNPCGoals.h"
-//#include "zNPCSupport.h"
-//
-//#include <types.h>
-//
-//xFactoryInst* GOALCreate_Standard(S32 who, RyzMemGrow* grow, void*)
-//{
-//    xGoal* std = NULL;
-//
-//    switch (who)
-//    {
-//    case NPC_GOAL_IDLE:
-//        std = new (who, grow) zNPCGoalIdle(who);
-//        break;
-//    case NPC_GOAL_WAITING:
-//        std = new (who, grow) zNPCGoalWaiting(who);
-//        break;
-//    case NPC_GOAL_WANDER:
-//        std = new (who, grow) zNPCGoalWander(who);
-//        break;
-//    case NPC_GOAL_PATROL:
-//        std = new (who, grow) zNPCGoalPatrol(who);
-//        break;
-//    case NPC_GOAL_FIDGET:
-//        std = new (who, grow) zNPCGoalFidget(who);
-//        break;
-//    case NPC_GOAL_DEAD:
-//        std = new (who, grow) zNPCGoalDead(who);
-//        break;
-//    case NPC_GOAL_NOMANLAND:
-//        std = new (who, grow) zNPCGoalNoManLand(who);
-//        break;
-//    case NPC_GOAL_LIMBO:
-//        std = new (who, grow) zNPCGoalLimbo(who);
-//        break;
-//    case NPC_GOAL_DEVANIMCYCLE:
-//        std = new (who, grow) zNPCGoalDEVAnimCycle(who);
-//        break;
-//    case NPC_GOAL_DEVANIMSPIN:
-//        std = new (who, grow) zNPCGoalDEVAnimSpin(who);
-//        break;
-//    case NPC_GOAL_DEVANIMHERO:
-//        std = new (who, grow) zNPCGoalDEVHero(who);
-//        break;
-//    }
-//
-//    return std;
-//}
-//
-//void GOALDestroy_Goal(xFactoryInst* inst)
-//{
-//    delete inst;
-//}
-//
+#include "xMath.h"
+#include "xMathInlines.h"
+#include "zGlobals.h"
+#include "zNPCGoalStd.h"
+#include "zNPCGoals.h"
+#include "zNPCSupport.h"
+
+#include <types.h>
+
+xFactoryInst* GOALCreate_Standard(S32 who, RyzMemGrow* grow, void*)
+{
+    xGoal* std = NULL;
+
+    switch (who)
+    {
+    case NPC_GOAL_IDLE:
+        std = new (who, grow) zNPCGoalIdle(who);
+        break;
+    case NPC_GOAL_WAITING:
+        std = new (who, grow) zNPCGoalWaiting(who);
+        break;
+    case NPC_GOAL_WANDER:
+        std = new (who, grow) zNPCGoalWander(who);
+        break;
+    case NPC_GOAL_PATROL:
+        std = new (who, grow) zNPCGoalPatrol(who);
+        break;
+    case NPC_GOAL_FIDGET:
+        std = new (who, grow) zNPCGoalFidget(who);
+        break;
+    case NPC_GOAL_DEAD:
+        std = new (who, grow) zNPCGoalDead(who);
+        break;
+    case NPC_GOAL_NOMANLAND:
+        std = new (who, grow) zNPCGoalNoManLand(who);
+        break;
+    case NPC_GOAL_LIMBO:
+        std = new (who, grow) zNPCGoalLimbo(who);
+        break;
+    case NPC_GOAL_DEVANIMCYCLE:
+        std = new (who, grow) zNPCGoalDEVAnimCycle(who);
+        break;
+    case NPC_GOAL_DEVANIMSPIN:
+        std = new (who, grow) zNPCGoalDEVAnimSpin(who);
+        break;
+    case NPC_GOAL_DEVANIMHERO:
+        std = new (who, grow) zNPCGoalDEVHero(who);
+        break;
+    }
+
+    return std;
+}
+
+void GOALDestroy_Goal(xFactoryInst* inst)
+{
+    delete inst;
+}
+
 //S32 zNPCGoalPushAnim::Enter(F32 dt, void* updCtxt)
 //{
 //    flg_pushanim &= (1 << 16) | (1 << 2) | (1 << 1);

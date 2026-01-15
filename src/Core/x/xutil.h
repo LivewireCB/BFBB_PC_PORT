@@ -3,6 +3,8 @@
 
 #include <types.h>
 
+#define IDTAG(a,b,c,d) (((U32)(a)<<24)|((U32)(b)<<16)|((U32)(c)<<8)|((U32)(d)))
+
 S32 xUtilStartup();
 S32 xUtilShutdown();
 char* xUtil_idtag2string(U32 srctag, S32 bufidx);
