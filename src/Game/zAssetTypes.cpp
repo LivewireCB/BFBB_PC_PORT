@@ -606,37 +606,31 @@ static void* FindAssetCB(U32 ID, char*)
 }
 
 static xAnimTable* Anim_ATBL_getTable(xAnimTable* (*constructor)());
-static void* ATBL_Read(void*, U32, void* indata, U32 param_4, U32* outsize)
+
+typedef xAnimTable* (*xAnimTableConstructor)();
+
+static void* ATBL_Read(void* userdata, U32 assetid, void* indata, U32 insize, U32* outsize) NONMATCH("https://decomp.me/scratch/IEjPg")
 {
-    U32 i;
-    U32 j;
+    U32 i, j;
     U32 debugNum = 0;
     U32 tmpsize;
-
     xAnimTable* table;
     xAnimState* astate;
     xAnimTransition* atran;
-    U8* zaBytes;
-
+    U8* zaBytes = (U8*)indata;
     xAnimAssetTable* zaTbl = (xAnimAssetTable*)indata;
     void** zaRaw = (void**)(zaTbl + 1);
     xAnimAssetFile* zaFile = (xAnimAssetFile*)(zaRaw + zaTbl->NumRaw);
-    xAnimAssetState* zaState =
-        (xAnimAssetState*)((U32)zaFile + zaTbl->NumFiles * sizeof(xAnimAssetFile));
+    xAnimAssetState* zaState = (xAnimAssetState*)(zaFile + zaTbl->NumFiles);
 
-    for (i = 0; i < zaTbl->NumRaw; ++i)
-    {
-        zaRaw[i] = xSTFindAsset(*(U32*)&zaRaw[i], &tmpsize);
+    for (i = 0; i < zaTbl->NumRaw; i++) {
+        zaRaw[i] = xSTFindAsset((U32)zaRaw[i], &tmpsize);
     }
 
-    for (i = 0; i < zaTbl->NumRaw; ++i)
-    {
-        if (zaRaw[i] == NULL)
-        {
-            for (j = 0; j < zaTbl->NumRaw; ++j)
-            {
-                if (zaRaw[j] != NULL)
-                {
+    for (i = 0; i < zaTbl->NumRaw; i++) {
+        if (!zaRaw[i]) {
+            for (j = 0; j < zaTbl->NumRaw; j++) {
+                if (zaRaw[j]) {
                     zaRaw[i] = zaRaw[j];
                     break;
                 }
@@ -644,68 +638,58 @@ static void* ATBL_Read(void*, U32, void* indata, U32 param_4, U32* outsize)
         }
     }
 
-    for (i = 0; i < zaTbl->NumRaw; ++i)
-    {
-        if (*(U32*)zaRaw[i] == 'QSPM')
-        {
+    for (i = 0; i < zaTbl->NumRaw; i++) {
+        if (*(U32*)zaRaw[i] == 'QSPM') {
             xMorphSeqSetup(zaRaw[i], FindAssetCB);
         }
     }
 
-    for (i = 0; i < zaTbl->NumFiles; ++i)
-    {
-        zaFile[i].RawData = (void**)((U32)zaFile[i].RawData + (U32)zaTbl);
-        for (S32 k = 0; k < zaFile[i].NumAnims[0] * zaFile[i].NumAnims[1]; ++k)
-        {
+    for (i = 0; i < zaTbl->NumFiles; i++) {
+        zaFile[i].RawData = (void**)(zaBytes + (U32)zaFile[i].RawData);
+        for (S32 k = 0; k < zaFile[i].NumAnims[0] * zaFile[i].NumAnims[1]; k++) {
             zaFile[i].RawData[k] = zaRaw[(U32)zaFile[i].RawData[k]];
         }
     }
 
     xAnimFile** fList = (xAnimFile**)zaFile;
-    for (i = 0; i < zaTbl->NumFiles; ++i)
-    {
-        fList[i] = xAnimFileNewBilinear(zaFile[i].RawData, "", zaFile[i].FileFlags, NULL,
-                                        zaFile[i].NumAnims[0], zaFile[i].NumAnims[1]);
-        if (zaFile[i].TimeOffset >= 0.0f)
-        {
+    for (i = 0; i < zaTbl->NumFiles; i++) {
+        fList[i] = xAnimFileNewBilinear(
+            zaFile[i].RawData, "", zaFile[i].FileFlags, NULL,
+            zaFile[i].NumAnims[0], zaFile[i].NumAnims[1]);
+        if (zaFile[i].TimeOffset >= 0.0f) {
             xAnimFileSetTime(fList[i], zaFile[i].Duration, zaFile[i].TimeOffset);
         }
     }
 
-    xAnimTable* (*constructor)() = NULL;
-    if (zaTbl->ConstructFunc < sizeof(tableFuncList) / sizeof(xAnimTable * (*)()))
-    {
+    xAnimTableConstructor constructor = NULL;
+    if (zaTbl->ConstructFunc < ARRAY_LENGTH(tableFuncList)) {
         constructor = tableFuncList[zaTbl->ConstructFunc];
     }
-    else
-    {
-        for (S32 i = 0; i < sizeof(animTable) / sizeof(AnimTableList); ++i)
-        {
-            if (zaTbl->ConstructFunc == animTable[i].id)
-            {
+    else {
+        for (S32 i = 0; i < (S32)ARRAY_LENGTH(animTable); i++) {
+            if (zaTbl->ConstructFunc == animTable[i].id) {
                 constructor = animTable[i].constructor;
                 break;
             }
         }
     }
 
-    gxAnimUseGrowAlloc = true;
-
+    gxAnimUseGrowAlloc = 1;
     table = Anim_ATBL_getTable(constructor);
 
-    char tmpstr[32];
-    for (i = 0; i < zaTbl->NumStates; ++i)
-    {
-        astate = xAnimTableAddFileID(table, fList[zaState[i].FileIndex], zaState[i].StateID,
-                                     zaState[i].SubStateID, zaState[i].SubStateCount);
+#if 1
+    if (!table) return NULL;
+#endif
 
-        if (astate == NULL)
-        {
+    for (i = 0; i < zaTbl->NumStates; i++) {
+        astate = xAnimTableAddFileID(
+            table, fList[zaState[i].FileIndex],
+            zaState[i].StateID, zaState[i].SubStateID, zaState[i].SubStateCount);
+        if (!astate) {
+            char tmpstr[32];
             sprintf(tmpstr, "Debug%02d", debugNum++);
-            astate = xAnimTableNewState(table, tmpstr, 0x20, 0x80000000, 1.0f, NULL, NULL, 0.0f,
-                                        NULL, NULL, xAnimDefaultBeforeEnter, NULL, NULL);
-            atran = xAnimTableNewTransition(table, tmpstr, NULL, NULL, NULL, 0x10, 0, 0.0f, 0.0f, 0,
-                                            0, 0.2f, NULL);
+            astate = xAnimTableNewStateDefault(table, tmpstr, 0x20, 0x80000000);
+            atran = xAnimTableNewTransitionDefault(table, tmpstr, NULL, 0, 0.2f);
             atran->Dest = table->StateList;
             xAnimTableAddFileID(table, fList[zaState[i].FileIndex], astate->ID, 0, 0);
         }
@@ -713,47 +697,44 @@ static void* ATBL_Read(void*, U32, void* indata, U32 param_4, U32* outsize)
     }
 
     xAnimFile* foundFile = NULL;
-    for (astate = table->StateList; astate != NULL; astate = astate->Next)
-    {
-        if (foundFile == NULL && astate->Data != NULL)
-        {
+    astate = table->StateList;
+    while (astate) {
+        if (!foundFile && astate->Data) {
             foundFile = astate->Data;
         }
+        astate = astate->Next;
     }
-    for (astate = table->StateList; astate != NULL; astate = astate->Next)
-    {
-        if (astate->Data == NULL)
-        {
+
+    astate = table->StateList;
+    while (astate) {
+        if (!astate->Data) {
             astate->Data = foundFile;
             astate->UserFlags |= 0x40000000;
         }
+        astate = astate->Next;
     }
 
-    for (i = 0; i < zaTbl->NumStates; ++i)
-    {
-        if (zaState[i].EffectCount != 0)
-        {
+    for (i = 0; i < zaTbl->NumStates; i++) {
+        if (zaState[i].EffectCount) {
             xAnimState* state = xAnimTableGetStateID(table, zaState[i].StateID);
-            xAnimAssetEffect* zaEffect = (xAnimAssetEffect*)((U32)zaTbl + zaState[i].EffectOffset);
-
-            if (state != NULL)
-            {
-                for (j = 0; j < zaState[i].EffectCount; ++j)
-                {
-                    xAnimEffect* effect =
-                        xAnimStateNewEffect(state, zaEffect->Flags, zaEffect->StartTime,
-                                            zaEffect->EndTime, effectFuncList[zaEffect->EffectType],
-                                            zaEffect->UserDataSize);
-                    memcpy(effect + 1, zaEffect + 1, zaEffect->UserDataSize);
-
-                    zaEffect = (xAnimAssetEffect*)(U32(zaEffect) + zaEffect->UserDataSize) + 1;
+            xAnimAssetEffect* zaEffect = (xAnimAssetEffect*)(zaBytes + zaState[i].EffectOffset);
+            if (state) {
+                for (j = 0; j < zaState[i].EffectCount; j++) {
+                    xAnimEffect* effect = xAnimStateNewEffect(
+                        state, zaEffect->Flags,
+                        zaEffect->StartTime, zaEffect->EndTime,
+                        effectFuncList[zaEffect->EffectType],
+                        zaEffect->UserDataSize);
+                    memcpy((void*)(effect + 1), (void*)(zaEffect + 1), zaEffect->UserDataSize);
+                    zaEffect = (xAnimAssetEffect*)((U8*)zaEffect + zaEffect->UserDataSize + sizeof(xAnimAssetEffect));
                 }
             }
         }
     }
 
-    gxAnimUseGrowAlloc = false;
+    gxAnimUseGrowAlloc = 0;
     *outsize = sizeof(xAnimTable);
+
     return table;
 }
 

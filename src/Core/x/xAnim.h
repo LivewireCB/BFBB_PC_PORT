@@ -6,11 +6,16 @@
 #include "xMath3.h"
 #include "xMemMgr.h"
 
+struct xAnimFile;
+struct xAnimMultiFileBase;
+struct xAnimMultiFileEntry;
+struct xAnimMultiFile;
 struct xAnimState;
-struct xAnimTransition;
-struct xAnimTransitionList;
 struct xAnimEffect;
 struct xAnimActiveEffect;
+struct xAnimTransition;
+struct xAnimTransitionList;
+struct xAnimTable;
 struct xAnimSingle;
 struct xAnimPlay;
 

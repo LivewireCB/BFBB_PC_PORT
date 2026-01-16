@@ -79,11 +79,11 @@ void zMenuSetup() RIMP
     zSceneSetup();
     sAttractMode_timer = 48.264f;
     //zGameSetupPlayer();
-    zEnvStartingCamera(gCurEnv);
+    //zEnvStartingCamera(gCurEnv);
     xCameraUpdate(&globals.camera, -1.0f);
     //xSkyDome_Setup();
-    zEntEventAll(NULL, 0, eEventSceneBegin, NULL);
-    zEntEventAll(NULL, 0, eEventRoomBegin, NULL);
+    //zEntEventAll(NULL, 0, eEventSceneBegin, NULL);
+    //zEntEventAll(NULL, 0, eEventRoomBegin, NULL);
     if (globals.updateMgr)
     {
         //xUpdateCull_Update(globals.updateMgr, eEventDispatcher_PadVibrateOn);

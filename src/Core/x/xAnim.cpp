@@ -1126,20 +1126,12 @@ xAnimState* xAnimTableAddFileID(xAnimTable* table, xAnimFile* file, U32 stateID,
 
 xAnimState* xAnimTableGetStateID(xAnimTable* table, U32 ID)
 {
-    xAnimState* curr;
-
-    curr = table->StateList;
-
-    while (curr)
-    {
+    xAnimState* curr = table->StateList;
+    while (curr != NULL) {
         if (curr->ID == ID)
-        {
             return curr;
-        }
-
         curr = curr->Next;
     }
-
     return NULL;
 }
 
