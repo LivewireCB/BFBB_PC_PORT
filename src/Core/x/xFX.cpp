@@ -370,15 +370,15 @@ RpAtomic* AtomicDisableMatFX(RpAtomic* atomic)
     return atomic;
 }
 
-//static RpAtomic* PreAllocMatFX_cb(RpAtomic* atomic, void*)
-//{
-//    AtomicDisableMatFX(atomic);
-//    return atomic;
-//}
+static RpAtomic* PreAllocMatFX_cb(RpAtomic* atomic, void*)
+{
+    AtomicDisableMatFX(atomic);
+    return atomic;
+}
 
 void xFXPreAllocMatFX(RpClump* clump) RIMP
 {
-    //RpClumpForAllAtomics(clump, PreAllocMatFX_cb, NULL);
+    RpClumpForAllAtomics(clump, PreAllocMatFX_cb, NULL);
 }
 
 RpMaterial* MaterialSetShininess(RpMaterial* material, void*)

@@ -53,5 +53,6 @@ typedef double F64;
 #define RIMP // Function needs to be reimplemented
 #define NONMATCH(decompme) // Function is fully decomped, but not matching (must have decomp.me link!)
 #define MIMP // function needed for main menu
+#define COMPLETE // function is fully implemented/decomped
 
 #define ENABLE_WIP_CODE 0 // Use to disable part of a function, usually code that depends on unimplemented functions

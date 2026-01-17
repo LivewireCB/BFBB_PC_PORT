@@ -1600,7 +1600,7 @@ void zSceneInit(U32 theSceneID, S32 reloadInProgress) RIMP
 //        }
 //    }
 //}
-//
+
 //void zSceneLoad(zScene* ent, xSerial* s)
 //{
 //    xSerial xser;
@@ -1873,7 +1873,7 @@ void zSceneInit(U32 theSceneID, S32 reloadInProgress) RIMP
 //        }
 //    }
 //}
-//
+
 //S32 zSceneSetup_serialTraverseCB(U32 clientID, xSerial* xser);
 //
 //void zSceneReset()
@@ -3266,9 +3266,10 @@ static xBase* zSceneObjHashtableGet(U32 id)
     return NULL;
 }
 
-xBase* zSceneFindObject(U32 gameID)
+xBase* zSceneFindObject(U32 gameID) RIMP
 {
-    return zSceneObjHashtableGet(gameID);
+    return NULL;
+    //return zSceneObjHashtableGet(gameID);
 }
 
 //xBase* zSceneGetObject(S32 type, S32 idx)

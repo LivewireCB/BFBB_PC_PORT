@@ -1,25 +1,25 @@
-//#include "xHud.h"
-//#include "xHudText.h"
-//#include "xHudFontMeter.h"
-//#include "xHudModel.h"
-//#include "xString.h"
-//#include "zHud.h"
-//#include "zScene.h"
-//#include "zGlobals.h"
-//#include "zGameState.h"
-//#include "zGame.h"
-//
-//#include <types.h>
-//#include <string.h>
-//
+#include "xHud.h"
+#include "xHudText.h"
+#include "xHudFontMeter.h"
+#include "xHudModel.h"
+#include "xString.h"
+#include "zHud.h"
+#include "zScene.h"
+#include "zGlobals.h"
+#include "zGameState.h"
+#include "zGame.h"
+
+#include <types.h>
+#include <string.h>
+
 //// TODO: This also lives in zCombo - those should be moved to a header at some point
 //struct widget_chunk : xBase
 //{
 //    xhud::text_widget w;
 //};
-//
-//namespace zhud
-//{
+
+namespace zhud
+{
 //    namespace
 //    {
 //        static U8 hiding[5];
@@ -51,7 +51,7 @@
 //        static const S32 meter_widget_index[5] = { 4, 0, 1, 5, 7 };
 //        static const S32 model_widget_index[5] = { -1, 2, 3, 6, 8 };
 //
-//        bool inited;
+        bool inited;
 //        bool last_paused = true;
 //
 //        static void hide_widget(xhud::widget& widget, xhud::motive& motive)
@@ -101,13 +101,14 @@
 //            }
 //        }
 //    } // namespace
-//
-//    void zhud::init()
-//    {
-//        inited = true;
-//        xhud::init();
-//    }
-//
+
+    void zhud::init() RIMP
+        // I kinda dont feel like implementing the entirety of xhud right now
+    {
+        inited = true;
+        //xhud::init();
+    }
+
 //    void zhud::setup()
 //    {
 //        S32 i;
@@ -327,4 +328,4 @@
 //            hiding[i] = FALSE;
 //        }
 //    }
-//} // namespace zhud
+} // namespace zhud

@@ -111,7 +111,8 @@ void iScrFxCameraEndScene(RwCamera* pCamera) RIMP
 
 void iScrFxPostCameraEnd(RwCamera* pCamera) RIMP
 {
-    //GCMB_SiphonFrameBuffer(pCamera);
+    //GCMB_SiphonFrame
+    // (pCamera);
 }
 
 static void iCameraOverlayRender(RwCamera* pCamera, RwRaster* ras, RwRGBA col) RIMP

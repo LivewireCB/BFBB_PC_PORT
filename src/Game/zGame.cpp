@@ -37,11 +37,13 @@
 //{
 //    0.0f, 0.0f, 1.0f, 1.0f
 //};
-//
-//static U32 sPlayerMarkerStartID;
+
+U32 startPressed = 0xFFFFFFFF;
+U32 gLevelChanged;
+static U32 sPlayerMarkerStartID;
 //static U32 sPlayerMarkerStartCamID;
-//static F32 sPlayerStartAngle;
-//static S32 sPortalling;
+static F32 sPlayerStartAngle;
+static S32 sPortalling;
 //extern eGameMode gGameMode;
 //static F32 sGameOverTimer;
 //F32 sTimeElapsed;
@@ -51,8 +53,8 @@
 //extern RpWorld* World;
 //extern RwCamera* sGameScreenTransCam;
 //extern _tagTRCPadInfo gTrcPad[4];
-//extern S32 g_hiphopReloadHIP;
-//extern S32 g_hiphopForcePortal;
+static S32 g_hiphopReloadHIP;
+static S32 g_hiphopForcePortal;
 //xPortalAsset dummyPortalAsset;
 //_zPortal dummyPortal;
 //U32 gSoak;
@@ -333,38 +335,38 @@
 //
 //    return nextsoak;
 //}
-//
-//eGameWhereAmI gGameWhereAmI;
+
+eGameWhereAmI gGameWhereAmI;
 
 // Scheduling, I guess
 void zGameInit(U32 theSceneID) RIMP
 {
-//    gGameWhereAmI = eGameWhere_InitStart;
-//    xtextbox::clear_layout_cache();
-//    xsrand(iTimeGet());
-//    iTimeGet();
-//    xrand();
-//    gGameWhereAmI = eGameWhere_InitScene;
-//    if (g_hiphopReloadHIP != 0)
-//    {
-//        zSceneInit(theSceneID, 1);
-//    }
-//    else
-//    {
-//        zSceneInit(theSceneID, 0);
-//    }
-//    g_hiphopReloadHIP = 0;
-//    g_hiphopForcePortal = 0;
-//    gGameWhereAmI = eGameWhere_InitCamera;
-//    xCameraInit(&globals.camera, 640, 480);
-//    zCameraReset(&globals.camera);
-//    xCameraSetScene(&globals.camera, globals.sceneCur);
-//    gGameWhereAmI = eGameWhere_InitMusic;
-//    zMusicInit();
-//    gGameWhereAmI = eGameWhere_InitOther;
-//    zGameStats_Init();
-//    zhud::init();
-//    gGameWhereAmI = eGameWhere_InitEnd;
+    gGameWhereAmI = eGameWhere_InitStart;
+    xtextbox::clear_layout_cache();
+    xsrand(iTimeGet());
+    iTimeGet();
+    xrand();
+    gGameWhereAmI = eGameWhere_InitScene;
+    if (g_hiphopReloadHIP != 0)
+    {
+        zSceneInit(theSceneID, 1);
+    }
+    else
+    {
+        zSceneInit(theSceneID, 0);
+    }
+    g_hiphopReloadHIP = 0;
+    g_hiphopForcePortal = 0;
+    gGameWhereAmI = eGameWhere_InitCamera;
+    xCameraInit(&globals.camera, 640, 480);
+    zCameraReset(&globals.camera);
+    xCameraSetScene(&globals.camera, globals.sceneCur);
+    gGameWhereAmI = eGameWhere_InitMusic;
+    //zMusicInit();
+    gGameWhereAmI = eGameWhere_InitOther;
+    zGameStats_Init();
+    zhud::init();
+    gGameWhereAmI = eGameWhere_InitEnd;
 }
 
 // Scheduling, I guess
@@ -396,12 +398,12 @@ void zGameExit() RIMP
 
 void zGameSetup() RIMP
 {
-    /*gGameWhereAmI = eGameWhere_SetupScene;
+    gGameWhereAmI = eGameWhere_SetupScene;
     zSceneSetup();
     gGameWhereAmI = eGameWhere_SetupZFX;
 	RpWorld* world = globals.sceneCur->env->geom->world;
     xModel_SceneEnter(world);
-    zFX_SceneEnter(world);
+    //zFX_SceneEnter(world);
     gGameWhereAmI = eGameWhere_SetupPlayer;
     zGameSetupPlayer();
     gGameWhereAmI = eGameWhere_SetupCamera;
@@ -409,14 +411,14 @@ void zGameSetup() RIMP
     gGameWhereAmI = eGameWhere_SetupScrFX;
     xScrFxReset();
     gGameWhereAmI = eGameWhere_SetupSceneLoad;
-    zSceneLoad(globals.sceneCur, NULL);
+    //zSceneLoad(globals.sceneCur, NULL);
     gGameWhereAmI = eGameWhere_SetupMusicNotify;
-    zMusicNotify(0);
+    //zMusicNotify(0);
     gGameWhereAmI = eGameWhere_SetupHudSetup;
-    zhud::setup();
-    zCombo_Setup();
+    //zhud::setup();
+    //zCombo_Setup();
     gGameWhereAmI = eGameWhere_SetupSkydome;
-    xSkyDome_Setup();
+    //xSkyDome_Setup();
     gGameWhereAmI = eGameWhere_SetupSceneEvents;
     zEntEventAll(0, 0, 0x57, 0);
     zEntEventAll(0, 0, 0x59, 0);
@@ -433,27 +435,27 @@ void zGameSetup() RIMP
     gGameWhereAmI = eGameWhere_SetupLOD;
     zLOD_Update(100);
     gGameWhereAmI = eGameWhere_SetupExtras;
-    zGameExtras_SceneInit();
-    gGameWhereAmI = eGameWhere_SetupEnd;*/
+    //zGameExtras_SceneInit();
+    gGameWhereAmI = eGameWhere_SetupEnd;
 }
 
-//S32 zGameIsPaused()
-//{
-//    if (gGameMode == 8)
-//    {
-//        return 1;
-//    }
-//    if (gGameMode == 7)
-//    {
-//        return 1;
-//    }
-//    if (gGameMode == 6)
-//    {
-//        return 1;
-//    }
-//    return 0;
-//}
-//
+S32 zGameIsPaused()
+{
+    if (gGameMode == 8)
+    {
+        return 1;
+    }
+    if (gGameMode == 7)
+    {
+        return 1;
+    }
+    if (gGameMode == 6)
+    {
+        return 1;
+    }
+    return 0;
+}
+
 //static iTime t1;
 
 void zGameLoop() WIP
@@ -1100,53 +1102,54 @@ void zGameLoop() WIP
 //    }
 //    gGameWhereAmI = eGameWhere_TransitionEnded;
 //}
-//
-//void zGameSetupPlayer()
-//{
-//    xEntAsset* asset = (xEntAsset*)xSTFindAssetByType('PLYR', xSTAssetCountByType('PLYR') - 1, 0);
-//    U32 size;
-//    xMarkerAsset* m;
-//	
-//    asset->baseType = eBaseTypePlayer;
-//	
-//    if (sPortalling != 0)
-//    {
-//        if (sPlayerStartAngle > -1e8f)
-//        {
-//            asset->ang.x = (PI * sPlayerStartAngle) / 180.0f;
-//        }
-//        sPortalling = 0;
-//    }
-//	
-//    asset->ang.y = 0.0f;
-//    asset->ang.z = 0.0f;
-//    gGameWhereAmI = eGameWhere_SetupPlayerInit;
-//    zEntPlayer_Init(&globals.player.ent, asset);
-//	
-//    if (sPlayerMarkerStartID != 0)
-//    {
-//        m = (xMarkerAsset *)xSTFindAsset(sPlayerMarkerStartID, &size);
-//        if (m != NULL)
-//        {
-//            xVec3Copy((xVec3 *)&globals.player.ent.frame->mat.pos,    &m->pos);
-//            xVec3Copy((xVec3 *)&globals.player.ent.frame->oldmat.pos, &m->pos);
-//            xVec3Copy((xVec3 *)&globals.player.ent.model->Mat->pos,   &m->pos);
-//            xCameraSetTargetMatrix(&globals.camera, xEntGetFrame(&globals.player.ent));
-//        }
-//        sPlayerMarkerStartID = 0;
-//    }
-//	
-//    gGameWhereAmI = eGameWhere_SetupPlayerCamera;
-//    zCameraReset(&globals.camera);
-//    zEntPlayer_StoreCheckPoint(&globals.player.ent.frame->mat.pos, globals.player.ent.frame->rot.angle, globals.camera.id);
-//    gGameWhereAmI = eGameWhere_SetupPlayerEnd;
-//	
-//}
-//
-//void zGameStats_Init()
-//{
-//}
-//
+
+void zGameSetupPlayer() RIMP
+{
+    xEntAsset* asset = (xEntAsset*)xSTFindAssetByType('PLYR', xSTAssetCountByType('PLYR') - 1, 0);
+    U32 size;
+    xMarkerAsset* m;
+	
+    asset->baseType = eBaseTypePlayer;
+	
+    if (sPortalling != 0)
+    {
+        if (sPlayerStartAngle > -1e8f)
+        {
+            asset->ang.x = (PI * sPlayerStartAngle) / 180.0f;
+        }
+        sPortalling = 0;
+    }
+	
+    asset->ang.y = 0.0f;
+    asset->ang.z = 0.0f;
+    gGameWhereAmI = eGameWhere_SetupPlayerInit;
+    //zEntPlayer_Init(&globals.player.ent, asset); // Function is not decomped yet.
+	
+    if (sPlayerMarkerStartID != 0)
+    {
+        m = (xMarkerAsset *)xSTFindAsset(sPlayerMarkerStartID, &size);
+        if (m != NULL)
+        {
+            xVec3Copy((xVec3 *)&globals.player.ent.frame->mat.pos,    &m->pos);
+            xVec3Copy((xVec3 *)&globals.player.ent.frame->oldmat.pos, &m->pos);
+            xVec3Copy((xVec3 *)&globals.player.ent.model->Mat->pos,   &m->pos);
+            xCameraSetTargetMatrix(&globals.camera, xEntGetFrame(&globals.player.ent));
+        }
+        sPlayerMarkerStartID = 0;
+    }
+	
+    gGameWhereAmI = eGameWhere_SetupPlayerCamera;
+    zCameraReset(&globals.camera);
+    zEntPlayer_StoreCheckPoint(&globals.player.ent.frame->mat.pos, globals.player.ent.frame->rot.angle, globals.camera.id);
+    gGameWhereAmI = eGameWhere_SetupPlayerEnd;
+	
+}
+
+
+void zGameStats_Init() COMPLETE
+{
+}
+
 //void xDrawEnd()
 //{
 //    iDrawEnd();

@@ -119,16 +119,16 @@ void zMainInitGlobals() RIMP
     iTimeGet();*/
 }
 
-//static void ParseFloatList(F32* dest, char* strbuf, S32 max)
-//{
-//    xStrParseFloatList(dest, strbuf, max);
-//}
-//
-//void zLedgeAdjust(zLedgeGrabParams* params)
-//{
-//    params->animGrab *= (1.0f / 30);
-//}
-//
+static void ParseFloatList(F32* dest, char* strbuf, S32 max)
+{
+    xStrParseFloatList(dest, strbuf, max);
+}
+
+void zLedgeAdjust(zLedgeGrabParams* params)
+{
+    params->animGrab *= (1.0f / 30);
+}
+
 //void zMainParseINIGlobals(xIniFile* ini)
 //{
 //    F32 fVar1;
@@ -765,7 +765,7 @@ static void zMainLoop() RIMP WIP
 
     U32 newGameSceneID = gameSceneID;
 
-    //xUtil_idtag2string(gameSceneID);
+    xUtil_idtag2string(gameSceneID);
 
     xMemPushBase();
 

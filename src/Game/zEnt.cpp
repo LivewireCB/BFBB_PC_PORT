@@ -291,29 +291,29 @@ void zEntEventAll(xBase* from, U32 fromEvent, U32 toEvent, F32* toParam)
     }
 }
 
-//void zEntEventAllOfType(xBase* from, U32 fromEvent, U32 toEvent, F32* toParam, U32 type)
-//{
-//    zScene* s = globals.sceneCur;
-//    if (s == NULL)
-//    {
-//        return;
-//    }
-//
-//    for (U16 i = 0; i < s->num_base; i++)
-//    {
-//        xBase* base = s->base[i];
-//        if (type == base->baseType)
-//        {
-//            zEntEvent(from, fromEvent, base, toEvent, toParam, NULL, 0);
-//        }
-//    }
-//}
-//
-//void zEntEventAllOfType(U32 toEvent, U32 type)
-//{
-//    zEntEventAllOfType(NULL, 0, toEvent, NULL, type);
-//}
-//
+void zEntEventAllOfType(xBase* from, U32 fromEvent, U32 toEvent, F32* toParam, U32 type)
+{
+    zScene* s = globals.sceneCur;
+    if (s == NULL)
+    {
+        return;
+    }
+
+    for (U16 i = 0; i < s->num_base; i++)
+    {
+        xBase* base = s->base[i];
+        if (type == base->baseType)
+        {
+            zEntEvent(from, fromEvent, base, toEvent, toParam, NULL, 0);
+        }
+    }
+}
+
+void zEntEventAllOfType(U32 toEvent, U32 type)
+{
+    zEntEventAllOfType(NULL, 0, toEvent, NULL, type);
+}
+
 //xModelInstance* zEntRecurseModelInfo(void* info, xEnt* ent)
 //{
 //    xModelAssetInfo* zinfo = (xModelAssetInfo*)info;
@@ -919,12 +919,12 @@ xAnimTable* xEnt_AnimTable_AutoEventSmall()
 //{
 //    m.Flags = m.Flags & 0xe7ff;
 //}
-//
-//xMat4x3* xEntGetFrame(const xEnt* ent)
-//{
-//    return xModelGetFrame(ent->model);
-//}
-//
+
+xMat4x3* xEntGetFrame(const xEnt* ent)
+{
+    return xModelGetFrame(ent->model);
+}
+
 //void xSndPlay3D(U32 id, F32 vol, F32 pitch, U32 priority, U32 flags, const xVec3* pos, F32 radius,
 //                sound_category category, F32 delay)
 //{

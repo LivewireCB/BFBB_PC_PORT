@@ -66,11 +66,11 @@ void zMenuInit(U32 theSceneID) RIMP
 
 void zMenuExit() RIMP
 {
-    /*zMusicKill();
+    //zMusicKill();
     xSndStopAll(-5);
     xCameraExit(&globals.camera);
-    zSceneExit(0);
-    sInMenu = 0;*/
+    //zSceneExit(0);
+    sInMenu = 0;
 }
 
 void zMenuSetup() RIMP
@@ -86,7 +86,7 @@ void zMenuSetup() RIMP
     //zEntEventAll(NULL, 0, eEventRoomBegin, NULL);
     if (globals.updateMgr)
     {
-        //xUpdateCull_Update(globals.updateMgr, eEventDispatcher_PadVibrateOn);
+        xUpdateCull_Update(globals.updateMgr, eEventDispatcher_PadVibrateOn);
     }
     //zEntEvent(&globals.player.ent, 8);
 }

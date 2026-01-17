@@ -1,20 +1,20 @@
-//#include "zLOD.h"
-//
-//#include "xModel.h"
-//#include <types.h>
-//
-//#include "xEnt.h"
-//#include "xMathInlines.h"
-//
-//#include "zBase.h"
-//#include "zEntDestructObj.h"
-//
-//static U32 sTableCount;
-//static zLODTable* sTableList;
-//static U32 sManagerIndex;
-//static U32 sManagerCount;
-//static zLODManager sManagerList[2048];
-//
+#include "zLOD.h"
+
+#include "xModel.h"
+#include <types.h>
+
+#include "xEnt.h"
+#include "xMathInlines.h"
+
+#include "zBase.h"
+#include "zEntDestructObj.h"
+
+static U32 sTableCount;
+static zLODTable* sTableList;
+static U32 sManagerIndex;
+static U32 sManagerCount;
+static zLODManager sManagerList[2048];
+
 //// Float memes
 //void AddToLODList(xModelInstance* model)
 //{
@@ -154,95 +154,95 @@
 //    sManagerCount = 0;
 //    xSceneForAllEnts(globals.sceneCur, AddToLODList, 0);
 //}
-//
-//// WIP
-//void zLOD_Update(U32 percent_update)
-//{
-//    if (sManagerCount == 0)
-//    {
-//        return;
-//    }
-//
-//    U32 numUpdates = (sManagerCount * percent_update) / 100;
-//    if (numUpdates == 0)
-//    {
-//        numUpdates = 1;
-//    }
-//
-//    for (U32 i = 0; i < numUpdates; i++)
-//    {
-//        sManagerIndex++;
-//        if (sManagerIndex >= sManagerCount)
-//            sManagerIndex = 0;
-//
-//        zLODManager* mgr = &sManagerList[sManagerIndex];
-//        xModelInstance* model = mgr->model;
-//        zLODTable* lod = mgr->lod;
-//
-//        if (!mgr || !model || !lod)
-//        {
-//            continue;
-//        }
-//
-//        RwMatrix* mat = model->Mat;
-//        F32 distscale = mat->right.x * mat->right.x + mat->up.x * mat->up.x + mat->at.x * mat->at.x;
-//        if (distscale < 0.0001f)
-//            distscale = 1.0f;
-//
-//        xVec3* camPos = &globals.camera.mat.pos;
-//        F32 camdist2 = 0.0f;
-//        if (mat)
-//        {
-//            F32 dx = camPos->x - mat->pos.x;
-//            F32 dy = camPos->y - mat->pos.y;
-//            F32 dz = camPos->z - mat->pos.z;
-//            camdist2 = (dx * dx + dy * dy + dz * dz) / distscale;
-//        }
-//
-//        if (camdist2 >= mgr->adjustNoRenderDist)
-//        {
-//            model->PipeFlags |= 0x400;
-//
-//            if (mgr->numextra)
-//            {
-//                for (xModelInstance* extra = model->Next; extra; extra = extra->Next)
-//                    extra->PipeFlags |= 0x400;
-//            }
-//        }
-//        else
-//        {
-//            model->PipeFlags &= ~0x400;
-//
-//            if (lod->baseBucket)
-//            {
-//                model->Bucket = lod->baseBucket;
-//                model->Data = (*lod->baseBucket)->Data;
-//            }
-//
-//            S32 lodIndex;
-//            for (lodIndex = 0; lodIndex < 3 && lod->lodBucket[lodIndex]; lodIndex++)
-//            {
-//                if (lod->lodDist[lodIndex] < camdist2)
-//                {
-//                    model->Bucket = lod->lodBucket[lodIndex];
-//                    model->Data = (*lod->lodBucket[lodIndex])->Data;
-//                }
-//            }
-//
-//            if (mgr->numextra)
-//            {
-//                for (xModelInstance* extra = model->Next; extra; extra = extra->Next)
-//                {
-//                    if (lodIndex == 0)
-//                        extra->PipeFlags &= ~0x400;
-//                    else
-//                        extra->PipeFlags |= 0x400;
-//                }
-//            }
-//        }
-//    }
-//}
-//
+
+// WIP
+void zLOD_Update(U32 percent_update)
+{
+    if (sManagerCount == 0)
+    {
+        return;
+    }
+
+    U32 numUpdates = (sManagerCount * percent_update) / 100;
+    if (numUpdates == 0)
+    {
+        numUpdates = 1;
+    }
+
+    for (U32 i = 0; i < numUpdates; i++)
+    {
+        sManagerIndex++;
+        if (sManagerIndex >= sManagerCount)
+            sManagerIndex = 0;
+
+        zLODManager* mgr = &sManagerList[sManagerIndex];
+        xModelInstance* model = mgr->model;
+        zLODTable* lod = mgr->lod;
+
+        if (!mgr || !model || !lod)
+        {
+            continue;
+        }
+
+        RwMatrix* mat = model->Mat;
+        F32 distscale = mat->right.x * mat->right.x + mat->up.x * mat->up.x + mat->at.x * mat->at.x;
+        if (distscale < 0.0001f)
+            distscale = 1.0f;
+
+        xVec3* camPos = &globals.camera.mat.pos;
+        F32 camdist2 = 0.0f;
+        if (mat)
+        {
+            F32 dx = camPos->x - mat->pos.x;
+            F32 dy = camPos->y - mat->pos.y;
+            F32 dz = camPos->z - mat->pos.z;
+            camdist2 = (dx * dx + dy * dy + dz * dz) / distscale;
+        }
+
+        if (camdist2 >= mgr->adjustNoRenderDist)
+        {
+            model->PipeFlags |= 0x400;
+
+            if (mgr->numextra)
+            {
+                for (xModelInstance* extra = model->Next; extra; extra = extra->Next)
+                    extra->PipeFlags |= 0x400;
+            }
+        }
+        else
+        {
+            model->PipeFlags &= ~0x400;
+
+            if (lod->baseBucket)
+            {
+                model->Bucket = lod->baseBucket;
+                model->Data = (*lod->baseBucket)->Data;
+            }
+
+            S32 lodIndex;
+            for (lodIndex = 0; lodIndex < 3 && lod->lodBucket[lodIndex]; lodIndex++)
+            {
+                if (lod->lodDist[lodIndex] < camdist2)
+                {
+                    model->Bucket = lod->lodBucket[lodIndex];
+                    model->Data = (*lod->lodBucket[lodIndex])->Data;
+                }
+            }
+
+            if (mgr->numextra)
+            {
+                for (xModelInstance* extra = model->Next; extra; extra = extra->Next)
+                {
+                    if (lodIndex == 0)
+                        extra->PipeFlags &= ~0x400;
+                    else
+                        extra->PipeFlags |= 0x400;
+                }
+            }
+        }
+    }
+}
+
 //zLODTable* zLOD_Get(xEnt* ent)
 //{
 //    if (!ent->model)

@@ -78,15 +78,15 @@
 //    {"game_win", "bubblebuddy.dff", 0.0f, 0, 1, 0, NULL},
 //    {"game_win", "gary_skel.dff", 0.0f, 0, 1, 0, NULL},
 //};
-//
-//static zCutSceneNames zCutSceneNamesTable[14] = {
-//    { "cin_1", 0, 1 },        { "cin_2", 0, 1 },         { "cin_3", 0, 1 },
-//    { "cin_4", 0, 1 },        { "cin_5", 0, 1 },         { "cin_6", 0, 1 },
-//    { "cin_7", 0, 1 },        { "cin_8", 0, 1 },         { "cin_9", 0, 1 },
-//    { "cin_10", 0, 1 },       { "cin_11", 0, 0 },        { "cin_mm_post_death", 0, 0 },
-//    { "cin_mm_scare", 0, 1 }, { "cin_sh_barrel", 0, 1 },
-//
-//};
+
+static zCutSceneNames zCutSceneNamesTable[14] = {
+    { "cin_1", 0, 1 },        { "cin_2", 0, 1 },         { "cin_3", 0, 1 },
+    { "cin_4", 0, 1 },        { "cin_5", 0, 1 },         { "cin_6", 0, 1 },
+    { "cin_7", 0, 1 },        { "cin_8", 0, 1 },         { "cin_9", 0, 1 },
+    { "cin_10", 0, 1 },       { "cin_11", 0, 0 },        { "cin_mm_post_death", 0, 0 },
+    { "cin_mm_scare", 0, 1 }, { "cin_sh_barrel", 0, 1 },
+
+};
 //static S32 gCutsceneSkipOK;
 //static S32 donpcfx;
 //static U8 ents_hidden;
@@ -178,12 +178,12 @@
 //    return atomic;
 //}
 
-void zCutSceneNamesTable_clearAll() RIMP
+void zCutSceneNamesTable_clearAll()
 {
-    /*for (int i = 0; i < 14; i++)
+    for (int i = 0; i < 14; i++)
     {
         zCutSceneNamesTable[i].played = 0;
-    }*/
+    }
 }
 
 //void zCutsceneMgrPlayStart(zCutsceneMgr* t)
