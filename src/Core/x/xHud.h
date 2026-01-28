@@ -9,12 +9,28 @@
 struct asset;
 struct widget;
 
+// defining both structs outside of namespace for now.
+// need to check objdiff to see where this should go
+
+struct holder;
+
+struct header {
+    
+    holder* next;
+};
+struct holder
+{
+    header h;
+    U8 data[1]; 
+};
+
 namespace xhud
 {
     struct block_allocator
     {
         U32 _block_size;
         U32 _alloc_size;
+        //holder* _top;
         void* _top; // FIXME: This is a holder*
         block_allocator* _next_alloc;
 

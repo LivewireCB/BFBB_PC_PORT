@@ -34,20 +34,20 @@
 //{
 //    xBaseSave(ent, s);
 //}
-//
-//void xMovePointLoad(xMovePoint* ent, xSerial* s)
-//{
-//    xBaseLoad(ent, s);
-//}
-//
-//void xMovePointReset(xMovePoint* m)
-//{
-//    xBaseReset(m, m->asset);
-//
-//    m->on = m->asset->on;
-//    m->delay = m->asset->delay;
-//}
-//
+
+void xMovePointLoad(xMovePoint* ent, xSerial* s)
+{
+    xBaseLoad(ent, s);
+}
+
+void xMovePointReset(xMovePoint* m)
+{
+    xBaseReset(m, m->asset);
+
+    m->on = m->asset->on;
+    m->delay = m->asset->delay;
+}
+
 //void xMovePointSetup(xMovePoint* m, xScene* sc)
 //{
 //    m->node_wt_sum = 0;

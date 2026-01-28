@@ -1,15 +1,15 @@
-//#include "xBase.h"
-//#include "xEnt.h"
-//#include "xEntMotion.h"
-//#include "xLinkAsset.h"
-//#include "xString.h"
-//
-//#include "zEntHangable.h"
-//#include "zGlobals.h"
-//#include "zParEmitter.h"
-//
-//#include <types.h>
-//
+#include "xBase.h"
+#include "xEnt.h"
+#include "xEntMotion.h"
+#include "xLinkAsset.h"
+#include "xString.h"
+
+#include "zEntHangable.h"
+#include "zGlobals.h"
+#include "zParEmitter.h"
+
+#include <types.h>
+
 //static zParEmitter* sCandleEmitter;
 //static zParEmitter* sCandleSmokeEmitter;
 //static U32 sChandelierHash;
@@ -430,12 +430,12 @@
 //{
 //    zEntSave(ent, s);
 //}
-//
-//void zEntHangable_Load(zEntHangable* ent, xSerial* s)
-//{
-//    zEntLoad(ent, s);
-//}
-//
+
+void zEntHangable_Load(zEntHangable* ent, xSerial* s)
+{
+    zEntLoad(ent, s);
+}
+
 //void zEntHangable_Reset(zEntHangable* ent)
 //{
 //    zEntHangable_SetShaggy(ent, NULL);

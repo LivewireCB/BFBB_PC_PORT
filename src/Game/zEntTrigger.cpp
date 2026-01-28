@@ -1,7 +1,7 @@
-//#include "zEntTrigger.h"
-//
-//#include "xEvent.h"
-//
+#include "zEntTrigger.h"
+
+#include "xEvent.h"
+
 //void zEntTriggerInit(void* ent, void* asset)
 //{
 //    zEntTriggerInit((zEntTrigger*)ent, (xEntAsset*)asset);
@@ -212,12 +212,12 @@
 //{
 //    zEntSave(ent, s);
 //}
-//
-//void zEntTriggerLoad(zEntTrigger* ent, xSerial* s)
-//{
-//    zEntLoad(ent, s);
-//}
-//
+
+void zEntTriggerLoad(zEntTrigger* ent, xSerial* s)
+{
+    zEntLoad(ent, s);
+}
+
 //void zEntTriggerReset(zEntTrigger* ent)
 //{
 //    ent->entered = 0;

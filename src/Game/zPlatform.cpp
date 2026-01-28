@@ -1,29 +1,29 @@
-//#include "zPlatform.h"
-//#include "zEnt.h"
-//#include "zEntPlayer.h"
-//#include "xEntDrive.h"
-//#include "xScrFx.h"
-//#include "zParEmitter.h"
-//#include "zRumble.h"
-//#include "zFX.h"
-//#include "zCollGeom.h"
-//#include "zGoo.h"
-//#include "xSkyDome.h"
-//#include "zShrapnel.h"
-//#include "xEntMotionAsset.h"
-//
-//#include "xMath.h"
-//#include "xMath3.h"
-//#include "xMathInlines.h"
-//#include "xstransvc.h"
-//#include "zGlobals.h"
-//#include "xCollide.h"
-//
-//#include <types.h>
-//
-//zParEmitter* sEmitTremble;
-//zParEmitter* sEmitBreakaway;
-//
+#include "zPlatform.h"
+#include "zEnt.h"
+#include "zEntPlayer.h"
+#include "xEntDrive.h"
+#include "xScrFx.h"
+#include "zParEmitter.h"
+#include "zRumble.h"
+#include "zFX.h"
+#include "zCollGeom.h"
+#include "zGoo.h"
+#include "xSkyDome.h"
+#include "zShrapnel.h"
+#include "xEntMotionAsset.h"
+
+#include "xMath.h"
+#include "xMath3.h"
+#include "xMathInlines.h"
+#include "xstransvc.h"
+#include "zGlobals.h"
+#include "xCollide.h"
+
+#include <types.h>
+
+zParEmitter* sEmitTremble;
+zParEmitter* sEmitBreakaway;
+
 //static void zPlatformTranslate(xEnt* xent, xVec3* dpos, xMat4x3* dmat);
 //void zPlatform_Move(xEnt* entPlat, xScene* s, F32 dt, xEntFrame* frame);
 //static void zPlatform_Tremble(zPlatform* plat, F32 ampl, F32 freq, F32 dur);
@@ -166,12 +166,12 @@
 //{
 //    zEntSave(ent, s);
 //}
-//
-//void zPlatform_Load(zPlatform* ent, xSerial* s)
-//{
-//    zEntLoad(ent, s);
-//}
-//
+
+void zPlatform_Load(zPlatform* ent, xSerial* s)
+{
+    zEntLoad(ent, s);
+}
+
 //void zPlatform_Reset(zPlatform* plat, xScene* sc)
 //{
 //    if (plat->subType == ePlatformTypeBreakaway) {

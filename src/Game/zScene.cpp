@@ -1601,278 +1601,278 @@ void zSceneInit(U32 theSceneID, S32 reloadInProgress) RIMP
 //    }
 //}
 
-//void zSceneLoad(zScene* ent, xSerial* s)
-//{
-//    xSerial xser;
-//    S32 sceneExist;
-//
-//    s = &xser;
-//
-//    s->setClient('PLYR');
-//
-//    sceneExist = 0;
-//    s->Read_b1(&sceneExist);
-//
-//    if (sceneExist)
-//    {
-//        s->Read(&globals.player.MaxHealth);
-//
-//        globals.player.Health = globals.player.MaxHealth;
-//
-//        s->Read((U32*)&gCurrentPlayer);
-//        s->Read(&globals.player.Inv_Shiny);
-//        s->Read(&globals.player.Inv_Spatula);
-//        s->Read(&globals.player.g.PowerUp[0]);
-//        s->Read(&globals.player.g.PowerUp[1]);
-//
-//        for (S32 i = 0; i < LEVEL_COUNT; i++)
-//        {
-//            s->Read(&globals.player.Inv_PatsSock[i]);
-//            s->Read(&globals.player.Inv_LevelPickups[i]);
-//        }
-//
-//        s->Read(&globals.player.Inv_PatsSock_Total);
-//
-//        zCutsceneMgrLoad(NULL, s);
-//        oob_state::read_persistent(*s);
-//    }
-//
-//    s->setClient('CNTR');
-//
-//    sceneExist = 0;
-//    s->Read_b1(&sceneExist);
-//
-//    if (sceneExist)
-//    {
-//        char tempString[32];
-//
-//        zUI_ScenePortalLoad(s);
-//
-//        strcpy(tempString, "HB09 ROBOT COUNTER 01");
-//
-//        char c = '1';
-//        S32 i;
-//        U32 id;
-//
-//        for (i = 0; i < LEVEL_COUNT; i++)
-//        {
-//            if (c > '9')
-//            {
-//                c = '0';
-//                tempString[19]++;
-//            }
-//
-//            tempString[20] = c;
-//
-//            c++;
-//
-//            id = xStrHash(tempString);
-//
-//            s->Read(&((_xCounter*)zSceneFindObject(id))->count);
-//        }
-//
-//        id = xStrHash("REMINDER_SOCK_CNTR");
-//
-//        s->Read(&((_xCounter*)zSceneFindObject(id))->count);
-//
-//        zGameExtras_Load(s);
-//    }
-//
-//    s->setClient(ent->sceneID);
-//
-//    sceneExist = 0;
-//    s->Read_b1(&sceneExist);
-//
-//    if (sceneExist)
-//    {
-//        xSceneLoad(ent, s);
-//
-//        s->Read(&offsetx);
-//        s->Read(&offsety);
-//
-//        for (U16 i = 0; i < globals.sceneCur->num_base; i++)
-//        {
-//            xBase* b = globals.sceneCur->base[i];
-//
-//            if (b->baseFlags & 0x2)
-//            {
-//                switch (b->baseType)
-//                {
-//                case eBaseTypeTrigger:
-//                {
-//                    zEntTriggerLoad((zEntTrigger*)b, s);
-//                    break;
-//                }
-//                case eBaseTypeNPC:
-//                {
-//                    ((xNPCBasic*)b)->Load(s);
-//                    break;
-//                }
-//                case eBaseTypePlayer:
-//                {
-//                    zEntPlayer_Load((xEnt*)b, s);
-//                    break;
-//                }
-//                case eBaseTypePickup:
-//                {
-//                    zEntPickup_Load((zEntPickup*)b, s);
-//                    break;
-//                }
-//                case eBaseTypeEnv:
-//                {
-//                    zEnvLoad((_zEnv*)b, s);
-//                    break;
-//                }
-//                case eBaseTypeFog:
-//                {
-//                    xFogLoad((_xFog*)b, s);
-//                    break;
-//                }
-//                case eBaseTypeLight:
-//                {
-//                    zLightLoad((_zLight*)b, s);
-//                    break;
-//                }
-//                case eBaseTypePlatform:
-//                {
-//                    zPlatform_Load((zPlatform*)b, s);
-//                    break;
-//                }
-//                case eBaseTypeCamera:
-//                {
-//                    zCamMarkerLoad((zCamMarker*)b, s);
-//                    break;
-//                }
-//                case eBaseTypeStatic:
-//                {
-//                    zEntSimpleObj_Load((zEntSimpleObj*)b, s);
-//                    break;
-//                }
-//                case eBaseTypeMovePoint:
-//                {
-//                    zMovePointLoad((zMovePoint*)b, s);
-//                    break;
-//                }
-//                case eBaseTypeTimer:
-//                {
-//                    xTimerLoad((xTimer*)b, s);
-//                    break;
-//                }
-//                case eBaseTypePortal:
-//                {
-//                    zPortalLoad((_zPortal*)b, s);
-//                    break;
-//                }
-//                case eBaseTypeGroup:
-//                {
-//                    xGroupLoad((xGroup*)b, s);
-//                    break;
-//                }
-//                case eBaseTypePendulum:
-//                {
-//                    zPendulum_Load((_zPendulum*)b, s);
-//                    break;
-//                }
-//                case eBaseTypeSFX:
-//                {
-//                    xSFXLoad((xSFX*)b, s);
-//                    break;
-//                }
-//                case eBaseTypeCounter:
-//                {
-//                    xCounterLoad((_xCounter*)b, s);
-//                    break;
-//                }
-//                case eBaseTypeHangable:
-//                {
-//                    zEntHangable_Load((zEntHangable*)b, s);
-//                    break;
-//                }
-//                case eBaseTypeButton:
-//                {
-//                    zEntButton_Load((_zEntButton*)b, s);
-//                    break;
-//                }
-//                case eBaseTypeSurface:
-//                {
-//                    zSurfaceLoad((xSurface*)b, s);
-//                    break;
-//                }
-//                case eBaseTypeDestructObj:
-//                {
-//                    zEntDestructObj_Load((zEntDestructObj*)b, s);
-//                    break;
-//                }
-//                case eBaseTypeGust:
-//                {
-//                    zGustLoad((zGust*)b, s);
-//                    break;
-//                }
-//                case eBaseTypeScript:
-//                {
-//                    zScriptLoad((_zScript*)b, s);
-//                    break;
-//                }
-//                case eBaseTypeVolume:
-//                {
-//                    ((xVolume*)b)->Load(s);
-//                    break;
-//                }
-//                case eBaseTypeDispatcher:
-//                {
-//                    zDispatcher_Load((st_ZDISPATCH_DATA*)b, s);
-//                    break;
-//                }
-//                case eBaseTypeCond:
-//                {
-//                    zConditionalLoad((_zConditional*)b, s);
-//                    break;
-//                }
-//                case eBaseTypeUI:
-//                {
-//                    zUI_Load((_zUI*)b, s);
-//                    break;
-//                }
-//                case eBaseTypeUIFont:
-//                {
-//                    zUIFont_Load((zUIFont*)b, s);
-//                    break;
-//                }
-//                case eBaseTypeEGenerator:
-//                {
-//                    zEGenerator_Load((zEGenerator*)b, s);
-//                    break;
-//                }
-//                case eBaseTypeTeleportBox:
-//                {
-//                    zEntTeleportBox_Load((_zEntTeleportBox*)b, s);
-//                    break;
-//                }
-//                case eBaseTypeTaskBox:
-//                {
-//                    ((ztaskbox*)b)->read(*s);
-//                    break;
-//                }
-//                case eBaseTypeTaxi:
-//                {
-//                    zTaxi_Load((zTaxi*)b, s);
-//                    break;
-//                }
-//                case eBaseTypeCameraFly:
-//                {
-//                    zCameraFly_Load((zCameraFly*)b, s);
-//                    break;
-//                }
-//                case eBaseTypeCameraTweak:
-//                {
-//                    zCameraTweak_Load((zCameraTweak*)b, s);
-//                    break;
-//                }
-//                }
-//            }
-//        }
-//    }
-//}
+void zSceneLoad(zScene* ent, xSerial* s) COMPLETE
+{
+    xSerial xser;
+    S32 sceneExist;
+
+    s = &xser;
+
+    s->setClient('PLYR');
+
+    sceneExist = 0;
+    s->Read_b1(&sceneExist);
+
+    if (sceneExist)
+    {
+        s->Read(&globals.player.MaxHealth);
+
+        globals.player.Health = globals.player.MaxHealth;
+
+        s->Read((U32*)&gCurrentPlayer);
+        s->Read(&globals.player.Inv_Shiny);
+        s->Read(&globals.player.Inv_Spatula);
+        s->Read(&globals.player.g.PowerUp[0]);
+        s->Read(&globals.player.g.PowerUp[1]);
+
+        for (S32 i = 0; i < LEVEL_COUNT; i++)
+        {
+            s->Read(&globals.player.Inv_PatsSock[i]);
+            s->Read(&globals.player.Inv_LevelPickups[i]);
+        }
+
+        s->Read(&globals.player.Inv_PatsSock_Total);
+
+        zCutsceneMgrLoad(NULL, s);
+        oob_state::read_persistent(*s);
+    }
+
+    s->setClient('CNTR');
+
+    sceneExist = 0;
+    s->Read_b1(&sceneExist);
+
+    if (sceneExist)
+    {
+        char tempString[32];
+
+        zUI_ScenePortalLoad(s);
+
+        strcpy(tempString, "HB09 ROBOT COUNTER 01");
+
+        char c = '1';
+        S32 i;
+        U32 id;
+
+        for (i = 0; i < LEVEL_COUNT; i++)
+        {
+            if (c > '9')
+            {
+                c = '0';
+                tempString[19]++;
+            }
+
+            tempString[20] = c;
+
+            c++;
+
+            id = xStrHash(tempString);
+
+            s->Read(&((_xCounter*)zSceneFindObject(id))->count);
+        }
+
+        id = xStrHash("REMINDER_SOCK_CNTR");
+
+        s->Read(&((_xCounter*)zSceneFindObject(id))->count);
+
+        zGameExtras_Load(s);
+    }
+
+    s->setClient(ent->sceneID);
+
+    sceneExist = 0;
+    s->Read_b1(&sceneExist);
+
+    if (sceneExist)
+    {
+        xSceneLoad(ent, s);
+
+        s->Read(&offsetx);
+        s->Read(&offsety);
+
+        for (U16 i = 0; i < globals.sceneCur->num_base; i++)
+        {
+            xBase* b = globals.sceneCur->base[i];
+
+            if (b->baseFlags & 0x2)
+            {
+                switch (b->baseType)
+                {
+                case eBaseTypeTrigger:
+                {
+                    zEntTriggerLoad((zEntTrigger*)b, s);
+                    break;
+                }
+                case eBaseTypeNPC:
+                {
+                    ((xNPCBasic*)b)->Load(s);
+                    break;
+                }
+                case eBaseTypePlayer:
+                {
+                    zEntPlayer_Load((xEnt*)b, s);
+                    break;
+                }
+                case eBaseTypePickup:
+                {
+                    zEntPickup_Load((zEntPickup*)b, s);
+                    break;
+                }
+                case eBaseTypeEnv:
+                {
+                    zEnvLoad((_zEnv*)b, s);
+                    break;
+                }
+                case eBaseTypeFog:
+                {
+                    xFogLoad((_xFog*)b, s);
+                    break;
+                }
+                case eBaseTypeLight:
+                {
+                    zLightLoad((_zLight*)b, s);
+                    break;
+                }
+                case eBaseTypePlatform:
+                {
+                    zPlatform_Load((zPlatform*)b, s);
+                    break;
+                }
+                case eBaseTypeCamera:
+                {
+                    zCamMarkerLoad((zCamMarker*)b, s);
+                    break;
+                }
+                case eBaseTypeStatic:
+                {
+                    zEntSimpleObj_Load((zEntSimpleObj*)b, s);
+                    break;
+                }
+                case eBaseTypeMovePoint:
+                {
+                    zMovePointLoad((zMovePoint*)b, s);
+                    break;
+                }
+                case eBaseTypeTimer:
+                {
+                    xTimerLoad((xTimer*)b, s);
+                    break;
+                }
+                case eBaseTypePortal:
+                {
+                    zPortalLoad((_zPortal*)b, s);
+                    break;
+                }
+                case eBaseTypeGroup:
+                {
+                    xGroupLoad((xGroup*)b, s);
+                    break;
+                }
+                case eBaseTypePendulum:
+                {
+                    zPendulum_Load((_zPendulum*)b, s);
+                    break;
+                }
+                case eBaseTypeSFX:
+                {
+                    xSFXLoad((xSFX*)b, s);
+                    break;
+                }
+                case eBaseTypeCounter:
+                {
+                    xCounterLoad((_xCounter*)b, s);
+                    break;
+                }
+                case eBaseTypeHangable:
+                {
+                    zEntHangable_Load((zEntHangable*)b, s);
+                    break;
+                }
+                case eBaseTypeButton:
+                {
+                    zEntButton_Load((_zEntButton*)b, s);
+                    break;
+                }
+                case eBaseTypeSurface:
+                {
+                    zSurfaceLoad((xSurface*)b, s);
+                    break;
+                }
+                case eBaseTypeDestructObj:
+                {
+                    zEntDestructObj_Load((zEntDestructObj*)b, s);
+                    break;
+                }
+                case eBaseTypeGust:
+                {
+                    zGustLoad((zGust*)b, s);
+                    break;
+                }
+                case eBaseTypeScript:
+                {
+                    zScriptLoad((_zScript*)b, s);
+                    break;
+                }
+                case eBaseTypeVolume:
+                {
+                    ((xVolume*)b)->Load(s);
+                    break;
+                }
+                case eBaseTypeDispatcher:
+                {
+                    zDispatcher_Load((st_ZDISPATCH_DATA*)b, s);
+                    break;
+                }
+                case eBaseTypeCond:
+                {
+                    zConditionalLoad((_zConditional*)b, s);
+                    break;
+                }
+                case eBaseTypeUI:
+                {
+                    zUI_Load((_zUI*)b, s);
+                    break;
+                }
+                case eBaseTypeUIFont:
+                {
+                    zUIFont_Load((zUIFont*)b, s);
+                    break;
+                }
+                case eBaseTypeEGenerator:
+                {
+                    zEGenerator_Load((zEGenerator*)b, s);
+                    break;
+                }
+                case eBaseTypeTeleportBox:
+                {
+                    zEntTeleportBox_Load((_zEntTeleportBox*)b, s);
+                    break;
+                }
+                case eBaseTypeTaskBox:
+                {
+                    ((ztaskbox*)b)->read(*s);
+                    break;
+                }
+                case eBaseTypeTaxi:
+                {
+                    zTaxi_Load((zTaxi*)b, s);
+                    break;
+                }
+                case eBaseTypeCameraFly:
+                {
+                    zCameraFly_Load((zCameraFly*)b, s);
+                    break;
+                }
+                case eBaseTypeCameraTweak:
+                {
+                    zCameraTweak_Load((zCameraTweak*)b, s);
+                    break;
+                }
+                }
+            }
+        }
+    }
+}
 
 //S32 zSceneSetup_serialTraverseCB(U32 clientID, xSerial* xser);
 //
@@ -3398,28 +3398,28 @@ void zSceneMemLvlChkCB()
 //
 //    return "Level Not Found";
 //}
-//
-//U32 zSceneGetLevelIndex()
-//{
-//    return zSceneGetLevelIndex(globals.sceneCur->sceneID);
-//}
-//
-//U32 zSceneGetLevelIndex(U32 sceneID)
-//{
-//    char c1 = (sceneID >> 24) & 0xFF;
-//    char c2 = (sceneID >> 16) & 0xFF;
-//
-//    for (S32 i = 0; i < sizeof(sLevelTable) / sizeof(sLevelTable[0]); i++)
-//    {
-//        if (c1 == sLevelTable[i].prefix[0] && c2 == sLevelTable[i].prefix[1])
-//        {
-//            return i;
-//        }
-//    }
-//
-//    return 0;
-//}
-//
+
+U32 zSceneGetLevelIndex()
+{
+    return zSceneGetLevelIndex(globals.sceneCur->sceneID);
+}
+
+U32 zSceneGetLevelIndex(U32 sceneID)
+{
+    char c1 = (sceneID >> 24) & 0xFF;
+    char c2 = (sceneID >> 16) & 0xFF;
+
+    for (S32 i = 0; i < sizeof(sLevelTable) / sizeof(sLevelTable[0]); i++)
+    {
+        if (c1 == sLevelTable[i].prefix[0] && c2 == sLevelTable[i].prefix[1])
+        {
+            return i;
+        }
+    }
+
+    return 0;
+}
+
 //const char* zSceneGetLevelPrefix(U32 index)
 //{
 //    if (index >= sizeof(sLevelTable) / sizeof(sLevelTable[0]))

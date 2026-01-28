@@ -1,20 +1,20 @@
-//#include "xHudMeter.h"
-//
-//#include <types.h>
-//
-//#include "xString.h"
-//#include "xMathInlines.h"
-//#include "PowerPC_EABI_Support\MSL_C\MSL_Common\printf.h"
-//
-//namespace xhud
-//{
-//    namespace
-//    {
-//        static void add_global_tweaks()
-//        {
-//        }
-//    } // namespace
-//
+#include "xHudMeter.h"
+
+#include <types.h>
+
+#include "xString.h"
+#include "xMathInlines.h"
+//#include "printf.h"
+
+namespace xhud
+{
+    namespace
+    {
+        static void add_global_tweaks()
+        {
+        }
+    } // namespace
+
 //    meter_widget::meter_widget(const meter_asset& asset)
 //        : widget((xhud::asset&)asset), res((xhud::meter_asset&)asset), value(asset.start_value),
 //          min_value(asset.min_value), max_value(asset.max_value), end_value(asset.start_value),
@@ -22,8 +22,8 @@
 //    {
 //        add_global_tweaks();
 //    }
-//} // namespace xhud
-//
+} // namespace xhud
+
 //void xhud::meter_widget::set_value(F32 v)
 //{
 //    F32 dvalue;
@@ -82,14 +82,14 @@
 //        value_accel = 25.0f * res.decrement_time;
 //    }
 //}
-//
-//void xhud::meter_widget::set_value_immediate(F32 v)
-//{
-//    value = v;
-//    end_value = v;
-//    value_vel = 0.0f;
-//}
-//
+
+void xhud::meter_widget::set_value_immediate(F32 v)
+{
+    value = v;
+    end_value = v;
+    value_vel = 0.0f;
+}
+
 //void xhud::meter_widget::destruct()
 //{
 //    xhud::widget::destruct();

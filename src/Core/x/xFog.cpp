@@ -1,10 +1,10 @@
-//#include "xFog.h"
-//#include "xEvent.h"
-//
-//#include "iCamera.h"
-//
-//#include <types.h>
-//
+#include "xFog.h"
+#include "xEvent.h"
+
+#include "iCamera.h"
+
+#include <types.h>
+
 //void xFogClearFog()
 //{
 //    iCameraSetFogParams(NULL, 0.0f);
@@ -39,12 +39,12 @@
 //{
 //    xBaseSave((xBase*)ent, s);
 //}
-//
-//void xFogLoad(_xFog* ent, xSerial* s)
-//{
-//    xBaseLoad((xBase*)ent, s);
-//}
-//
+
+void xFogLoad(_xFog* ent, xSerial* s)
+{
+    xBaseLoad((xBase*)ent, s);
+}
+
 //S32 xFogEventCB(xBase* to, xBase* from, U32 toEvent, const F32* toParam, xBase* b3)
 //{
 //    switch (toEvent)

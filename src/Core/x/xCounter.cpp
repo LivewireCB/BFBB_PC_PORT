@@ -1,8 +1,8 @@
-//#include "xCounter.h"
-//
-//#include "xDebug.h"
-//#include "xEvent.h"
-//
+#include "xCounter.h"
+
+#include "xDebug.h"
+#include "xEvent.h"
+
 //namespace
 //{
 //    void add_tweaks(_xCounter&)
@@ -72,15 +72,15 @@
 //    s->Write(ent->state);
 //    s->Write(ent->count);
 //}
-//
-//void xCounterLoad(_xCounter* ent, xSerial* s)
-//{
-//    xBaseLoad(ent, s);
-//
-//    s->Read(&ent->state);
-//    s->Read(&ent->count);
-//}
-//
+
+void xCounterLoad(_xCounter* ent, xSerial* s)
+{
+    xBaseLoad(ent, s);
+
+    s->Read(&ent->state);
+    s->Read(&ent->count);
+}
+
 //int xCounterEventCB(xBase*, xBase* to, U32 toEvent, const F32*, xBase*)
 //{
 //    _xCounter* t = (_xCounter*)to;

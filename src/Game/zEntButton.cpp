@@ -1,15 +1,15 @@
-//#include "zEntButton.h"
-//#include "zEntPlayer.h"
-//#include "zCollGeom.h"
-//#include "zFX.h"
-//#include "zShrapnel.h"
-//#include "zGlobals.h"
-//#include "xMath.h"
-//#include "xstransvc.h"
-//#include "xString.h"
-//
-//#include <types.h>
-//
+#include "zEntButton.h"
+#include "zEntPlayer.h"
+#include "zCollGeom.h"
+#include "zFX.h"
+#include "zShrapnel.h"
+#include "zGlobals.h"
+#include "xMath.h"
+#include "xstransvc.h"
+#include "xString.h"
+
+#include <types.h>
+
 //static F32 sRedMultiplier = 1.0f;
 //static F32 sGreenMultiplier = 1.0f;
 //static F32 sBlueMultiplier = 1.0f;
@@ -132,26 +132,26 @@
 //        s->Write_b1(0);
 //    }
 //}
-//
-//void zEntButton_Load(_zEntButton* ent, xSerial* s)
-//{
-//    zEntLoad(ent, s);
-//
-//    int unk1 = 0, unk2 = 0;
-//
-//    s->Read_b1(&unk1);
-//    if (unk1 != 0)
-//    {
-//        ent->state = 1;
-//    }
-//
-//    s->Read_b1(&unk2);
-//    if (unk2 != 0)
-//    {
-//        ent->state = 1;
-//    }
-//}
-//
+
+void zEntButton_Load(_zEntButton* ent, xSerial* s)
+{
+    zEntLoad(ent, s);
+
+    int unk1 = 0, unk2 = 0;
+
+    s->Read_b1(&unk1);
+    if (unk1 != 0)
+    {
+        ent->state = 1;
+    }
+
+    s->Read_b1(&unk2);
+    if (unk2 != 0)
+    {
+        ent->state = 1;
+    }
+}
+
 //void zEntButton_Reset(_zEntButton* ent, xScene* sc)
 //{
 //    xEntReset((xEnt*)ent);

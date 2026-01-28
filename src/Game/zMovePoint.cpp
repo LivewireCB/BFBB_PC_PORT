@@ -61,17 +61,17 @@ S32 g_mvpt_cnt;
 //{
 //    xMovePointSave((xMovePoint*)ent, s);
 //}
-//
-//void zMovePointLoad(zMovePoint* ent, xSerial* s)
-//{
-//    xMovePointLoad((xMovePoint*)ent, s);
-//}
-//
-//void zMovePointReset(zMovePoint* m)
-//{
-//    xMovePointReset((xMovePoint*)m);
-//}
-//
+
+void zMovePointLoad(zMovePoint* ent, xSerial* s)
+{
+    xMovePointLoad((xMovePoint*)ent, s);
+}
+
+void zMovePointReset(zMovePoint* m)
+{
+    xMovePointReset((xMovePoint*)m);
+}
+
 //S32 zMovePointEventCB(xBase* from, xBase* to, U32 toEvent, const F32* toParam, xBase* b3)
 //{
 //    switch (toEvent)

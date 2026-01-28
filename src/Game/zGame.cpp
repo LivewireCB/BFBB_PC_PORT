@@ -360,7 +360,7 @@ void zGameInit(U32 theSceneID) RIMP
     gGameWhereAmI = eGameWhere_InitCamera;
     xCameraInit(&globals.camera, 640, 480);
     zCameraReset(&globals.camera);
-    xCameraSetScene(&globals.camera, globals.sceneCur);
+    //xCameraSetScene(&globals.camera, globals.sceneCur);
     gGameWhereAmI = eGameWhere_InitMusic;
     //zMusicInit();
     gGameWhereAmI = eGameWhere_InitOther;
@@ -411,14 +411,14 @@ void zGameSetup() RIMP
     gGameWhereAmI = eGameWhere_SetupScrFX;
     xScrFxReset();
     gGameWhereAmI = eGameWhere_SetupSceneLoad;
-    //zSceneLoad(globals.sceneCur, NULL);
+    zSceneLoad(globals.sceneCur, NULL);
     gGameWhereAmI = eGameWhere_SetupMusicNotify;
     //zMusicNotify(0);
     gGameWhereAmI = eGameWhere_SetupHudSetup;
-    //zhud::setup();
-    //zCombo_Setup();
+    zhud::setup();
+    zCombo_Setup();
     gGameWhereAmI = eGameWhere_SetupSkydome;
-    //xSkyDome_Setup();
+    xSkyDome_Setup();
     gGameWhereAmI = eGameWhere_SetupSceneEvents;
     zEntEventAll(0, 0, 0x57, 0);
     zEntEventAll(0, 0, 0x59, 0);
@@ -439,7 +439,7 @@ void zGameSetup() RIMP
     gGameWhereAmI = eGameWhere_SetupEnd;
 }
 
-S32 zGameIsPaused()
+S32 zGameIsPaused() COMPLETE
 {
     if (gGameMode == 8)
     {

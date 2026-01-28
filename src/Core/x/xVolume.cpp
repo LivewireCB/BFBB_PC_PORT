@@ -1,7 +1,7 @@
-//#include "xVolume.h"
-//
-//#include <types.h>
-//
+#include "xVolume.h"
+
+#include <types.h>
+
 //void xVolume::Init(xVolumeAsset* asset)
 //{
 //    xBaseInit(this, asset);
@@ -26,12 +26,12 @@
 //{
 //    xBaseSave(this, s);
 //}
-//
-//void xVolume::Load(xSerial* s)
-//{
-//    xBaseLoad(this, s);
-//}
-//
+
+void xVolume::Load(xSerial* s)
+{
+    xBaseLoad(this, s);
+}
+
 //xBound* xVolume::GetBound()
 //{
 //    return &this->asset->bound;

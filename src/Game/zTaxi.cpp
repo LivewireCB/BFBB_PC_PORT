@@ -1,14 +1,14 @@
-//#include "xBase.h"
-//#include "xEvent.h"
-//#include "xstransvc.h"
-//
-//#include "zTaxi.h"
-//#include "zEntPlayer.h"
-//#include "zGlobals.h"
-//#include "zScene.h"
-//
-//#include <types.h>
-//
+#include "xBase.h"
+#include "xEvent.h"
+#include "xstransvc.h"
+
+#include "zTaxi.h"
+#include "zEntPlayer.h"
+#include "zGlobals.h"
+#include "zScene.h"
+
+#include <types.h>
+
 //static ztalkbox::answer_enum sAnswer = ztalkbox::ANSWER_3;
 //
 //static taxiCB* tCB;
@@ -201,12 +201,12 @@
 //{
 //    xBaseSave((xBase*)taxi, s);
 //}
-//
-//void zTaxi_Load(zTaxi* taxi, xSerial* s)
-//{
-//    xBaseLoad((xBase*)taxi, s);
-//}
-//
+
+void zTaxi_Load(zTaxi* taxi, xSerial* s)
+{
+    xBaseLoad((xBase*)taxi, s);
+}
+
 //S32 zTaxiEventCB(xBase* from, xBase* to, U32 toEvent, const F32* toParam, xBase* b3)
 //{
 //    switch (toEvent)

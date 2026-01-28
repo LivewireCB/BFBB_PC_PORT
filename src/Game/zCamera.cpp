@@ -93,7 +93,6 @@ static F32 rewardZoomAmount = 100.0f;
 static F32 rewardTiltTime = 1.5f;
 static F32 rewardTiltAmount = -0.22f;
 
-extern zGlobals globals;
 extern const xVec3 g_O3;
 F32 gCameraLastFov;
 
@@ -745,47 +744,47 @@ namespace
 //{
 //    stop_track = stop_track & ~owner;
 //}
-//
-//U32 zCameraIsTrackingDisabled()
-//{
-//    return stop_track;
-//}
-//
-//void zCameraDisableInput()
-//{
-//    input_enabled = 0;
-//}
-//
-//void zCameraEnableInput()
-//{
-//    input_enabled = 1;
-//}
-//
-//void zCameraDisableLassoCam()
-//{
-//    lassocam_enabled = 0;
-//}
-//
-//void zCameraEnableLassoCam()
-//{
-//    lassocam_enabled = 1;
-//}
-//
-//void zCameraSetLassoCamFactor(F32 new_factor)
-//{
-//    lassocam_factor = new_factor;
-//}
-//
-//F32 zCameraGetLassoCamFactor()
-//{
-//    return lassocam_factor;
-//}
-//
-//S32 zCameraGetConvers()
-//{
-//    return zcam_convers;
-//}
-//
+
+U32 zCameraIsTrackingDisabled()
+{
+    return stop_track;
+}
+
+void zCameraDisableInput()
+{
+    input_enabled = 0;
+}
+
+void zCameraEnableInput()
+{
+    input_enabled = 1;
+}
+
+void zCameraDisableLassoCam()
+{
+    lassocam_enabled = 0;
+}
+
+void zCameraEnableLassoCam()
+{
+    lassocam_enabled = 1;
+}
+
+void zCameraSetLassoCamFactor(F32 new_factor)
+{
+    lassocam_factor = new_factor;
+}
+
+F32 zCameraGetLassoCamFactor()
+{
+    return lassocam_factor;
+}
+
+S32 zCameraGetConvers()
+{
+    return zcam_convers;
+}
+
 //void zCameraSetConvers(S32 on)
 //{
 //    xCamera& cam = globals.camera;
@@ -890,17 +889,17 @@ namespace
 //    }
 //    zcam_reward = reward;
 //}
-//
-//void zCameraMinTargetHeightSet(F32 min_height)
-//{
-//    zcam_mintgtheight = min_height;
-//}
-//
-//void zCameraMinTargetHeightClear()
-//{
-//    zcam_mintgtheight = -1.0e38f;
-//}
-//
+
+void zCameraMinTargetHeightSet(F32 min_height)
+{
+    zcam_mintgtheight = min_height;
+}
+
+void zCameraMinTargetHeightClear()
+{
+    zcam_mintgtheight = -1.0e38f;
+}
+
 //F32 xVec3Dist2(const xVec3* vecA, const xVec3* vecB)
 //{
 //    float dx = vecA->x - vecB->x;
@@ -908,19 +907,19 @@ namespace
 //    float dz = vecA->z - vecB->z;
 //    return dx * dx + dy * dy + dz * dz;
 //}
-//
-//U32 zCamera_FlyOnly()
-//{
-//    switch (globals.sceneCur->sceneID)
-//    {
-//    case 'PG12':
-//    case 'KF05':
-//    case 'DB02':
-//    case 'SM02':
-//    case 'SM03':
-//    case 'SM04':
-//        return 1;
-//    default:
-//        return 0;
-//    }
-//}
+
+U32 zCamera_FlyOnly()
+{
+    switch (globals.sceneCur->sceneID)
+    {
+    case 'PG12':
+    case 'KF05':
+    case 'DB02':
+    case 'SM02':
+    case 'SM03':
+    case 'SM04':
+        return 1;
+    default:
+        return 0;
+    }
+}

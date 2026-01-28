@@ -488,12 +488,12 @@ static void TextureRW3_Unload(void* a, U32 b)
     }
 }
 
-static void ATBL_Init() RIMP
+static void ATBL_Init()
 {
-    /*for (int i = 0; i < 0x21; i++)
+    for (int i = 0; i < 0x21; i++)
     {
         animTable[i].id = xStrHash(animTable[i].name);
-    }*/
+    }
 }
 
 void FootstepHackSceneEnter()

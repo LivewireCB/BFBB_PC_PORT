@@ -1,17 +1,17 @@
-//#include "xstransvc.h"
-//#include "xMath.h"
-//#include "xMath3.h"
-//#include "xEvent.h"
-//#include "xString.h"
-//#include "xVec3.h"
-//#include "xVec3Inlines.h"
-//
-//#include "zGust.h"
-//#include "zParEmitter.h"
-//#include "zScene.h"
-//
-//#include <types.h>
-//
+#include "xstransvc.h"
+#include "xMath.h"
+#include "xMath3.h"
+#include "xEvent.h"
+#include "xString.h"
+#include "xVec3.h"
+#include "xVec3Inlines.h"
+
+#include "zGust.h"
+#include "zParEmitter.h"
+#include "zScene.h"
+
+#include <types.h>
+
 //static zGust* gusts;
 //static U16 ngusts;
 //static zParEmitter* sGustDustEmitter;
@@ -219,12 +219,12 @@
 //{
 //    xBaseSave(g, s);
 //}
-//
-//void zGustLoad(zGust* g, xSerial* s)
-//{
-//    xBaseLoad(g, s);
-//}
-//
+
+void zGustLoad(zGust* g, xSerial* s)
+{
+    xBaseLoad(g, s);
+}
+
 //void zGustReset(zGust* g)
 //{
 //    xBaseReset(g, g->asset);

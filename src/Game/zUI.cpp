@@ -1,65 +1,65 @@
-//#include "zUI.h"
-//
-//#include "zAnimList.h"
-//#include "zGlobals.h"
-//#include "zUIFont.h"
-//#include "zRenderState.h"
-//#include "zGame.h"
-//#include "zGameState.h"
-//
-//#include "xCounter.h"
-//#include "xDebug.h"
-//#include "xEvent.h"
-//#include "xGroup.h"
-//#include "xMath2.h"
-//#include "xScrFx.h"
-//#include "xSnd.h"
-//#include "xstransvc.h"
-//#include "xString.h"
-//#include "xTRC.h"
-//
-//#include "iMath.h"
-//
+#include "zUI.h"
+
+#include "zAnimList.h"
+#include "zGlobals.h"
+#include "zUIFont.h"
+#include "zRenderState.h"
+#include "zGame.h"
+#include "zGameState.h"
+
+#include "xCounter.h"
+#include "xDebug.h"
+#include "xEvent.h"
+#include "xGroup.h"
+#include "xMath2.h"
+#include "xScrFx.h"
+#include "xSnd.h"
+#include "xstransvc.h"
+#include "xString.h"
+#include "xTRC.h"
+
+#include "iMath.h"
+
 //#include <PowerPC_EABI_Support\MSL_C\MSL_Common\stdlib.h>
-//#include <string.h>
-//#include <stdio.h>
-//
-//#define TASK_COUNT 8
-//#define TASK_COUNT_BOSS 2
-//#define TASK_COUNT_SMALLBOSS 1
-//
-//struct menuTask
-//{
-//    _zUI* uiSelected;
-//    _zUI* uiSpatOutline;
-//    _zUI* uiSpatGray;
-//    _zUI* uiSpatGold;
-//    _zUI* uiTaskDesc;
-//    _xCounter* counter;
-//    char levelSuffix[2];
-//    _zPortal portal;
-//    xPortalAsset portalAsset;
-//};
-//
-//struct menuWorld
-//{
-//    _zUI* uiSelected;
-//    char worldPrefix[2];
-//    U32 numTasks;
-//    menuTask task[TASK_COUNT];
-//};
-//
-//struct menuTaskInfo
-//{
-//    F32 ang;
-//    _CurrentPlayer player;
-//};
-//
-//struct menuWorldInfo
-//{
-//    menuTaskInfo taskInfo[TASK_COUNT];
-//};
-//
+#include <string.h>
+#include <stdio.h>
+
+#define TASK_COUNT 8
+#define TASK_COUNT_BOSS 2
+#define TASK_COUNT_SMALLBOSS 1
+
+struct menuTask
+{
+    _zUI* uiSelected;
+    _zUI* uiSpatOutline;
+    _zUI* uiSpatGray;
+    _zUI* uiSpatGold;
+    _zUI* uiTaskDesc;
+    _xCounter* counter;
+    char levelSuffix[2];
+    _zPortal portal;
+    xPortalAsset portalAsset;
+};
+
+struct menuWorld
+{
+    _zUI* uiSelected;
+    char worldPrefix[2];
+    U32 numTasks;
+    menuTask task[TASK_COUNT];
+};
+
+struct menuTaskInfo
+{
+    F32 ang;
+    _CurrentPlayer player;
+};
+
+struct menuWorldInfo
+{
+    menuTaskInfo taskInfo[TASK_COUNT];
+};
+
 //_zUI* sSorted[768];
 //zUIMgr gUIMgr;
 //static U32 sSortedCount = 0;
@@ -435,12 +435,12 @@
 //{
 //    zEntSave(ent, s);
 //}
-//
-//void zUI_Load(_zUI* ent, xSerial* s)
-//{
-//    zEntLoad(ent, s);
-//}
-//
+
+void zUI_Load(_zUI* ent, xSerial* s)
+{
+    zEntLoad(ent, s);
+}
+
 //void zUI_Reset(_zUI* ent)
 //{
 //    zEntReset(ent);
@@ -1071,180 +1071,180 @@
 // *   eCurrentPlayerPatrick   (Patrick)
 // *   eCurrentPlayerSandy     (Sandy)
 // */
-//static menuWorldInfo sWorldInfo[] =
-//{
-//    // Bikini Bottom
-//    322, eCurrentPlayerSpongeBob, // On Top of the Pineapple
-//    322, eCurrentPlayerSpongeBob, // On Top of Shady Shoals
-//    322, eCurrentPlayerSpongeBob, // On Top of the Chum Bucket
-//    200, eCurrentPlayerSpongeBob, // SpongeBob's Closet
-//    45,  eCurrentPlayerSpongeBob, // Annoy Squidward
-//    315, eCurrentPlayerSpongeBob, // Ambush at the Tree Dome
-//    190, eCurrentPlayerSpongeBob, // Infestation at the Krusty Krab
-//    270, eCurrentPlayerSpongeBob, // A Wall Jump in the Bucket
-//
-//    // Jellyfish Fields
-//    180, eCurrentPlayerSpongeBob, // Top of the Hill
-//    55,  eCurrentPlayerSpongeBob, // Cowa-Bungee!
-//    210, eCurrentPlayerPatrick,   // Spelunking
-//    180, eCurrentPlayerSpongeBob, // Patrick's Dilemma
-//    180, eCurrentPlayerPatrick,   // Navigate the Canyons and Mesas
-//    50,  eCurrentPlayerPatrick,   // Drain the Lake
-//    345, eCurrentPlayerSpongeBob, // Slide Leap
-//    105, eCurrentPlayerSpongeBob, // Defeat King Jellyfish
-//
-//    // Downtown Bikini Bottom
-//    90,  eCurrentPlayerSpongeBob, // End of the Road
-//    180, eCurrentPlayerSandy,     // Learn Sandy's Moves
-//    338, eCurrentPlayerSpongeBob, // Tikis Go Boom
-//    180, eCurrentPlayerSandy,     // Across the Rooftops
-//    180, eCurrentPlayerSandy,     // Swingin' Sandy
-//    180, eCurrentPlayerSpongeBob, // Ambush in the Lighthouse
-//    180, eCurrentPlayerSpongeBob, // Extreme Bungee
-//    270, eCurrentPlayerSpongeBob, // Come Back with the Cruise Bubble
-//
-//    // Goo Lagoon
-//    225, eCurrentPlayerSpongeBob, // King of the Castle
-//    300, eCurrentPlayerSpongeBob, // Connect the Towers
-//    260, eCurrentPlayerSpongeBob, // Save the Children
-//    225, eCurrentPlayerPatrick,   // Over the Moat
-//    270, eCurrentPlayerSpongeBob, // Through the Sea Caves
-//    1,   eCurrentPlayerPatrick,   // Clean Out the Bumper Boats
-//    335, eCurrentPlayerPatrick,   // Slip and Slide Under the Pier
-//    350, eCurrentPlayerSpongeBob, // Tower Bungee
-//
-//    // Poseidome
-//    -1000000000, eCurrentPlayerSpongeBob, // Rumble at the Poseidome
-//    -1000000000, eCurrentPlayerSpongeBob,
-//    -1000000000, eCurrentPlayerSpongeBob,
-//    -1000000000, eCurrentPlayerSpongeBob,
-//    -1000000000, eCurrentPlayerSpongeBob,
-//    -1000000000, eCurrentPlayerSpongeBob,
-//    -1000000000, eCurrentPlayerSpongeBob,
-//    -1000000000, eCurrentPlayerSpongeBob,
-//
-//    // Rock Bottom
-//    90,  eCurrentPlayerSpongeBob, // Get to the Museum
-//    90,  eCurrentPlayerSpongeBob, // Slip Sliding Away
-//    90,  eCurrentPlayerSpongeBob, // Return the Museum's Art
-//    345, eCurrentPlayerSandy,     // Swingalong Spatula
-//    180, eCurrentPlayerSpongeBob, // Plundering Robots in the Museum
-//    280, eCurrentPlayerSpongeBob, // Across the Trench of Darkness
-//    1,   eCurrentPlayerSandy,     // Lasers are Fun and Good for You
-//    305, eCurrentPlayerSandy,     // How in Tarnation Do You Get There?
-//
-//    // Mermalair
-//    90,  eCurrentPlayerSpongeBob, // Top of the Entrance Area
-//    225, eCurrentPlayerSpongeBob, // Top of the Computer Area
-//    30,  eCurrentPlayerSpongeBob, // Shut Down the Security System
-//    210, eCurrentPlayerPatrick,   // The Funnel Machines
-//    180, eCurrentPlayerPatrick,   // The Spinning Towers of Power
-//    45,  eCurrentPlayerSpongeBob, // Top of the Security Tunnel
-//    45,  eCurrentPlayerSpongeBob, // Complete the Rolling Ball Room
-//    -1000000000, eCurrentPlayerSpongeBob, // Defeat Prawn
-//
-//    // Sand Mountain
-//    270, eCurrentPlayerSpongeBob, // Frosty Bungee
-//    270, eCurrentPlayerSandy,     // Top of the Lodge
-//    120, eCurrentPlayerSpongeBob, // Defeat Robots on Guppy Mound
-//    120, eCurrentPlayerSpongeBob, // Beat Mrs. Puff's Time
-//    130, eCurrentPlayerSpongeBob, // Defeat Robots on Flounder Hill
-//    130, eCurrentPlayerSpongeBob, // Beat Bubble Buddy's Time
-//    180, eCurrentPlayerSpongeBob, // Defeat Robots on Sand Mountain
-//    180, eCurrentPlayerSpongeBob, // Beat Larry's Time
-//
-//    // Industrial Park
-//    -1000000000, eCurrentPlayerSpongeBob, // Robo-Patrick Ahoy!
-//    -1000000000, eCurrentPlayerSpongeBob,
-//    -1000000000, eCurrentPlayerSpongeBob,
-//    -1000000000, eCurrentPlayerSpongeBob,
-//    -1000000000, eCurrentPlayerSpongeBob,
-//    -1000000000, eCurrentPlayerSpongeBob,
-//    -1000000000, eCurrentPlayerSpongeBob,
-//    -1000000000, eCurrentPlayerSpongeBob,
-//
-//    // Kelp Forest
-//    1,   eCurrentPlayerSpongeBob, // Through the Woods
-//    90,  eCurrentPlayerSpongeBob, // Find all the Lost Campers
-//    180, eCurrentPlayerPatrick,   // Tiki Roundup
-//    138, eCurrentPlayerPatrick,   // Down in the Swamp
-//    160, eCurrentPlayerSpongeBob, // Through the Kelp Caves
-//    160, eCurrentPlayerSpongeBob, // Power Crystal Crisis
-//    200, eCurrentPlayerSpongeBob, // Kelp Vine Slide
-//    200, eCurrentPlayerSpongeBob, // Beat Mermaid Man's Time
-//
-//    // Flying Dutchman's Graveyard
-//    225, eCurrentPlayerSpongeBob, // Top of the Entrance Area
-//    50,  eCurrentPlayerSpongeBob, // A Path through the Goo
-//    180, eCurrentPlayerSpongeBob, // Goo Tanker Ahoy!
-//    225, eCurrentPlayerSpongeBob, // Top of the Stack of Ships
-//    60,  eCurrentPlayerSpongeBob, // Shipwreck Bungee
-//    250, eCurrentPlayerSpongeBob, // Destroy the Robot Ship
-//    250, eCurrentPlayerSpongeBob, // Get Aloft There, Matey!
-//    130, eCurrentPlayerSandy,     // Defeat the Flying Dutchman
-//
-//    // SpongeBob's Dream
-//    315, eCurrentPlayerSpongeBob, // Across the Dreamscape
-//    315, eCurrentPlayerSpongeBob, // Follow the Bouncing Ball
-//    180, eCurrentPlayerSandy,     // Slidin' Texas Style
-//    70,  eCurrentPlayerSandy,     // Swingers Ahoy
-//    135, eCurrentPlayerSpongeBob, // Music is in the Ear of the Beholder
-//    180, eCurrentPlayerSpongeBob, // Krabby Patty Platforms
-//    1,   eCurrentPlayerSpongeBob, // Super Bounce
-//    90,  eCurrentPlayerSpongeBob, // Here You Go
-//
-//    // Chum Bucket Lab
-//    -1000000000, eCurrentPlayerSpongeBob, // Kah - Rah - Tae!
-//    -1000000000, eCurrentPlayerSpongeBob, // The Small Shall Rule... or Not
-//    -1000000000, eCurrentPlayerSpongeBob,
-//    -1000000000, eCurrentPlayerSpongeBob,
-//    -1000000000, eCurrentPlayerSpongeBob,
-//    -1000000000, eCurrentPlayerSpongeBob,
-//    -1000000000, eCurrentPlayerSpongeBob,
-//    -1000000000, eCurrentPlayerSpongeBob,
-//
-//    // Patrick
-//    180, eCurrentPlayerSpongeBob, // Return 10 Socks to Patrick
-//    180, eCurrentPlayerSpongeBob, // Return 10 Socks to Patrick
-//    180, eCurrentPlayerSpongeBob, // Return 10 Socks to Patrick
-//    180, eCurrentPlayerSpongeBob, // Return 10 Socks to Patrick
-//    180, eCurrentPlayerSpongeBob, // Return 10 Socks to Patrick
-//    180, eCurrentPlayerSpongeBob, // Return 10 Socks to Patrick
-//    180, eCurrentPlayerSpongeBob, // Return 10 Socks to Patrick
-//    180, eCurrentPlayerSpongeBob, // Return 10 Socks to Patrick
-//
-//    // Mr. Krabs
-//    150, eCurrentPlayerSpongeBob, // Pay Mr. Krabs 3,000 Shiny Objects
-//    150, eCurrentPlayerSpongeBob, // Pay Mr. Krabs 3,500 Shiny Objects
-//    150, eCurrentPlayerSpongeBob, // Pay Mr. Krabs 4,000 Shiny Objects
-//    150, eCurrentPlayerSpongeBob, // Pay Mr. Krabs 4,500 Shiny Objects
-//    150, eCurrentPlayerSpongeBob, // Pay Mr. Krabs 5,000 Shiny Objects
-//    150, eCurrentPlayerSpongeBob, // Pay Mr. Krabs 5,500 Shiny Objects
-//    150, eCurrentPlayerSpongeBob, // Pay Mr. Krabs 6,500 Shiny Objects
-//    150, eCurrentPlayerSpongeBob, // Pay Mr. Krabs 7,500 Shiny Objects
-//};
-//// clang-format on
-//
-//#define WORLD_COUNT (sizeof(sWorldInfo) / sizeof(sWorldInfo[0]))
-//
-//#define WORLD_HB 0 // Bikini Bottom
-//#define WORLD_JF 1 // Jellyfish Fields
-//#define WORLD_BB 2 // Downtown Bikini Bottom
-//#define WORLD_GL 3 // Goo Lagoon
-//#define WORLD_B1 4 // Poseidome
-//#define WORLD_RB 5 // Rock Bottom
-//#define WORLD_BC 6 // Mermalair
-//#define WORLD_SM 7 // Sand Mountain
-//#define WORLD_B2 8 // Industrial Park
-//#define WORLD_KF 9 // Kelp Forest
-//#define WORLD_GY 10 // Flying Dutchman's Graveyard
-//#define WORLD_DB 11 // SpongeBob's Dream
-//#define WORLD_B3 12 // Chum Bucket Lab
-//#define WORLD_PAT 13 // Patrick
-//#define WORLD_KRABS 14 // Mr. Krabs
-//
-//static menuWorld sWorld[WORLD_COUNT];
-//
+static menuWorldInfo sWorldInfo[] =
+{
+    // Bikini Bottom
+    322, eCurrentPlayerSpongeBob, // On Top of the Pineapple
+    322, eCurrentPlayerSpongeBob, // On Top of Shady Shoals
+    322, eCurrentPlayerSpongeBob, // On Top of the Chum Bucket
+    200, eCurrentPlayerSpongeBob, // SpongeBob's Closet
+    45,  eCurrentPlayerSpongeBob, // Annoy Squidward
+    315, eCurrentPlayerSpongeBob, // Ambush at the Tree Dome
+    190, eCurrentPlayerSpongeBob, // Infestation at the Krusty Krab
+    270, eCurrentPlayerSpongeBob, // A Wall Jump in the Bucket
+
+    // Jellyfish Fields
+    180, eCurrentPlayerSpongeBob, // Top of the Hill
+    55,  eCurrentPlayerSpongeBob, // Cowa-Bungee!
+    210, eCurrentPlayerPatrick,   // Spelunking
+    180, eCurrentPlayerSpongeBob, // Patrick's Dilemma
+    180, eCurrentPlayerPatrick,   // Navigate the Canyons and Mesas
+    50,  eCurrentPlayerPatrick,   // Drain the Lake
+    345, eCurrentPlayerSpongeBob, // Slide Leap
+    105, eCurrentPlayerSpongeBob, // Defeat King Jellyfish
+
+    // Downtown Bikini Bottom
+    90,  eCurrentPlayerSpongeBob, // End of the Road
+    180, eCurrentPlayerSandy,     // Learn Sandy's Moves
+    338, eCurrentPlayerSpongeBob, // Tikis Go Boom
+    180, eCurrentPlayerSandy,     // Across the Rooftops
+    180, eCurrentPlayerSandy,     // Swingin' Sandy
+    180, eCurrentPlayerSpongeBob, // Ambush in the Lighthouse
+    180, eCurrentPlayerSpongeBob, // Extreme Bungee
+    270, eCurrentPlayerSpongeBob, // Come Back with the Cruise Bubble
+
+    // Goo Lagoon
+    225, eCurrentPlayerSpongeBob, // King of the Castle
+    300, eCurrentPlayerSpongeBob, // Connect the Towers
+    260, eCurrentPlayerSpongeBob, // Save the Children
+    225, eCurrentPlayerPatrick,   // Over the Moat
+    270, eCurrentPlayerSpongeBob, // Through the Sea Caves
+    1,   eCurrentPlayerPatrick,   // Clean Out the Bumper Boats
+    335, eCurrentPlayerPatrick,   // Slip and Slide Under the Pier
+    350, eCurrentPlayerSpongeBob, // Tower Bungee
+
+    // Poseidome
+    -1000000000, eCurrentPlayerSpongeBob, // Rumble at the Poseidome
+    -1000000000, eCurrentPlayerSpongeBob,
+    -1000000000, eCurrentPlayerSpongeBob,
+    -1000000000, eCurrentPlayerSpongeBob,
+    -1000000000, eCurrentPlayerSpongeBob,
+    -1000000000, eCurrentPlayerSpongeBob,
+    -1000000000, eCurrentPlayerSpongeBob,
+    -1000000000, eCurrentPlayerSpongeBob,
+
+    // Rock Bottom
+    90,  eCurrentPlayerSpongeBob, // Get to the Museum
+    90,  eCurrentPlayerSpongeBob, // Slip Sliding Away
+    90,  eCurrentPlayerSpongeBob, // Return the Museum's Art
+    345, eCurrentPlayerSandy,     // Swingalong Spatula
+    180, eCurrentPlayerSpongeBob, // Plundering Robots in the Museum
+    280, eCurrentPlayerSpongeBob, // Across the Trench of Darkness
+    1,   eCurrentPlayerSandy,     // Lasers are Fun and Good for You
+    305, eCurrentPlayerSandy,     // How in Tarnation Do You Get There?
+
+    // Mermalair
+    90,  eCurrentPlayerSpongeBob, // Top of the Entrance Area
+    225, eCurrentPlayerSpongeBob, // Top of the Computer Area
+    30,  eCurrentPlayerSpongeBob, // Shut Down the Security System
+    210, eCurrentPlayerPatrick,   // The Funnel Machines
+    180, eCurrentPlayerPatrick,   // The Spinning Towers of Power
+    45,  eCurrentPlayerSpongeBob, // Top of the Security Tunnel
+    45,  eCurrentPlayerSpongeBob, // Complete the Rolling Ball Room
+    -1000000000, eCurrentPlayerSpongeBob, // Defeat Prawn
+
+    // Sand Mountain
+    270, eCurrentPlayerSpongeBob, // Frosty Bungee
+    270, eCurrentPlayerSandy,     // Top of the Lodge
+    120, eCurrentPlayerSpongeBob, // Defeat Robots on Guppy Mound
+    120, eCurrentPlayerSpongeBob, // Beat Mrs. Puff's Time
+    130, eCurrentPlayerSpongeBob, // Defeat Robots on Flounder Hill
+    130, eCurrentPlayerSpongeBob, // Beat Bubble Buddy's Time
+    180, eCurrentPlayerSpongeBob, // Defeat Robots on Sand Mountain
+    180, eCurrentPlayerSpongeBob, // Beat Larry's Time
+
+    // Industrial Park
+    -1000000000, eCurrentPlayerSpongeBob, // Robo-Patrick Ahoy!
+    -1000000000, eCurrentPlayerSpongeBob,
+    -1000000000, eCurrentPlayerSpongeBob,
+    -1000000000, eCurrentPlayerSpongeBob,
+    -1000000000, eCurrentPlayerSpongeBob,
+    -1000000000, eCurrentPlayerSpongeBob,
+    -1000000000, eCurrentPlayerSpongeBob,
+    -1000000000, eCurrentPlayerSpongeBob,
+
+    // Kelp Forest
+    1,   eCurrentPlayerSpongeBob, // Through the Woods
+    90,  eCurrentPlayerSpongeBob, // Find all the Lost Campers
+    180, eCurrentPlayerPatrick,   // Tiki Roundup
+    138, eCurrentPlayerPatrick,   // Down in the Swamp
+    160, eCurrentPlayerSpongeBob, // Through the Kelp Caves
+    160, eCurrentPlayerSpongeBob, // Power Crystal Crisis
+    200, eCurrentPlayerSpongeBob, // Kelp Vine Slide
+    200, eCurrentPlayerSpongeBob, // Beat Mermaid Man's Time
+
+    // Flying Dutchman's Graveyard
+    225, eCurrentPlayerSpongeBob, // Top of the Entrance Area
+    50,  eCurrentPlayerSpongeBob, // A Path through the Goo
+    180, eCurrentPlayerSpongeBob, // Goo Tanker Ahoy!
+    225, eCurrentPlayerSpongeBob, // Top of the Stack of Ships
+    60,  eCurrentPlayerSpongeBob, // Shipwreck Bungee
+    250, eCurrentPlayerSpongeBob, // Destroy the Robot Ship
+    250, eCurrentPlayerSpongeBob, // Get Aloft There, Matey!
+    130, eCurrentPlayerSandy,     // Defeat the Flying Dutchman
+
+    // SpongeBob's Dream
+    315, eCurrentPlayerSpongeBob, // Across the Dreamscape
+    315, eCurrentPlayerSpongeBob, // Follow the Bouncing Ball
+    180, eCurrentPlayerSandy,     // Slidin' Texas Style
+    70,  eCurrentPlayerSandy,     // Swingers Ahoy
+    135, eCurrentPlayerSpongeBob, // Music is in the Ear of the Beholder
+    180, eCurrentPlayerSpongeBob, // Krabby Patty Platforms
+    1,   eCurrentPlayerSpongeBob, // Super Bounce
+    90,  eCurrentPlayerSpongeBob, // Here You Go
+
+    // Chum Bucket Lab
+    -1000000000, eCurrentPlayerSpongeBob, // Kah - Rah - Tae!
+    -1000000000, eCurrentPlayerSpongeBob, // The Small Shall Rule... or Not
+    -1000000000, eCurrentPlayerSpongeBob,
+    -1000000000, eCurrentPlayerSpongeBob,
+    -1000000000, eCurrentPlayerSpongeBob,
+    -1000000000, eCurrentPlayerSpongeBob,
+    -1000000000, eCurrentPlayerSpongeBob,
+    -1000000000, eCurrentPlayerSpongeBob,
+
+    // Patrick
+    180, eCurrentPlayerSpongeBob, // Return 10 Socks to Patrick
+    180, eCurrentPlayerSpongeBob, // Return 10 Socks to Patrick
+    180, eCurrentPlayerSpongeBob, // Return 10 Socks to Patrick
+    180, eCurrentPlayerSpongeBob, // Return 10 Socks to Patrick
+    180, eCurrentPlayerSpongeBob, // Return 10 Socks to Patrick
+    180, eCurrentPlayerSpongeBob, // Return 10 Socks to Patrick
+    180, eCurrentPlayerSpongeBob, // Return 10 Socks to Patrick
+    180, eCurrentPlayerSpongeBob, // Return 10 Socks to Patrick
+
+    // Mr. Krabs
+    150, eCurrentPlayerSpongeBob, // Pay Mr. Krabs 3,000 Shiny Objects
+    150, eCurrentPlayerSpongeBob, // Pay Mr. Krabs 3,500 Shiny Objects
+    150, eCurrentPlayerSpongeBob, // Pay Mr. Krabs 4,000 Shiny Objects
+    150, eCurrentPlayerSpongeBob, // Pay Mr. Krabs 4,500 Shiny Objects
+    150, eCurrentPlayerSpongeBob, // Pay Mr. Krabs 5,000 Shiny Objects
+    150, eCurrentPlayerSpongeBob, // Pay Mr. Krabs 5,500 Shiny Objects
+    150, eCurrentPlayerSpongeBob, // Pay Mr. Krabs 6,500 Shiny Objects
+    150, eCurrentPlayerSpongeBob, // Pay Mr. Krabs 7,500 Shiny Objects
+};
+// clang-format on
+
+#define WORLD_COUNT (sizeof(sWorldInfo) / sizeof(sWorldInfo[0]))
+
+#define WORLD_HB 0 // Bikini Bottom
+#define WORLD_JF 1 // Jellyfish Fields
+#define WORLD_BB 2 // Downtown Bikini Bottom
+#define WORLD_GL 3 // Goo Lagoon
+#define WORLD_B1 4 // Poseidome
+#define WORLD_RB 5 // Rock Bottom
+#define WORLD_BC 6 // Mermalair
+#define WORLD_SM 7 // Sand Mountain
+#define WORLD_B2 8 // Industrial Park
+#define WORLD_KF 9 // Kelp Forest
+#define WORLD_GY 10 // Flying Dutchman's Graveyard
+#define WORLD_DB 11 // SpongeBob's Dream
+#define WORLD_B3 12 // Chum Bucket Lab
+#define WORLD_PAT 13 // Patrick
+#define WORLD_KRABS 14 // Mr. Krabs
+
+static menuWorld sWorld[WORLD_COUNT];
+
 //_zUI* sTakeTaxi;
 //_zUI* sNoneTaskDesc;
 //_zUI* sCurrTaskDesc;
@@ -1971,18 +1971,18 @@
 //        }
 //    }
 //}
-//
-//void zUI_ScenePortalLoad(xSerial* s)
-//{
-//    for (U32 i = 0; i < WORLD_COUNT; i++)
-//    {
-//        for (U32 j = 0; j < sWorld[i].numTasks; j++)
-//        {
-//            s->Read(&sWorld[i].task[j].counter->count);
-//        }
-//    }
-//}
-//
+
+void zUI_ScenePortalLoad(xSerial* s)
+{
+    for (U32 i = 0; i < WORLD_COUNT; i++)
+    {
+        for (U32 j = 0; j < sWorld[i].numTasks; j++)
+        {
+            s->Read(&sWorld[i].task[j].counter->count);
+        }
+    }
+}
+
 //WEAK void xMat3x3Scale(xMat3x3* m, const xVec3* s)
 //{
 //    xMat3x3ScaleC(m, s->x, s->y, s->z);

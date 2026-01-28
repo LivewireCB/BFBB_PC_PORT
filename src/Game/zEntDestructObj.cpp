@@ -1,14 +1,14 @@
-//#include "zEntDestructObj.h"
-//
-//#include <types.h>
-//
-//static zParEmitter* sEmitDust;
-//static zParEmitter* sEmitFire;
-//static zParEmitter* sEmitSmoke;
-//static zParEmitter* sEmitWeb;
-//static zParEmitter* sEmitXplo;
-//static zParEmitter* sShrapDefault;
-//
+#include "zEntDestructObj.h"
+
+#include <types.h>
+
+static zParEmitter* sEmitDust;
+static zParEmitter* sEmitFire;
+static zParEmitter* sEmitSmoke;
+static zParEmitter* sEmitWeb;
+static zParEmitter* sEmitXplo;
+static zParEmitter* sShrapDefault;
+
 //namespace
 //{
 //    static void SwapModel(zEntDestructObj* ent, xModelInstance* modelInst)
@@ -308,13 +308,13 @@
 //    zEntSave((zEnt*)ent, s);
 //    s->Write(ent->state);
 //}
-//
-//void zEntDestructObj_Load(zEntDestructObj* ent, xSerial* s)
-//{
-//    zEntLoad((zEnt*)ent, s);
-//    s->Read(&ent->state);
-//}
-//
+
+void zEntDestructObj_Load(zEntDestructObj* ent, xSerial* s)
+{
+    zEntLoad((zEnt*)ent, s);
+    s->Read(&ent->state);
+}
+
 //void zEntDestructObj_Setup(zEntDestructObj* ent)
 //{
 //    zEntSetup((zEnt*)ent);

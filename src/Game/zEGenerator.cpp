@@ -1,14 +1,14 @@
-//#include "zEGenerator.h"
-//
-//#include "xDraw.h"
-//#include "xEntBoulder.h"
-//#include "xMovePoint.h"
-//#include "zCollGeom.h"
-//#include "zGlobals.h"
-//#include "zThrown.h"
-//
-//#include <types.h>
-//
+#include "zEGenerator.h"
+
+#include "xDraw.h"
+#include "xEntBoulder.h"
+#include "xMovePoint.h"
+#include "zCollGeom.h"
+#include "zGlobals.h"
+#include "zThrown.h"
+
+#include <types.h>
+
 //void zEGenerator_Init(void* egen, void* asset)
 //{
 //    zEGenerator_Init((zEGenerator*)egen, (xEntAsset*)asset);
@@ -75,12 +75,12 @@
 //{
 //    zEntSave((zEnt*)ent, s);
 //}
-//
-//void zEGenerator_Load(zEGenerator* ent, xSerial* s)
-//{
-//    zEntLoad((zEnt*)ent, s);
-//}
-//
+
+void zEGenerator_Load(zEGenerator* ent, xSerial* s)
+{
+    zEntLoad((zEnt*)ent, s);
+}
+
 //void zEGenerator_Reset(zEGenerator* egen, xScene* sc)
 //{
 //    zEntReset((zEnt*)egen);

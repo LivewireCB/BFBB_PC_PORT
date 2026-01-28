@@ -139,17 +139,17 @@ void zEnvStartingCamera(_zEnv* env)
 //{
 //    xBaseSave(ent, s);
 //}
-//
-//void zEnvLoad(_zEnv* ent, xSerial* s)
-//{
-//    xBaseLoad(ent, s);
-//}
-//
-//void zEnvReset(_zEnv* env)
-//{
-//    xBaseReset(env, env->easset);
-//}
-//
+
+void zEnvLoad(_zEnv* ent, xSerial* s)
+{
+    xBaseLoad(ent, s);
+}
+
+void zEnvReset(_zEnv* env)
+{
+    xBaseReset(env, env->easset);
+}
+
 //S32 zEnvEventCB(xBase*, xBase* to, U32 toEvent, const F32* toParam, xBase*)
 //{
 //    switch (toEvent)

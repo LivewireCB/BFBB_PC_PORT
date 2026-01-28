@@ -1,72 +1,72 @@
-//#include "zEntPickup.h"
-//
-//#include "zLOD.h"
-//#include "zGame.h"
-//#include "zGlobals.h"
-//#include "zEntPlayerBungeeState.h"
-//#include "zEntSimpleObj.h"
-//#include "zGrid.h"
-//#include "zFX.h"
-//#include "zUI.h"
-//
-//#include "xMath.h"
-//#include "xMathInlines.h"
-//#include "xFX.h"
-//#include "xstransvc.h"
-//#include "iAnim.h"
-//#include "iModel.h"
-//
-//#include <string.h>
-//#include <stdio.h>
-//
-//#define PICKUP_TYPE_SHINY 0
-//#define PICKUP_TYPE_1 1
-//
-//#define SHINY_PURPLE 0
-//#define SHINY_BLUE 1
-//#define SHINY_GREEN 2
-//#define SHINY_YELLOW 3
-//#define SHINY_RED 4
-//#define SHINY_COUNT 5
-//
-//#define PICKUP_SPATULA 0
-//#define PICKUP_UNDERWEAR 1
-//#define PICKUP_GOLDEN_UNDERWEAR 2
-//#define PICKUP_4 4
-//#define PICKUP_SUNDAE 5
-//#define PICKUP_SOCK 6
-//#define PICKUP_SPONGEBALL 7
-//#define PICKUP_8 8
-//#define PICKUP_9 9
-//#define PICKUP_10 10
-//#define PICKUP_11 11
-//#define PICKUP_12 12
-//#define PICKUP_13 13
-//#define PICKUP_14 14
-//
-//#define REWARD_TYPE_COUNT SHINY_COUNT
-//#define REWARD_COUNT 20
-//#define REWARD_PICKUP_COUNT 10
-//
-//struct ShinySparkly
-//{
-//    U16 pickupType;
-//    U16 pickupIndex;
-//    F32 radius;
-//    F32 std_rate;
-//    F32 fly_rate;
-//    U8 br;
-//    U8 bg;
-//    U8 bb;
-//    U8 ba;
-//    U8 dr;
-//    U8 dg;
-//    U8 db;
-//    U8 da;
-//    U32 envmapID;
-//    F32 shininess;
-//};
-//
+#include "zEntPickup.h"
+
+#include "zLOD.h"
+#include "zGame.h"
+#include "zGlobals.h"
+#include "zEntPlayerBungeeState.h"
+#include "zEntSimpleObj.h"
+#include "zGrid.h"
+#include "zFX.h"
+#include "zUI.h"
+
+#include "xMath.h"
+#include "xMathInlines.h"
+#include "xFX.h"
+#include "xstransvc.h"
+#include "iAnim.h"
+#include "iModel.h"
+
+#include <string.h>
+#include <stdio.h>
+
+#define PICKUP_TYPE_SHINY 0
+#define PICKUP_TYPE_1 1
+
+#define SHINY_PURPLE 0
+#define SHINY_BLUE 1
+#define SHINY_GREEN 2
+#define SHINY_YELLOW 3
+#define SHINY_RED 4
+#define SHINY_COUNT 5
+
+#define PICKUP_SPATULA 0
+#define PICKUP_UNDERWEAR 1
+#define PICKUP_GOLDEN_UNDERWEAR 2
+#define PICKUP_4 4
+#define PICKUP_SUNDAE 5
+#define PICKUP_SOCK 6
+#define PICKUP_SPONGEBALL 7
+#define PICKUP_8 8
+#define PICKUP_9 9
+#define PICKUP_10 10
+#define PICKUP_11 11
+#define PICKUP_12 12
+#define PICKUP_13 13
+#define PICKUP_14 14
+
+#define REWARD_TYPE_COUNT SHINY_COUNT
+#define REWARD_COUNT 20
+#define REWARD_PICKUP_COUNT 10
+
+struct ShinySparkly
+{
+    U16 pickupType;
+    U16 pickupIndex;
+    F32 radius;
+    F32 std_rate;
+    F32 fly_rate;
+    U8 br;
+    U8 bg;
+    U8 bb;
+    U8 ba;
+    U8 dr;
+    U8 dg;
+    U8 db;
+    U8 da;
+    U32 envmapID;
+    F32 shininess;
+};
+
 //struct _tagKeyShake
 //{
 //    xVec3 orig_pos;
@@ -1126,68 +1126,68 @@ void zEntPickup_Startup()
 //        s->Write_b1(0);
 //    }
 //}
-//
-//void zEntPickup_Load(zEntPickup* ent, xSerial* s)
-//{
-//    S32 is_a_dropper = 0;
-//
-//    zEntLoad(ent, s);
-//
-//    if (ent->state & 0x10)
-//    {
-//        is_a_dropper = 1;
-//    }
-//
-//    U32 state = 0;
-//    S32 coll = 0;
-//
-//    s->Read_b7(&state);
-//    s->Read_b1(&coll);
-//
-//    if (state & 0x4)
-//    {
-//        ent->state = (ent->state & ~0x3f) | 0x8;
-//
-//        xEntHide(ent);
-//    }
-//
-//    ent->state = state;
-//
-//    if (coll)
-//    {
-//        ent->pickupFlags |= 0x2;
-//    }
-//    else
-//    {
-//        ent->pickupFlags &= (U8)~0x2;
-//    }
-//
-//    if (ent->pickupFlags & 0x1)
-//    {
-//        ent->timer = 1.0f;
-//    }
-//
-//    if (is_a_dropper && (ent->state & 0x23))
-//    {
-//        if (ent->dropParent && ent->dropParent->baseType == eBaseTypeStatic &&
-//            !(ent->dropParent->baseFlags & 0x2) &&
-//            (((zEntSimpleObj*)ent->dropParent)->sflags & 0x1))
-//        {
-//            printf("Put back  %f %f %f    %f %f %f\n", //
-//                   ent->model->Mat->pos.x, ent->model->Mat->pos.y, ent->model->Mat->pos.z,
-//                   ent->droppos.x, ent->droppos.y, ent->droppos.z);
-//
-//            ent->state = 0x10;
-//
-//            xEntHide(ent);
-//        }
-//        else
-//        {
-//            xVec3Copy((xVec3*)&ent->model->Mat->pos, &ent->droppos);
-//        }
-//    }
-//}
-//
+
+void zEntPickup_Load(zEntPickup* ent, xSerial* s)
+{
+    S32 is_a_dropper = 0;
+
+    zEntLoad(ent, s);
+
+    if (ent->state & 0x10)
+    {
+        is_a_dropper = 1;
+    }
+
+    U32 state = 0;
+    S32 coll = 0;
+
+    s->Read_b7(&state);
+    s->Read_b1(&coll);
+
+    if (state & 0x4)
+    {
+        ent->state = (ent->state & ~0x3f) | 0x8;
+
+        xEntHide(ent);
+    }
+
+    ent->state = state;
+
+    if (coll)
+    {
+        ent->pickupFlags |= 0x2;
+    }
+    else
+    {
+        ent->pickupFlags &= (U8)~0x2;
+    }
+
+    if (ent->pickupFlags & 0x1)
+    {
+        ent->timer = 1.0f;
+    }
+
+    if (is_a_dropper && (ent->state & 0x23))
+    {
+        if (ent->dropParent && ent->dropParent->baseType == eBaseTypeStatic &&
+            !(ent->dropParent->baseFlags & 0x2) &&
+            (((zEntSimpleObj*)ent->dropParent)->sflags & 0x1))
+        {
+            printf("Put back  %f %f %f    %f %f %f\n", //
+                   ent->model->Mat->pos.x, ent->model->Mat->pos.y, ent->model->Mat->pos.z,
+                   ent->droppos.x, ent->droppos.y, ent->droppos.z);
+
+            ent->state = 0x10;
+
+            xEntHide(ent);
+        }
+        else
+        {
+            xVec3Copy((xVec3*)&ent->model->Mat->pos, &ent->droppos);
+        }
+    }
+}
+
 //void zEntPickup_FlushGrabbed()
 //{
 //    zScene* s = globals.sceneCur;

@@ -74,14 +74,15 @@ void zMenuExit() RIMP
 }
 
 void zMenuSetup() RIMP
+// I believe that everything commented out causes crashes, but this needs implemented now.
 {
     globals.player.MaxHealth = 3;
     zSceneSetup();
     sAttractMode_timer = 48.264f;
-    //zGameSetupPlayer();
-    //zEnvStartingCamera(gCurEnv);
+    //zGameSetupPlayer(); CAUSES CRASHING
+    //zEnvStartingCamera(gCurEnv); CAUSES CRASHING
     xCameraUpdate(&globals.camera, -1.0f);
-    //xSkyDome_Setup();
+    xSkyDome_Setup();
     //zEntEventAll(NULL, 0, eEventSceneBegin, NULL);
     //zEntEventAll(NULL, 0, eEventRoomBegin, NULL);
     if (globals.updateMgr)
@@ -295,17 +296,17 @@ U32 zMenuLoop() WIP
 //    zGameExtras_NewGameReset();
 //    return s;
 //}
-//
-//U32 zMenuIsPaused()
-//{
-//    return 0;
-//}
-//
-//S32 zMenuLoopContinue()
-//{
-//    return gGameMode != eGameMode_Game;
-//}
-//
+
+U32 zMenuIsPaused()
+{
+    return 0;
+}
+
+S32 zMenuLoopContinue()
+{
+    return gGameMode != eGameMode_Game;
+}
+
 //U32 zMenuUpdateMode()
 //{
 //    U32 retVal = 0;

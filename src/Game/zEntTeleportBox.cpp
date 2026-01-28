@@ -1,32 +1,32 @@
-//#include "zEntTeleportBox.h"
-//
-//#include "zUIFont.h"
-//#include "zGlobals.h"
-//#include "zEntCruiseBubble.h"
-//#include "zRumble.h"
-//#include "zEntPickup.h"
-//#include "zFX.h"
-//
-//#include "xEvent.h"
-//#include "xMath.h"
-//#include "xSnd.h"
-//#include "xString.h"
-//#include "iScrFX.h"
-//
-//#define STATUS_OPEN 0
-//#define STATUS_CLOSED 1
-//
-//#define PLAYER_STATE_OUTSIDE 0
-//#define PLAYER_STATE_INSIDE 1
-//#define PLAYER_STATE_TELEPORTING 2
-//#define PLAYER_STATE_TELEPORTED 3
-//#define PLAYER_STATE_EJECTING 4
-//
-//static S32 sPlayerIn;
-//static U32 sPlayerNear;
-//static zUIFont* sTeleportUI;
-//static F32 sTeleportCamPitch;
-//
+#include "zEntTeleportBox.h"
+
+#include "zUIFont.h"
+#include "zGlobals.h"
+#include "zEntCruiseBubble.h"
+#include "zRumble.h"
+#include "zEntPickup.h"
+#include "zFX.h"
+
+#include "xEvent.h"
+#include "xMath.h"
+#include "xSnd.h"
+#include "xString.h"
+#include "iScrFX.h"
+
+#define STATUS_OPEN 0
+#define STATUS_CLOSED 1
+
+#define PLAYER_STATE_OUTSIDE 0
+#define PLAYER_STATE_INSIDE 1
+#define PLAYER_STATE_TELEPORTING 2
+#define PLAYER_STATE_TELEPORTED 3
+#define PLAYER_STATE_EJECTING 4
+
+static S32 sPlayerIn;
+static U32 sPlayerNear;
+static zUIFont* sTeleportUI;
+static F32 sTeleportCamPitch;
+
 //static const char _stringBase0_79[] = "Box_open\0"
 //                                      "teleportation_box_bind\0"
 //                                      "TBox\0"
@@ -424,42 +424,42 @@
 //
 //    s->Write(ent->currPlrState);
 //}
-//
-//void zEntTeleportBox_Load(_zEntTeleportBox* ent, xSerial* s)
-//{
-//    zEntLoad(ent, s);
-//
-//    S32 open = 0;
-//    s->Read_b1(&open);
-//
-//    if (open)
-//    {
-//        zEntTeleportBox_Open(ent);
-//    }
-//    else
-//    {
-//        zEntTeleportBox_Close(ent);
-//    }
-//
-//    s->Read(&ent->currPlrState);
-//}
-//
-//void zEntTeleportBox_Open(_zEntTeleportBox* ent)
-//{
-//    if (ent->status == STATUS_CLOSED)
-//    {
-//        ent->status = STATUS_OPEN;
-//    }
-//}
-//
-//void zEntTeleportBox_Close(_zEntTeleportBox* ent)
-//{
-//    if (ent->status == STATUS_OPEN)
-//    {
-//        ent->status = STATUS_CLOSED;
-//    }
-//}
-//
+
+void zEntTeleportBox_Load(_zEntTeleportBox* ent, xSerial* s)
+{
+    zEntLoad(ent, s);
+
+    S32 open = 0;
+    s->Read_b1(&open);
+
+    if (open)
+    {
+        zEntTeleportBox_Open(ent);
+    }
+    else
+    {
+        zEntTeleportBox_Close(ent);
+    }
+
+    s->Read(&ent->currPlrState);
+}
+
+void zEntTeleportBox_Open(_zEntTeleportBox* ent)
+{
+    if (ent->status == STATUS_CLOSED)
+    {
+        ent->status = STATUS_OPEN;
+    }
+}
+
+void zEntTeleportBox_Close(_zEntTeleportBox* ent)
+{
+    if (ent->status == STATUS_OPEN)
+    {
+        ent->status = STATUS_CLOSED;
+    }
+}
+
 //S32 zEntTeleportBox_isOpen(_zEntTeleportBox* ent)
 //{
 //    _zEntTeleportBox* target = (_zEntTeleportBox*)ent->target;

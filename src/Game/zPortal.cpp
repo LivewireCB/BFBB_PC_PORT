@@ -1,12 +1,12 @@
-//#include "xBase.h"
-//#include "xEvent.h"
-//
-//#include "zPortal.h"
-//#include "zGlobals.h"
-//#include "zScene.h"
-//
+#include "xBase.h"
+#include "xEvent.h"
+
+#include "zPortal.h"
+#include "zGlobals.h"
+#include "zScene.h"
+
 //extern zGlobals globals;
-//
+
 //void zPortalInit(void* portal, void* passet)
 //{
 //    zPortalInit((_zPortal*)portal, (xPortalAsset*)passet);
@@ -34,12 +34,12 @@
 //{
 //    xBaseSave((xBase*)ent, s);
 //}
-//
-//void zPortalLoad(_zPortal* ent, xSerial* s)
-//{
-//    xBaseLoad((xBase*)ent, s);
-//}
-//
+
+void zPortalLoad(_zPortal* ent, xSerial* s)
+{
+    xBaseLoad((xBase*)ent, s);
+}
+
 //S32 zPortalEventCB(xBase* from, xBase* to, U32 toEvent, const F32* toParam, xBase* b3)
 //{
 //    switch (toEvent)

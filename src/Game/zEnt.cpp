@@ -243,12 +243,12 @@
 //{
 //    xEntSave(ent, s);
 //}
-//
-//void zEntLoad(zEnt* ent, xSerial* s)
-//{
-//    xEntLoad(ent, s);
-//}
-//
+
+void zEntLoad(zEnt* ent, xSerial* s)
+{
+    xEntLoad(ent, s);
+}
+
 //void zEntReset(zEnt* ent)
 //{
 //    xEntReset(ent);

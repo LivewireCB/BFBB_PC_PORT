@@ -205,12 +205,12 @@ F32 zCameraTweakGlobal_GetPitch()
 //{
 //    xBaseSave((xBase*)tweak, s);
 //}
-//
-//void zCameraTweak_Load(zCameraTweak* tweak, xSerial* s)
-//{
-//    xBaseLoad((xBase*)tweak, s);
-//}
-//
+
+void zCameraTweak_Load(zCameraTweak* tweak, xSerial* s)
+{
+    xBaseLoad((xBase*)tweak, s);
+}
+
 //S32 zCameraTweak_EventCB(xBase* from, xBase* to, U32 toEvent, const F32* toParam, xBase* b3)
 //{
 //    zCameraTweak* tweak = (zCameraTweak*)to;

@@ -1,15 +1,15 @@
-//#include <types.h>
-//
-//#include "xBase.h"
-//#include "xEvent.h"
-//#include "xScene.h"
-//
-//#include "zBase.h"
-//#include "zCameraFly.h"
-//#include "zCamera.h"
-//#include "zGlobals.h"
-//#include "zMusic.h"
-//
+#include <types.h>
+
+#include "xBase.h"
+#include "xEvent.h"
+#include "xScene.h"
+
+#include "zBase.h"
+#include "zCameraFly.h"
+#include "zCamera.h"
+#include "zGlobals.h"
+#include "zMusic.h"
+
 //extern U32 zcam_flyasset_current;
 //
 //void zCameraFly_Init(xBase& data, xDynAsset& asset, size_t)
@@ -46,12 +46,12 @@
 //{
 //    xBaseSave((xBase*)fly, s);
 //}
-//
-//void zCameraFly_Load(zCameraFly* fly, xSerial* s)
-//{
-//    xBaseLoad((xBase*)fly, s);
-//}
-//
+
+void zCameraFly_Load(zCameraFly* fly, xSerial* s)
+{
+    xBaseLoad((xBase*)fly, s);
+}
+
 //U32 zCameraFlyProcessStopEvent()
 //{
 //    zScene* s = globals.sceneCur;

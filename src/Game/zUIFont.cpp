@@ -112,12 +112,12 @@
 //{
 //    zUI_Save(ent, s);
 //}
-//
-//void zUIFont_Load(zUIFont* ent, xSerial* s)
-//{
-//    zUI_Load(ent, s);
-//}
-//
+
+void zUIFont_Load(zUIFont* ent, xSerial* s)
+{
+    zUI_Load(ent, s);
+}
+
 //void zUIFont_Reset(zUIFont* ent)
 //{
 //    zUI_Reset(ent);

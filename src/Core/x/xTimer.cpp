@@ -1,10 +1,10 @@
-//#include "xTimer.h"
-//#include "xMath.h"
-//
-//#include <types.h>
-//#include "zTalkBox.h"
-//#include "zGlobals.h"
-//
+#include "xTimer.h"
+#include "xMath.h"
+
+#include <types.h>
+#include "zTalkBox.h"
+#include "zGlobals.h"
+
 //static U32 sPauseTimerHash[] = 
 //{
 //    0xBC345600, 0xBC345609,
@@ -90,15 +90,15 @@
 //    s->Write(ent->state);
 //    s->Write(ent->secondsLeft);
 //}
-//
-//void xTimerLoad(xTimer* ent, xSerial* s)
-//{
-//    xBaseLoad(ent, s);
-//
-//    s->Read(&ent->state);
-//    s->Read(&ent->secondsLeft);
-//}
-//
+
+void xTimerLoad(xTimer* ent, xSerial* s)
+{
+    xBaseLoad(ent, s);
+
+    s->Read(&ent->state);
+    s->Read(&ent->secondsLeft);
+}
+
 //S32 xTimerEventCB(xBase* from, xBase* to, U32 toEvent, const F32* toParam, xBase* toParamWidget)
 //{
 //    xTimer* t = (xTimer*)to;

@@ -1,27 +1,27 @@
-//#include <types.h>
-//
-//#include "xAnim.h"
-//#include "xstransvc.h"
-//#include "xMemMgr.h"
-//
-//#include "zAnimList.h"
-//
-//S32 nals;
-//// NOTE (Square): I think these are Asset IDs, not Anim IDs
-//U32* aids; // anim IDs (not AIDS, you fool)
-//xAnimTable** atbls; // anim tables
-//S32* anused;
-//
-//const char* astnames[2][10] = {
-//    "stop0", "stop1", "stop2", "stop3", "stop4", "stop5", "stop6", "stop7", "stop8", "stop9",
-//    "loop0", "loop1", "loop2", "loop3", "loop4", "loop5", "loop6", "loop7", "loop8", "loop9",
-//};
-//
-//U32 AlwaysConditional(xAnimTransition*, xAnimSingle*, void*)
-//{
-//    return 1;
-//}
-//
+#include <types.h>
+
+#include "xAnim.h"
+#include "xstransvc.h"
+#include "xMemMgr.h"
+
+#include "zAnimList.h"
+
+S32 nals;
+// NOTE (Square): I think these are Asset IDs, not Anim IDs
+U32* aids; // anim IDs (not AIDS, you fool)
+xAnimTable** atbls; // anim tables
+S32* anused;
+
+const char* astnames[2][10] = {
+    "stop0", "stop1", "stop2", "stop3", "stop4", "stop5", "stop6", "stop7", "stop8", "stop9",
+    "loop0", "loop1", "loop2", "loop3", "loop4", "loop5", "loop6", "loop7", "loop8", "loop9",
+};
+
+U32 AlwaysConditional(xAnimTransition*, xAnimSingle*, void*)
+{
+    return 1;
+}
+
 //// Equivalent
 //// Mostly an issue of scheduling.
 //void zAnimListInit()
@@ -96,43 +96,43 @@
 //        }
 //    }
 //}
-//
-//void zAnimListExit()
-//{
-//    nals = 0;
-//    aids = NULL;
-//    atbls = NULL;
-//    anused = NULL;
-//}
-//
-//xAnimTable* zAnimListGetTable(U32 id)
-//{
-//    U32* current_id = aids;
-//
-//    for (S32 i = 0; i < nals; i++)
-//    {
-//        if (id == *current_id)
-//        {
-//            return atbls[i];
-//        }
-//        current_id++;
-//    }
-//
-//    return NULL;
-//}
-//
-//S32 zAnimListGetNumUsed(U32 id)
-//{
-//    U32* current_id = aids;
-//
-//    for (S32 i = 0; i < nals; i++)
-//    {
-//        if (id == *current_id)
-//        {
-//            return anused[i];
-//        }
-//        current_id++;
-//    }
-//
-//    return 0;
-//}
+
+void zAnimListExit()
+{
+    nals = 0;
+    aids = NULL;
+    atbls = NULL;
+    anused = NULL;
+}
+
+xAnimTable* zAnimListGetTable(U32 id)
+{
+    U32* current_id = aids;
+
+    for (S32 i = 0; i < nals; i++)
+    {
+        if (id == *current_id)
+        {
+            return atbls[i];
+        }
+        current_id++;
+    }
+
+    return NULL;
+}
+
+S32 zAnimListGetNumUsed(U32 id)
+{
+    U32* current_id = aids;
+
+    for (S32 i = 0; i < nals; i++)
+    {
+        if (id == *current_id)
+        {
+            return anused[i];
+        }
+        current_id++;
+    }
+
+    return 0;
+}

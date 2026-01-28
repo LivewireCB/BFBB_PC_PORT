@@ -1,15 +1,15 @@
-//#include "zLight.h"
-//#include "zLightEffect.h"
-//#include "zGlobals.h"
-//#include "../rwsdk/rwplcore.h"
-//#include "xShadow.h"
-//#include "xPartition.h"
-//#include "xString.h"
-//#include "xPartition.h"
-//
-//#include <types.h>
-//#include <string.h>
-//
+#include "zLight.h"
+#include "zLightEffect.h"
+#include "zGlobals.h"
+#include "rwplcore.h"
+#include "xShadow.h"
+#include "xPartition.h"
+#include "xString.h"
+#include "xPartition.h"
+
+#include <types.h>
+#include <string.h>
+
 //static _zLight* sLight[32];
 //S32 sLightTotal;
 //static _tagPartition sLightPart;
@@ -170,12 +170,12 @@
 //{
 //    xBaseSave(ent, s);
 //}
-//
-//void zLightLoad(_zLight* ent, xSerial* s)
-//{
-//    xBaseLoad(ent, s);
-//}
-//
+
+void zLightLoad(_zLight* ent, xSerial* s)
+{
+    xBaseLoad(ent, s);
+}
+
 //S32 zLightEventCB(xBase* param_1, xBase* to, U32 toEvent, const float* param_4, xBase* param_5)
 //{
 //    _zLight* t = (_zLight*)to;

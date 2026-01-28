@@ -1,12 +1,12 @@
-//#include "zEntSimpleObj.h"
-//
-//#include <types.h>
-//
-//static xSphere* sMgrList;
-//static S32 sMgrCount;
-//static u32 sSimpleCustomCount;
-//static xEnt** sSimpleCustomList;
-//
+#include "zEntSimpleObj.h"
+
+#include <types.h>
+
+static xSphere* sMgrList;
+static S32 sMgrCount;
+static U32 sSimpleCustomCount;
+static xEnt** sSimpleCustomList;
+
 //void zEntSimpleObj_MgrInit(zEntSimpleObj** entList, U32 entCount)
 //{
 //    f32 sp14;
@@ -562,12 +562,12 @@
 //{
 //    zEntSave((zEnt*)arg0, arg1);
 //}
-//
-//void zEntSimpleObj_Load(zEntSimpleObj* arg0, xSerial* arg1)
-//{
-//    zEntLoad((zEnt*)arg0, arg1);
-//}
-//
+
+void zEntSimpleObj_Load(zEntSimpleObj* arg0, xSerial* arg1)
+{
+    zEntLoad((zEnt*)arg0, arg1);
+}
+
 //void zEntSimpleObj_Update(zEntSimpleObj* ent, xScene* scene, float dt)
 //{
 //    void* temp_r3;

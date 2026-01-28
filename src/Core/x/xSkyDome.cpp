@@ -1,27 +1,27 @@
-//#include "xSkyDome.h"
-//
-//#include "xEvent.h"
-//#include "iModel.h"
-//
-//struct SkyDomeInfo
-//{
-//    xEnt* ent;
-//    S32 sortorder;
-//    S32 lockY;
-//};
-//
-//static SkyDomeInfo sSkyList[8];
-//static S32 sSkyCount;
-//
-//void xSkyDome_EmptyRender(xEnt*)
-//{
-//}
-//
-//void xSkyDome_Setup()
-//{
-//    sSkyCount = 0;
-//}
-//
+#include "xSkyDome.h"
+
+#include "xEvent.h"
+#include "iModel.h"
+
+struct SkyDomeInfo
+{
+    xEnt* ent;
+    S32 sortorder;
+    S32 lockY;
+};
+
+static SkyDomeInfo sSkyList[8];
+static S32 sSkyCount;
+
+void xSkyDome_EmptyRender(xEnt*)
+{
+}
+
+void xSkyDome_Setup()
+{
+    sSkyCount = 0;
+}
+
 //void xSkyDome_AddEntity(xEnt* ent, S32 sortorder, S32 lockY)
 //{
 //    S32 i, j;

@@ -1,11 +1,11 @@
-//#include "xSFX.h"
-//
-//#include "xSnd.h"
-//#include "xEvent.h"
-//
-//#include <string.h>
-//#include <types.h>
-//
+#include "xSFX.h"
+
+#include "xSnd.h"
+#include "xEvent.h"
+
+#include <string.h>
+#include <types.h>
+
 //extern xSFX* s_managedEnvSFX[1];
 //
 //void xSFXEnvironmentalStreamSceneExit(void)
@@ -69,12 +69,12 @@
 //{
 //    xBaseSave(ent, s);
 //}
-//
-//void xSFXLoad(xSFX* ent, xSerial* s)
-//{
-//    xBaseLoad(ent, s);
-//}
-//
+
+void xSFXLoad(xSFX* ent, xSerial* s)
+{
+    xBaseLoad(ent, s);
+}
+
 //void xSFXReset(xSFX* param_1)
 //{
 //    xBaseReset(param_1, param_1->asset);

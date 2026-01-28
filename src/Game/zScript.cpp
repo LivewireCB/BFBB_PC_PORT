@@ -1,13 +1,13 @@
-//#include "xBase.h"
-//
-//#include "xEvent.h"
-//
-//#include "zScript.h"
-//#include "zScene.h"
-//#include "zGlobals.h"
-//
-//#include <types.h>
-//
+#include "xBase.h"
+
+#include "xEvent.h"
+
+#include "zScript.h"
+#include "zScene.h"
+#include "zGlobals.h"
+
+#include <types.h>
+
 //S32 zScriptEventCB(xBase* to, xBase* from, U32 event, const F32* param, xBase*);
 //
 //void zScriptInit(void* data, void* asset)
@@ -46,12 +46,12 @@
 //{
 //    xBaseSave((xBase*)script, s);
 //}
-//
-//void zScriptLoad(_zScript* script, xSerial* s)
-//{
-//    xBaseLoad((xBase*)script, s);
-//}
-//
+
+void zScriptLoad(_zScript* script, xSerial* s)
+{
+    xBaseLoad((xBase*)script, s);
+}
+
 //S32 zScriptEventCB(xBase* to, xBase* from, U32 event, const F32*, xBase*)
 //{
 //    _zScript* fromScript = (_zScript*)from;

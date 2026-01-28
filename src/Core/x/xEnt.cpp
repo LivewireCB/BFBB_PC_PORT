@@ -633,26 +633,26 @@ static S32 all_ents_box_init;
 //        s->Write_b1(0);
 //    }
 //}
-//
-//void xEntLoad(xEnt* ent, xSerial* s)
-//{
-//    S32 b;
-//
-//    xBaseLoad(ent, s);
-//
-//    b = 0;
-//    s->Read_b1(&b);
-//
-//    if (b)
-//    {
-//        xEntShow(ent);
-//    }
-//    else
-//    {
-//        xEntHide(ent);
-//    }
-//}
-//
+
+void xEntLoad(xEnt* ent, xSerial* s)
+{
+    S32 b;
+
+    xBaseLoad(ent, s);
+
+    b = 0;
+    s->Read_b1(&b);
+
+    if (b)
+    {
+        xEntShow(ent);
+    }
+    else
+    {
+        xEntHide(ent);
+    }
+}
+
 //void xEntReset(xEnt* ent)
 //{
 //    xMat4x3 frame;

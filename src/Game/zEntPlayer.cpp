@@ -3756,12 +3756,12 @@ _CurrentPlayer gCurrentPlayer;
 //        sPlayerIgnoreSound = 0;
 //    }
 //}
-//
-//void zEntPlayer_Load(xEnt* ent, xSerial* serial)
-//{
-//    return;
-//}
-//
+
+void zEntPlayer_Load(xEnt* ent, xSerial* serial) COMPLETE
+{
+    return;
+}
+
 //static void zEntPlayer_StreakFX(xEnt* ent, F32)
 //{
 //    S32 i;

@@ -1,28 +1,28 @@
-//#include <types.h>
-//#include <string.h>
-//
-//#include "iTime.h"
-//
-//#include "xString.h"
-//#include "xSnd.h"
-//#include "xEnt.h"
-//#include "xCounter.h"
-//#include "xMath.h"
-//
-//#include "zGameExtras.h"
-//#include "zEntPlayer.h"
-//#include "zGlobals.h"
-//#include "zGame.h"
-//#include "zScene.h"
-//
-//static S32 g_enableGameExtras;
-//static S32 g_currDay;
-//static S32 g_currMonth;
-//static S32 g_gameExtraFlags;
-//static S32 g_flg_chEnabled;
-//static F32 sCheatTimer;
-//static S32 sCheatInputCount;
-//
+#include <types.h>
+#include <string.h>
+
+#include "iTime.h"
+
+#include "xString.h"
+#include "xSnd.h"
+#include "xEnt.h"
+#include "xCounter.h"
+#include "xMath.h"
+
+#include "zGameExtras.h"
+#include "zEntPlayer.h"
+#include "zGlobals.h"
+#include "zGame.h"
+#include "zScene.h"
+
+static S32 g_enableGameExtras;
+static S32 g_currDay;
+static S32 g_currMonth;
+static S32 g_gameExtraFlags;
+static S32 g_flg_chEnabled;
+static F32 sCheatTimer;
+static S32 sCheatInputCount;
+
 //static EGGItemFuncs EGGEmpty = {};
 //
 //static EGGItem g_eggBasket[] = { { EGG_check_ExtrasFlags, &EGGEmpty, NULL, NULL }, {} };
@@ -321,15 +321,15 @@
 //{
 //    xser->Write(g_flg_chEnabled & 0xFFFF);
 //}
-//
-//void zGameExtras_Load(xSerial* xser)
-//{
-//    S32 keepers[2];
-//    keepers[0] = 0;
-//    xser->Read(keepers);
-//    g_flg_chEnabled |= keepers[0];
-//}
-//
+
+void zGameExtras_Load(xSerial* xser)
+{
+    S32 keepers[2];
+    keepers[0] = 0;
+    xser->Read(keepers);
+    g_flg_chEnabled |= keepers[0];
+}
+
 //S32 TestCheat(U32 cheat[])
 //{
 //    S32 i = 15;

@@ -1,14 +1,14 @@
-//#include "zPendulum.h"
-//#include "zGlobals.h"
-//#include "zCollGeom.h"
-//#include "zShrapnel.h"
-//
-//#include "xEnt.h"
-//#include "xEntMotion.h"
-//#include "xMath.h"
-//
-//#include <types.h>
-//
+#include "zPendulum.h"
+#include "zGlobals.h"
+#include "zCollGeom.h"
+#include "zShrapnel.h"
+
+#include "xEnt.h"
+#include "xEntMotion.h"
+#include "xMath.h"
+
+#include <types.h>
+
 //void zPendulum_Init(void* pend, void* asset)
 //{
 //    zPendulum_Init((_zPendulum*)pend, (xEntAsset*)asset);
@@ -39,12 +39,12 @@
 //{
 //    zEntSave((zEnt*)pend, s);
 //}
-//
-//void zPendulum_Load(_zPendulum* pend, xSerial* s)
-//{
-//    zEntLoad((zEnt*)pend, s);
-//}
-//
+
+void zPendulum_Load(_zPendulum* pend, xSerial* s)
+{
+    zEntLoad((zEnt*)pend, s);
+}
+
 //void zPendulum_Setup(_zPendulum* pend, xScene* sc)
 //{
 //    zEntSetup((zEnt*)pend);

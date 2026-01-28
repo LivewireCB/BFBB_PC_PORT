@@ -1,11 +1,11 @@
-//#include "zConditional.h"
-//
-//#include <types.h>
-//
-//#include "zVar.h"
-//#include "zScene.h"
-//#include "xEvent.h"
-//
+#include "zConditional.h"
+
+#include <types.h>
+
+#include "zVar.h"
+#include "zScene.h"
+#include "xEvent.h"
+
 //S32 zConditionalEventCB(xBase*, xBase*, U32, const F32*, xBase*);
 //
 //void zConditionalInit(void* b, void* asset)
@@ -41,12 +41,12 @@
 //{
 //    xBaseSave(ent, s);
 //}
-//
-//void zConditionalLoad(_zConditional* ent, xSerial* s)
-//{
-//    xBaseLoad(ent, s);
-//}
-//
+
+void zConditionalLoad(_zConditional* ent, xSerial* s)
+{
+    xBaseLoad(ent, s);
+}
+
 //U32 zConditional_Evaluate(_zConditional* c)
 //{
 //    zVarEntry* v = NULL;

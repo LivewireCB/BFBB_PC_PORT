@@ -141,15 +141,15 @@ static zCutSceneNames zCutSceneNamesTable[14] = {
 //        }
 //    }
 //}
-//
-//void zCutsceneMgrLoad(zCutsceneMgr*, xSerial* s)
-//{
-//    for (U32 i = 0; i < 14; i++)
-//    {
-//        s->Read_b1(&zCutSceneNamesTable[i].played);
-//    }
-//}
-//
+
+void zCutsceneMgrLoad(zCutsceneMgr*, xSerial* s)
+{
+    for (U32 i = 0; i < 14; i++)
+    {
+        s->Read_b1(&zCutSceneNamesTable[i].played);
+    }
+}
+
 //RpAtomic* HackBoundCB(RpAtomic* atomic, void* data)
 //{
 //    atomic->worldBoundingSphere.radius = *(RwReal*)data;

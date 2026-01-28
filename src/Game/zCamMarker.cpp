@@ -1,5 +1,5 @@
-//#include "zCamMarker.h"
-//
+#include "zCamMarker.h"
+
 //void zCamMarkerInit(xBase* b, xCamAsset* asset)
 //{
 //    xBaseInit(b, asset);
@@ -20,12 +20,12 @@
 //{
 //    xBaseSave(m, s);
 //}
-//
-//void zCamMarkerLoad(zCamMarker* m, xSerial* s)
-//{
-//    xBaseLoad(m, s);
-//}
-//
+
+void zCamMarkerLoad(zCamMarker* m, xSerial* s)
+{
+    xBaseLoad(m, s);
+}
+
 //S32 zCamMarkerEventCB(xBase* from, xBase* to, U32 toEvent, const F32* toParam, xBase* b3)
 //{
 //    switch (toEvent)

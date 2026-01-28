@@ -1,25 +1,25 @@
-//#include "xHud.h"
-//#include "xDebug.h"
-//#include "xEvent.h"
-//#include "xMath.h"
-//#include "xMathInlines.h"
-//#include "xstransvc.h"
-//#include "zGlobals.h"
-//#include "xHudText.h"
-//
-//#include "zEnt.h"
-//
-//#include <PowerPC_EABI_Support\MSL_C++\MSL_Common\Include\new.h>
-//#include <types.h>
-//
-//#define lengthof(x) (sizeof(x) / sizeof((x)[0]))
-//
-//namespace xhud
-//{
-//
-//    block_allocator* block_allocator::_head_alloc;
-//    static bool inited;
-//
+#include "xHud.h"
+#include "xDebug.h"
+#include "xEvent.h"
+#include "xMath.h"
+#include "xMathInlines.h"
+#include "xstransvc.h"
+#include "zGlobals.h"
+#include "xHudText.h"
+
+#include "zEnt.h"
+
+#include <new.h>
+#include <types.h>
+
+#define lengthof(x) (sizeof(x) / sizeof((x)[0]))
+
+namespace xhud
+{
+
+    block_allocator* block_allocator::_head_alloc;
+    static bool inited;
+
 //    void block_allocator::flush_all()
 //    {
 //        for (block_allocator* allocator = _head_alloc; allocator != NULL;
@@ -28,78 +28,78 @@
 //            allocator->flush();
 //        }
 //    }
-//
-//    block_allocator::block_allocator(U32 a0, U32 a1)
-//    {
-//        _block_size = ALIGN(a0, 4) + 4;
-//        _top = NULL;
-//        _next_alloc = _head_alloc;
-//        _head_alloc = this;
-//        set_increment(a1);
-//    }
-//
-//    void block_allocator::set_increment(U32 a0)
-//    {
-//        _alloc_size = _block_size * a0;
-//    }
-//
-//    void block_allocator::size_reserve(U32 size)
-//    {
-//        void** ppvVar1 = (void**)xMemAllocSize(size);
-//        void** ppvVar2 = (void**)((U32)ppvVar1 + size);
-//        for (; ppvVar1 < ppvVar2; ppvVar1 = (void**)((U32)ppvVar1 + _block_size))
-//        {
-//            *ppvVar1 = _top;
-//            _top = ppvVar1;
-//        }
-//    }
-//
-//    void* block_allocator::alloc()
-//    {
-//        if (_top == NULL)
-//        {
-//            size_reserve(_alloc_size);
-//        }
-//
-//        void** ptr = (void**)_top;
-//        _top = *ptr;
-//        return ptr + 1;
-//    }
-//
-//    void block_allocator::free(void* ptr)
-//    {
-//        *(void**)((U32)ptr - 4) = _top;
-//        _top = (void*)((U32)ptr - 4);
-//    }
-//
-//    void block_allocator::flush()
-//    {
-//        _top = NULL;
-//    }
-//
-//    block_allocator* widget::motive_allocator()
-//    {
-//        static block_allocator ba(40, 16);
-//        return &ba;
-//    }
-//
-//    void init()
-//    {
-//        if (!inited)
-//        {
-//            inited = true;
-//        }
-//        else
-//        {
-//            widget::disable_all(true);
-//        }
-//    }
-//
-//    void setup()
-//    {
-//        widget::setup_all();
-//    }
-//
+
+    block_allocator::block_allocator(U32 a0, U32 a1)
+    {
+        _block_size = ALIGN(a0, 4) + 4;
+        _top = NULL;
+        _next_alloc = _head_alloc;
+        _head_alloc = this;
+        set_increment(a1);
+    }
+
+    void block_allocator::set_increment(U32 a0)
+    {
+        _alloc_size = _block_size * a0;
+    }
+
+    void block_allocator::size_reserve(U32 size)
+    {
+        void** ppvVar1 = (void**)xMemAllocSize(size);
+        void** ppvVar2 = (void**)((U32)ppvVar1 + size);
+        for (; ppvVar1 < ppvVar2; ppvVar1 = (void**)((U32)ppvVar1 + _block_size))
+        {
+            *ppvVar1 = _top;
+            _top = ppvVar1;
+        }
+    }
+
+    void* block_allocator::alloc()
+    {
+        if (_top == NULL)
+        {
+            size_reserve(_alloc_size);
+        }
+
+        void** ptr = (void**)_top;
+        _top = *ptr;
+        return ptr + 1;
+    }
+
+    void block_allocator::free(void* ptr)
+    {
+        *(void**)((U32)ptr - 4) = _top;
+        _top = (void*)((U32)ptr - 4);
+    }
+
+    void block_allocator::flush()
+    {
+        _top = NULL;
+    }
+
+    block_allocator* widget::motive_allocator()
+    {
+        static block_allocator ba(40, 16);
+        return &ba;
+    }
+
+    void init()
+    {
+        if (!inited)
+        {
+            inited = true;
+        }
+        else
+        {
+            widget::disable_all(true);
+        }
+    }
+
+    void setup()
+    {
+        widget::setup_all();
+    }
+
 //    void destroy()
 //    {
 //        xDebugRemoveTweak("HUD");
@@ -260,137 +260,137 @@
 //            add_motive(motive(&rc.a, 3.0f * fVar1, fVar1, 0.0f, linear_motive_update, NULL));
 //        }
 //    }
-//
-//    // Nonmatching: not finished
-//    void widget::hide()
-//    {
-//        activity = ACT_HIDE;
-//
-//        F32 fVar1 = start_rc.size.x;
-//        F32 fVar3 = start_rc.size.y;
-//        F32 fVar7 = (start_rc.loc.x - 0.5f) + 0.5f * fVar1;
-//        F32 fVar8 = (start_rc.loc.y - 0.5f) + 0.5f * fVar3;
-//        if (iabs(iabs(fVar7) + iabs(fVar8)) <= 0.0001f)
-//        {
-//            rc.a = 0.0f;
-//        }
-//        else
-//        {
-//            F32 fVar5;
-//            F32 fVar6;
-//            if (iabs(fVar7) > iabs(fVar8))
-//            {
-//                if (fVar8 >= 0.0f)
-//                {
-//                    fVar6 = 0.5f + fVar3;
-//                }
-//                else
-//                {
-//                    fVar6 = -0.5f - fVar3;
-//                }
-//                fVar5 = (fVar6 * fVar7) / fVar8;
-//            }
-//            else
-//            {
-//                if (fVar7 >= 0.5f)
-//                {
-//                    fVar5 = 0.5f + fVar1;
-//                }
-//                else
-//                {
-//                    fVar5 = -0.5f - fVar1;
-//                }
-//                fVar6 = (fVar5 * fVar8) / fVar7;
-//            }
-//
-//            F32 dVar11 = 255.0f + (fVar6 - 0.5f * fVar3) - rc.loc.y;
-//            F32 dVar12 = 255.0f + (fVar5 - 0.5f * fVar1) - rc.loc.x;
-//            F32 dVar10 = xsqrt(dVar12 * dVar12 + dVar11 * dVar11);
-//
-//            add_motive(
-//                motive(&rc.loc.x, 0.0f, dVar12, dVar12 * dVar10, accelerate_motive_update, NULL));
-//
-//            add_motive(
-//                motive(&rc.loc.y, 0.0f, dVar11, dVar11 * dVar10, accelerate_motive_update, NULL));
-//
-//            fVar1 = -rc.a;
-//            add_motive(motive(&rc.a, 0.4f * fVar1, dVar11, 0.0f, linear_motive_update, NULL));
-//        }
-//    }
-//
-//    namespace
-//    {
-//
-//        void fp_setup(widget& w)
-//        {
-//            w.setup();
-//        }
-//
-//        void fp_render(widget& w)
-//        {
-//            if (w.visible())
-//            {
-//                w.render();
-//            }
-//        }
-//
-//        const struct
-//        {
-//            U8 widget_type;
-//            U32 widget_size;
-//        } known_types[] = {
-//            // TODO: The second value should probably be sizeof(...)
-//            { 0x3a, 0x9c },
-//            { 0x3c, 0x19c },
-//            { 0x3b, 0x15c },
-//            { 0x47, 0x17c },
-//        };
-//
-//        struct functor_disable
-//        {
-//            functor_disable(bool b)
-//            {
-//                destroy_widgets = b;
-//            }
-//
-//            void operator()(xhud::widget& widget)
-//            {
-//                widget.disable();
-//                if (destroy_widgets)
-//                {
-//                    widget.destroy();
-//                }
-//            }
-//
-//            U8 destroy_widgets;
-//        };
-//
-//        struct functor_update
-//        {
-//            functor_update(F32 dt)
-//            {
-//                delta_time = dt;
-//            }
-//
-//            void operator()(xhud::widget& widget)
-//            {
-//                if (widget.enabled())
-//                    widget.update(delta_time);
-//            }
-//
-//            F32 delta_time;
-//        };
-//
-//        template <class F> void for_each(U8 widget_type, U32 type_size, F f)
-//        {
-//            U32 count = globals.sceneCur->baseCount[widget_type];
-//            U8* list = (U8*)globals.sceneCur->baseList[widget_type];
-//            for (int i = 0; i < count; ++i)
-//            {
-//                f(*(widget*)(list + i * type_size));
-//            }
-//        }
-//
+
+    // Nonmatching: not finished
+    void widget::hide()
+    {
+        activity = ACT_HIDE;
+
+        F32 fVar1 = start_rc.size.x;
+        F32 fVar3 = start_rc.size.y;
+        F32 fVar7 = (start_rc.loc.x - 0.5f) + 0.5f * fVar1;
+        F32 fVar8 = (start_rc.loc.y - 0.5f) + 0.5f * fVar3;
+        if (iabs(iabs(fVar7) + iabs(fVar8)) <= 0.0001f)
+        {
+            rc.a = 0.0f;
+        }
+        else
+        {
+            F32 fVar5;
+            F32 fVar6;
+            if (iabs(fVar7) > iabs(fVar8))
+            {
+                if (fVar8 >= 0.0f)
+                {
+                    fVar6 = 0.5f + fVar3;
+                }
+                else
+                {
+                    fVar6 = -0.5f - fVar3;
+                }
+                fVar5 = (fVar6 * fVar7) / fVar8;
+            }
+            else
+            {
+                if (fVar7 >= 0.5f)
+                {
+                    fVar5 = 0.5f + fVar1;
+                }
+                else
+                {
+                    fVar5 = -0.5f - fVar1;
+                }
+                fVar6 = (fVar5 * fVar8) / fVar7;
+            }
+
+            F32 dVar11 = 255.0f + (fVar6 - 0.5f * fVar3) - rc.loc.y;
+            F32 dVar12 = 255.0f + (fVar5 - 0.5f * fVar1) - rc.loc.x;
+            F32 dVar10 = xsqrt(dVar12 * dVar12 + dVar11 * dVar11);
+
+            add_motive(
+                motive(&rc.loc.x, 0.0f, dVar12, dVar12 * dVar10, accelerate_motive_update, NULL));
+
+            add_motive(
+                motive(&rc.loc.y, 0.0f, dVar11, dVar11 * dVar10, accelerate_motive_update, NULL));
+
+            fVar1 = -rc.a;
+            add_motive(motive(&rc.a, 0.4f * fVar1, dVar11, 0.0f, linear_motive_update, NULL));
+        }
+    }
+
+    namespace
+    {
+
+        void fp_setup(widget& w)
+        {
+            w.setup();
+        }
+
+        void fp_render(widget& w)
+        {
+            if (w.visible())
+            {
+                w.render();
+            }
+        }
+
+        const struct
+        {
+            U8 widget_type;
+            U32 widget_size;
+        } known_types[] = {
+            // TODO: The second value should probably be sizeof(...)
+            { 0x3a, 0x9c },
+            { 0x3c, 0x19c },
+            { 0x3b, 0x15c },
+            { 0x47, 0x17c },
+        };
+
+        struct functor_disable
+        {
+            functor_disable(bool b)
+            {
+                destroy_widgets = b;
+            }
+
+            void operator()(xhud::widget& widget)
+            {
+                widget.disable();
+                if (destroy_widgets)
+                {
+                    widget.destroy();
+                }
+            }
+
+            U8 destroy_widgets;
+        };
+
+        struct functor_update
+        {
+            functor_update(F32 dt)
+            {
+                delta_time = dt;
+            }
+
+            void operator()(xhud::widget& widget)
+            {
+                if (widget.enabled())
+                    widget.update(delta_time);
+            }
+
+            F32 delta_time;
+        };
+
+        template <class F> void for_each(U8 widget_type, U32 type_size, F f)
+        {
+            U32 count = globals.sceneCur->baseCount[widget_type];
+            U8* list = (U8*)globals.sceneCur->baseList[widget_type];
+            for (int i = 0; i < count; ++i)
+            {
+                f(*(widget*)(list + i * type_size));
+            }
+        }
+
 //        void render_one_model(xModelInstance& model, F32 alpha, const basic_rect<F32>& rect,
 //                              const xVec3& from, const xVec3& to, const xMat4x3& frame)
 //        {
@@ -399,20 +399,20 @@
 //            xModelRender2D(model, rect, from, to);
 //        }
 //
-//    } // namespace
-//
-//    void widget::debug_render()
-//    {
-//    }
-//
-//    void widget::setup_all()
-//    {
-//        for (U32 i = 0; i < lengthof(known_types); ++i)
-//        {
-//            for_each(known_types[i].widget_type, known_types[i].widget_size, fp_setup);
-//        }
-//    }
-//
+    } // namespace
+
+    void widget::debug_render()
+    {
+    }
+
+    void widget::setup_all()
+    {
+        for (U32 i = 0; i < lengthof(known_types); ++i)
+        {
+            for_each(known_types[i].widget_type, known_types[i].widget_size, fp_setup);
+        }
+    }
+
 //    S32 widget::cb_dispatch(xBase*, xBase* target, U32, const F32*, xBase*)
 //    {
 //        // Target gets cast to some type we probably don't have decomped yet.
@@ -436,37 +436,37 @@
 //            for_each(known_types[i].widget_type, known_types[i].widget_size, func);
 //        }
 //    }
-//
-//    void widget::disable_all(bool st)
-//    {
-//        functor_disable func(st);
-//        for (U32 i = 0; i < lengthof(known_types); ++i)
-//        {
-//            for_each(known_types[i].widget_type, known_types[i].widget_size, func);
-//        }
-//    }
-//
-//    void widget::add_motive(const motive& m)
-//    {
-//        motive_node* node = (motive_node*)motive_allocator()->alloc();
-//        new (node) motive(m);
-//
-//        if (_motive_temp_tail == NULL)
-//        {
-//            node->next = _motive_top;
-//            _motive_top = node;
-//        }
-//        else
-//        {
-//            if (_motive_temp == NULL)
-//            {
-//                _motive_temp_tail = &node->next;
-//            }
-//            node->next = _motive_temp;
-//            _motive_temp = node;
-//        }
-//    }
-//
+
+    void widget::disable_all(bool st)
+    {
+        functor_disable func(st);
+        for (U32 i = 0; i < lengthof(known_types); ++i)
+        {
+            for_each(known_types[i].widget_type, known_types[i].widget_size, func);
+        }
+    }
+
+    void widget::add_motive(const motive& m)
+    {
+        motive_node* node = (motive_node*)motive_allocator()->alloc();
+        new (node) motive(m);
+
+        if (_motive_temp_tail == NULL)
+        {
+            node->next = _motive_top;
+            _motive_top = node;
+        }
+        else
+        {
+            if (_motive_temp == NULL)
+            {
+                _motive_temp_tail = &node->next;
+            }
+            node->next = _motive_temp;
+            _motive_temp = node;
+        }
+    }
+
 //    void widget::clear_motives()
 //    {
 //        activity = ACT_NONE;
@@ -505,54 +505,54 @@
 //        }
 //    }
 //
-//    bool linear_motive_update(widget& w, motive& m, F32 dt)
-//    {
-//        F32 fVar1 = dt * m.delta;
-//        F32 fVar2 = m.max_offset - m.offset;
-//        if ((fVar1 >= 0.0f && fVar1 >= fVar2) || (fVar1 < 0.0f && fVar1 <= fVar2))
-//        {
-//            *m.value += fVar2;
-//            m.offset = m.max_offset;
-//            return false;
-//        }
-//        else
-//        {
-//            *m.value += fVar1;
-//            m.offset += fVar1;
-//            return true;
-//        }
-//    }
-//
-//    // Equivalent: regalloc
-//    bool accelerate_motive_update(widget& w, motive& m, F32 dt)
-//    {
-//        F32 fVar2;
-//        F32 fVar1;
-//        F32 delta;
-//
-//        fVar1 = 0.5f * m.accel;
-//        delta = m.delta;
-//        m.delta = dt * m.accel + delta;
-//        delta *= dt;
-//        fVar1 *= dt;
-//        fVar1 = dt * fVar1 + delta;
-//
-//        fVar2 = m.max_offset - m.offset;
-//
-//        if ((fVar1 >= 0.0f && fVar1 >= fVar2) || (fVar1 < 0.0f && fVar1 <= fVar2))
-//        {
-//            *m.value += fVar2;
-//            m.offset = m.max_offset;
-//            return false;
-//        }
-//        else
-//        {
-//            *m.value += fVar1;
-//            m.offset += fVar1;
-//            return true;
-//        }
-//    }
-//
+    bool linear_motive_update(widget& w, motive& m, F32 dt)
+    {
+        F32 fVar1 = dt * m.delta;
+        F32 fVar2 = m.max_offset - m.offset;
+        if ((fVar1 >= 0.0f && fVar1 >= fVar2) || (fVar1 < 0.0f && fVar1 <= fVar2))
+        {
+            *m.value += fVar2;
+            m.offset = m.max_offset;
+            return false;
+        }
+        else
+        {
+            *m.value += fVar1;
+            m.offset += fVar1;
+            return true;
+        }
+    }
+
+    // Equivalent: regalloc
+    bool accelerate_motive_update(widget& w, motive& m, F32 dt)
+    {
+        F32 fVar2;
+        F32 fVar1;
+        F32 delta;
+
+        fVar1 = 0.5f * m.accel;
+        delta = m.delta;
+        m.delta = dt * m.accel + delta;
+        delta *= dt;
+        fVar1 *= dt;
+        fVar1 = dt * fVar1 + delta;
+
+        fVar2 = m.max_offset - m.offset;
+
+        if ((fVar1 >= 0.0f && fVar1 >= fVar2) || (fVar1 < 0.0f && fVar1 <= fVar2))
+        {
+            *m.value += fVar2;
+            m.offset = m.max_offset;
+            return false;
+        }
+        else
+        {
+            *m.value += fVar1;
+            m.offset += fVar1;
+            return true;
+        }
+    }
+
 //    bool shake_motive_update(widget& w, motive& m, F32 dt)
 //    {
 //        static const float mult[4] = { -1.0f, -1.0f, 1.0f, 1.0f };
@@ -644,5 +644,5 @@
 //
 //        return xModelInstanceAlloc((RpAtomic*)info, NULL, 0, 0, NULL);
 //    }
-//
-//} // namespace xhud
+
+} // namespace xhud

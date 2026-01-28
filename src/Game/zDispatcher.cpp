@@ -102,12 +102,12 @@ void zDispatcher_Shutdown()
 //{
 //    xBaseSave(dspdata, s);
 //}
-//
-//void zDispatcher_Load(st_ZDISPATCH_DATA* dspdata, xSerial* s)
-//{
-//    xBaseLoad(dspdata, s);
-//}
-//
+
+void zDispatcher_Load(st_ZDISPATCH_DATA* dspdata, xSerial* s)
+{
+    xBaseLoad(dspdata, s);
+}
+
 //void ZDSP_instInit(st_ZDISPATCH_DATA* dspdata, xBaseAsset* bass)
 //{
 //    xBaseInit(dspdata, bass);
