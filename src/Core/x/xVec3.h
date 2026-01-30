@@ -13,7 +13,7 @@ struct xVec3
     static const xVec3 m_UnitAxisX;
     static const xVec3 m_UnitAxisY;
 
-    static xVec3 create(F32 x, F32 y, F32 z);
+    static xVec3 create(F32 x, F32 y, F32 z) { xVec3 v = { x, y, z }; return v; }
     static xVec3 create(F32 f);
 
     xVec3& operator=(F32 f)

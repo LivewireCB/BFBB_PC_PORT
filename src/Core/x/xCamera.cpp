@@ -1160,7 +1160,6 @@ void xCameraSetScene(xCamera* cam, xScene* sc)
 {
     cam->sc = sc;
 
-    // looks like sc->env->geom is causing the null register crash
     iCameraAssignEnv(cam->lo_cam, sc->env->geom);
 }
 

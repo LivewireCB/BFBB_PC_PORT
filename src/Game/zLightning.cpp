@@ -1,17 +1,17 @@
-//#include "zLightning.h"
-//#include "zGlobals.h"
-//
-//#include "xDebug.h"
-//
-//#include <types.h>
-//#include <rwcore.h>
-//
-//extern _tagLightningAdd gLightningTweakAddInfo;
-//extern zLightning* sLightning[0x30];
-//extern RwRaster* sLightningRaster;
-//extern xVec3 sTweakStart;
-//extern xVec3 sTweakEnd;
-//
+#include "zLightning.h"
+#include "zGlobals.h"
+
+#include "xDebug.h"
+
+#include <types.h>
+#include <rwcore.h>
+
+extern _tagLightningAdd gLightningTweakAddInfo;
+zLightning* sLightning[0x30];
+RwRaster* sLightningRaster;
+extern xVec3 sTweakStart;
+extern xVec3 sTweakEnd;
+
 //// Taken from zLightning.s
 //// Defining these here makes the stringBase0 offsets match in the later functions.
 //static char* str1 = "Line";
@@ -68,11 +68,11 @@
 //static char* str52 = "0";
 //static char* str53 = "-";
 //static char* str54 = "\n";
-//
-//void xDebugAddTweak(const char*, F32*, F32, F32, const tweak_callback*, void*, U32)
-//{
-//}
-//
+
+void xDebugAddTweak(const char*, F32*, F32, F32, const tweak_callback*, void*, U32)
+{
+}
+
 //void lightningTweakChangeType(const tweak_info& t)
 //{
 //    xDebugRemoveTweak("Lightning|\x01Type Info");
@@ -107,24 +107,24 @@
 //    gLightningTweakAddInfo.end = &e;
 //    zLightningAdd(&gLightningTweakAddInfo);
 //}
-//
-//void zLightningRender()
-//{
-//    if (sLightningRaster != NULL)
-//    {
-//        RwRenderStateSet(rwRENDERSTATETEXTURERASTER, sLightningRaster);
-//    }
-//    RwRenderStateSet(rwRENDERSTATESRCBLEND, (void*)rwBLENDSRCALPHA);
-//    RwRenderStateSet(rwRENDERSTATEDESTBLEND, (void*)rwBLENDONE);
-//    for (S32 i = 0; i < (S32)(sizeof(sLightning) / sizeof(zLightning*)); i++)
-//    {
-//        if (sLightning[i] != NULL && (sLightning[i]->flags & 0x41) == 0x41)
-//        {
-//            RenderLightning(sLightning[i]);
-//        }
-//    }
-//}
-//
+
+void zLightningRender()
+{
+    if (sLightningRaster != NULL)
+    {
+        RwRenderStateSet(rwRENDERSTATETEXTURERASTER, sLightningRaster);
+    }
+    RwRenderStateSet(rwRENDERSTATESRCBLEND, (void*)rwBLENDSRCALPHA);
+    RwRenderStateSet(rwRENDERSTATEDESTBLEND, (void*)rwBLENDONE);
+    for (S32 i = 0; i < (S32)(sizeof(sLightning) / sizeof(zLightning*)); i++)
+    {
+        if (sLightning[i] != NULL && (sLightning[i]->flags & 0x41) == 0x41)
+        {
+            RenderLightning(sLightning[i]);
+        }
+    }
+}
+
 //void zLightningShow(zLightning* l, S32 show)
 //{
 //    if (show)
@@ -136,12 +136,12 @@
 //        l->flags &= 0xffffffbf;
 //    }
 //}
-//
-//void zLightningKill(zLightning* l)
-//{
-//    l->flags &= 0xfffffefe;
-//}
-//
+
+void zLightningKill(zLightning* l)
+{
+    l->flags &= 0xfffffefe;
+}
+
 //static zLightning* FindFreeLightning()
 //{
 //    for (int i = 0; i != (sizeof(sLightning) / sizeof(zLightning*)); i++)
@@ -162,15 +162,15 @@
 //
 //    return 0;
 //}
-//
-//void xDebugAddTweak(const char*, S16*, S16, S16, const tweak_callback*, void*, U32)
-//{
-//}
-//
-//void xDebugAddTweak(const char*, U8*, U8, U8, const tweak_callback*, void*, U32)
-//{
-//}
-//
+
+void xDebugAddTweak(const char*, S16*, S16, S16, const tweak_callback*, void*, U32)
+{
+}
+
+void xDebugAddTweak(const char*, U8*, U8, U8, const tweak_callback*, void*, U32)
+{
+}
+
 //void xDebugAddFlagTweak(const char*, U32*, U32, const tweak_callback*, void*, U32)
 //{
 //}
@@ -179,3 +179,15 @@
 //                          void*, U32)
 //{
 //}
+
+void zLightningModifyEndpoints(zLightning* l, xVec3* start, xVec3* end) WIP // not decomped
+{
+}
+
+void zLightningInit() WIP // not decomped
+{
+}
+
+void RenderLightning(zLightning* l) WIP // not decomped
+{
+}

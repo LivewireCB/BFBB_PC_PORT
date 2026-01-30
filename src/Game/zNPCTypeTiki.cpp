@@ -17,142 +17,142 @@
 #define NUM_PARENTS 4
 #define NUM_CHILDREN 4
 
-//// .bss
-//static xParEmitterCustomSettings loveyEmitterInfo;
-//static xParEmitterCustomSettings thunderEmitterInfo;
-//static _tagLightningAdd sThunderLightningInfo;
-//// .sbss
-//static zNPCTiki* orphanList;
-//static S32 numTikisOnScreen;
-//static zParEmitter* cloudEmitter;
-//static RwRaster* sHelmetRast;
-//// .sdata
-//extern U32 g_hash_tikianim[ANIM_COUNT] = { 0, 0 };
-//extern const char* g_strz_tikianim[ANIM_COUNT] = { "Unknown", "Idle01" };
-//static S32 whichTikiToAnimate = -1;
-//static F32 sLoveyIconDist = 4.5f;
-//static F32 sLoveyIconOffset = -1.375f;
-//static F32 timeSinceLastExplode = 100.0f;
-//static F32 g_tmr_talkytiki = -1.0f;
-//
-//static S32 loveyIdleCB(xGoal* rawgoal, void*, en_trantype* trantype, F32 dt, void*);
-//static S32 loveyPatrolCB(xGoal* rawgoal, void*, en_trantype* trantype, F32 dt, void*);
-//static S32 quietIdleCB(xGoal* rawgoal, void*, en_trantype* trantype, F32 dt, void*);
-//static S32 quietHideCB(xGoal* rawgoal, void*, en_trantype* trantype, F32 dt, void*);
-//static S32 thunderIdleCB(xGoal* rawgoal, void*, en_trantype* trantype, F32 dt, void*);
-//static S32 thunderCountCB(xGoal* rawgoal, void*, en_trantype* trantype, F32 dt, void*);
-//static S32 tikiDyingCB(xGoal* rawgoal, void*, en_trantype* trantype, F32 dt, void*);
-//static S32 tikiDeadCB(xGoal* rawgoal, void*, en_trantype* trantype, F32 dt, void*);
-//static void genericTikiRender(xEnt* ent);
-//static void loveyTikiRender(xEnt* ent);
-//
-//void ZNPC_Tiki_Startup()
-//{
-//    for (S32 i = 0; i < ANIM_COUNT; i++)
-//    {
-//        g_hash_tikianim[i] = xStrHash(g_strz_tikianim[i]);
-//    }
-//}
-//
-//void ZNPC_Tiki_Shutdown()
-//{
-//}
-//
-//void zNPCTiki_InitStacking(zScene* zsc)
-//{
-//    for (int i = 0; i < zsc->num_npcs; i++)
-//    {
-//        xNPCBasic* npc = (xNPCBasic*)zsc->npcs[i];
-//
-//        U32 type = npc->SelfType() & ~0xFF;
-//
-//        if (type != 'NTT\0')
-//        {
-//            continue;
-//        }
-//
-//        zNPCTiki* tiki = (zNPCTiki*)(npc);
-//        if (npc->SelfType() != NPC_TYPE_TIKI_LOVEY)
-//        {
-//            tiki->FindParents(zsc);
-//
-//            if (tiki->numParents == 0)
-//            {
-//                F32 dh = tiki->landHt - tiki->bound.box.box.lower.y;
-//
-//                tiki->bound.box.box.lower.y += dh;
-//                tiki->bound.box.box.upper.y += dh;
-//                tiki->bound.box.center.y += dh;
-//                tiki->model->Mat->pos.y += dh;
-//            }
-//        }
-//
-//        tiki->tikiFlag &= ~1;
-//    }
-//
-//    orphanList = NULL;
-//}
-//
-//// a couple assignments are in the wrong order
-//void zNPCTiki_InitFX(zScene* scene)
-//{
-//    RwTexture* tex;
-//
-//    cloudEmitter = zParEmitterFind("PAREMIT_THUNDER_CLOUD");
-//    if (cloudEmitter == NULL)
-//    {
-//        cloudEmitter = zParEmitterFind("PAREMIT_CLOUD");
-//    }
-//
-//    // clang-format off
-//    thunderEmitterInfo.vel.x = 0.0f;
-//    thunderEmitterInfo.vel.y = -0.3f;
-//    thunderEmitterInfo.vel.z = 0.0f;
-//    thunderEmitterInfo.custom_flags = 0xf5e;
-//    thunderEmitterInfo.vel_angle_variation = DEG2RAD(270);
-//    thunderEmitterInfo.rate.set(100.0f, 100.0f, 1.0f, 0);
-//    thunderEmitterInfo.life.set(2.0f, 2.0f, 1.0f, 0);
-//    thunderEmitterInfo.size_birth.set(0.8f, 0.8f, 1.0f, 0);
-//    thunderEmitterInfo.size_death.set(0.0f, 0.0f, 1.0f, 0);
-//    thunderEmitterInfo.color_birth[0].set(75.0f, 75.0f, 1.0f, 0);
-//    thunderEmitterInfo.color_birth[1].set(75.0f, 75.0f, 1.0f, 0);
-//    thunderEmitterInfo.color_birth[2].set(75.0f, 75.0f, 1.0f, 0);
-//    thunderEmitterInfo.color_birth[3].set(0.0f, 0.0f, 1.0f, 0);
-//    thunderEmitterInfo.color_death[0].set(0.0f, 0.0f, 1.0f, 0);
-//    thunderEmitterInfo.color_death[1].set(0.0f, 0.0f, 1.0f, 0);
-//    thunderEmitterInfo.color_death[2].set(0.0f, 0.0f, 1.0f, 0);
-//    thunderEmitterInfo.color_death[3].set(255.0f, 255.0f, 1.0f, 0);
-//    loveyEmitterInfo.vel.x = 0.0f;
-//    loveyEmitterInfo.vel.y = -0.5f;
-//    loveyEmitterInfo.vel.z = 0.0f;
-//    loveyEmitterInfo.custom_flags = 0xf5e;
-//    loveyEmitterInfo.vel_angle_variation = DEG2RAD(90);
-//    loveyEmitterInfo.rate.set(100.0f, 100.0f, 1.0f, 0);
-//    loveyEmitterInfo.life.set(2.0f, 2.0f, 1.0f, 0);
-//    loveyEmitterInfo.size_birth.set(0.5f, 0.5f, 1.0f, 0);
-//    loveyEmitterInfo.size_death.set(0.3f, 0.3f, 1.0f, 0);
-//    loveyEmitterInfo.color_birth[0].set(255.0f, 255.0f, 1.0f, 0);
-//    loveyEmitterInfo.color_birth[1].set(175.0f, 175.0f, 1.0f, 0);
-//    loveyEmitterInfo.color_birth[2].set(175.0f, 175.0f, 1.0f, 0);
-//    loveyEmitterInfo.color_birth[3].set(255.0f, 255.0f, 1.0f, 0);
-//    loveyEmitterInfo.color_death[0].set(255.0f, 255.0f, 1.0f, 0);
-//    loveyEmitterInfo.color_death[1].set(175.0f, 175.0f, 1.0f, 0);
-//    loveyEmitterInfo.color_death[2].set(175.0f, 175.0f, 1.0f, 0);
-//    loveyEmitterInfo.color_death[3].set(0.0f, 0.0f, 1.0f, 0);
-//    // clang-format on
-//    tex = (RwTexture*)xSTFindAsset(xStrHash("target"), 0x0);
-//    if (tex != NULL)
-//    {
-//        sHelmetRast = tex->raster;
-//    }
-//    else
-//    {
-//        sHelmetRast = 0;
-//    }
-//
-//    NPCC_MakeLightningInfo(NPC_LYT_TIKITHUNDER, &sThunderLightningInfo);
-//    sThunderLightningInfo.time = 0.3f;
-//}
+// .bss
+static xParEmitterCustomSettings loveyEmitterInfo;
+static xParEmitterCustomSettings thunderEmitterInfo;
+static _tagLightningAdd sThunderLightningInfo;
+// .sbss
+static zNPCTiki* orphanList;
+static S32 numTikisOnScreen;
+static zParEmitter* cloudEmitter;
+static RwRaster* sHelmetRast;
+// .sdata
+extern U32 g_hash_tikianim[ANIM_COUNT] = { 0, 0 };
+extern const char* g_strz_tikianim[ANIM_COUNT] = { "Unknown", "Idle01" };
+static S32 whichTikiToAnimate = -1;
+static F32 sLoveyIconDist = 4.5f;
+static F32 sLoveyIconOffset = -1.375f;
+static F32 timeSinceLastExplode = 100.0f;
+static F32 g_tmr_talkytiki = -1.0f;
+
+static S32 loveyIdleCB(xGoal* rawgoal, void*, en_trantype* trantype, F32 dt, void*);
+static S32 loveyPatrolCB(xGoal* rawgoal, void*, en_trantype* trantype, F32 dt, void*);
+static S32 quietIdleCB(xGoal* rawgoal, void*, en_trantype* trantype, F32 dt, void*);
+static S32 quietHideCB(xGoal* rawgoal, void*, en_trantype* trantype, F32 dt, void*);
+static S32 thunderIdleCB(xGoal* rawgoal, void*, en_trantype* trantype, F32 dt, void*);
+static S32 thunderCountCB(xGoal* rawgoal, void*, en_trantype* trantype, F32 dt, void*);
+static S32 tikiDyingCB(xGoal* rawgoal, void*, en_trantype* trantype, F32 dt, void*);
+static S32 tikiDeadCB(xGoal* rawgoal, void*, en_trantype* trantype, F32 dt, void*);
+static void genericTikiRender(xEnt* ent);
+static void loveyTikiRender(xEnt* ent);
+
+void ZNPC_Tiki_Startup()
+{
+    for (S32 i = 0; i < ANIM_COUNT; i++)
+    {
+        g_hash_tikianim[i] = xStrHash(g_strz_tikianim[i]);
+    }
+}
+
+void ZNPC_Tiki_Shutdown()
+{
+}
+
+void zNPCTiki_InitStacking(zScene* zsc)
+{
+    for (int i = 0; i < zsc->num_npcs; i++)
+    {
+        xNPCBasic* npc = (xNPCBasic*)zsc->npcs[i];
+
+        U32 type = npc->SelfType() & ~0xFF;
+
+        if (type != 'NTT\0')
+        {
+            continue;
+        }
+
+        zNPCTiki* tiki = (zNPCTiki*)(npc);
+        if (npc->SelfType() != NPC_TYPE_TIKI_LOVEY)
+        {
+            tiki->FindParents(zsc);
+
+            if (tiki->numParents == 0)
+            {
+                F32 dh = tiki->landHt - tiki->bound.box.box.lower.y;
+
+                tiki->bound.box.box.lower.y += dh;
+                tiki->bound.box.box.upper.y += dh;
+                tiki->bound.box.center.y += dh;
+                tiki->model->Mat->pos.y += dh;
+            }
+        }
+
+        tiki->tikiFlag &= ~1;
+    }
+
+    orphanList = NULL;
+}
+
+// a couple assignments are in the wrong order
+void zNPCTiki_InitFX(zScene* scene) RIMP
+{
+    RwTexture* tex;
+
+    cloudEmitter = zParEmitterFind("PAREMIT_THUNDER_CLOUD");
+    if (cloudEmitter == NULL)
+    {
+        cloudEmitter = zParEmitterFind("PAREMIT_CLOUD");
+    }
+
+    // clang-format off
+    thunderEmitterInfo.vel.x = 0.0f;
+    thunderEmitterInfo.vel.y = -0.3f;
+    thunderEmitterInfo.vel.z = 0.0f;
+    thunderEmitterInfo.custom_flags = 0xf5e;
+    thunderEmitterInfo.vel_angle_variation = DEG2RAD(270);
+    thunderEmitterInfo.rate.set(100.0f, 100.0f, 1.0f, 0);
+    thunderEmitterInfo.life.set(2.0f, 2.0f, 1.0f, 0);
+    thunderEmitterInfo.size_birth.set(0.8f, 0.8f, 1.0f, 0);
+    thunderEmitterInfo.size_death.set(0.0f, 0.0f, 1.0f, 0);
+    thunderEmitterInfo.color_birth[0].set(75.0f, 75.0f, 1.0f, 0);
+    thunderEmitterInfo.color_birth[1].set(75.0f, 75.0f, 1.0f, 0);
+    thunderEmitterInfo.color_birth[2].set(75.0f, 75.0f, 1.0f, 0);
+    thunderEmitterInfo.color_birth[3].set(0.0f, 0.0f, 1.0f, 0);
+    thunderEmitterInfo.color_death[0].set(0.0f, 0.0f, 1.0f, 0);
+    thunderEmitterInfo.color_death[1].set(0.0f, 0.0f, 1.0f, 0);
+    thunderEmitterInfo.color_death[2].set(0.0f, 0.0f, 1.0f, 0);
+    thunderEmitterInfo.color_death[3].set(255.0f, 255.0f, 1.0f, 0);
+    loveyEmitterInfo.vel.x = 0.0f;
+    loveyEmitterInfo.vel.y = -0.5f;
+    loveyEmitterInfo.vel.z = 0.0f;
+    loveyEmitterInfo.custom_flags = 0xf5e;
+    loveyEmitterInfo.vel_angle_variation = DEG2RAD(90);
+    loveyEmitterInfo.rate.set(100.0f, 100.0f, 1.0f, 0);
+    loveyEmitterInfo.life.set(2.0f, 2.0f, 1.0f, 0);
+    loveyEmitterInfo.size_birth.set(0.5f, 0.5f, 1.0f, 0);
+    loveyEmitterInfo.size_death.set(0.3f, 0.3f, 1.0f, 0);
+    loveyEmitterInfo.color_birth[0].set(255.0f, 255.0f, 1.0f, 0);
+    loveyEmitterInfo.color_birth[1].set(175.0f, 175.0f, 1.0f, 0);
+    loveyEmitterInfo.color_birth[2].set(175.0f, 175.0f, 1.0f, 0);
+    loveyEmitterInfo.color_birth[3].set(255.0f, 255.0f, 1.0f, 0);
+    loveyEmitterInfo.color_death[0].set(255.0f, 255.0f, 1.0f, 0);
+    loveyEmitterInfo.color_death[1].set(175.0f, 175.0f, 1.0f, 0);
+    loveyEmitterInfo.color_death[2].set(175.0f, 175.0f, 1.0f, 0);
+    loveyEmitterInfo.color_death[3].set(0.0f, 0.0f, 1.0f, 0);
+    // clang-format on
+    tex = (RwTexture*)xSTFindAsset(xStrHash("target"), 0x0);
+    if (tex != NULL)
+    {
+        sHelmetRast = tex->raster;
+    }
+    else
+    {
+        sHelmetRast = 0;
+    }
+
+    //NPCC_MakeLightningInfo(NPC_LYT_TIKITHUNDER, &sThunderLightningInfo);
+    sThunderLightningInfo.time = 0.3f;
+}
 
 void zNPCTiki_ExplodeFX(zNPCTiki* tiki) RIMP
 {
@@ -1110,39 +1110,39 @@ xAnimTable* ZNPC_AnimTable_Tiki()
 //        return zNPCCommon::SysEvent(from, to, toEvent, toParam, toParamWidget, handled);
 //    }
 //}
-//
-//void zNPCTiki::AddChild(zNPCTiki* child)
-//{
-//    U32 i = 0;
-//
-//    while (this->children[i & 0xff] != NULL)
-//    {
-//        i++;
-//    }
-//
-//    this->children[i & 0xff] = child;
-//    this->numChildren++;
-//}
-//
-//void zNPCTiki::RemoveChild(zNPCTiki* child)
-//{
-//    U32 i = 0;
-//
-//    if (this->numChildren == 0)
-//        return;
-//
-//    while (this->children[i & 0xff] != child && (i & 0xff) < sizeof(this->children[0]))
-//    {
-//        i++;
-//    }
-//
-//    if (this->children[i & 0xff] != child)
-//        return;
-//
-//    this->children[i & 0xff] = NULL;
-//    this->numChildren--;
-//}
-//
+
+void zNPCTiki::AddChild(zNPCTiki* child)
+{
+    U32 i = 0;
+
+    while (this->children[i & 0xff] != NULL)
+    {
+        i++;
+    }
+
+    this->children[i & 0xff] = child;
+    this->numChildren++;
+}
+
+void zNPCTiki::RemoveChild(zNPCTiki* child)
+{
+    U32 i = 0;
+
+    if (this->numChildren == 0)
+        return;
+
+    while (this->children[i & 0xff] != child && (i & 0xff) < sizeof(this->children[0]))
+    {
+        i++;
+    }
+
+    if (this->children[i & 0xff] != child)
+        return;
+
+    this->children[i & 0xff] = NULL;
+    this->numChildren--;
+}
+
 //void zNPCTiki::RemoveParent(zNPCTiki* parent)
 //{
 //    U32 i = 0;
@@ -1169,170 +1169,170 @@ xAnimTable* ZNPC_AnimTable_Tiki()
 //
 //    this->tikiFlag |= 4;
 //}
-//
-//// WIP
-//void zNPCTiki::FindParents(zScene* zsc)
-//{
-//    xCollis c = {
-//        0b100000000, // flags
-//        0, // oid
-//        NULL, // optr
-//        NULL, // mptr
-//        0.0f, // dist
-//        { 0.0f, 0.0f, 0.0f }, // norm
-//        { 0.0f, 0.0f, 0.0f }, // tohit
-//        { 0.0f, 0.0f, 0.0f }, // depen
-//        { 0.0f, 0.0f, 0.0f }, // hdng
-//        { 0.0f, 0.0f, 0.0f } // union tuv/tri
-//    };
-//    xRay3 ray;
-//
-//    zSurfaceProps* prop;
-//    F32 oldLower;
-//    F32 oldUpper;
-//    S32 i;
-//    xNPCBasic* npc;
-//    zNPCTiki* tiki;
-//    U8 couldBe;
-//
-//    xVec3Copy(&ray.origin, (xVec3*)&((this->model)->Mat->pos));
-//    ray.dir.x = 0.0f;
-//    ray.dir.y = -1.0f;
-//    ray.dir.z = 0.0f;
-//    ray.min_t = 0.0f;
-//    ray.max_t = 300.0f;
-//    ray.flags = 0xc00;
-//
-//    this->tikiFlag &= ~0x2;
-//
-//    xRayHitsTikiLandableScene(globals.sceneCur, &ray, &c);
-//
-//    if ((c.flags & 1) == 0)
-//    {
-//        this->landHt = FLOAT_MIN;
-//    }
-//    else
-//    {
-//        if (c.optr != NULL)
-//        {
-//            this->nonTikiParent = (xEnt*)c.optr;
-//
-//            xVec3Sub(&ray.origin, &ray.origin, (xVec3*)&((xEnt*)c.optr)->model->Mat->pos);
-//            F32 dist = ray.max_t - c.dist;
-//
-//            if (zGooIs(this->nonTikiParent, oldLower, 0))
-//                this->tikiFlag |= 2;
-//
-//            xSurface* surf = zSurfaceGetSurface(&c);
-//            if (surf != NULL && surf->state == '\0' && surf->moprops != NULL)
-//            {
-//                if (((U32*)surf->moprops)[0] != 0 && ((U32*)surf->moprops)[2] != 0)
-//                    this->tikiFlag |= 2;
-//            }
-//
-//            this->nonTikiParentDisp.x =
-//                xVec3Dot(&ray.origin, (xVec3*)&this->nonTikiParent->model->Mat->right);
-//            this->nonTikiParentDisp.y =
-//                xVec3Dot(&ray.origin, (xVec3*)&this->nonTikiParent->model->Mat->up);
-//            this->nonTikiParentDisp.z =
-//                xVec3Dot(&ray.origin, (xVec3*)&this->nonTikiParent->model->Mat->at);
-//
-//            F32 mag2 = xVec3Length2((xVec3*)&this->nonTikiParent->model->Mat->right);
-//            if (mag2 > 0.00001f)
-//            {
-//                xVec3SMulBy(&this->nonTikiParentDisp, 1.0f / mag2);
-//            }
-//        }
-//        else
-//        {
-//            this->nonTikiParent = NULL;
-//            xVec3Init(&this->nonTikiParentDisp, 0.0f, 0.0f, 0.0f);
-//        }
-//
-//        this->landHt = ray.origin.y - c.dist;
-//    }
-//
-//    if ((this->tikiFlag & 0x20) != 0)
-//    {
-//        oldUpper = this->bound.box.box.lower.y;
-//        oldLower = this->bound.box.box.upper.y;
-//        this->bound.box.box.lower.y *= 0.5f;
-//        F32 temp = this->bound.box.box.lower.y + (this->bound.box.box.upper.y * 0.5f);
-//        this->bound.box.box.lower.y = temp;
-//        this->bound.box.box.upper.y = (temp + oldLower) - oldUpper;
-//    }
-//
-//    i = 0;
-//    if (zsc->num_npcs != 0)
-//    {
-//        for (S32 idx = 0; i < zsc->num_npcs; i++, idx += 4)
-//        {
-//            tiki = (zNPCTiki*)&(*zsc->npcs[idx]);
-//
-//            bool validParent = true;
-//            if (tiki == this || (tiki->SelfType() & ~0xFF) != 'NTT\0' ||
-//                (tiki->tikiFlag & 0x300) != 0 || (tiki->tikiFlag & 0x10) != 0 ||
-//                (this->landHt + 0.1f > tiki->bound.box.box.upper.y) ||
-//                (this->bound.box.box.lower.x + 0.1f > tiki->bound.box.box.upper.x) ||
-//                (this->bound.box.box.lower.z + 0.1f > tiki->bound.box.box.upper.z))
-//            {
-//                validParent = false;
-//            }
-//
-//            zNPCTiki* cur = this;
-//            for (S32 couldBe = 0; couldBe < 4; ++couldBe)
-//            {
-//                zNPCTiki* p = cur->parents[0];
-//                if (p == tiki)
-//                {
-//                    validParent = false;
-//                    break;
-//                }
-//
-//                if (p && this->landHt < p->bound.box.box.upper.y)
-//                {
-//                    p->RemoveChild(this);
-//                    cur->parents[0] = NULL;
-//                    this->numParents--;
-//                    if (couldBe == this->contactParent)
-//                    {
-//                        this->contactParent = -1;
-//                        this->tikiFlag |= 1;
-//                    }
-//                }
-//
-//                cur = (zNPCTiki*)&(cur->nextprod);
-//            }
-//
-//            if (validParent && tiki->numChildren < 4 && this->numParents < 4)
-//            {
-//                for (U8 i = 0; this->parents[i & 0xff] != NULL; i++)
-//                    ;
-//                this->parents[i & 0xff] = tiki;
-//                tiki->AddChild(this);
-//                this->numParents++;
-//            }
-//        }
-//    }
-//
-//    if ((this->tikiFlag & 0x20) != 0)
-//    {
-//        this->bound.box.box.upper.y = oldUpper;
-//        this->bound.box.box.lower.y = oldLower;
-//        this->tikiFlag &= ~0x20;
-//    }
-//
-//    if (this->numParents == 0)
-//    {
-//        this->tikiFlag |= 1;
-//    }
-//    else
-//    {
-//        this->tikiFlag &= ~0x2;
-//        this->nonTikiParent = NULL;
-//    }
-//}
-//
+
+// WIP
+void zNPCTiki::FindParents(zScene* zsc)
+{
+    xCollis c = {
+        0b100000000, // flags
+        0, // oid
+        NULL, // optr
+        NULL, // mptr
+        0.0f, // dist
+        { 0.0f, 0.0f, 0.0f }, // norm
+        { 0.0f, 0.0f, 0.0f }, // tohit
+        { 0.0f, 0.0f, 0.0f }, // depen
+        { 0.0f, 0.0f, 0.0f }, // hdng
+        { 0.0f, 0.0f, 0.0f } // union tuv/tri
+    };
+    xRay3 ray;
+
+    zSurfaceProps* prop;
+    F32 oldLower;
+    F32 oldUpper;
+    S32 i;
+    xNPCBasic* npc;
+    zNPCTiki* tiki;
+    U8 couldBe;
+
+    xVec3Copy(&ray.origin, (xVec3*)&((this->model)->Mat->pos));
+    ray.dir.x = 0.0f;
+    ray.dir.y = -1.0f;
+    ray.dir.z = 0.0f;
+    ray.min_t = 0.0f;
+    ray.max_t = 300.0f;
+    ray.flags = 0xc00;
+
+    this->tikiFlag &= ~0x2;
+
+    xRayHitsTikiLandableScene(globals.sceneCur, &ray, &c);
+
+    if ((c.flags & 1) == 0)
+    {
+        this->landHt = FLOAT_MIN;
+    }
+    else
+    {
+        if (c.optr != NULL)
+        {
+            this->nonTikiParent = (xEnt*)c.optr;
+
+            xVec3Sub(&ray.origin, &ray.origin, (xVec3*)&((xEnt*)c.optr)->model->Mat->pos);
+            F32 dist = ray.max_t - c.dist;
+
+            if (zGooIs(this->nonTikiParent, oldLower, 0))
+                this->tikiFlag |= 2;
+
+            xSurface* surf = zSurfaceGetSurface(&c);
+            if (surf != NULL && surf->state == '\0' && surf->moprops != NULL)
+            {
+                if (((U32*)surf->moprops)[0] != 0 && ((U32*)surf->moprops)[2] != 0)
+                    this->tikiFlag |= 2;
+            }
+
+            this->nonTikiParentDisp.x =
+                xVec3Dot(&ray.origin, (xVec3*)&this->nonTikiParent->model->Mat->right);
+            this->nonTikiParentDisp.y =
+                xVec3Dot(&ray.origin, (xVec3*)&this->nonTikiParent->model->Mat->up);
+            this->nonTikiParentDisp.z =
+                xVec3Dot(&ray.origin, (xVec3*)&this->nonTikiParent->model->Mat->at);
+
+            F32 mag2 = xVec3Length2((xVec3*)&this->nonTikiParent->model->Mat->right);
+            if (mag2 > 0.00001f)
+            {
+                xVec3SMulBy(&this->nonTikiParentDisp, 1.0f / mag2);
+            }
+        }
+        else
+        {
+            this->nonTikiParent = NULL;
+            xVec3Init(&this->nonTikiParentDisp, 0.0f, 0.0f, 0.0f);
+        }
+
+        this->landHt = ray.origin.y - c.dist;
+    }
+
+    if ((this->tikiFlag & 0x20) != 0)
+    {
+        oldUpper = this->bound.box.box.lower.y;
+        oldLower = this->bound.box.box.upper.y;
+        this->bound.box.box.lower.y *= 0.5f;
+        F32 temp = this->bound.box.box.lower.y + (this->bound.box.box.upper.y * 0.5f);
+        this->bound.box.box.lower.y = temp;
+        this->bound.box.box.upper.y = (temp + oldLower) - oldUpper;
+    }
+
+    i = 0;
+    if (zsc->num_npcs != 0)
+    {
+        for (S32 idx = 0; i < zsc->num_npcs; i++, idx += 4)
+        {
+            tiki = (zNPCTiki*)&(*zsc->npcs[idx]);
+
+            bool validParent = true;
+            if (tiki == this || (tiki->SelfType() & ~0xFF) != 'NTT\0' ||
+                (tiki->tikiFlag & 0x300) != 0 || (tiki->tikiFlag & 0x10) != 0 ||
+                (this->landHt + 0.1f > tiki->bound.box.box.upper.y) ||
+                (this->bound.box.box.lower.x + 0.1f > tiki->bound.box.box.upper.x) ||
+                (this->bound.box.box.lower.z + 0.1f > tiki->bound.box.box.upper.z))
+            {
+                validParent = false;
+            }
+
+            zNPCTiki* cur = this;
+            for (S32 couldBe = 0; couldBe < 4; ++couldBe)
+            {
+                zNPCTiki* p = cur->parents[0];
+                if (p == tiki)
+                {
+                    validParent = false;
+                    break;
+                }
+
+                if (p && this->landHt < p->bound.box.box.upper.y)
+                {
+                    p->RemoveChild(this);
+                    cur->parents[0] = NULL;
+                    this->numParents--;
+                    if (couldBe == this->contactParent)
+                    {
+                        this->contactParent = -1;
+                        this->tikiFlag |= 1;
+                    }
+                }
+
+                cur = (zNPCTiki*)&(cur->nextprod);
+            }
+
+            if (validParent && tiki->numChildren < 4 && this->numParents < 4)
+            {
+                for (U8 i = 0; this->parents[i & 0xff] != NULL; i++)
+                    ;
+                this->parents[i & 0xff] = tiki;
+                tiki->AddChild(this);
+                this->numParents++;
+            }
+        }
+    }
+
+    if ((this->tikiFlag & 0x20) != 0)
+    {
+        this->bound.box.box.upper.y = oldUpper;
+        this->bound.box.box.lower.y = oldLower;
+        this->tikiFlag &= ~0x20;
+    }
+
+    if (this->numParents == 0)
+    {
+        this->tikiFlag |= 1;
+    }
+    else
+    {
+        this->tikiFlag &= ~0x2;
+        this->nonTikiParent = NULL;
+    }
+}
+
 //void zNPCTiki::ParentUpdated(zNPCTiki* parent)
 //{
 //    for (int i = 0; i < 4; i++)

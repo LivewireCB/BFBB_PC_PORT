@@ -70,5 +70,6 @@ void zNPCMsg_SceneFinish();
 xEnt* zNPCMgr_createNPCInst(S32, xEntAsset* assdat);
 
 S32 zNPCMgr_OrdComp_npcid(void* vkey, void* vitem);
+S32 zNPCMgr_OrdTest_npcid(const void* vkey, void* vitem);
 
 #endif

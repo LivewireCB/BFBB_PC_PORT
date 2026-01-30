@@ -7,7 +7,6 @@
 extern _CurrentPlayer gPendingPlayer;
 extern U32 gLevelChanged;
 extern U32 startPressed;
-extern U8 sHackSmoothedUpdate;
 extern U32 gBusStopIsRunning;
 extern F32 sTimeElapsed;
 extern iTime sTimeCurrent;

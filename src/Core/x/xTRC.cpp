@@ -25,10 +25,11 @@ _tagTRCState gTrcDisk[2];
 //           "An error has occurred. Turn the power off and refer to the Nintendo GameCube\x99 Instruction Booklet for further instructions.";
 //}
 //
-//static const char* message_text;
-//
+static const char* message_text;
+
 //static const basic_rect<F32> screen_bounds = { 0.0f, 0.0f, 1.0f, 1.0f };
-//static S32 yellow = 0xFFE600FF;
+
+static S32 yellow = 0xFFE600FF;
 
 void xTRCInit()
 {
@@ -40,87 +41,87 @@ void xTRCInit()
     memset(gTrcDisk, 0, 8);
 }
 
-//static void render_message(const char* s)
-//{
-//    static xtextbox tb = xtextbox::create(xfont::create(1, NSCREENX(19.0f), NSCREENY(22.0f), 0.0f,
-//                                                        *(iColor_tag*)&yellow, screen_bounds),
-//                                          screen_bounds, 0x2, 0.0f, 0.0f, 0.0f, 0.0f);
-//
-//    tb.set_text(s);
-//    tb.bounds = screen_bounds;
-//    tb.bounds.contract(0.1f);
-//
-//    tb.bounds.h = tb.yextent(true);
-//    tb.bounds.y = -(0.5f * tb.bounds.h + 0.5f);
-//
-//    render_fill_rect(tb.font.clip, xColorFromRGBA(0, 0, 0, 0xC8));
-//
-//    tb.render(true);
-//}
-//
-//void xTRCRender()
-//{
-//    if (message_text != NULL)
-//    {
-//        render_message(message_text);
-//    }
-//}
-//
-//void xTRCReset()
-//{
-//    message_text = NULL;
-//    globals.dontShowPadMessageDuringLoadingOrCutScene = false;
-//
-//    eGameMode mode = gGameMode;
-//    bool isStall = mode == eGameMode_Stall;
-//
-//    if (isStall)
-//    {
-//        zGameModeSwitch(eGameMode_Game);
-//        xSndResume();
-//    }
-//}
-//
-//void xTRCPad(S32, _tagTRCState)
-//{   
-//}
-//
-//// SDA relocation shenanigans
-//void xTRCDisk(_tagTRCState state)
-//{
-//    if (state != TRC_DiskNotIdentified)
-//    {
-//        gTrcDisk[0] = state;
-//        gTrcDisk[1] = TRC_DiskIdentified;
-//    }
-//    else
-//    {
-//        gTrcDisk[1] = TRC_DiskNotIdentified;
-//    }
-//}
-//
-//void render_mem_card_no_space(S32 needed, S32 available, S32 neededFiles, bool enabled)
-//{
-//    if (available < 0 && neededFiles != -1 && needed != -1)
-//    {
-//        available = 0;
-//    }
-//
-//    bad_card_needed = needed;
-//    bad_card_available = available;
-//
-//    char* error_text = "{i:text_mem_card_no_space}";
-//    if (neededFiles == 0 && needed > available)
-//    {
-//        error_text = "{i:text_mem_card_no_space_overwrite}";
-//    }
-//    else if ((neededFiles > 0 && needed > available) || neededFiles == -1 || needed > available)
-//    {
-//        error_text = "{i:text_mem_card_no_space_no_save}";
-//    }
-//
-//    RenderText(error_text, enabled);
-//}
+static void render_message(const char* s)
+{
+    static xtextbox tb = xtextbox::create(xfont::create(1, NSCREENX(19.0f), NSCREENY(22.0f), 0.0f,
+                                                        *(iColor_tag*)&yellow, screen_bounds),
+                                          screen_bounds, 0x2, 0.0f, 0.0f, 0.0f, 0.0f);
+
+    tb.set_text(s);
+    tb.bounds = screen_bounds;
+    tb.bounds.contract(0.1f);
+
+    tb.bounds.h = tb.yextent(true);
+    tb.bounds.y = -(0.5f * tb.bounds.h + 0.5f);
+
+    render_fill_rect(tb.font.clip, xColorFromRGBA(0, 0, 0, 0xC8));
+
+    tb.render(true);
+}
+
+void xTRCRender()
+{
+    if (message_text != NULL)
+    {
+        render_message(message_text);
+    }
+}
+
+void xTRCReset()
+{
+    message_text = NULL;
+    globals.dontShowPadMessageDuringLoadingOrCutScene = false;
+
+    eGameMode mode = gGameMode;
+    bool isStall = mode == eGameMode_Stall;
+
+    if (isStall)
+    {
+        zGameModeSwitch(eGameMode_Game);
+        xSndResume();
+    }
+}
+
+void xTRCPad(S32, _tagTRCState) COMPLETE
+{   
+}
+
+// SDA relocation shenanigans
+void xTRCDisk(_tagTRCState state)
+{
+    if (state != TRC_DiskNotIdentified)
+    {
+        gTrcDisk[0] = state;
+        gTrcDisk[1] = TRC_DiskIdentified;
+    }
+    else
+    {
+        gTrcDisk[1] = TRC_DiskNotIdentified;
+    }
+}
+
+void render_mem_card_no_space(S32 needed, S32 available, S32 neededFiles, bool enabled)
+{
+    if (available < 0 && neededFiles != -1 && needed != -1)
+    {
+        available = 0;
+    }
+
+    bad_card_needed = needed;
+    bad_card_available = available;
+
+    char* error_text = "{i:text_mem_card_no_space}";
+    if (neededFiles == 0 && needed > available)
+    {
+        error_text = "{i:text_mem_card_no_space_overwrite}";
+    }
+    else if ((neededFiles > 0 && needed > available) || neededFiles == -1 || needed > available)
+    {
+        error_text = "{i:text_mem_card_no_space_no_save}";
+    }
+
+    RenderText(error_text, enabled);
+}
 
 void RenderText(const char* text, bool enabled)
 {

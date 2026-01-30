@@ -54,10 +54,10 @@ namespace zhud
         bool inited;
         bool last_paused = true;
 
-        /*static void hide_widget(xhud::widget& widget, xhud::motive& motive)
+        static void hide_widget(xhud::widget& widget, xhud::motive& motive)
         {
             widget.hide();
-        }*/
+        }
 
         /*static void ping_widget(xhud::widget& widget)
         {
@@ -66,11 +66,11 @@ namespace zhud
                                            xhud::shake_motive_update, NULL));
         }*/
 
-        /*static void delay_hide_widget(xhud::widget& widget)
+        static void delay_hide_widget(xhud::widget& widget)
         {
             widget.add_motive(xhud::motive(NULL, 0.0f, 4.0f, 0.0f, xhud::delay_motive_update,
                                            (void*)hide_widget));
-        }*/
+        }
 
         static xhud::widget* get_meter_widget(S32 index)
         {
@@ -275,56 +275,56 @@ namespace zhud
 //
 //        xhud::update(dt);
 //    }
-//
-//    void zhud::render()
-//    {
-//        xhud::render();
-//    }
-//
-//    void zhud::show()
-//    {
-//        U32 i = 0;
-//        while (&widgets[i] < &widgets[6])
-//        {
-//            if (widgets[i] != NULL)
-//            {
-//                xhud::widget* widget = widgets[i];
-//                widget->clear_motives(xhud::delay_motive_update, (void*)zhud::hide_widget);
-//                if (!(widget->showing() & 0xFF)) 
-//                {
-//                    widget->show();
-//                }
-//            }
-//
-//            i++;
-//        }
-//
-//        for (i = 0; i < 5; i++)
-//        {
-//            hiding[i] = FALSE;
-//        }
-//    }
-//
-//    void zhud::hide()
-//    {
-//        U32 i = 0;
-//
-//        while (&widgets[i] < &widgets[6])
-//        {
-//            xhud::widget* widget = widgets[i];
-//            if (widget != NULL)
-//            {
-//                if (!(widget->hiding() & 0xFF))
-//                {
-//                    widget->hide();
-//                }
-//            }
-//            i++;
-//        }
-//
-//        for (i = 0; i < 5; i++)
-//        {
-//            hiding[i] = FALSE;
-//        }
-//    }
+
+    void zhud::render()
+    {
+        xhud::render();
+    }
+
+    void zhud::show()
+    {
+        U32 i = 0;
+        while (&widgets[i] < &widgets[6])
+        {
+            if (widgets[i] != NULL)
+            {
+                xhud::widget* widget = widgets[i];
+                widget->clear_motives(xhud::delay_motive_update, (void*)zhud::hide_widget);
+                if (!(widget->showing() & 0xFF)) 
+                {
+                    widget->show();
+                }
+            }
+
+            i++;
+        }
+
+        for (i = 0; i < 5; i++)
+        {
+            hiding[i] = FALSE;
+        }
+    }
+
+    void zhud::hide()
+    {
+        U32 i = 0;
+
+        while (&widgets[i] < &widgets[6])
+        {
+            xhud::widget* widget = widgets[i];
+            if (widget != NULL)
+            {
+                if (!(widget->hiding() & 0xFF))
+                {
+                    widget->hide();
+                }
+            }
+            i++;
+        }
+
+        for (i = 0; i < 5; i++)
+        {
+            hiding[i] = FALSE;
+        }
+    }
 } // namespace zhud

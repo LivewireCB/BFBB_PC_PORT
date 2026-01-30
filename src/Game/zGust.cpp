@@ -12,100 +12,100 @@
 
 #include <types.h>
 
-//static zGust* gusts;
-//static U16 ngusts;
-//static zParEmitter* sGustDustEmitter;
-//static zParEmitter* sGustDebrisEmitter;
-//
-//S32 zGustEventCB(xBase* from, xBase* to, U32 toEvent, const float* toParam, xBase* b);
-//
-//static void zGustInit(zGust* g, zGustAsset* a)
-//{
-//    xBaseInit(g, a);
-//    g->eventFunc = zGustEventCB;
-//    g->asset = a;
-//    g->flags = a->flags;
-//
-//    if (g->linkCount)
-//    {
-//        g->link = (xLinkAsset*)&g->asset[1];
-//    }
-//    else
-//    {
-//        g->link = NULL;
-//    }
-//
-//    g->debris_timer = 0.15f;
-//}
-//
-//static void zGustSetup(zGust* g)
-//{
-//    g->volume = (zVolume*)zSceneFindObject(g->asset->volumeID);
-//    g->fx_volume = (zVolume*)zSceneFindObject(g->asset->effectID);
-//}
-//
-//// NOTE(jelly): equivalent, reloading global variable meme
-//void zGustInit()
-//{
-//    ngusts = xSTAssetCountByType('GUST');
-//
-//    if (ngusts)
-//    {
-//        gusts = (zGust*)xMemAllocSize(sizeof(zGust) * ngusts);
-//        for (U16 i = 0; i < ngusts; i++)
-//        {
-//            U32 size;
-//            zGustAsset* asset = (zGustAsset*)xSTFindAssetByType('GUST', i, &size);
-//            zGustInit(&gusts[i], asset);
-//        }
-//    }
-//    else
-//    {
-//        gusts = NULL;
-//    }
-//}
-//
-//void zGustSetup()
-//{
-//    if (gusts)
-//    {
-//        for (U16 i = 0; i < ngusts; i++)
-//        {
-//            zGustSetup(&gusts[i]);
-//        }
-//        sGustDustEmitter = zParEmitterFind(xStrHash("PAREMIT_GUST_DUST"));
-//        sGustDebrisEmitter = zParEmitterFind(xStrHash("PAREMIT_GUST_DEBRIS"));
-//    }
-//}
-//
-//void zGustTurnOn(zGust* g)
-//
-//{
-//    g->flags |= 1;
-//    g->debris_timer = 0.15f;
-//}
-//
-//void zGustTurnOff(zGust* g)
-//{
-//    g->flags &= ~1;
-//}
-//
-//void zGustToggleOn(zGust* g)
-//{
-//    g->flags ^= 1;
-//    g->debris_timer = 0.15f;
-//}
-//
-//zGust* zGustGetGust(U16 n)
-//{
-//    if (gusts)
-//    {
-//        return &gusts[n];
-//    }
-//
-//    return NULL;
-//}
-//
+static zGust* gusts;
+static U16 ngusts;
+static zParEmitter* sGustDustEmitter;
+static zParEmitter* sGustDebrisEmitter;
+
+S32 zGustEventCB(xBase* from, xBase* to, U32 toEvent, const float* toParam, xBase* b);
+
+static void zGustInit(zGust* g, zGustAsset* a)
+{
+    xBaseInit(g, a);
+    g->eventFunc = zGustEventCB;
+    g->asset = a;
+    g->flags = a->flags;
+
+    if (g->linkCount)
+    {
+        g->link = (xLinkAsset*)&g->asset[1];
+    }
+    else
+    {
+        g->link = NULL;
+    }
+
+    g->debris_timer = 0.15f;
+}
+
+static void zGustSetup(zGust* g)
+{
+    g->volume = (zVolume*)zSceneFindObject(g->asset->volumeID);
+    g->fx_volume = (zVolume*)zSceneFindObject(g->asset->effectID);
+}
+
+// NOTE(jelly): equivalent, reloading global variable meme
+void zGustInit()
+{
+    ngusts = xSTAssetCountByType('GUST');
+
+    if (ngusts)
+    {
+        gusts = (zGust*)xMemAllocSize(sizeof(zGust) * ngusts);
+        for (U16 i = 0; i < ngusts; i++)
+        {
+            U32 size;
+            zGustAsset* asset = (zGustAsset*)xSTFindAssetByType('GUST', i, &size);
+            zGustInit(&gusts[i], asset);
+        }
+    }
+    else
+    {
+        gusts = NULL;
+    }
+}
+
+void zGustSetup()
+{
+    if (gusts)
+    {
+        for (U16 i = 0; i < ngusts; i++)
+        {
+            zGustSetup(&gusts[i]);
+        }
+        sGustDustEmitter = zParEmitterFind(xStrHash("PAREMIT_GUST_DUST"));
+        sGustDebrisEmitter = zParEmitterFind(xStrHash("PAREMIT_GUST_DEBRIS"));
+    }
+}
+
+void zGustTurnOn(zGust* g)
+
+{
+    g->flags |= 1;
+    g->debris_timer = 0.15f;
+}
+
+void zGustTurnOff(zGust* g)
+{
+    g->flags &= ~1;
+}
+
+void zGustToggleOn(zGust* g)
+{
+    g->flags ^= 1;
+    g->debris_timer = 0.15f;
+}
+
+zGust* zGustGetGust(U16 n)
+{
+    if (gusts)
+    {
+        return &gusts[n];
+    }
+
+    return NULL;
+}
+
 //// NOTE(jelly): non-matching
 //void zGustUpdateEnt(xEnt* ent, xScene* sc, float dt, void* gdata)
 //{
@@ -214,47 +214,47 @@
 //        }
 //    }
 //}
-//
-//void zGustSave(zGust* g, xSerial* s)
-//{
-//    xBaseSave(g, s);
-//}
+
+void zGustSave(zGust* g, xSerial* s)
+{
+    xBaseSave(g, s);
+}
 
 void zGustLoad(zGust* g, xSerial* s)
 {
     xBaseLoad(g, s);
 }
 
-//void zGustReset(zGust* g)
-//{
-//    xBaseReset(g, g->asset);
-//    g->flags = g->asset->flags;
-//}
-//
-//S32 zGustEventCB(xBase* from, xBase* to, U32 toEvent, const float* toParam, xBase* b)
-//{
-//    switch (toEvent)
-//    {
-//    case eEventOn:
-//        zGustTurnOn((zGust*)to);
-//        break;
-//
-//    case eEventOff:
-//        zGustTurnOff((zGust*)to);
-//        break;
-//
-//    case eEventToggle:
-//        zGustToggleOn((zGust*)to);
-//        break;
-//
-//    case eEventReset:
-//        zGustReset((zGust*)to);
-//        break;
-//    }
-//
-//    return 1;
-//}
-//
+void zGustReset(zGust* g)
+{
+    xBaseReset(g, g->asset);
+    g->flags = g->asset->flags;
+}
+
+S32 zGustEventCB(xBase* from, xBase* to, U32 toEvent, const float* toParam, xBase* b)
+{
+    switch (toEvent)
+    {
+    case eEventOn:
+        zGustTurnOn((zGust*)to);
+        break;
+
+    case eEventOff:
+        zGustTurnOff((zGust*)to);
+        break;
+
+    case eEventToggle:
+        zGustToggleOn((zGust*)to);
+        break;
+
+    case eEventReset:
+        zGustReset((zGust*)to);
+        break;
+    }
+
+    return 1;
+}
+
 //// NOTE(jelly): equivalent? i think it's just registers & float scheduling
 //static void UpdateGustFX(zGust* g, float seconds)
 //{

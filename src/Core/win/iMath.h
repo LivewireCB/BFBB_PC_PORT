@@ -12,6 +12,8 @@
 
 #define __fabs(x) (x)
 
+#define FABS(x) (float)__fabs(x)
+
 F32 isin(F32 x);
 F32 icos(F32 x);
 F32 itan(F32 x);

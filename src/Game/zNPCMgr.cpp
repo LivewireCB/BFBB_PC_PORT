@@ -377,9 +377,9 @@ void zNPCMgr_Startup()
     }
 }
 
-void zNPCMgr_Shutdown() RIMP
+void zNPCMgr_Shutdown()
 {
-    /*g_modinit--;
+    g_modinit--;
     if (g_modinit == 0)
     {
         zNPCMgr* mgr = zNPCMgrSelf();
@@ -391,14 +391,14 @@ void zNPCMgr_Shutdown() RIMP
         }
         zNPCMgr_Shutdown();
         xBehaveMgr_Shutdown();
-    }*/
+    }
 }
 
-//void zNPCMgr_scenePrepare(S32 npccnt)
-//{
-//    zNPCMgrSelf()->ScenePrepare(npccnt);
-//}
-//
+void zNPCMgr_scenePrepare(S32 npccnt)
+{
+    zNPCMgrSelf()->ScenePrepare(npccnt);
+}
+
 //void zNPCMgr_sceneFinish()
 //{
 //    zNPCMgrSelf()->SceneFinish();
@@ -408,36 +408,36 @@ void zNPCMgr_Shutdown() RIMP
 //{
 //    zNPCMgrSelf()->SceneReset();
 //}
-//
-//void zNPCMgr_scenePostInit()
-//{
-//    zNPCMgrSelf()->ScenePostInit();
-//}
-//
-//void zNPCMgr_scenePostSetup()
-//{
-//    zNPCMgrSelf()->ScenePostSetup();
-//}
-//
+
+void zNPCMgr_scenePostInit()
+{
+    zNPCMgrSelf()->ScenePostInit();
+}
+
+void zNPCMgr_scenePostSetup()
+{
+    zNPCMgrSelf()->ScenePostSetup();
+}
+
 //void zNPCMgr_sceneTimestep(xScene* xscn, F32 dt)
 //{
 //    zNPCMgrSelf()->SceneTimestep(xscn, dt);
 //}
-//
-//void zNPCMgr_scenePostRender()
-//{
-//    zNPCMgrSelf()->ScenePostRender();
-//}
-//
-//void zNPCMgr_scenePostParticleRender()
-//{
-//    zNPCMgrSelf()->ScenePostParticleRender();
-//}
-//
-//xEnt* zNPCMgr_createNPCInst(S32, xEntAsset* assdat)
-//{
-//    return zNPCMgrSelf()->CreateNPC(assdat);
-//}
+
+void zNPCMgr_scenePostRender()
+{
+    zNPCMgrSelf()->ScenePostRender();
+}
+
+void zNPCMgr_scenePostParticleRender()
+{
+    zNPCMgrSelf()->ScenePostParticleRender();
+}
+
+xEnt* zNPCMgr_createNPCInst(S32, xEntAsset* assdat)
+{
+    return zNPCMgrSelf()->CreateNPC(assdat);
+}
 
 void zNPCMgr::Startup()
 {
@@ -466,21 +466,21 @@ void zNPCMgr::Shutdown() RIMP
     zNPCMsg_Shutdown();*/
 }
 
-//void zNPCMgr::ScenePrepare(S32 npccnt)
-//{
-//    XOrdInit(&this->npclist, npccnt, 0);
-//    xBehaveMgr_ScenePrepare();
-//    zNPCMsg_ScenePrepare();
-//    zNPCSpawner_ScenePrepare();
-//    zNPCCommon_ScenePrepare();
-//    zNPCVillager_ScenePrepare();
-//    zNPCRobot_ScenePrepare();
-//    zNPCDuplotron_ScenePrepare();
-//    zNPCSubBoss_ScenePrepare();
-//    zNPCBoss_ScenePrepare();
-//    g_firstFrameUpdateAllNPC = 1;
-//}
-//
+void zNPCMgr::ScenePrepare(S32 npccnt) RIMP
+{
+    XOrdInit(&this->npclist, npccnt, 0);
+    xBehaveMgr_ScenePrepare();
+    //zNPCMsg_ScenePrepare();
+    //zNPCSpawner_ScenePrepare();
+    //zNPCCommon_ScenePrepare();
+    //zNPCVillager_ScenePrepare();
+    //zNPCRobot_ScenePrepare();
+    //zNPCDuplotron_ScenePrepare();
+    //zNPCSubBoss_ScenePrepare();
+    //zNPCBoss_ScenePrepare();
+    g_firstFrameUpdateAllNPC = 1;
+}
+
 //void zNPCMgr::SceneFinish()
 //{
 //    for (int i = 0; i < npclist.cnt; i++)
@@ -509,110 +509,110 @@ void zNPCMgr::Shutdown() RIMP
 //    xBehaveMgr_SceneReset();
 //    BackdoorUpdateAllNPCsOnce(globals.sceneCur, 1.0f / 60.0f);
 //}
-//
-//void zNPCMgr::ScenePostInit()
-//{
-//    zNPCCommon_ScenePostInit();
-//    zNPCRobot_ScenePostInit();
-//    zNPCVillager_ScenePostInit();
-//    zNPCDuplotron_ScenePostInit();
-//}
-//
-//void zNPCMgr::ScenePostSetup()
-//{
-//    for (int i = 0; i < npclist.cnt; i++)
-//    {
-//        xNPCBasic* npc = (xNPCBasic*)npclist.list[i];
-//        npc->PostSetup();
-//    }
-//}
-//
-//void zNPCMgr::ScenePostRender()
-//{
-//    xLightKit_Enable(globals.player.ent.lightKit, globals.currWorld);
-//    _SDRenderState old_rendstat = zRenderStateCurrent();
-//    zRenderState(SDRS_NPCVisual);
-//    for (int i = 0; i < npclist.cnt; i++)
-//    {
-//        zNPCCommon* npc = (zNPCCommon*)npclist.list[i];
-//        if (npc->flg_xtrarend & 0x1)
-//        {
-//            npc->flg_xtrarend &= ~0x1;
-//        }
-//        else
-//        {
-//            continue;
-//        }
-//
-//        if (npc->baseFlags & 0x40)
-//        {
-//            continue;
-//        }
-//
-//        if (npc->model == NULL || !(npc->model->Flags & 0x400))
-//        {
-//            npc->RenderExtra();
-//        }
-//    }
-//    xLightKit_Enable(0, globals.currWorld);
-//    zRenderState(old_rendstat);
-//}
-//
-//void zNPCMgr::ScenePostParticleRender()
-//{
-//    xLightKit_Enable(globals.player.ent.lightKit, globals.currWorld);
-//    _SDRenderState old_rendstat = zRenderStateCurrent();
-//    zRenderState(SDRS_NPCVisual);
-//    for (int i = 0; i < npclist.cnt; i++)
-//    {
-//        zNPCCommon* npc = (zNPCCommon*)npclist.list[i];
-//        if (npc->flg_xtrarend & 0x2)
-//        {
-//            npc->flg_xtrarend &= ~0x2;
-//        }
-//        else
-//        {
-//            continue;
-//        }
-//
-//        if (npc->baseFlags & 0x40)
-//        {
-//            continue;
-//        }
-//
-//        if (npc->model == NULL || !(npc->model->Flags & 0x400))
-//        {
-//            npc->RenderExtraPostParticles();
-//        }
-//    }
-//    xLightKit_Enable(0, globals.currWorld);
-//    zRenderState(old_rendstat);
-//}
-//
-//xEnt* zNPCMgr::CreateNPC(xEntAsset* asset)
-//{
-//    zNPCCommon* npc;
-//    en_NPCTYPES nt;
-//    U32 size;
-//    xModelAssetInfo* modelAsset = (xModelAssetInfo*)xSTFindAsset(asset->modelInfoID, &size);
-//
-//    // FIXME: Replace with actually getting the right model hash from the packed data
-//    nt = this->NPCTypeForModel(modelAsset->BrainID, *(&asset->modelInfoID + 3));
-//    npc = (zNPCCommon*)npcFactory->CreateItem(nt, NULL, NULL);
-//
-//    npc->Init(asset);
-//    XOrdAppend(&npclist, npc);
-//
-//    if (npclist.cnt == npclist.max)
-//    {
-//        XOrdSort(&npclist, zNPCMgr_OrdComp_npcid);
-//    }
-//
-//    this->DBG_Reset();
-//
-//    return npc;
-//}
-//
+
+void zNPCMgr::ScenePostInit() RIMP
+{
+    //zNPCCommon_ScenePostInit();
+    //zNPCRobot_ScenePostInit();
+    //zNPCVillager_ScenePostInit();
+    //zNPCDuplotron_ScenePostInit();
+}
+
+void zNPCMgr::ScenePostSetup()
+{
+    for (int i = 0; i < npclist.cnt; i++)
+    {
+        xNPCBasic* npc = (xNPCBasic*)npclist.list[i];
+        npc->PostSetup();
+    }
+}
+
+void zNPCMgr::ScenePostRender()
+{
+    xLightKit_Enable(globals.player.ent.lightKit, globals.currWorld);
+    _SDRenderState old_rendstat = zRenderStateCurrent();
+    zRenderState(SDRS_NPCVisual);
+    for (int i = 0; i < npclist.cnt; i++)
+    {
+        zNPCCommon* npc = (zNPCCommon*)npclist.list[i];
+        if (npc->flg_xtrarend & 0x1)
+        {
+            npc->flg_xtrarend &= ~0x1;
+        }
+        else
+        {
+            continue;
+        }
+
+        if (npc->baseFlags & 0x40)
+        {
+            continue;
+        }
+
+        if (npc->model == NULL || !(npc->model->Flags & 0x400))
+        {
+            npc->RenderExtra();
+        }
+    }
+    xLightKit_Enable(0, globals.currWorld);
+    zRenderState(old_rendstat);
+}
+
+void zNPCMgr::ScenePostParticleRender()
+{
+    xLightKit_Enable(globals.player.ent.lightKit, globals.currWorld);
+    _SDRenderState old_rendstat = zRenderStateCurrent();
+    zRenderState(SDRS_NPCVisual);
+    for (int i = 0; i < npclist.cnt; i++)
+    {
+        zNPCCommon* npc = (zNPCCommon*)npclist.list[i];
+        if (npc->flg_xtrarend & 0x2)
+        {
+            npc->flg_xtrarend &= ~0x2;
+        }
+        else
+        {
+            continue;
+        }
+
+        if (npc->baseFlags & 0x40)
+        {
+            continue;
+        }
+
+        if (npc->model == NULL || !(npc->model->Flags & 0x400))
+        {
+            npc->RenderExtraPostParticles();
+        }
+    }
+    xLightKit_Enable(0, globals.currWorld);
+    zRenderState(old_rendstat);
+}
+
+xEnt* zNPCMgr::CreateNPC(xEntAsset* asset)
+{
+    zNPCCommon* npc;
+    en_NPCTYPES nt;
+    U32 size;
+    xModelAssetInfo* modelAsset = (xModelAssetInfo*)xSTFindAsset(asset->modelInfoID, &size);
+
+    // FIXME: Replace with actually getting the right model hash from the packed data
+    nt = this->NPCTypeForModel(modelAsset->BrainID, *(&asset->modelInfoID + 3));
+    npc = (zNPCCommon*)npcFactory->CreateItem(nt, NULL, NULL);
+
+    npc->Init(asset);
+    XOrdAppend(&npclist, npc);
+
+    if (npclist.cnt == npclist.max)
+    {
+        XOrdSort(&npclist, zNPCMgr_OrdComp_npcid);
+    }
+
+    this->DBG_Reset();
+
+    return npc;
+}
+
 //void zNPCMgr::BackdoorUpdateAllNPCsOnce(xScene* xscn, F32 dt)
 //{
 //    for (int i = 0; i < npclist.cnt; i++)
@@ -655,78 +655,78 @@ void zNPCMgr::PrepTypeTable()
     }
 }
 
-//en_NPCTYPES zNPCMgr::NPCTypeForModel(U32 brainID, U32 mdl_hash)
-//{
-//    if (brainID != NULL)
-//    {
-//        for (int i = 0; i < sizeof(g_brainTable) / sizeof(g_brainTable[0]); i++)
-//        {
-//            if (brainID == g_brainTable[i].id)
-//            {
-//                return g_brainTable[i].type;
-//            }
-//        }
-//    }
-//
-//    en_NPCTYPES usetype = NPC_TYPE_UNKNOWN;
-//    for (NPCMTypeTable* rec = g_tbltype; rec->useNPCType != NPC_TYPE_UNKNOWN; rec++)
-//    {
-//        if (rec->hashOfName == mdl_hash)
-//        {
-//            usetype = rec->useNPCType;
-//            break;
-//        }
-//    }
-//
-//    if (usetype == NPC_TYPE_UNKNOWN)
-//    {
-//        usetype = NPC_TYPE_COMMON;
-//    }
-//
-//    return usetype;
-//}
-//
-//S32 zNPCMgr_OrdTest_npcid(const void* vkey, void* vitem)
-//{
-//    S32 rc;
-//    void* key = *(void**)(vitem);
-//
-//    if (vkey < key)
-//    {
-//        rc = -1;
-//    }
-//    else if (vkey > key)
-//    {
-//        rc = 1;
-//    }
-//    else
-//    {
-//        rc = 0;
-//    }
-//
-//    return rc;
-//}
-//
-//S32 zNPCMgr_OrdComp_npcid(void* vkey, void* vitem)
-//{
-//    S32 rc;
-//    U32 item;
-//    U32 key;
-//
-//    key = *(U32*)vkey;
-//    item = *(U32*)vitem;
-//    if (key < item)
-//    {
-//        rc = -1;
-//    }
-//    else if (key > item)
-//    {
-//        rc = 1;
-//    }
-//    else
-//    {
-//        rc = 0;
-//    }
-//
-//    return rc;
-//}
+en_NPCTYPES zNPCMgr::NPCTypeForModel(U32 brainID, U32 mdl_hash)
+{
+    if (brainID != NULL)
+    {
+        for (int i = 0; i < sizeof(g_brainTable) / sizeof(g_brainTable[0]); i++)
+        {
+            if (brainID == g_brainTable[i].id)
+            {
+                return g_brainTable[i].type;
+            }
+        }
+    }
+
+    en_NPCTYPES usetype = NPC_TYPE_UNKNOWN;
+    for (NPCMTypeTable* rec = g_tbltype; rec->useNPCType != NPC_TYPE_UNKNOWN; rec++)
+    {
+        if (rec->hashOfName == mdl_hash)
+        {
+            usetype = rec->useNPCType;
+            break;
+        }
+    }
+
+    if (usetype == NPC_TYPE_UNKNOWN)
+    {
+        usetype = NPC_TYPE_COMMON;
+    }
+
+    return usetype;
+}
+
+S32 zNPCMgr_OrdTest_npcid(const void* vkey, void* vitem)
+{
+    S32 rc;
+    void* key = *(void**)(vitem);
+
+    if (vkey < key)
+    {
+        rc = -1;
+    }
+    else if (vkey > key)
+    {
+        rc = 1;
+    }
+    else
+    {
+        rc = 0;
+    }
+
+    return rc;
+}
+
+S32 zNPCMgr_OrdComp_npcid(void* vkey, void* vitem)
+{
+    S32 rc;
+    U32 item;
+    U32 key;
+
+    key = *(U32*)vkey;
+    item = *(U32*)vitem;
+    if (key < item)
+    {
+        rc = -1;
+    }
+    else if (key > item)
+    {
+        rc = 1;
+    }
+    else
+    {
+        rc = 0;
+    }
+
+    return rc;
+}

@@ -50,9 +50,9 @@ namespace oob_state
             { false, 'GL01' },
         };
 
-//        tagFixed fixed;
-//        xMat4x3 shared_target;
-//
+        tagFixed fixed;
+        xMat4x3 shared_target;
+
 //        static void set_camera(bool instant)
 //        {
 //            xCamera& cam = globals.camera;
@@ -113,34 +113,34 @@ namespace oob_state
 //            xCameraDoCollisions(1, 6);
 //            zCameraTweakGlobal_Init();
 //        }
-//
-//        static void render_model(xModelInstance& model, const xVec3& loc, const xVec3& size,
-//            const xVec3& ypr /*Yaw Pitch Roll*/)
-//        {
-//            basic_rect<F32> screen_rect = { 0.0f, 0.0f, 1.0f, 1.0f };
-//            screen_rect.x = loc.x;
-//            screen_rect.y = loc.y;
-//
-//            xVec3 from = { 0.0f, 0.0f, 1.0f };
-//
-//            xVec3 to = { 0.0f, 0.0f, 0.0f };
-//            to.z = -loc.z;
-//
-//            xMat3x3 scaledMat;
-//            xMat3x3 eulerMat;
-//            xMat4x3 outMat;
-//            xMat3x3ScaleC(&scaledMat, size.x * (1.0f + loc.z), size.y * (1.0f + loc.z),
-//                1.0f + loc.z);
-//            xMat3x3Euler(&eulerMat, &ypr);
-//            xMat3x3Mul(&outMat, &eulerMat, &scaledMat);
-//
-//            outMat.pos = 0.0f;
-//            outMat.flags = 0x0;
-//            xModelSetFrame(&model, &outMat);
-//
-//            xModelRender2D(model, screen_rect, from, to);
-//        }
-//
+
+        static void render_model(xModelInstance& model, const xVec3& loc, const xVec3& size,
+            const xVec3& ypr /*Yaw Pitch Roll*/)
+        {
+            basic_rect<F32> screen_rect = { 0.0f, 0.0f, 1.0f, 1.0f };
+            screen_rect.x = loc.x;
+            screen_rect.y = loc.y;
+
+            xVec3 from = { 0.0f, 0.0f, 1.0f };
+
+            xVec3 to = { 0.0f, 0.0f, 0.0f };
+            to.z = -loc.z;
+
+            xMat3x3 scaledMat;
+            xMat3x3 eulerMat;
+            xMat4x3 outMat;
+            xMat3x3ScaleC(&scaledMat, size.x * (1.0f + loc.z), size.y * (1.0f + loc.z),
+                1.0f + loc.z);
+            xMat3x3Euler(&eulerMat, &ypr);
+            xMat3x3Mul(&outMat, &eulerMat, &scaledMat);
+
+            outMat.pos = 0.0f;
+            outMat.flags = 0x0;
+            xModelSetFrame(&model, &outMat);
+
+            xModelRender2D(model, screen_rect, from, to);
+        }
+
 //        static void move_up(xVec3& vec, F32 scale)
 //        {
 //            xMat4x3& camMat = globals.camera.mat;
@@ -207,111 +207,111 @@ namespace oob_state
 //            shared.vel = shared.accel * dt + old_vel;
 //            shared.loc += shared.dir * (0.5f * shared.accel * dt * dt + old_vel * dt);
 //        }
-//
-//        static void set_rect_verts(rwGameCube2DVertex*, F32, F32, F32, F32, iColor_tag c, F32 nsz,
-//            F32 rcz);
-//        static void set_rect_vert(rwGameCube2DVertex&, F32 x, F32 y, F32 z, iColor_tag c, F32 rcz);
-//        static void render_fade()
-//        {
-//            iColor_tag color = {};
-//            color.a = 255.0f * (1.0f - shared.fade_alpha) + 0.5f;
-//
-//            zRenderState(SDRS_OOBFade);
-//            RwRenderStateSet(rwRENDERSTATETEXTURERASTER, NULL);
-//            F32 nsz = 1.0f / ((RwCamera*)RWSRCGLOBAL(curCamera))->farPlane;
-//            F32 rcz = RwIm2DGetFarScreenZ();
-//
-//            RwIm2DVertex vert[4];
-//            set_rect_verts((rwGameCube2DVertex*)vert, 0.0f, 0.0f, 640.0f, 480.0f, color, rcz, nsz);
-//            RwIm2DRenderPrimitive(rwPRIMTYPETRISTRIP, (RwIm2DVertex*)vert, 4);
-//        }
-//
-//        static void set_rect_verts(rwGameCube2DVertex* verts, F32 x, F32 y, F32 w, F32 h,
-//            iColor_tag c, F32 rcz, F32 nsz)
-//        {
-//            set_rect_vert(verts[0], x, y, rcz, c, nsz);
-//            set_rect_vert(verts[1], x, y + h, rcz, c, nsz);
-//            set_rect_vert(verts[2], x + w, y, rcz, c, nsz);
-//            set_rect_vert(verts[3], x + w, y + h, rcz, c, nsz);
-//        }
-//
-//        static void set_rect_vert(rwGameCube2DVertex& vert, F32 x, F32 y, F32 z, iColor_tag c,
-//            F32 rcz)
-//        {
-//            vert.x = x;
-//            vert.y = y;
-//            vert.z = z;
-//            vert.emissiveColor.red = c.r;
-//            vert.emissiveColor.green = c.g;
-//            vert.emissiveColor.blue = c.b;
-//            vert.emissiveColor.alpha = c.a;
-//        }
-//
-//        static void render_ghost()
-//        {
-//            xEnt& ent = globals.player.ent;
-//
-//            iDrawSetFBMSK(-1);
-//            zRenderState(SDRS_OOBPlayerZ);
-//
-//            xModelInstance* xm = ent.model;
-//            while (xm != NULL)
-//            {
-//                RpAtomic& model = *xm->Data;
-//
-//                if (xm->Flags & 0x1)
-//                {
-//                    iModelRender(&model, xm->Mat);
-//                }
-//
-//                xm = xm->Next;
-//            }
-//
-//            iDrawSetFBMSK(0);
-//            zRenderState(SDRS_OOBPlayerAlpha);
-//            xLightKit_Enable(ent.lightKit, globals.currWorld);
-//
-//            U8 alpha = 255.0f * (1.0f - shared.fade_alpha) + 0.5f;
-//            alpha &= 0xFF;
-//
-//            xm = ent.model;
-//            while (xm != NULL)
-//            {
-//                RpAtomic& model = *xm->Data;
-//
-//                if (xm->Flags & 0x1)
-//                {
-//                    iModelSetMaterialAlpha(&model, alpha);
-//                    iModelRender(&model, xm->Mat);
-//                    iModelResetMaterial(&model);
-//                }
-//
-//                xm = xm->Next;
-//            }
-//
-//            xLightKit_Enable(NULL, globals.currWorld);
-//        }
-//
-//        static void render_hand()
-//        {
-//            zRenderState(SDRS_OOBHand);
-//
-//            xVec3 modelLoc = { 0.0f, 0.0f, 0.0f };
-//            xVec3 modelSize = { 0.0f, 0.0f, 1.0f };
-//            xVec3 modelYpr = { 0.0f, 0.0f, 0.0f };
-//
-//            modelLoc.x = shared.loc.x;
-//            modelLoc.y = shared.loc.y;
-//
-//            modelSize.x = fixed.hand_size_x;
-//            modelSize.y = fixed.hand_size_y;
-//
-//            modelYpr.x = fixed.hand_yaw;
-//            modelYpr.y = fixed.hand_pitch;
-//            modelYpr.z = fixed.hand_roll;
-//
-//            render_model(*shared.model, modelLoc, modelSize, modelYpr);
-//        }
+
+        static void set_rect_verts(RwD3D8Vertex*, F32, F32, F32, F32, iColor_tag c, F32 nsz,
+            F32 rcz);
+        static void set_rect_vert(RwD3D8Vertex&, F32 x, F32 y, F32 z, iColor_tag c, F32 rcz);
+        static void render_fade()
+        {
+            iColor_tag color = {};
+            color.a = 255.0f * (1.0f - shared.fade_alpha) + 0.5f;
+
+            zRenderState(SDRS_OOBFade);
+            RwRenderStateSet(rwRENDERSTATETEXTURERASTER, NULL);
+            F32 nsz = 1.0f / ((RwCamera*)RWSRCGLOBAL(curCamera))->farPlane;
+            F32 rcz = RwIm2DGetFarScreenZ();
+
+            RwIm2DVertex vert[4];
+            set_rect_verts((RwD3D8Vertex*)vert, 0.0f, 0.0f, 640.0f, 480.0f, color, rcz, nsz);
+            RwIm2DRenderPrimitive(rwPRIMTYPETRISTRIP, (RwIm2DVertex*)vert, 4);
+        }
+
+        static void set_rect_verts(RwD3D8Vertex* verts, F32 x, F32 y, F32 w, F32 h,
+            iColor_tag c, F32 rcz, F32 nsz)
+        {
+            set_rect_vert(verts[0], x, y, rcz, c, nsz);
+            set_rect_vert(verts[1], x, y + h, rcz, c, nsz);
+            set_rect_vert(verts[2], x + w, y, rcz, c, nsz);
+            set_rect_vert(verts[3], x + w, y + h, rcz, c, nsz);
+        }
+
+        static void set_rect_vert(RwD3D8Vertex& vert, F32 x, F32 y, F32 z, iColor_tag c,
+            F32 rcz)
+        {
+            vert.x = x;
+            vert.y = y;
+            vert.z = z;
+            vert.emissiveColor.red = c.r;
+            vert.emissiveColor.green = c.g;
+            vert.emissiveColor.blue = c.b;
+            vert.emissiveColor.alpha = c.a;
+        }
+
+        static void render_ghost()
+        {
+            xEnt& ent = globals.player.ent;
+
+            iDrawSetFBMSK(-1);
+            zRenderState(SDRS_OOBPlayerZ);
+
+            xModelInstance* xm = ent.model;
+            while (xm != NULL)
+            {
+                RpAtomic& model = *xm->Data;
+
+                if (xm->Flags & 0x1)
+                {
+                    iModelRender(&model, xm->Mat);
+                }
+
+                xm = xm->Next;
+            }
+
+            iDrawSetFBMSK(0);
+            zRenderState(SDRS_OOBPlayerAlpha);
+            xLightKit_Enable(ent.lightKit, globals.currWorld);
+
+            U8 alpha = 255.0f * (1.0f - shared.fade_alpha) + 0.5f;
+            alpha &= 0xFF;
+
+            xm = ent.model;
+            while (xm != NULL)
+            {
+                RpAtomic& model = *xm->Data;
+
+                if (xm->Flags & 0x1)
+                {
+                    iModelSetMaterialAlpha(&model, alpha);
+                    iModelRender(&model, xm->Mat);
+                    iModelResetMaterial(&model);
+                }
+
+                xm = xm->Next;
+            }
+
+            xLightKit_Enable(NULL, globals.currWorld);
+        }
+
+        static void render_hand()
+        {
+            zRenderState(SDRS_OOBHand);
+
+            xVec3 modelLoc = { 0.0f, 0.0f, 0.0f };
+            xVec3 modelSize = { 0.0f, 0.0f, 1.0f };
+            xVec3 modelYpr = { 0.0f, 0.0f, 0.0f };
+
+            modelLoc.x = shared.loc.x;
+            modelLoc.y = shared.loc.y;
+
+            modelSize.x = fixed.hand_size_x;
+            modelSize.y = fixed.hand_size_y;
+
+            modelYpr.x = fixed.hand_yaw;
+            modelYpr.y = fixed.hand_pitch;
+            modelYpr.z = fixed.hand_roll;
+
+            render_model(*shared.model, modelLoc, modelSize, modelYpr);
+        }
     } // namespace
 } // namespace oob_state
 
@@ -891,45 +891,45 @@ namespace oob_state
 //
 //    return -1.0f;
 //}
-//
-//bool oob_state::render()
-//{
-//    if ((shared.flags & 0x3) != 3)
-//    {
-//        return false;
-//    }
-//
-//    if (!shared.control)
-//    {
-//        return false;
-//    }
-//
-//    xLightKit_Enable(globals.player.ent.lightKit, globals.currWorld);
-//    xEntRender(&globals.player.ent);
-//    xLightKit_Enable(NULL, globals.currWorld);
-//
-//    return true;
-//}
-//
-//void oob_state::fx_render()
-//{
-//    if ((shared.flags & 0x3) != 3)
-//    {
-//        return;
-//    }
-//
-//    if (shared.control && shared.fade_alpha < 1.0f)
-//    {
-//        render_fade();
-//        render_ghost();
-//    }
-//
-//    if (shared.render_hand && shared.model != NULL)
-//    {
-//        render_hand();
-//    }
-//}
-//
+
+bool oob_state::render()
+{
+    if ((shared.flags & 0x3) != 3)
+    {
+        return false;
+    }
+
+    if (!shared.control)
+    {
+        return false;
+    }
+
+    xLightKit_Enable(globals.player.ent.lightKit, globals.currWorld);
+    xEntRender(&globals.player.ent);
+    xLightKit_Enable(NULL, globals.currWorld);
+
+    return true;
+}
+
+void oob_state::fx_render()
+{
+    if ((shared.flags & 0x3) != 3)
+    {
+        return;
+    }
+
+    if (shared.control && shared.fade_alpha < 1.0f)
+    {
+        render_fade();
+        render_ghost();
+    }
+
+    if (shared.render_hand && shared.model != NULL)
+    {
+        render_hand();
+    }
+}
+
 //void oob_state::force_start()
 //{
 //    if ((shared.flags & 0x7) == 0x3 && !bungee_state::active())

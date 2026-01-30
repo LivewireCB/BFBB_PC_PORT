@@ -1,49 +1,49 @@
-//#include "zParPTank.h"
-//
-//#include <PowerPC_EABI_Support\MSL_C\MSL_Common\cmath>
-//#include <rpptank.h>
-//#include <types.h>
-//
-//#include "iColor.h"
-//
-//#include "xClimate.h"
-//#include "xMath.h"
-//#include "xMathInlines.h"
-//#include "xMemMgr.h"
-//#include "xParEmitter.h"
-//#include "xPtankPool.h"
-//#include "xstransvc.h"
-//#include "xString.h"
-//#include "xVec3.h"
-//
-//#include "zGame.h"
-//#include "zGlobals.h"
-//
-//// NOTE (Square)
-//// There's something slightly off in this file. Functions appear to be equivalent but it's hard to
-//// analyze due to the scheduling differences. Right now, attempting to load or start a new game
-//// with this file linked will result in a crash, so I'm not marking it as Equivalent yet.
-//
-//struct BubbleData
-//{
-//    xVec3 vel;
-//    float life;
-//};
-//
+#include "zParPTank.h"
+
+#include <cmath>
+#include <rpptank.h>
+#include <types.h>
+
+#include "iColor.h"
+
+#include "xClimate.h"
+#include "xMath.h"
+#include "xMathInlines.h"
+#include "xMemMgr.h"
+#include "xParEmitter.h"
+#include "xPtankPool.h"
+#include "xstransvc.h"
+#include "xString.h"
+#include "xVec3.h"
+
+#include "zGame.h"
+#include "zGlobals.h"
+
+// NOTE (Square)
+// There's something slightly off in this file. Functions appear to be equivalent but it's hard to
+// analyze due to the scheduling differences. Right now, attempting to load or start a new game
+// with this file linked will result in a crash, so I'm not marking it as Equivalent yet.
+
+struct BubbleData
+{
+    xVec3 vel;
+    float life;
+};
+
 //extern RwCamera* sGameScreenTransCam;
-//
-//const U32 gPTankDisable = 0;
-//static zParPTank sPTank[7];
-//static U32 sNumPTanks;
-//static zParPTank* sSparklePTank;
-//static zParPTank* sBubblePTank;
-//static zParPTank* sMenuBubblePTank;
-//static zParPTank* sSnowPTank;
-//static zParPTank* sSteamPTank;
-//static F32 sSparkleAnimTime;
-//static BubbleData* sBubbleData;
-//static BubbleData* sMenuBubbleData;
-//
+
+const U32 gPTankDisable = 0;
+static zParPTank sPTank[7];
+static U32 sNumPTanks;
+static zParPTank* sSparklePTank;
+static zParPTank* sBubblePTank;
+static zParPTank* sMenuBubblePTank;
+static zParPTank* sSnowPTank;
+static zParPTank* sSteamPTank;
+static F32 sSparkleAnimTime;
+static BubbleData* sBubbleData;
+static BubbleData* sMenuBubbleData;
+
 //namespace
 //{
 //    // total size: 0x30
@@ -714,32 +714,32 @@
 //{
 //    return &sPTank[sNumPTanks++];
 //}
-//
-//// Equivalent: Scheduling
-//void zParPTankInit()
-//{
-//    sNumPTanks = 0;
-//    sSparklePTank = zParPTankAdd();
-//    zParPTankSparkleCreate(sSparklePTank, 0x80, zParPTankSparkleUpdate);
-//
-//    sMenuBubblePTank = zParPTankAdd();
-//    zParPTankMenuBubbleCreate(sMenuBubblePTank, 0x10, zParPTankBubbleUpdate);
-//    sMenuBubblePTank->flags |= 0x2;
-//
-//    sBubblePTank = zParPTankAdd();
-//    zParPTankBubbleCreate(sBubblePTank, 0x300, zParPTankBubbleUpdate);
-//
-//    sSteamPTank = zParPTankAdd();
-//    zParPTankSteamCreate(sSteamPTank, 0x80, zParPTankSteamUpdate);
-//}
-//
-//// Equivalent: Scheduling
-//void zParPTankSceneEnter()
-//{
-//    sSnowPTank = zParPTankAdd();
-//    zParPTankSnowCreate(sSnowPTank, 0x400, zParPTankSnowUpdate);
-//}
-//
+
+// Equivalent: Scheduling
+void zParPTankInit() RIMP
+{
+    /*sNumPTanks = 0;
+    sSparklePTank = zParPTankAdd();
+    zParPTankSparkleCreate(sSparklePTank, 0x80, zParPTankSparkleUpdate);
+
+    sMenuBubblePTank = zParPTankAdd();
+    zParPTankMenuBubbleCreate(sMenuBubblePTank, 0x10, zParPTankBubbleUpdate);
+    sMenuBubblePTank->flags |= 0x2;
+
+    sBubblePTank = zParPTankAdd();
+    zParPTankBubbleCreate(sBubblePTank, 0x300, zParPTankBubbleUpdate);
+
+    sSteamPTank = zParPTankAdd();
+    zParPTankSteamCreate(sSteamPTank, 0x80, zParPTankSteamUpdate);*/
+}
+
+// Equivalent: Scheduling
+void zParPTankSceneEnter() RIMP
+{
+    /*sSnowPTank = zParPTankAdd();
+    zParPTankSnowCreate(sSnowPTank, 0x400, zParPTankSnowUpdate);*/
+}
+
 //void zParPTankSceneExit()
 //{
 //}
@@ -773,42 +773,42 @@
 //    }
 //    sMenuBubbleData = NULL;
 //}
-//
-//void zParPTankUpdate(float dt)
-//{
-//    S32 paused = zGameIsPaused();
-//
-//    zParPTank* zp = sPTank;
-//    for (S32 i = 0; i < sNumPTanks; i++, zp++)
-//    {
-//        if ((!paused || zp->flags & 0x2) && zp->update)
-//        {
-//            zp->update(zp, dt);
-//        }
-//    }
-//}
-//
-//void zParPTankRender()
-//{
-//    zParPTank* zp = sPTank;
-//    for (S32 i = 0; i < sNumPTanks; i++, zp++)
-//    {
-//        if ((!zGameIsPaused() || zp == sMenuBubblePTank) && zp->ptank)
-//        {
-//            RwRenderStateSet(rwRENDERSTATECULLMODE, (void*)1);
-//            RwRenderStateSet(rwRENDERSTATEZTESTENABLE, (void*)1);
-//            RwRenderStateSet(rwRENDERSTATEZWRITEENABLE, 0);
-//            RwRenderStateSet(rwRENDERSTATESRCBLEND, (void*)5);
-//            RwRenderStateSet(rwRENDERSTATEDESTBLEND, (void*)2);
-//
-//            if (zp->num_particles)
-//            {
-//                zp->ptank->renderCallBack(zp->ptank);
-//            }
-//        }
-//    }
-//}
-//
+
+void zParPTankUpdate(float dt)
+{
+    S32 paused = zGameIsPaused();
+
+    zParPTank* zp = sPTank;
+    for (S32 i = 0; i < sNumPTanks; i++, zp++)
+    {
+        if ((!paused || zp->flags & 0x2) && zp->update)
+        {
+            zp->update(zp, dt);
+        }
+    }
+}
+
+void zParPTankRender()
+{
+    zParPTank* zp = sPTank;
+    for (S32 i = 0; i < sNumPTanks; i++, zp++)
+    {
+        if ((!zGameIsPaused() || zp == sMenuBubblePTank) && zp->ptank)
+        {
+            RwRenderStateSet(rwRENDERSTATECULLMODE, (void*)1);
+            RwRenderStateSet(rwRENDERSTATEZTESTENABLE, (void*)1);
+            RwRenderStateSet(rwRENDERSTATEZWRITEENABLE, 0);
+            RwRenderStateSet(rwRENDERSTATESRCBLEND, (void*)5);
+            RwRenderStateSet(rwRENDERSTATEDESTBLEND, (void*)2);
+
+            if (zp->num_particles)
+            {
+                zp->ptank->renderCallBack(zp->ptank);
+            }
+        }
+    }
+}
+
 //S32 zParPTankConvertEmitRate(xParEmitter* pe, float dt)
 //{
 //    xParEmitterPropsAsset* prop = pe->prop;

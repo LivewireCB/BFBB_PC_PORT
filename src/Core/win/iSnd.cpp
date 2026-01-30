@@ -100,20 +100,20 @@ void iSndStartStereo(U32 id1, U32 id2, F32 pitch)
 {
 }
 
-//void iSndStereo(U32 i)
-//{
-//    if (i == 0)
-//    {
-//        OSSetSoundMode(0);
-//        gSnd.stereo = 0;
-//    }
-//    else
-//    {
-//        OSSetSoundMode(1);
-//        gSnd.stereo = 1;
-//    }
-//}
-//
+void iSndStereo(U32 i) WIP RIMP // removed the os calls
+{
+    if (i == 0)
+    {
+        //OSSetSoundMode(0);
+        gSnd.stereo = 0;
+    }
+    else
+    {
+        //OSSetSoundMode(1);
+        gSnd.stereo = 1;
+    }
+}
+
 //void iSndWaitForDeadSounds()
 //{
 //    fc = 0;

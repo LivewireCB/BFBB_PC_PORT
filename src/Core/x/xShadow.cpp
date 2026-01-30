@@ -119,12 +119,12 @@ void xShadowSetWorld(RpWorld* world)
 //    }
 //    return 0;
 //}
-//
-//void xShadow_ListAdd(xEnt* ent)
-//{
-//    xShadowManager_Add(ent);
-//}
-//
+
+void xShadow_ListAdd(xEnt* ent)
+{
+    xShadowManager_Add(ent);
+}
+
 //void ShadowCameraDestroy(RwCamera* shadowCamera)
 //{
 //    if (shadowCamera == NULL)
@@ -226,26 +226,26 @@ void xShadowManager_Reset()
     sMgrCount = 0;
 }
 
-//void xShadowManager_Add(xEnt* ent)
-//{
-//    for (int i = 0; i < sMgrCount; i++)
-//    {
-//        if (sMgrList[i].ent == ent)
-//        {
-//            return;
-//        }
-//    }
-//
-//    if (sMgrCount < sMgrTotal)
-//    {
-//        sMgrList[sMgrCount].ent = ent;
-//        sMgrList[sMgrCount].cache = 0;
-//        sMgrList[sMgrCount].priority = 1000;
-//        sMgrList[sMgrCount].cacheReady = 0;
-//        sMgrCount++;
-//    }
-//}
-//
+void xShadowManager_Add(xEnt* ent)
+{
+    for (int i = 0; i < sMgrCount; i++)
+    {
+        if (sMgrList[i].ent == ent)
+        {
+            return;
+        }
+    }
+
+    if (sMgrCount < sMgrTotal)
+    {
+        sMgrList[sMgrCount].ent = ent;
+        sMgrList[sMgrCount].cache = 0;
+        sMgrList[sMgrCount].priority = 1000;
+        sMgrList[sMgrCount].cacheReady = 0;
+        sMgrCount++;
+    }
+}
+
 //void xShadowManager_Remove(xEnt* ent)
 //{
 //    int a = 0;
@@ -271,3 +271,7 @@ void xShadowManager_Reset()
 //        }
 //    }
 //}
+
+void xShadowManager_Render() WIP // not decomped
+{
+}

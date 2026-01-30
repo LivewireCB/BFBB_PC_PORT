@@ -1,21 +1,21 @@
-//#include "zLasso.h"
-//
-//#include "xMath3.h"
-//#include "xMathInlines.h"
-//
-//#include "iModel.h"
-//
-//#include <types.h>
-//
-//static u32 sLassoRaster;
-//static u32 sNumGuideLists;
-//static zLassoGuide* sCurrentGuide;
-//static void* lnverts;
-//
-//static zLassoGuideList sGuideList[64];
-//
-//static s32 negativeHondaX = 1;
-//
+#include "zLasso.h"
+
+#include "xMath3.h"
+#include "xMathInlines.h"
+
+#include "iModel.h"
+
+#include <types.h>
+
+static U32 sLassoRaster;
+static U32 sNumGuideLists;
+static zLassoGuide* sCurrentGuide;
+static void* lnverts;
+
+static zLassoGuideList sGuideList[64];
+
+static S32 negativeHondaX = 1;
+
 //void zLasso_SetGuide(xEnt* ent, xAnimState* lassoAnim)
 //{
 //    // FIXME: 90% disassembly match, needs more work to get all the way
@@ -259,13 +259,13 @@
 //        lasso->crSlack = 1.0f;
 //    }
 //}
-//
-//void zLasso_scenePrepare()
-//{
-//    sNumGuideLists = 0;
-//    sCurrentGuide = NULL;
-//}
-//
+
+void zLasso_scenePrepare()
+{
+    sNumGuideLists = 0;
+    sCurrentGuide = NULL;
+}
+
 //void xMat4x3RotC(xMat4x3* m, F32 f1, F32 f2, F32 f3, F32 f4)
 //{
 //    xMat3x3RotC(m, f1, f2, f3, f4);

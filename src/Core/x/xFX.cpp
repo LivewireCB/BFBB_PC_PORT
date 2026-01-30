@@ -106,20 +106,20 @@ F32 xFXanimUV2PTrans[2] = { 0.0f, 0.0f };
 F32 xFXanimUV2PScale[2] = { 1.0f, 1.0f };
 RwTexture* xFXanimUV2PTexture = NULL;
 
-//static void DrawRingSetup()
-//{
-//    g_txtr_drawRing = (RwTexture*)xSTFindAsset(ID_rainbowfilm_smooth32, NULL);
-//}
-//
-//static void DrawRingSceneExit()
-//{
-//    g_txtr_drawRing = NULL;
-//}
-//
-//static void DrawRing(xFXRing* m)
-//{
-//    // todo: uses int-to-float conversion
-//}
+static void DrawRingSetup()
+{
+    g_txtr_drawRing = (RwTexture*)xSTFindAsset(ID_rainbowfilm_smooth32, NULL);
+}
+
+static void DrawRingSceneExit()
+{
+    g_txtr_drawRing = NULL;
+}
+
+static void DrawRing(xFXRing* m) WIP // not decomped
+{
+    // todo: uses int-to-float conversion
+}
 
 xFXRing* xFXRingCreate(const xVec3* pos, const xFXRing* params)
 {
@@ -194,19 +194,19 @@ static void xFXRingUpdate(F32 dt)
     }
 }
 
-//void xFXRingRender()
-//{
-//    S32 i;
-//    xFXRing* ring = &ringlist[0];
-//
-//    for (i = 0; i < RING_COUNT; i++, ring++)
-//    {
-//        if (ring->time > 0.0f)
-//        {
-//            DrawRing(ring);
-//        }
-//    }
-//}
+void xFXRingRender()
+{
+    S32 i;
+    xFXRing* ring = &ringlist[0];
+
+    for (i = 0; i < RING_COUNT; i++, ring++)
+    {
+        if (ring->time > 0.0f)
+        {
+            DrawRing(ring);
+        }
+    }
+}
 
 static RpMaterial* MaterialSetEnvMap(RpMaterial* material, void* data);
 static RpMaterial* MaterialSetBumpMap(RpMaterial* material, void* data);
@@ -337,18 +337,18 @@ void xFXUpdate(F32 dt)
 static const RwV3d _1168 = { 1, 0, 0 };
 static const RwV3d _1169 = { 0, 1, 0 };
 
-//static void LightResetFrame(RpLight* light)
-//{
-//    // non-matching: lwzu instruction
-//
-//    RwV3d v1 = { 1, 0, 0 };
-//    RwV3d v2 = { 0, 1, 0 };
-//
-//    RwFrame* frame = RpLightGetFrame(light);
-//
-//    RwFrameRotate(frame, &v1, 45.0f, rwCOMBINEREPLACE);
-//    RwFrameRotate(frame, &v2, 45.0f, rwCOMBINEPOSTCONCAT);
-//}
+static void LightResetFrame(RpLight* light)
+{
+    // non-matching: lwzu instruction
+
+    RwV3d v1 = { 1, 0, 0 };
+    RwV3d v2 = { 0, 1, 0 };
+
+    RwFrame* frame = RpLightGetFrame(light);
+
+    RwFrameRotate(frame, &v1, 45.0f, rwCOMBINEREPLACE);
+    RwFrameRotate(frame, &v2, 45.0f, rwCOMBINEPOSTCONCAT);
+}
 
 static RpMaterial* MaterialDisableMatFX(RpMaterial* material, void*)
 {
@@ -376,7 +376,7 @@ static RpAtomic* PreAllocMatFX_cb(RpAtomic* atomic, void*)
     return atomic;
 }
 
-void xFXPreAllocMatFX(RpClump* clump) RIMP
+void xFXPreAllocMatFX(RpClump* clump)
 {
     RpClumpForAllAtomics(clump, PreAllocMatFX_cb, NULL);
 }
@@ -455,148 +455,148 @@ void xFXAuraUpdate(F32)
 //    }
 //    return (-(U32)xFXanimUVPipeline | (U32)xFXanimUVPipeline) >> 0x1f;
 //}
-//
-//namespace
-//{
-//    struct vert_data
-//    {
-//        xVec3 loc;
-//        xVec3 norm;
-//        RwRGBA color;
-//        RwTexCoords uv;
-//        F32 depth;
-//    };
-//
-//    struct tri_data
-//    {
-//        vert_data vert[3];
-//    };
-//
-//    // TODO: Check all lerp return types. Only the first is in dwarf
-//    void lerp(vert_data& v, F32 frac, const vert_data& v0, const vert_data& v1);
-//    void lerp(RwTexCoords& unk0, F32 unk1, const RwTexCoords& unk2, const RwTexCoords& unk3);
-//    F32 lerp(F32& unk0, F32 unk1, F32 unk2, F32 unk3);
-//    void lerp(RwRGBA& unk0, F32 unk1, RwRGBA unk2, RwRGBA unk3);
-//    void lerp(U8& unk0, F32 unk1, U8 unk2, U8 unk3);
-//    void lerp(xVec3& unk0, F32 unk1, const xVec3& unk2, const xVec3& unk3);
-//
-//    void lerp(vert_data& v, F32 frac, const vert_data& v0, const vert_data& v1)
-//    // Yes, These are the actual parameter names for this function from the dwarf
-//    {
-//        lerp(v.loc, frac, v0.loc, v1.loc);
-//        lerp(v.norm, frac, v0.norm, v1.norm);
-//        lerp(v.color, frac, v0.color, v1.color);
-//        lerp(v.uv, frac, v0.uv, v1.uv);
-//    }
-//
-//    void lerp(RwTexCoords& unk0, F32 unk1, const RwTexCoords& unk2, const RwTexCoords& unk3)
-//    {
-//        lerp(unk0.u, unk1, unk2.u, unk3.u);
-//        lerp(unk0.v, unk1, unk2.v, unk3.v);
-//    }
-//
-//    F32 lerp(F32& unk0, F32 unk1, F32 unk2, F32 unk3)
-//    {
-//        return (unk0 = unk2 + (unk3 - unk2) * unk1);
-//    }
-//
-//    void lerp(RwRGBA& unk0, F32 unk1, RwRGBA unk2, RwRGBA unk3)
-//    {
-//        lerp(unk0.red, unk1, unk2.red, unk3.red);
-//        lerp(unk0.green, unk1, unk2.green, unk3.green);
-//        lerp(unk0.blue, unk1, unk2.blue, unk3.blue);
-//        lerp(unk0.alpha, unk1, unk2.alpha, unk3.alpha);
-//    }
-//
-//    void lerp(U8& unk0, F32 unk1, U8 unk2, U8 unk3)
-//    {
-//    }
-//
-//    void lerp(xVec3& unk0, F32 unk1, const xVec3& unk2, const xVec3& unk3)
-//    {
-//        lerp(unk0.x, unk1, unk2.x, unk3.x);
-//        lerp(unk0.y, unk1, unk2.y, unk3.y);
-//        lerp(unk0.z, unk1, unk2.z, unk3.z);
-//    }
-//
-//} // namespace
-//
-//namespace
-//{
-//#define ALPHA_COUNT 300
-//
-//    U8 alpha_count0[ALPHA_COUNT];
-//    U8 alpha_count1[ALPHA_COUNT];
-//} // namespace
-//
-//// clip_triangle jumptable
-//static U32 _1933[] = { 0x80028610, 0x80028640, 0x80028640, 0x80028640, 0x80028640, 0x80028640,
-//                       0x80028640, 0x80028620, 0x80028640, 0x80028640, 0x80028640, 0x80028640,
-//                       0x80028640, 0x80028640, 0x80028630, 0x80028640, 0x80028640, 0x80028640,
-//                       0x80028640, 0x80028640, 0x80028640, 0x80028630, 0x80028640, 0x80028640,
-//                       0x80028640, 0x80028640, 0x80028640, 0x80028640, 0x80028620, 0x80028640,
-//                       0x80028640, 0x80028640, 0x80028640, 0x80028640, 0x80028640, 0x80028610 };
-//
-//static const U8 segments_1637[43] = { 0, 1, 3, 0, 1, 2, 4, 0, 3, 4, 3, 0, 0, 0, 0,
-//                                      0, 1, 2, 4, 0, 2, 1, 2, 0, 4, 2, 1, 0, 0, 0,
-//                                      0, 0, 3, 4, 3, 0, 4, 2, 1, 0, 3, 1, 0 };
-//
-//struct _tagFirework
-//{
-//    S32 state;
-//    F32 timer;
-//    xVec3 vel;
-//    xVec3 pos;
-//    F32 fuel;
-//};
-//
-//#define FIREWORK_COUNT 10
-//
-//static _tagFirework sFirework[FIREWORK_COUNT];
-//static zParEmitter* sFireworkTrailEmit = NULL;
-//static zParEmitter* sFirework1Emit = NULL;
-//static zParEmitter* sFirework2Emit = NULL;
-//static U32 sFireworkSoundID = 0;
-//static U32 sFireworkLaunchSoundID = 0;
-//
-//static RwIm3DVertex sStripVert_2188[4];
-//
-//static RwIm3DVertex blah_2485[4];
-//
-//namespace
-//{
-//#define RIBBON_COUNT 64
-//
-//    xFXRibbon* active_ribbons[RIBBON_COUNT];
-//    U32 active_ribbons_size = 0;
-//    bool ribbons_dirty = false;
-//} // namespace
-//
-//struct _xFXAuraAngle
-//{
-//    F32 angle;
-//    F32 cc;
-//    F32 ss;
-//};
-//
-//struct _xFXAura
-//{
-//    xVec3 pos;
-//    iColor_tag color;
-//    F32 size;
-//    void* parent;
-//    U32 frame;
-//    F32 dangle[2];
-//};
-//
-//#define AURA_COUNT 32
-//
-//static F32 sAuraPulse[2];
-//static F32 sAuraPulseAng[2];
-//static _xFXAuraAngle sAuraAngle[2];
-//static RwTexture* gAuraTex = NULL;
-//static _xFXAura sAura[AURA_COUNT];
-//
+
+namespace
+{
+    struct vert_data
+    {
+        xVec3 loc;
+        xVec3 norm;
+        RwRGBA color;
+        RwTexCoords uv;
+        F32 depth;
+    };
+
+    struct tri_data
+    {
+        vert_data vert[3];
+    };
+
+    // TODO: Check all lerp return types. Only the first is in dwarf
+    void lerp(vert_data& v, F32 frac, const vert_data& v0, const vert_data& v1);
+    void lerp(RwTexCoords& unk0, F32 unk1, const RwTexCoords& unk2, const RwTexCoords& unk3);
+    F32 lerp(F32& unk0, F32 unk1, F32 unk2, F32 unk3);
+    void lerp(RwRGBA& unk0, F32 unk1, RwRGBA unk2, RwRGBA unk3);
+    void lerp(U8& unk0, F32 unk1, U8 unk2, U8 unk3);
+    void lerp(xVec3& unk0, F32 unk1, const xVec3& unk2, const xVec3& unk3);
+
+    void lerp(vert_data& v, F32 frac, const vert_data& v0, const vert_data& v1)
+    // Yes, These are the actual parameter names for this function from the dwarf
+    {
+        lerp(v.loc, frac, v0.loc, v1.loc);
+        lerp(v.norm, frac, v0.norm, v1.norm);
+        lerp(v.color, frac, v0.color, v1.color);
+        lerp(v.uv, frac, v0.uv, v1.uv);
+    }
+
+    void lerp(RwTexCoords& unk0, F32 unk1, const RwTexCoords& unk2, const RwTexCoords& unk3)
+    {
+        lerp(unk0.u, unk1, unk2.u, unk3.u);
+        lerp(unk0.v, unk1, unk2.v, unk3.v);
+    }
+
+    F32 lerp(F32& unk0, F32 unk1, F32 unk2, F32 unk3)
+    {
+        return (unk0 = unk2 + (unk3 - unk2) * unk1);
+    }
+
+    void lerp(RwRGBA& unk0, F32 unk1, RwRGBA unk2, RwRGBA unk3)
+    {
+        lerp(unk0.red, unk1, unk2.red, unk3.red);
+        lerp(unk0.green, unk1, unk2.green, unk3.green);
+        lerp(unk0.blue, unk1, unk2.blue, unk3.blue);
+        lerp(unk0.alpha, unk1, unk2.alpha, unk3.alpha);
+    }
+
+    void lerp(U8& unk0, F32 unk1, U8 unk2, U8 unk3)
+    {
+    }
+
+    void lerp(xVec3& unk0, F32 unk1, const xVec3& unk2, const xVec3& unk3)
+    {
+        lerp(unk0.x, unk1, unk2.x, unk3.x);
+        lerp(unk0.y, unk1, unk2.y, unk3.y);
+        lerp(unk0.z, unk1, unk2.z, unk3.z);
+    }
+
+} // namespace
+
+namespace
+{
+#define ALPHA_COUNT 300
+
+    U8 alpha_count0[ALPHA_COUNT];
+    U8 alpha_count1[ALPHA_COUNT];
+} // namespace
+
+// clip_triangle jumptable
+static U32 _1933[] = { 0x80028610, 0x80028640, 0x80028640, 0x80028640, 0x80028640, 0x80028640,
+                       0x80028640, 0x80028620, 0x80028640, 0x80028640, 0x80028640, 0x80028640,
+                       0x80028640, 0x80028640, 0x80028630, 0x80028640, 0x80028640, 0x80028640,
+                       0x80028640, 0x80028640, 0x80028640, 0x80028630, 0x80028640, 0x80028640,
+                       0x80028640, 0x80028640, 0x80028640, 0x80028640, 0x80028620, 0x80028640,
+                       0x80028640, 0x80028640, 0x80028640, 0x80028640, 0x80028640, 0x80028610 };
+
+static const U8 segments_1637[43] = { 0, 1, 3, 0, 1, 2, 4, 0, 3, 4, 3, 0, 0, 0, 0,
+                                      0, 1, 2, 4, 0, 2, 1, 2, 0, 4, 2, 1, 0, 0, 0,
+                                      0, 0, 3, 4, 3, 0, 4, 2, 1, 0, 3, 1, 0 };
+
+struct _tagFirework
+{
+    S32 state;
+    F32 timer;
+    xVec3 vel;
+    xVec3 pos;
+    F32 fuel;
+};
+
+#define FIREWORK_COUNT 10
+
+static _tagFirework sFirework[FIREWORK_COUNT];
+static zParEmitter* sFireworkTrailEmit = NULL;
+static zParEmitter* sFirework1Emit = NULL;
+static zParEmitter* sFirework2Emit = NULL;
+static U32 sFireworkSoundID = 0;
+static U32 sFireworkLaunchSoundID = 0;
+
+static RwIm3DVertex sStripVert_2188[4];
+
+static RwIm3DVertex blah_2485[4];
+
+namespace
+{
+#define RIBBON_COUNT 64
+
+    xFXRibbon* active_ribbons[RIBBON_COUNT];
+    U32 active_ribbons_size = 0;
+    bool ribbons_dirty = false;
+} // namespace
+
+struct _xFXAuraAngle
+{
+    F32 angle;
+    F32 cc;
+    F32 ss;
+};
+
+struct _xFXAura
+{
+    xVec3 pos;
+    iColor_tag color;
+    F32 size;
+    void* parent;
+    U32 frame;
+    F32 dangle[2];
+};
+
+#define AURA_COUNT 32
+
+static F32 sAuraPulse[2];
+static F32 sAuraPulseAng[2];
+static _xFXAuraAngle sAuraAngle[2];
+static RwTexture* gAuraTex = NULL;
+static _xFXAura sAura[AURA_COUNT];
+
 //__declspec(section ".rodata") static const char _stringBase0_7[] = "bubble buddy\0"
 //                                                                   "bubble missile\0"
 //                                                                   "bubble helmet\0"
@@ -649,44 +649,44 @@ void xFXSceneFinish()
 {
 }
 
-//void xFXanimUV2PSetTexture(RwTexture* tex)
-//{
-//    xFXanimUV2PTexture = tex;
-//}
-//
-//void xFXanimUVSetAngle(F32 angle)
-//{
-//    F32 sin = isin(angle);
-//    F32 cos = icos(angle);
-//    xFXanimUVRotMat0[0] = cos;
-//    xFXanimUVRotMat0[1] = -sin;
-//    xFXanimUVRotMat1[0] = sin;
-//    xFXanimUVRotMat1[1] = cos;
-//}
-//
-//void xFXanimUV2PSetScale(const xVec3* scale)
-//{
-//    xFXanimUV2PScale[0] = scale->x;
-//    xFXanimUV2PScale[1] = scale->y;
-//}
-//
-//void xFXanimUVSetScale(const xVec3* scale)
-//{
-//    xFXanimUVScale[0] = scale->x;
-//    xFXanimUVScale[1] = scale->y;
-//}
-//
-//void xFXanimUVSetTranslation(const xVec3* translation)
-//{
-//    xFXanimUVTrans[0] = translation->x;
-//    xFXanimUVTrans[1] = translation->y;
-//}
-//
-//void xFXStreakUpdate(U32 id, const xVec3* a, const xVec3* b)
-//{
-//    xFXStreak* s;
-//}
-//
+void xFXanimUV2PSetTexture(RwTexture* tex)
+{
+    xFXanimUV2PTexture = tex;
+}
+
+void xFXanimUVSetAngle(F32 angle)
+{
+    F32 sin = isin(angle);
+    F32 cos = icos(angle);
+    xFXanimUVRotMat0[0] = cos;
+    xFXanimUVRotMat0[1] = -sin;
+    xFXanimUVRotMat1[0] = sin;
+    xFXanimUVRotMat1[1] = cos;
+}
+
+void xFXanimUV2PSetScale(const xVec3* scale)
+{
+    xFXanimUV2PScale[0] = scale->x;
+    xFXanimUV2PScale[1] = scale->y;
+}
+
+void xFXanimUVSetScale(const xVec3* scale)
+{
+    xFXanimUVScale[0] = scale->x;
+    xFXanimUVScale[1] = scale->y;
+}
+
+void xFXanimUVSetTranslation(const xVec3* translation)
+{
+    xFXanimUVTrans[0] = translation->x;
+    xFXanimUVTrans[1] = translation->y;
+}
+
+void xFXStreakUpdate(U32 id, const xVec3* a, const xVec3* b) WIP // not decomped
+{
+    xFXStreak* s;
+}
+
 //U32 xFXStreakStart(F32 frequency, F32 alphaFadeRate, F32 alphaStart, U32 textureID,
 //                   const iColor_tag* edge_a, const iColor_tag* edge_b, S32 taper)
 //{
@@ -767,30 +767,30 @@ void xFXStreakUpdate(F32)
 {
 }
 
-//void xParInterp::set(F32 value1, F32 value2, F32 freq, U32 interp)
-//{
-//    this->val[0] = value1;
-//    this->val[1] = value2;
-//    this->freq = freq;
-//    if (freq != 0.0f)
-//    {
-//        this->oofreq = 1.0f / freq;
-//    }
-//    else
-//    {
-//        this->oofreq = 0.0f;
-//    }
-//    this->interp = interp;
-//}
-//
-//void xFXShineInit()
-//{
-//    for (S32 i = 0; i < 2; i++)
-//    {
-//        memset(&sShineList[0], 0, sizeof(xFXShine));
-//        sShineList[i] = sShineList[i];
-//    }
-//}
+void xParInterp::set(F32 value1, F32 value2, F32 freq, U32 interp)
+{
+    this->val[0] = value1;
+    this->val[1] = value2;
+    this->freq = freq;
+    if (freq != 0.0f)
+    {
+        this->oofreq = 1.0f / freq;
+    }
+    else
+    {
+        this->oofreq = 0.0f;
+    }
+    this->interp = interp;
+}
+
+void xFXShineInit()
+{
+    for (S32 i = 0; i < 2; i++)
+    {
+        memset(&sShineList[0], 0, sizeof(xFXShine));
+        sShineList[i] = sShineList[i];
+    }
+}
 
 U32 xFXShineStart(const xVec3*, F32, F32, F32, F32, U32, const iColor_tag*, const iColor_tag*, F32,
                   S32)
@@ -826,80 +826,80 @@ void xFXShineRender()
 {
 }
 
-//static void RenderRotatedBillboard(xVec3* pos, _xFXAuraAngle* rot, U32 count, F32 width, F32 height,
-//                                   iColor_tag tint, U32 flipUV)
-//{
-//}
+static void RenderRotatedBillboard(xVec3* pos, _xFXAuraAngle* rot, U32 count, F32 width, F32 height,
+                                   iColor_tag tint, U32 flipUV) WIP // not decomped?
+{
+}
 
-//void xFXAuraRender()
-//{
-//    // TODO: Fix function
-//    // Honestly the closest I can get this function.
-//    // fogstate is in the dwarf but currently isn't used in the function.
-//
-//    S32 fogstate;
-//    _xFXAura* ap;
-//    _xFXAuraAngle* auraAng;
-//
-//    if (gAuraTex != NULL)
-//    {
-//        RwRenderStateSet(rwRENDERSTATETEXTURERASTER, (void*)gAuraTex->raster);
-//        RwRenderStateSet(rwRENDERSTATEVERTEXALPHAENABLE, (void*)0x1);
-//        RwRenderStateSet(rwRENDERSTATESRCBLEND, (void*)0x5);
-//        RwRenderStateSet(rwRENDERSTATEDESTBLEND, (void*)0x2);
-//        RwRenderStateSet(rwRENDERSTATEZTESTENABLE, (void*)0x1);
-//        RwRenderStateSet(rwRENDERSTATEZWRITEENABLE, (void*)0x0);
-//        RwRenderStateGet(rwRENDERSTATEFOGTYPE, (void*)0x1);
-//        RwRenderStateSet(rwRENDERSTATEFOGENABLE, (void*)0x0);
-//
-//        ap = sAura;
-//
-//        for (S32 i = 0; i < 32; i++)
-//        {
-//            if (ap->frame == gFrameCount)
-//            {
-//                auraAng = &sAuraAngle[0];
-//                RenderRotatedBillboard(&ap->pos, auraAng, 1, 0, 0, ap->color, 0);
-//                auraAng = &sAuraAngle[1];
-//                RenderRotatedBillboard(&ap->pos, auraAng, 1, 0, 0, ap->color, 1);
-//            }
-//            ap = (_xFXAura*)ap->dangle;
-//        }
-//
-//        RwRenderStateSet(rwRENDERSTATESRCBLEND, (void*)0x5);
-//        RwRenderStateSet(rwRENDERSTATEDESTBLEND, (void*)0x6);
-//        RwRenderStateSet(rwRENDERSTATEZTESTENABLE, (void*)0x1);
-//        RwRenderStateSet(rwRENDERSTATEZWRITEENABLE, (void*)0x1);
-//        RwRenderStateSet(rwRENDERSTATEFOGENABLE, (void*)0x10);
-//
-//        ap = sAura;
-//
-//        for (S32 i = 0; i < 32; i++)
-//        {
-//            if (ap->frame == gFrameCount && ap->parent != 0)
-//            {
-//                zEntPickup_RenderOne((xEnt*)ap->parent);
-//            }
-//            ap = (_xFXAura*)ap->dangle;
-//        }
-//    }
-//}
-//
-//void xFXFireworksInit(const char* trailEmit, const char* emit1, const char* emit2,
-//                      const char* mainSound, const char* launchSound)
-//{
-//    sFireworkTrailEmit = zParEmitterFind(trailEmit);
-//    sFirework1Emit = zParEmitterFind(emit1);
-//    sFirework2Emit = zParEmitterFind(emit2);
-//    sFireworkSoundID = xStrHash(mainSound);
-//    sFireworkLaunchSoundID = xStrHash(launchSound);
-//    memset(sFirework, 0, sizeof(sFirework));
-//    for (U32 i = 0; i < FIREWORK_COUNT; ++i)
-//    {
-//        sFirework[i].state = 0;
-//    }
-//}
-//
+void xFXAuraRender() WIP // fix
+{
+    // TODO: Fix function
+    // Honestly the closest I can get this function.
+    // fogstate is in the dwarf but currently isn't used in the function.
+
+    S32 fogstate;
+    _xFXAura* ap;
+    _xFXAuraAngle* auraAng;
+
+    if (gAuraTex != NULL)
+    {
+        RwRenderStateSet(rwRENDERSTATETEXTURERASTER, (void*)gAuraTex->raster);
+        RwRenderStateSet(rwRENDERSTATEVERTEXALPHAENABLE, (void*)0x1);
+        RwRenderStateSet(rwRENDERSTATESRCBLEND, (void*)0x5);
+        RwRenderStateSet(rwRENDERSTATEDESTBLEND, (void*)0x2);
+        RwRenderStateSet(rwRENDERSTATEZTESTENABLE, (void*)0x1);
+        RwRenderStateSet(rwRENDERSTATEZWRITEENABLE, (void*)0x0);
+        RwRenderStateGet(rwRENDERSTATEFOGTYPE, (void*)0x1);
+        RwRenderStateSet(rwRENDERSTATEFOGENABLE, (void*)0x0);
+
+        ap = sAura;
+
+        for (S32 i = 0; i < 32; i++)
+        {
+            if (ap->frame == gFrameCount)
+            {
+                auraAng = &sAuraAngle[0];
+                RenderRotatedBillboard(&ap->pos, auraAng, 1, 0, 0, ap->color, 0);
+                auraAng = &sAuraAngle[1];
+                RenderRotatedBillboard(&ap->pos, auraAng, 1, 0, 0, ap->color, 1);
+            }
+            ap = (_xFXAura*)ap->dangle;
+        }
+
+        RwRenderStateSet(rwRENDERSTATESRCBLEND, (void*)0x5);
+        RwRenderStateSet(rwRENDERSTATEDESTBLEND, (void*)0x6);
+        RwRenderStateSet(rwRENDERSTATEZTESTENABLE, (void*)0x1);
+        RwRenderStateSet(rwRENDERSTATEZWRITEENABLE, (void*)0x1);
+        RwRenderStateSet(rwRENDERSTATEFOGENABLE, (void*)0x10);
+
+        ap = sAura;
+
+        for (S32 i = 0; i < 32; i++)
+        {
+            if (ap->frame == gFrameCount && ap->parent != 0)
+            {
+                zEntPickup_RenderOne((xEnt*)ap->parent);
+            }
+            ap = (_xFXAura*)ap->dangle;
+        }
+    }
+}
+
+void xFXFireworksInit(const char* trailEmit, const char* emit1, const char* emit2,
+                      const char* mainSound, const char* launchSound)
+{
+    sFireworkTrailEmit = zParEmitterFind(trailEmit);
+    sFirework1Emit = zParEmitterFind(emit1);
+    sFirework2Emit = zParEmitterFind(emit2);
+    sFireworkSoundID = xStrHash(mainSound);
+    sFireworkLaunchSoundID = xStrHash(launchSound);
+    memset(sFirework, 0, sizeof(sFirework));
+    for (U32 i = 0; i < FIREWORK_COUNT; ++i)
+    {
+        sFirework[i].state = 0;
+    }
+}
+
 //void xFXFireworksLaunch(F32 time, const xVec3* pos, F32 fuel)
 //{
 //    U32 counter = FIREWORK_COUNT;
@@ -1130,39 +1130,39 @@ RpMaterial* MaterialSetBumpEnvMap(RpMaterial* material, RwTexture* envMap, F32 e
     return material;
 }
 
-//RpAtomic* xFXanimUVAtomicSetup(RpAtomic* atomic)
-//{
-//    if (atomic == 0)
-//    {
-//        return atomic;
-//    }
-//    if (xFXanimUVPipeline == 0)
-//    {
-//        return atomic;
-//    }
-//    atomic->pipeline = xFXanimUVPipeline;
-//    return atomic;
-//}
-//
-//void xFXRenderProximityFade(const xModelInstance&, F32, F32)
-//{
-//}
-//
-//void xFXanimUV2PSetAngle(F32 angle)
-//{
-//    xFXanimUV2PRotMat0[0] = isin(angle);
-//    angle = xFXanimUV2PRotMat0[0];
-//    xFXanimUV2PRotMat0[1] = xFXanimUV2PRotMat0[0];
-//    xFXanimUV2PRotMat1[0] = icos(angle);
-//    xFXanimUV2PRotMat1[1] = xFXanimUV2PRotMat1[0];
-//}
-//
-//void xFXanimUV2PSetTranslation(const xVec3* trans)
-//{
-//    xFXanimUV2PTrans[0] = trans->x;
-//    xFXanimUV2PTrans[1] = trans->y;
-//}
-//
+RpAtomic* xFXanimUVAtomicSetup(RpAtomic* atomic)
+{
+    if (atomic == 0)
+    {
+        return atomic;
+    }
+    if (xFXanimUVPipeline == 0)
+    {
+        return atomic;
+    }
+    atomic->pipeline = xFXanimUVPipeline;
+    return atomic;
+}
+
+void xFXRenderProximityFade(const xModelInstance&, F32, F32) WIP // not decomped?
+{
+}
+
+void xFXanimUV2PSetAngle(F32 angle)
+{
+    xFXanimUV2PRotMat0[0] = isin(angle);
+    angle = xFXanimUV2PRotMat0[0];
+    xFXanimUV2PRotMat0[1] = xFXanimUV2PRotMat0[0];
+    xFXanimUV2PRotMat1[0] = icos(angle);
+    xFXanimUV2PRotMat1[1] = xFXanimUV2PRotMat1[0];
+}
+
+void xFXanimUV2PSetTranslation(const xVec3* trans)
+{
+    xFXanimUV2PTrans[0] = trans->x;
+    xFXanimUV2PTrans[1] = trans->y;
+}
+
 //RpAtomic* xFXShinyRender(RpAtomic* atomic)
 //{
 //    RwCullMode cmode;
@@ -1242,38 +1242,38 @@ RpAtomic* xFXBubbleRender(RpAtomic* atomic)
     return atomic;
 }
 
-//void xFXRibbonRender()
-//{
-//    xFXRibbon* prev;
-//    U32 i;
-//    xFXRibbon* ribbon;
-//
-//    RwRenderStateSet(rwRENDERSTATEZWRITEENABLE, (void*)0x0);
-//    RwRenderStateSet(rwRENDERSTATEZTESTENABLE, (void*)0x1);
-//    RwRenderStateSet(rwRENDERSTATESHADEMODE, (void*)0x2);
-//    RwRenderStateSet(rwRENDERSTATECULLMODE, (void*)0x1);
-//
-//    ribbon = 0x0;
-//}
-//
-//void xFXStreakInit()
-//{
-//    for (S32 i = 0; i < 10; i++)
-//    {
-//        memset(&sStreakList[i], 0, sizeof(xFXStreak));
-//    }
-//}
-//
-//void xFXStreakRender()
-//{
-//}
-//
-//void xFXRibbonSceneEnter()
-//{
-//    xDebugRemoveTweak("FX|Ribbon");
-//
-//    active_ribbons_size = 0;
-//}
+void xFXRibbonRender()
+{
+    xFXRibbon* prev;
+    U32 i;
+    xFXRibbon* ribbon;
+
+    RwRenderStateSet(rwRENDERSTATEZWRITEENABLE, (void*)0x0);
+    RwRenderStateSet(rwRENDERSTATEZTESTENABLE, (void*)0x1);
+    RwRenderStateSet(rwRENDERSTATESHADEMODE, (void*)0x2);
+    RwRenderStateSet(rwRENDERSTATECULLMODE, (void*)0x1);
+
+    ribbon = 0x0;
+}
+
+void xFXStreakInit()
+{
+    for (S32 i = 0; i < 10; i++)
+    {
+        memset(&sStreakList[i], 0, sizeof(xFXStreak));
+    }
+}
+
+void xFXStreakRender() WIP
+{
+}
+
+void xFXRibbonSceneEnter()
+{
+    xDebugRemoveTweak("FX|Ribbon");
+
+    active_ribbons_size = 0;
+}
 
 void xFXRibbonUpdate(F32)
 {

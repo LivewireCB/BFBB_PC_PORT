@@ -798,3 +798,10 @@ F32 xVec3LengthFast(F32 x, F32 y, F32 z)
     xsqrtfast(len, SQR(x) + SQR(y) + SQR(z));
     return len;
 }
+
+ F32 xVec3LengthFast(const xVec3* v)
+{
+    F32 len;
+    xsqrtfast(len, SQR(v->x) + SQR(v->y) + SQR(v->z));
+    return len;
+}

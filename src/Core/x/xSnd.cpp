@@ -457,3 +457,8 @@ U32 xSndPlayInternal(U32 id, F32 vol, F32 pitch, U32 priority, U32 flags, U32 pa
 void update_faders(F32 timeElapsed) WIP
 {
 }
+
+U8 xSndIsPlayingByHandle(U32 sndID) WIP // not decomped
+{
+    return 0;
+}

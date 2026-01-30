@@ -15,13 +15,13 @@ namespace xhud
         }
     } // namespace
 
-//    meter_widget::meter_widget(const meter_asset& asset)
-//        : widget((xhud::asset&)asset), res((xhud::meter_asset&)asset), value(asset.start_value),
-//          min_value(asset.min_value), max_value(asset.max_value), end_value(asset.start_value),
-//          value_vel(0.0f), ping_delay(10.0f)
-//    {
-//        add_global_tweaks();
-//    }
+    meter_widget::meter_widget(const meter_asset& asset)
+        : widget((xhud::asset&)asset), res((xhud::meter_asset&)asset), value(asset.start_value),
+          min_value(asset.min_value), max_value(asset.max_value), end_value(asset.start_value),
+          value_vel(0.0f), ping_delay(10.0f)
+    {
+        add_global_tweaks();
+    }
 } // namespace xhud
 
 //void xhud::meter_widget::set_value(F32 v)
@@ -90,83 +90,83 @@ void xhud::meter_widget::set_value_immediate(F32 v)
     value_vel = 0.0f;
 }
 
-//void xhud::meter_widget::destruct()
-//{
-//    xhud::widget::destruct();
-//}
-//
-//U32 xhud::meter_widget::type() const
-//{
-//    static U32 myid = xStrHash(res.type_name());
-//
-//    return myid;
-//}
-//
-//bool xhud::meter_widget::is(U32 id) const
-//{
-//    bool isTheWidget = false;
-//
-//    if (id == xhud::meter_widget::type() || xhud::widget::is(id))
-//    {
-//        isTheWidget = true;
-//    }
-//
-//    return isTheWidget;
-//}
-//
-//void xhud::meter_widget::updater(F32 dt)
-//{
-//    F32 old_value;
-//    F32 pitch; // This was Heavy Iron, idk why they chose a name that causes name collisions :(
-//    F32 min_ping_time;
-//
-//    xhud::widget::updater(dt);
-//
-//    ping_delay += dt;
-//    this->pitch += dt;
-//
-//    if (value_vel != 0.0f)
-//    {
-//        old_value = value;
-//
-//        value = value + dt * (0.5f * value_accel * dt);
-//        value_vel += value_accel * dt;
-//
-//        if (value_vel < 0.0f)
-//        {
-//            if (value <= end_value)
-//            {
-//                value = end_value;
-//                end_value = 0.0f;
-//            }
-//
-//            pitch = range_limit<F32>(-4.0f * this->pitch, -10.0f, 6.5f);
-//            min_ping_time = 0.05f * xpow(0.5f, 0.083333336f * pitch);
-//
-//            if ((S32)value != (S32)old_value && res.sound.decrement != 0 &&
-//                ping_delay > min_ping_time)
-//            {
-//                ping_delay = 0.0f;
-//                pings.play(res.sound.decrement, 1.0f, pitch, 0x80, 0, 0, SND_CAT_GAME);
-//            }
-//        }
-//        else
-//        {
-//            if (value >= end_value)
-//            {
-//                value = end_value;
-//                value_vel = 0.0f;
-//            }
-//
-//            pitch = range_limit<F32>(2.0f * this->pitch, -10.0f, 6.5f);
-//            min_ping_time = 0.05f * xpow(0.5f, 0.083333336f * pitch);
-//
-//            if ((S32)value != (S32)old_value && res.sound.increment != 0 &&
-//                ping_delay > min_ping_time)
-//            {
-//                ping_delay = 0.0f;
-//                pings.play(res.sound.increment, 1.0f, pitch, 0x80, 0, 0, SND_CAT_GAME);
-//            }
-//        }
-//    }
-//}
+void xhud::meter_widget::destruct()
+{
+    xhud::widget::destruct();
+}
+
+U32 xhud::meter_widget::type() const
+{
+    static U32 myid = xStrHash(res.type_name());
+
+    return myid;
+}
+
+bool xhud::meter_widget::is(U32 id) const
+{
+    bool isTheWidget = false;
+
+    if (id == xhud::meter_widget::type() || xhud::widget::is(id))
+    {
+        isTheWidget = true;
+    }
+
+    return isTheWidget;
+}
+
+void xhud::meter_widget::updater(F32 dt) RIMP
+{
+    F32 old_value;
+    F32 pitch; // This was Heavy Iron, idk why they chose a name that causes name collisions :(
+    F32 min_ping_time;
+
+    xhud::widget::updater(dt);
+
+    ping_delay += dt;
+    this->pitch += dt;
+
+    if (value_vel != 0.0f)
+    {
+        old_value = value;
+
+        value = value + dt * (0.5f * value_accel * dt);
+        value_vel += value_accel * dt;
+
+        if (value_vel < 0.0f)
+        {
+            if (value <= end_value)
+            {
+                value = end_value;
+                end_value = 0.0f;
+            }
+
+            pitch = range_limit<F32>(-4.0f * this->pitch, -10.0f, 6.5f);
+            min_ping_time = 0.05f * xpow(0.5f, 0.083333336f * pitch);
+
+            if ((S32)value != (S32)old_value && res.sound.decrement != 0 &&
+                ping_delay > min_ping_time)
+            {
+                ping_delay = 0.0f;
+                //pings.play(res.sound.decrement, 1.0f, pitch, 0x80, 0, 0, SND_CAT_GAME);
+            }
+        }
+        else
+        {
+            if (value >= end_value)
+            {
+                value = end_value;
+                value_vel = 0.0f;
+            }
+
+            pitch = range_limit<F32>(2.0f * this->pitch, -10.0f, 6.5f);
+            min_ping_time = 0.05f * xpow(0.5f, 0.083333336f * pitch);
+
+            if ((S32)value != (S32)old_value && res.sound.increment != 0 &&
+                ping_delay > min_ping_time)
+            {
+                ping_delay = 0.0f;
+                //pings.play(res.sound.increment, 1.0f, pitch, 0x80, 0, 0, SND_CAT_GAME);
+            }
+        }
+    }
+}

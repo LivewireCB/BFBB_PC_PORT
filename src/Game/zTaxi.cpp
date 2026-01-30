@@ -9,60 +9,60 @@
 
 #include <types.h>
 
-//static ztalkbox::answer_enum sAnswer = ztalkbox::ANSWER_3;
-//
-//static taxiCB* tCB;
-//
-//void zTaxi_Init(xBase& data, xDynAsset& asset, size_t)
-//{
-//    zTaxi_Init((zTaxi*)&data, (taxi_asset*)&asset);
-//}
-//
-//// Nonmatch due to scheduling. https://decomp.me/scratch/wfRIQ
-//void zTaxi_Init(zTaxi* taxi, taxi_asset* asset)
-//{
-//    xBaseInit((xBase*)taxi, (xBaseAsset*)asset);
-//
-//    static taxiCB tCB1;
-//    tCB = &tCB1;
-//
-//    taxi->basset = asset;
-//    taxi->eventFunc = zTaxiEventCB;
-//    if (taxi->linkCount != 0)
-//    {
-//        taxi->link = (xLinkAsset*)(asset + 1);
-//    }
-//    else
-//    {
-//        taxi->link = NULL;
-//    }
-//
-//    U32 size;
-//    xVec3* assetPosition = (xVec3*)xSTFindAsset(asset->marker, &size);
-//    if (assetPosition != NULL && size == sizeof(xVec3))
-//    {
-//        xVec3Copy(&taxi->pos, assetPosition);
-//        taxi->prevState = 0;
-//        taxi->currState = 0;
-//        taxi->radius = 1.3f;
-//    }
-//}
-//
-//void zTaxi_Setup(zTaxi* taxi)
-//{
-//    // Load assets.
-//    zSceneFindObject(taxi->basset->cameraID);
-//    zSceneFindObject(taxi->basset->portalID);
-//    zSceneFindObject(taxi->basset->talkBoxID);
-//    xSTFindAsset(taxi->basset->textID, NULL);
-//
-//    // Taxi setup.
-//    xBase* taxiObj = zSceneFindObject(taxi->basset->taxiID);
-//    *(xBase**)&taxi->taxi = taxiObj;
-//    taxi->portalTimer = -1.0f;
-//    taxi->baseFlags |= (U16)2;
-//}
-//
+static ztalkbox::answer_enum sAnswer = ztalkbox::ANSWER_3;
+
+static taxiCB* tCB;
+
+void zTaxi_Init(xBase& data, xDynAsset& asset, size_t)
+{
+    zTaxi_Init((zTaxi*)&data, (taxi_asset*)&asset);
+}
+
+// Nonmatch due to scheduling. https://decomp.me/scratch/wfRIQ
+void zTaxi_Init(zTaxi* taxi, taxi_asset* asset)
+{
+    xBaseInit((xBase*)taxi, (xBaseAsset*)asset);
+
+    static taxiCB tCB1;
+    tCB = &tCB1;
+
+    taxi->basset = asset;
+    taxi->eventFunc = zTaxiEventCB;
+    if (taxi->linkCount != 0)
+    {
+        taxi->link = (xLinkAsset*)(asset + 1);
+    }
+    else
+    {
+        taxi->link = NULL;
+    }
+
+    U32 size;
+    xVec3* assetPosition = (xVec3*)xSTFindAsset(asset->marker, &size);
+    if (assetPosition != NULL && size == sizeof(xVec3))
+    {
+        xVec3Copy(&taxi->pos, assetPosition);
+        taxi->prevState = 0;
+        taxi->currState = 0;
+        taxi->radius = 1.3f;
+    }
+}
+
+void zTaxi_Setup(zTaxi* taxi)
+{
+    // Load assets.
+    zSceneFindObject(taxi->basset->cameraID);
+    zSceneFindObject(taxi->basset->portalID);
+    zSceneFindObject(taxi->basset->talkBoxID);
+    xSTFindAsset(taxi->basset->textID, NULL);
+
+    // Taxi setup.
+    xBase* taxiObj = zSceneFindObject(taxi->basset->taxiID);
+    *(xBase**)&taxi->taxi = taxiObj;
+    taxi->portalTimer = -1.0f;
+    taxi->baseFlags |= (U16)2;
+}
+
 //// Nonmatch due to regalloc, scheduling. https://decomp.me/scratch/1o3TG
 //void zTaxi_Update(xBase* to, xScene*, F32 dt)
 //{
@@ -191,12 +191,12 @@
 //        }
 //    }
 //}
-//
-//void zTaxi_tb_answer(U32 answer)
-//{
-//    sAnswer = (ztalkbox::answer_enum)answer;
-//}
-//
+
+void zTaxi_tb_answer(U32 answer)
+{
+    sAnswer = (ztalkbox::answer_enum)answer;
+}
+
 //void zTaxi_Save(zTaxi* taxi, xSerial* s)
 //{
 //    xBaseSave((xBase*)taxi, s);
@@ -207,37 +207,37 @@ void zTaxi_Load(zTaxi* taxi, xSerial* s)
     xBaseLoad((xBase*)taxi, s);
 }
 
-//S32 zTaxiEventCB(xBase* from, xBase* to, U32 toEvent, const F32* toParam, xBase* b3)
-//{
-//    switch (toEvent)
-//    {
-//    case eEventSceneBegin:
-//        break;
-//
-//    case eEventEnable:
-//        xBaseEnable(to);
-//        break;
-//
-//    case eEventDisable:
-//        xBaseDisable(to);
-//        break;
-//    }
-//    return eEventEnable;
-//}
-//
-//void taxiCB::on_signal(U32)
-//{
-//}
-//
-//void taxiCB::on_start()
-//{
-//}
-//
-//void taxiCB::on_answer(ztalkbox::answer_enum answer)
-//{
-//    zTaxi_tb_answer(answer);
-//}
-//
-//void taxiCB::on_stop()
-//{
-//}
+S32 zTaxiEventCB(xBase* from, xBase* to, U32 toEvent, const F32* toParam, xBase* b3)
+{
+    switch (toEvent)
+    {
+    case eEventSceneBegin:
+        break;
+
+    case eEventEnable:
+        xBaseEnable(to);
+        break;
+
+    case eEventDisable:
+        xBaseDisable(to);
+        break;
+    }
+    return eEventEnable;
+}
+
+void taxiCB::on_signal(U32) WIP
+{
+}
+
+void taxiCB::on_start() WIP
+{
+}
+
+void taxiCB::on_answer(ztalkbox::answer_enum answer) WIP
+{
+    zTaxi_tb_answer(answer);
+}
+
+void taxiCB::on_stop() WIP
+{
+}

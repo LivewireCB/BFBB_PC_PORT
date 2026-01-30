@@ -11,11 +11,11 @@ tagiRenderInput gRenderBuffer;
 static S32 gColorTableInit;
 static F32 gColorTable[256];
 
-void iParMgrUpdate(F32)
+void iParMgrUpdate(F32) COMPLETE
 {
 }
 
-void iParMgrRender()
+void iParMgrRender() COMPLETE
 {
 }
 

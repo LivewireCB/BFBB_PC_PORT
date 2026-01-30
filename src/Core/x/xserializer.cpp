@@ -46,19 +46,19 @@ S32 xSerialShutdown()
     return g_serinit--;
 }
 
-//void xSerialTraverse(S32 (*func)(U32, xSerial*))
-//{
-//    xSerial xser;
-//
-//    for (S32 i = 0; i < g_xserdata.cltlist.cnt; i++)
-//    {
-//        st_XSERIAL_DATA_PRIV* xsd = (st_XSERIAL_DATA_PRIV*)g_xserdata.cltlist.list[i];
-//        xser.setClient(xsd->flg_info);
-//        S32 rc = func(xsd->flg_info, &xser);
-//        if (rc == 0)
-//            break;
-//    }
-//}
+void xSerialTraverse(S32 (*func)(U32, xSerial*))
+{
+    xSerial xser;
+
+    for (S32 i = 0; i < g_xserdata.cltlist.cnt; i++)
+    {
+        st_XSERIAL_DATA_PRIV* xsd = (st_XSERIAL_DATA_PRIV*)g_xserdata.cltlist.list[i];
+        xser.setClient(xsd->flg_info);
+        S32 rc = func(xsd->flg_info, &xser);
+        if (rc == 0)
+            break;
+    }
+}
 
 xSerial::xSerial()
 {

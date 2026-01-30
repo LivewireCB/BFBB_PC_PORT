@@ -303,20 +303,20 @@ static S32 sCheatInputCount;
 //{
 //    return g_flg_chEnabled;
 //}
-//
-//void zGameExtras_NewGameReset()
-//{
-//    // very close to matching
-//    g_flg_chEnabled = 0;
-//    zGlobalSettings* gs = &globals.player.g;
-//
-//    gs->ShinyValuePurple = 50;
-//    gs->ShinyValueBlue = 10;
-//    gs->ShinyValueGreen = 5;
-//    gs->ShinyValueYellow = 2;
-//    gs->ShinyValueRed = 1;
-//}
-//
+
+void zGameExtras_NewGameReset()
+{
+    // very close to matching
+    g_flg_chEnabled = 0;
+    zGlobalSettings* gs = &globals.player.g;
+
+    gs->ShinyValuePurple = 50;
+    gs->ShinyValueBlue = 10;
+    gs->ShinyValueGreen = 5;
+    gs->ShinyValueYellow = 2;
+    gs->ShinyValueRed = 1;
+}
+
 //void zGameExtras_Save(xSerial* xser)
 //{
 //    xser->Write(g_flg_chEnabled & 0xFFFF);
@@ -723,15 +723,15 @@ void zGameExtras_Load(xSerial* xser)
 //{
 //    GEC_villSound();
 //}
-//
-//static xEnt* sGalleryTitle;
-//
-//void zGame_HackGalleryInit()
-//{
-//    U32 obj = xStrHash("KIOSK SELECT UIF");
-//    sGalleryTitle = (xEnt*)zSceneFindObject(obj);
-//}
-//
+
+static xEnt* sGalleryTitle;
+
+void zGame_HackGalleryInit()
+{
+    U32 obj = xStrHash("KIOSK SELECT UIF");
+    sGalleryTitle = (xEnt*)zSceneFindObject(obj);
+}
+
 //U32 zGame_HackIsGallery()
 //{
 //    if (sGalleryTitle && xEntIsVisible(sGalleryTitle))

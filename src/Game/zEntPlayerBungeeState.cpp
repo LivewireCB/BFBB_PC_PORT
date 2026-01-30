@@ -1,31 +1,31 @@
-//#include "zEntPlayerBungeeState.h"
-//
-//#include "iScrFX.h"
-//#include "xCamera.h"
-//#include "xDebug.h"
-//#include "xFX.h"
-//#include "xLinkAsset.h"
-//#include "xMath.h"
-//#include "xMathInlines.h"
-//#include "xMath3.h"
-//#include "xMarkerAsset.h"
-//#include "xModel.h"
-//#include "xPad.h"
-//#include "xShadow.h"
-//#include "xString.h"
-//#include "xVec3.h"
-//
-//#include "xstransvc.h"
-//#include "zBase.h"
-//#include "zCamera.h"
-//#include "zEntCruiseBubble.h"
-//#include "zEntPlayer.h"
-//#include "zGameExtras.h"
-//#include "zGlobals.h"
-//#include "zCameraTweak.h"
-//
-//#include "zLightning.h"
-//#include "zScene.h"
+#include "zEntPlayerBungeeState.h"
+
+#include "iScrFX.h"
+#include "xCamera.h"
+#include "xDebug.h"
+#include "xFX.h"
+#include "xLinkAsset.h"
+#include "xMath.h"
+#include "xMathInlines.h"
+#include "xMath3.h"
+#include "xMarkerAsset.h"
+#include "xModel.h"
+#include "xPad.h"
+#include "xShadow.h"
+#include "xString.h"
+#include "xVec3.h"
+
+#include "xstransvc.h"
+#include "zBase.h"
+#include "zCamera.h"
+#include "zEntCruiseBubble.h"
+#include "zEntPlayer.h"
+#include "zGameExtras.h"
+#include "zGlobals.h"
+#include "zCameraTweak.h"
+
+#include "zLightning.h"
+#include "zScene.h"
 //#include <PowerPC_EABI_Support\MSL_C\MSL_Common\cstring>
 //#include <types.h>
 //
@@ -78,10 +78,10 @@
 //#undef FLOATDATA
 //} // namespace all_the_floats
 //
-//namespace bungee_state
-//{
-//    namespace
-//    {
+namespace bungee_state
+{
+    namespace
+    {
 //
 //        static struct
 //        {
@@ -1152,20 +1152,21 @@
 //
 //            return 1;
 //        }
-//    } // namespace
-//
-//    void load(class xBase& data, class xDynAsset& asset, unsigned long)
-//    {
-//        xBaseInit(&data, &asset);
-//        hook_type& hook = (hook_type&)data;
-//        hook.asset = (hook_asset*)&asset;
-//        if (hook.linkCount != 0)
-//        {
-//            hook.link = (xLinkAsset*)(hook.asset + 1);
-//        }
-//        hook.ent = (xEnt*)zSceneFindObject(hook.asset->entity);
-//    }
-//
+    } // namespace
+
+
+    void load(class xBase& data, class xDynAsset& asset, size_t) WIP // changed from unsigned long to size_t
+    {
+        xBaseInit(&data, &asset);
+        hook_type& hook = (hook_type&)data;
+        hook.asset = (hook_asset*)&asset;
+        if (hook.linkCount != 0)
+        {
+            hook.link = (xLinkAsset*)(hook.asset + 1);
+        }
+        hook.ent = (xEnt*)zSceneFindObject(hook.asset->entity);
+    }
+
 //    void load_settings(xIniFile& ini)
 //    {
 //        fixed.bottom_anim_frac = xIniGetFloat(&ini, "SB.state.bungee.bottom_anim_frac", 0.05f);
@@ -1460,4 +1461,9 @@
 //        xCameraDoCollisions(1, CO_BUNGEE);
 //        shared.flags = 0x3;
 //    }
-//} // namespace bungee_state
+
+	bool active() WIP // function not decomped
+	{
+		return false;
+	}
+} // namespace bungee_state

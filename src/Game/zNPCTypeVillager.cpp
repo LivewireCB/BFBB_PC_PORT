@@ -759,11 +759,11 @@ xAnimTable* ZNPC_AnimTable_SuperFriend(xAnimTable* callerTable)
 //void FOLK_KillEffects()
 //{
 //}
-//
-//ztaskbox::callback::callback()
-//{
-//}
-//
+
+ztaskbox::callback::callback()
+{
+}
+
 //F32 zNPCVillager::GenShadCacheRad()
 //{
 //    return 1.5f;
@@ -858,11 +858,11 @@ xAnimTable* ZNPC_AnimTable_SuperFriend(xAnimTable* callerTable)
 //{
 //    return this->state;
 //}
-//
-//void ztaskbox::callback::on_talk_start()
-//{
-//}
-//
-//void ztaskbox::callback::on_talk_stop()
-//{
-//}
+
+void ztaskbox::callback::on_talk_start() WIP // not decomped
+{
+}
+
+void ztaskbox::callback::on_talk_stop() WIP // not deocmped
+{
+}

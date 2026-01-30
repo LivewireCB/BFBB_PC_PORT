@@ -1,72 +1,72 @@
-//#include "zVolume.h"
-//
-//#include "xstransvc.h"
-//#include "xMemMgr.h"
-//#include "iMath.h"
-//#include "xEvent.h"
-//
-//struct PreCalcOcclude
-//{
-//    xVec4 DepthVec;
-//    xVec4 FrustVec[4];
-//};
-//
-//extern zVolume* vols;
-//extern U16 nvols;
-//
-//extern S32 gOccludeCount;
-//extern zVolume* gOccludeList[10];
-//extern S32 gOccludeCalcCount;
-//extern PreCalcOcclude gOccludeCalc[10];
-//
-//extern float lbl_803CDFB8;
-//
-//static void zVolumeInit(zVolume* vol, xVolumeAsset* asset)
-//{
-//    vol->Init(asset);
-//    vol->eventFunc = zVolumeEventCB;
-//}
-//
-//void zVolumeInit()
-//{
-//    U16 i;
-//    U32 size;
-//    xVolumeAsset* asset;
-//
-//    nvols = xSTAssetCountByType('VOLU');
-//
-//    if (nvols)
-//    {
-//        vols = (zVolume*)xMemAllocSize(nvols * sizeof(zVolume));
-//
-//        for (i = 0; i < nvols; i++)
-//        {
-//            asset = (xVolumeAsset*)xSTFindAssetByType('VOLU', i, &size);
-//
-//            zVolumeInit(&vols[i], asset);
-//        }
-//    }
-//    else
-//    {
-//        vols = NULL;
-//    }
-//}
-//
-//void zVolumeSetup()
-//{
-//    U32 i;
-//
-//    for (i = 0; i < nvols; i++)
-//    {
-//        xQuickCullForEverything(&vols[i].asset->bound.qcd);
-//    }
-//}
-//
-//zVolume* zVolumeGetVolume(U16 n)
-//{
-//    return &vols[n];
-//}
-//
+#include "zVolume.h"
+
+#include "xstransvc.h"
+#include "xMemMgr.h"
+#include "iMath.h"
+#include "xEvent.h"
+
+struct PreCalcOcclude
+{
+    xVec4 DepthVec;
+    xVec4 FrustVec[4];
+};
+
+static zVolume* vols;
+static U16 nvols;
+
+S32 gOccludeCount;
+zVolume* gOccludeList[10];
+extern S32 gOccludeCalcCount;
+extern PreCalcOcclude gOccludeCalc[10];
+
+extern float lbl_803CDFB8;
+
+static void zVolumeInit(zVolume* vol, xVolumeAsset* asset)
+{
+    vol->Init(asset);
+    vol->eventFunc = zVolumeEventCB;
+}
+
+void zVolumeInit()
+{
+    U16 i;
+    U32 size;
+    xVolumeAsset* asset;
+
+    nvols = xSTAssetCountByType('VOLU');
+
+    if (nvols)
+    {
+        vols = (zVolume*)xMemAllocSize(nvols * sizeof(zVolume));
+
+        for (i = 0; i < nvols; i++)
+        {
+            asset = (xVolumeAsset*)xSTFindAssetByType('VOLU', i, &size);
+
+            zVolumeInit(&vols[i], asset);
+        }
+    }
+    else
+    {
+        vols = NULL;
+    }
+}
+
+void zVolumeSetup()
+{
+    U32 i;
+
+    for (i = 0; i < nvols; i++)
+    {
+        xQuickCullForEverything(&vols[i].asset->bound.qcd);
+    }
+}
+
+zVolume* zVolumeGetVolume(U16 n)
+{
+    return &vols[n];
+}
+
 //void zVolume_OccludePrecalc(xVec3* camPos)
 //{
 //    S32 i;
@@ -184,55 +184,55 @@
 //        }
 //    }
 //}
-//
-//S32 zVolumeEventCB(xBase*, xBase* to, U32 toEvent, const F32*, xBase*)
-//{
-//    zVolume* vol = (zVolume*)to;
-//    S32 i;
-//
-//    switch (toEvent)
-//    {
-//    case eEventReset:
-//    {
-//        vol->Reset();
-//        break;
-//    }
-//    case eEventOccludeOn:
-//    {
-//        if (gOccludeCount == 10)
-//        {
-//            return 1;
-//        }
-//
-//        for (i = 0; i < gOccludeCount; i++)
-//        {
-//            if (gOccludeList[i] == vol)
-//            {
-//                return 1;
-//            }
-//        }
-//
-//        gOccludeList[gOccludeCount] = vol;
-//        gOccludeCount++;
-//
-//        break;
-//    }
-//    case eEventOccludeOff:
-//    {
-//        for (i = 0; i < gOccludeCount; i++)
-//        {
-//            if (gOccludeList[i] == vol)
-//            {
-//                gOccludeList[gOccludeCount] = gOccludeList[gOccludeCount - 1];
-//                gOccludeCount--;
-//
-//                return 1;
-//            }
-//        }
-//
-//        break;
-//    }
-//    }
-//
-//    return 1;
-//}
+
+S32 zVolumeEventCB(xBase*, xBase* to, U32 toEvent, const F32*, xBase*)
+{
+    zVolume* vol = (zVolume*)to;
+    S32 i;
+
+    switch (toEvent)
+    {
+    case eEventReset:
+    {
+        vol->Reset();
+        break;
+    }
+    case eEventOccludeOn:
+    {
+        if (gOccludeCount == 10)
+        {
+            return 1;
+        }
+
+        for (i = 0; i < gOccludeCount; i++)
+        {
+            if (gOccludeList[i] == vol)
+            {
+                return 1;
+            }
+        }
+
+        gOccludeList[gOccludeCount] = vol;
+        gOccludeCount++;
+
+        break;
+    }
+    case eEventOccludeOff:
+    {
+        for (i = 0; i < gOccludeCount; i++)
+        {
+            if (gOccludeList[i] == vol)
+            {
+                gOccludeList[gOccludeCount] = gOccludeList[gOccludeCount - 1];
+                gOccludeCount--;
+
+                return 1;
+            }
+        }
+
+        break;
+    }
+    }
+
+    return 1;
+}

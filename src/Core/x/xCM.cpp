@@ -1,14 +1,14 @@
-//#include "xCM.h"
-//#include "xEvent.h"
-//
-//#include <types.h>
-//
-//volatile static F32 credits_time;
-//static xCreditsData* credits_data;
-//static U32 credits_parentID;
-//
-//F32 dtscale;
-//
+#include "xCM.h"
+#include "xEvent.h"
+
+#include <types.h>
+
+volatile static F32 credits_time;
+static xCreditsData* credits_data;
+static U32 credits_parentID;
+
+F32 dtscale;
+
 //static void xCMprep(xCreditsData* data)
 //{
 //    /*
@@ -84,12 +84,16 @@
 //        }
 //    }
 //}
-//
-//void xCMrender()
-//{
-//    xCMrender(credits_time, credits_data);
-//}
-//
+
+void xCMrender()
+{
+    xCMrender(credits_time, credits_data);
+}
+
+void xCMrender(F32 time, xCreditsData* data) WIP // not deomcped
+{
+}
+
 //void xCMstart(xCreditsData* data, F32 time, xBase* parent)
 //{
 //    if ((credits_data = data) != NULL)

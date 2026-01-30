@@ -229,21 +229,25 @@ static F32 sTeleportCamPitch;
 //    ((_zEntTeleportBox*)object)->JOtoOpenAnim = 1;
 //    return 0;
 //}
-//
-//void zEntTeleportBox_Init(xBase& data, xDynAsset& asset, size_t)
-//{
-//    zEntTeleportBox_Init((_zEntTeleportBox*)&data, (teleport_asset*)&asset);
-//}
-//
-//void zEntTeleportBox_Init(_zEntTeleportBox* ent, teleport_asset* asset);
-//
-//void zEntTeleportBox_InitAll()
-//{
-//    sPlayerIn = 0;
-//}
-//
-//void zEntTeleportBox_Setup(_zEntTeleportBox* ent);
-//
+
+void zEntTeleportBox_Init(xBase& data, xDynAsset& asset, size_t)
+{
+    zEntTeleportBox_Init((_zEntTeleportBox*)&data, (teleport_asset*)&asset);
+}
+
+void zEntTeleportBox_Init(_zEntTeleportBox* ent, teleport_asset* asset) WIP // not decomped
+{
+}
+
+void zEntTeleportBox_InitAll()
+{
+    sPlayerIn = 0;
+}
+
+void zEntTeleportBox_Setup(_zEntTeleportBox* ent)
+{
+}
+
 //void zEntTeleportBox_Update(xEnt* rawent, xScene* sc, F32 dt)
 //{
 //    _zEntTeleportBox* ent = (_zEntTeleportBox*)rawent;

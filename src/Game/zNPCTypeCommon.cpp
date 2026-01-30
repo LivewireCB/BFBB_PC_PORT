@@ -32,7 +32,7 @@ extern volatile S32 g_skipDescent;
 //static zNPCSettings* g_dflt_npcsettings;
 extern F32 lbl_803CE4C0;
 extern S32 g_flg_wonder;
-extern S32 g_isConversation;
+S32 g_isConversation;
 extern xBase* g_ownerConversation;
 extern F32 g_tmr_talkless;
 
@@ -2889,12 +2889,12 @@ U32 zNPCCommon::AnimCurStateID()
 //    }
 //    return (xVec3*)&model->Mat->pos;
 //}
-//
-//S32 NPCC_NPCIsConversing()
-//{
-//    return g_isConversation;
-//}
-//
+
+S32 NPCC_NPCIsConversing()
+{
+    return g_isConversation;
+}
+
 //void zNPCCommon::WonderOfTalking(S32 inprogress, xBase* owner)
 //{
 //    if (inprogress)

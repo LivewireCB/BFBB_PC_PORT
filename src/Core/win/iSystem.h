@@ -6,7 +6,10 @@
 void iVSync();
 
 #define GET_MAKER_CODE() (*((U32*)0x80000004))
-#define GET_BUS_FREQUENCY() (*((U32*)0x800000F8))
+
+// Removed the specific gamecube address, and read memory to find that the bus operates at 162Mhz
+// Hardcoding to remove issues
+#define GET_BUS_FREQUENCY() ((U32)0x09A7EC80)
 
 void** psGetMemoryFunctions();
 U16 my_dsc(U16 dsc);

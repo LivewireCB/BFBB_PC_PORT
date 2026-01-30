@@ -111,155 +111,159 @@ namespace xhud
 //    {
 //        widget::update_all(dt);
 //    }
-//
-//    void render()
-//    {
-//        if (inited)
-//        {
-//            widget::render_all();
-//        }
-//    }
-//
-//    widget::widget(const asset& asset)
-//    {
-//        a = &asset;
-//        _motive_top = NULL;
-//        _motive_temp = NULL;
-//        _motive_temp_tail = NULL;
-//        flag.visible = 1;
-//        flag.enabled = 0;
-//        rc.loc = asset.loc;
-//        rc.size = asset.size;
-//        rc.r = rc.g = rc.b = rc.a = 1.0f;
-//        start_rc = rc;
-//    }
-//
-//    void widget::init_base(xBase& b, const xBaseAsset& asset, unsigned long a2)
-//    {
-//        xBaseInit(&b, (xBaseAsset*)&asset);
-//        b.eventFunc = cb_dispatch;
-//        if (b.linkCount != 0)
-//        {
-//            b.link = (xLinkAsset*)((U32)&asset + a2);
-//        }
-//    }
-//
-//    void widget::destruct()
-//    {
-//        disable();
-//    }
-//
-//    void widget::presetup()
-//    {
-//        activity = ACT_NONE;
-//        add_tweaks();
-//    }
-//
-//    void widget::updater(F32 dt)
-//    {
-//        _motive_temp_tail = &_motive_temp;
-//        motive_node** ppmVar2 = &_motive_top;
-//        motive_node* top = _motive_top;
-//        while (top != NULL)
-//        {
-//            bool unk = top->m.update(*this, dt);
-//            if (!unk)
-//            {
-//                *ppmVar2 = top->next;
-//                motive_allocator()->free(top);
-//            }
-//            else
-//            {
-//                ppmVar2 = &top->next;
-//            }
-//            top = *ppmVar2;
-//        }
-//
-//        if (_motive_temp != NULL)
-//        {
-//            *_motive_temp_tail = _motive_top;
-//            _motive_top = _motive_temp;
-//            _motive_temp = NULL;
-//        }
-//
-//        _motive_temp_tail = NULL;
-//        if (_motive_top == NULL)
-//        {
-//            activity = ACT_NONE;
-//        }
-//    }
-//
-//    void widget::dispatcher(xBase*, U32 event, const F32* toParam, xBase*)
-//    {
-//        switch (event)
-//        {
-//        case eEventEnable:
-//            enable();
-//            break;
-//        case eEventDisable:
-//            disable();
-//            break;
-//        case eEventVisible:
-//        case eEventFastVisible:
-//            flag.visible = 1;
-//            break;
-//        case eEventInvisible:
-//        case eEventFastInvisible:
-//            flag.visible = 0;
-//            break;
-//        case eEventDispatcher_ShowHud:
-//            show();
-//            break;
-//        case eEventDispatcher_HideHud:
-//            hide();
-//            break;
-//        }
-//    }
-//
-//    // Equivalent: scheduling
-//    U32 widget::type() const
-//    {
-//        static U32 myid = xStrHash(a->type_name());
-//        return myid;
-//    }
-//
-//    bool widget::is(U32 id) const
-//    {
-//        return id == widget::type();
-//    }
-//
-//    void widget::show()
-//    {
-//        
-// _motives();
-//
-//        activity = ACT_SHOW;
-//
-//        F32 dVar8 = start_rc.loc.x - rc.loc.x;
-//        F32 dVar7 = start_rc.loc.y - rc.loc.y;
-//        F32 fVar1 = dVar8 * dVar8 + dVar7 * dVar7;
-//        if (fVar1 <= 0.000000009999999f)
-//        {
-//            rc.loc = start_rc.loc;
-//            rc.a = start_rc.a;
-//        }
-//        else
-//        {
-//            F32 dVar4 = xsqrt(fVar1);
-//            F32 dVar6 = 10.0f * dVar7;
-//            fVar1 = 10.0f * dVar8;
-//            F32 dVar5 = (-(fVar1 * fVar1 + (dVar6 * dVar6)) / (2.0f * dVar4));
-//
-//            add_motive(motive(&rc.loc.x, fVar1, dVar8, (dVar5 * dVar8) / dVar4,
-//                              accelerate_motive_update, NULL));
-//
-//            add_motive(motive(&rc.loc.y, dVar6, dVar7, (dVar5 * dVar7) / dVar4,
-//                              accelerate_motive_update, NULL));
-//
-//            fVar1 = start_rc.a - rc.a;
-//            add_motive(motive(&rc.a, 3.0f * fVar1, fVar1, 0.0f, linear_motive_update, NULL));
-//        }
-//    }
+
+    void render()
+    {
+        if (inited)
+        {
+            widget::render_all();
+        }
+    }
+
+    widget::widget(const asset& asset)
+    {
+        a = &asset;
+        _motive_top = NULL;
+        _motive_temp = NULL;
+        _motive_temp_tail = NULL;
+        flag.visible = 1;
+        flag.enabled = 0;
+        rc.loc = asset.loc;
+        rc.size = asset.size;
+        rc.r = rc.g = rc.b = rc.a = 1.0f;
+        start_rc = rc;
+    }
+
+    void widget::init_base(xBase& b, const xBaseAsset& asset, unsigned long a2)
+    {
+        xBaseInit(&b, (xBaseAsset*)&asset);
+        b.eventFunc = cb_dispatch;
+        if (b.linkCount != 0)
+        {
+            b.link = (xLinkAsset*)((U32)&asset + a2);
+        }
+    }
+
+    void widget::destruct()
+    {
+        disable();
+    }
+
+    void widget::presetup()
+    {
+        activity = ACT_NONE;
+        add_tweaks();
+    }
+
+    void widget::updater(F32 dt)
+    {
+        _motive_temp_tail = &_motive_temp;
+        motive_node** ppmVar2 = &_motive_top;
+        motive_node* top = _motive_top;
+        while (top != NULL)
+        {
+            bool unk = top->m.update(*this, dt);
+            if (!unk)
+            {
+                *ppmVar2 = top->next;
+                motive_allocator()->free(top);
+            }
+            else
+            {
+                ppmVar2 = &top->next;
+            }
+            top = *ppmVar2;
+        }
+
+        if (_motive_temp != NULL)
+        {
+            *_motive_temp_tail = _motive_top;
+            _motive_top = _motive_temp;
+            _motive_temp = NULL;
+        }
+
+        _motive_temp_tail = NULL;
+        if (_motive_top == NULL)
+        {
+            activity = ACT_NONE;
+        }
+    }
+
+    void widget::dispatcher(xBase*, U32 event, const F32* toParam, xBase*)
+    {
+        switch (event)
+        {
+        case eEventEnable:
+            enable();
+            break;
+        case eEventDisable:
+            disable();
+            break;
+        case eEventVisible:
+        case eEventFastVisible:
+            flag.visible = 1;
+            break;
+        case eEventInvisible:
+        case eEventFastInvisible:
+            flag.visible = 0;
+            break;
+        case eEventDispatcher_ShowHud:
+            show();
+            break;
+        case eEventDispatcher_HideHud:
+            hide();
+            break;
+        }
+    }
+
+    // Equivalent: scheduling
+    U32 widget::type() const
+    {
+        static U32 myid = xStrHash(a->type_name());
+        return myid;
+    }
+
+    bool widget::is(U32 id) const
+    {
+        return id == widget::type();
+    }
+
+    void widget::dispatch(xBase* b1, U32 event, const F32* toParam, xBase* b2) WIP // not decomped
+    {
+    }
+ 
+    void widget::show()
+    {
+        
+        clear_motives();
+
+        activity = ACT_SHOW;
+
+        F32 dVar8 = start_rc.loc.x - rc.loc.x;
+        F32 dVar7 = start_rc.loc.y - rc.loc.y;
+        F32 fVar1 = dVar8 * dVar8 + dVar7 * dVar7;
+        if (fVar1 <= 0.000000009999999f)
+        {
+            rc.loc = start_rc.loc;
+            rc.a = start_rc.a;
+        }
+        else
+        {
+            F32 dVar4 = xsqrt(fVar1);
+            F32 dVar6 = 10.0f * dVar7;
+            fVar1 = 10.0f * dVar8;
+            F32 dVar5 = (-(fVar1 * fVar1 + (dVar6 * dVar6)) / (2.0f * dVar4));
+
+            add_motive(motive(&rc.loc.x, fVar1, dVar8, (dVar5 * dVar8) / dVar4,
+                              accelerate_motive_update, NULL));
+
+            add_motive(motive(&rc.loc.y, dVar6, dVar7, (dVar5 * dVar7) / dVar4,
+                              accelerate_motive_update, NULL));
+
+            fVar1 = start_rc.a - rc.a;
+            add_motive(motive(&rc.a, 3.0f * fVar1, fVar1, 0.0f, linear_motive_update, NULL));
+        }
+    }
 
     // Nonmatching: not finished
     void widget::hide()
@@ -391,14 +395,14 @@ namespace xhud
             }
         }
 
-//        void render_one_model(xModelInstance& model, F32 alpha, const basic_rect<F32>& rect,
-//                              const xVec3& from, const xVec3& to, const xMat4x3& frame)
-//        {
-//            xModelSetMaterialAlpha(&model, 255.0f * alpha + 0.5f);
-//            xModelSetFrame(&model, &frame);
-//            xModelRender2D(model, rect, from, to);
-//        }
-//
+        void render_one_model(xModelInstance& model, F32 alpha, const basic_rect<F32>& rect,
+                              const xVec3& from, const xVec3& to, const xMat4x3& frame)
+        {
+            xModelSetMaterialAlpha(&model, 255.0f * alpha + 0.5f);
+            xModelSetFrame(&model, &frame);
+            xModelRender2D(model, rect, from, to);
+        }
+
     } // namespace
 
     void widget::debug_render()
@@ -413,21 +417,21 @@ namespace xhud
         }
     }
 
-//    S32 widget::cb_dispatch(xBase*, xBase* target, U32, const F32*, xBase*)
-//    {
-//        // Target gets cast to some type we probably don't have decomped yet.
-//        return 0;
-//    }
-//
-//    void widget::render_all()
-//    {
-//        debug_render();
-//        for (U32 i = 0; i < lengthof(known_types); ++i)
-//        {
-//            for_each(known_types[i].widget_type, known_types[i].widget_size, fp_render);
-//        }
-//    }
-//
+    S32 widget::cb_dispatch(xBase*, xBase* target, U32, const F32*, xBase*) WIP // not decomped
+    {
+        // Target gets cast to some type we probably don't have decomped yet.
+        return 0;
+    }
+
+    void widget::render_all()
+    {
+        debug_render();
+        for (U32 i = 0; i < lengthof(known_types); ++i)
+        {
+            for_each(known_types[i].widget_type, known_types[i].widget_size, fp_render);
+        }
+    }
+
 //    void widget::update_all(F32 dt)
 //    {
 //        functor_update func(dt);
@@ -467,44 +471,44 @@ namespace xhud
         }
     }
 
-//    void widget::clear_motives()
-//    {
-//        activity = ACT_NONE;
-//        motive_node* node = _motive_top;
-//        while (node != NULL)
-//        {
-//            node->m.finish();
-//            _motive_top = node->next;
-//            motive_allocator()->free(node);
-//            node = _motive_top;
-//        }
-//    }
-//
-//    void widget::clear_motives(bool (*fp_update)(widget&, motive&, F32), void* context)
-//    {
-//        motive_node** ppmVar2 = &_motive_top;
-//        motive_node* node = _motive_top;
-//
-//        while (node != NULL)
-//        {
-//            if (node->m.fp_update == fp_update && node->m.context == context)
-//            {
-//                *ppmVar2 = node->next;
-//                motive_allocator()->free(node);
-//            }
-//            else
-//            {
-//                ppmVar2 = &node->next;
-//            }
-//            node = *ppmVar2;
-//        }
-//
-//        if (_motive_top == NULL)
-//        {
-//            activity = ACT_NONE;
-//        }
-//    }
-//
+    void widget::clear_motives()
+    {
+        activity = ACT_NONE;
+        motive_node* node = _motive_top;
+        while (node != NULL)
+        {
+            node->m.finish();
+            _motive_top = node->next;
+            motive_allocator()->free(node);
+            node = _motive_top;
+        }
+    }
+
+    void widget::clear_motives(bool (*fp_update)(widget&, motive&, F32), void* context)
+    {
+        motive_node** ppmVar2 = &_motive_top;
+        motive_node* node = _motive_top;
+
+        while (node != NULL)
+        {
+            if (node->m.fp_update == fp_update && node->m.context == context)
+            {
+                *ppmVar2 = node->next;
+                motive_allocator()->free(node);
+            }
+            else
+            {
+                ppmVar2 = &node->next;
+            }
+            node = *ppmVar2;
+        }
+
+        if (_motive_top == NULL)
+        {
+            activity = ACT_NONE;
+        }
+    }
+
     bool linear_motive_update(widget& w, motive& m, F32 dt)
     {
         F32 fVar1 = dt * m.delta;
@@ -579,70 +583,70 @@ namespace xhud
 //        return true;
 //    }
 //
-//    bool delay_motive_update(widget& w, motive& m, F32 dt)
-//    {
-//        m.offset += dt;
-//        if (m.max_offset - m.offset < 0.0f)
-//        {
-//            ((motive_proc*)m.context)(w, m, dt);
-//            return false;
-//        }
-//        return true;
-//    }
-//
-//    void xhud::render_model(xModelInstance& model, const xhud::render_context& rc)
-//    {
-//        basic_rect<F32> rect = { 0 };
-//        rect.x = rc.loc.x;
-//        rect.y = rc.loc.y;
-//        rect.w = rc.size.x;
-//        rect.h = rc.size.y;
-//
-//        xVec3 vecA = { 0, 0, 1 };
-//        xVec3 vecB = { 0, 0, -rc.loc.z };
-//
-//        xMat4x3 matrix;
-//        xMat3x3Euler(&matrix, rc.rot.x, rc.rot.y, rc.rot.z);
-//        matrix.right *= (1.0f + rc.loc.z);
-//        matrix.up *= (1.0f + rc.loc.z);
-//        matrix.at *= 0.0099999998f;
-//        matrix.pos.z = 0.0f;
-//        matrix.pos.y = 0.0f;
-//        matrix.pos.x = 0.0f;
-//        matrix.flags = 0;
-//
-//        for (xModelInstance* cur = &model; cur; cur = cur->Next)
-//        {
-//            render_one_model(*cur, rc.a, rect, vecA, vecB, matrix);
-//        }
-//    }
-//
+    bool delay_motive_update(widget& w, motive& m, F32 dt)
+    {
+        m.offset += dt;
+        if (m.max_offset - m.offset < 0.0f)
+        {
+            ((motive_proc*)m.context)(w, m, dt);
+            return false;
+        }
+        return true;
+    }
+
+    void xhud::render_model(xModelInstance& model, const xhud::render_context& rc)
+    {
+        basic_rect<F32> rect = { 0 };
+        rect.x = rc.loc.x;
+        rect.y = rc.loc.y;
+        rect.w = rc.size.x;
+        rect.h = rc.size.y;
+
+        xVec3 vecA = { 0, 0, 1 };
+        xVec3 vecB = { 0, 0, -rc.loc.z };
+
+        xMat4x3 matrix;
+        xMat3x3Euler(&matrix, rc.rot.x, rc.rot.y, rc.rot.z);
+        matrix.right *= (1.0f + rc.loc.z);
+        matrix.up *= (1.0f + rc.loc.z);
+        matrix.at *= 0.0099999998f;
+        matrix.pos.z = 0.0f;
+        matrix.pos.y = 0.0f;
+        matrix.pos.x = 0.0f;
+        matrix.flags = 0;
+
+        for (xModelInstance* cur = &model; cur; cur = cur->Next)
+        {
+            render_one_model(*cur, rc.a, rect, vecA, vecB, matrix);
+        }
+    }
+
 //    void __deadstripped_xHud()
 //    {
 //        // "%d" was used in a deadstripped function. This function forces it to be used.
 //        xStrHash("%d");
 //    }
-//
-//    xModelInstance* load_model(U32 modelID)
-//    {
-//        U32 size;
-//        void* info = xSTFindAsset(xStrHashCat(modelID, ".minf"), &size); // xModelAssetInfo*
-//        if (info != NULL)
-//        {
-//            return zEntRecurseModelInfo(info, NULL);
-//        }
-//
-//        info = xSTFindAsset(modelID, &size); // RpAtomic*
-//        if (info == NULL)
-//        {
-//            info = xSTFindAsset(xStrHashCat(modelID, ".dff"), &size); // RpAtomic*
-//        }
-//        if (info == NULL)
-//        {
-//            return NULL;
-//        }
-//
-//        return xModelInstanceAlloc((RpAtomic*)info, NULL, 0, 0, NULL);
-//    }
+
+    xModelInstance* load_model(U32 modelID)
+    {
+        U32 size;
+        void* info = xSTFindAsset(xStrHashCat(modelID, ".minf"), &size); // xModelAssetInfo*
+        if (info != NULL)
+        {
+            return zEntRecurseModelInfo(info, NULL);
+        }
+
+        info = xSTFindAsset(modelID, &size); // RpAtomic*
+        if (info == NULL)
+        {
+            info = xSTFindAsset(xStrHashCat(modelID, ".dff"), &size); // RpAtomic*
+        }
+        if (info == NULL)
+        {
+            return NULL;
+        }
+
+        return xModelInstanceAlloc((RpAtomic*)info, NULL, 0, 0, NULL);
+    }
 
 } // namespace xhud

@@ -60,64 +60,64 @@ struct menuWorldInfo
     menuTaskInfo taskInfo[TASK_COUNT];
 };
 
-//_zUI* sSorted[768];
-//zUIMgr gUIMgr;
-//static U32 sSortedCount = 0;
-//
-//static RwIm2DVertex Vertex[4];
-//static RwImVertexIndex Index[6] = { 0, 1, 2, 0, 2, 3 };
-//
-//static U32 cKeyUIid1off = xStrHash("KEY OFF 1 UI");
-//static U32 cKeyUIid2off = xStrHash("KEY OFF 2 UI");
-//static U32 cKeyUIid3off = xStrHash("KEY OFF 3 UI");
-//static U32 cKeyUIid4off = xStrHash("KEY OFF 4 UI");
-//static U32 cKeyUIid1on = xStrHash("KEY ON 1 UI");
-//static U32 cKeyUIid2on = xStrHash("KEY ON 2 UI");
-//static U32 cKeyUIid3on = xStrHash("KEY ON 3 UI");
-//static U32 cKeyUIid4on = xStrHash("KEY ON 4 UI");
-//
-//static char patsock_text_buffer[] = "##/##";
-//static _zUI* patsock_ui;
-//static zUIFont* patsock_uif;
-//static U32 patsock_prev_world = -1;
-//static U32 patsock_prev_count = -1;
-//
-//static F32 ushift;
-//
-//namespace
-//{
-//    void refresh_model(_zUI& ui)
-//    {
-//        if (ui.model)
-//        {
-//            zUIAsset* sasset;
-//            xMat3x3* mat;
-//            xMat3x3 pmat, smat;
-//
-//            ui.bound.mat = (xMat4x3*)ui.model->Mat;
-//            ui.bound.mat->pos = 0.0f;
-//
-//            sasset = ui.sasset;
-//            mat = (xMat3x3*)ui.model->Mat;
-//
-//            xMat3x3Euler(&pmat, &sasset->ang);
-//            xMat3x3Scale(&smat, &sasset->scale);
-//            xMat3x3Mul(mat, &pmat, &smat);
-//        }
-//    }
-//
-//    void init_tweaks()
-//    {
-//    }
-//
-//    void debug_update(zScene&, F32)
-//    {
-//    }
-//
-//    void debug_render()
-//    {
-//    }
-//} // namespace
+_zUI* sSorted[768];
+zUIMgr gUIMgr;
+static U32 sSortedCount = 0;
+
+static RwIm2DVertex Vertex[4];
+static RwImVertexIndex Index[6] = { 0, 1, 2, 0, 2, 3 };
+
+static U32 cKeyUIid1off = xStrHash("KEY OFF 1 UI");
+static U32 cKeyUIid2off = xStrHash("KEY OFF 2 UI");
+static U32 cKeyUIid3off = xStrHash("KEY OFF 3 UI");
+static U32 cKeyUIid4off = xStrHash("KEY OFF 4 UI");
+static U32 cKeyUIid1on = xStrHash("KEY ON 1 UI");
+static U32 cKeyUIid2on = xStrHash("KEY ON 2 UI");
+static U32 cKeyUIid3on = xStrHash("KEY ON 3 UI");
+static U32 cKeyUIid4on = xStrHash("KEY ON 4 UI");
+
+static char patsock_text_buffer[] = "##/##";
+static _zUI* patsock_ui;
+static zUIFont* patsock_uif;
+static U32 patsock_prev_world = -1;
+static U32 patsock_prev_count = -1;
+
+static F32 ushift;
+
+namespace
+{
+    void refresh_model(_zUI& ui) RIMP
+    {
+        if (ui.model)
+        {
+            zUIAsset* sasset;
+            xMat3x3* mat;
+            xMat3x3 pmat, smat;
+
+            ui.bound.mat = (xMat4x3*)ui.model->Mat;
+            ui.bound.mat->pos = 0.0f;
+
+            sasset = ui.sasset;
+            mat = (xMat3x3*)ui.model->Mat;
+
+            xMat3x3Euler(&pmat, &sasset->ang);
+            xMat3x3Scale(&smat, &sasset->scale);
+            xMat3x3Mul(mat, &pmat, &smat);
+        }
+    }
+
+    void init_tweaks() WIP // possibly wip
+    {
+    }
+
+    void debug_update(zScene&, F32)
+    {
+    }
+
+    void debug_render()
+    {
+    }
+} // namespace
 //
 //void zUIMgr::PreUpdate(zScene* s, F32 dt)
 //{
@@ -156,905 +156,905 @@ struct menuWorldInfo
 //
 //    debug_update(*s, dt);
 //}
-//
-//void zUIMgr::Setup(zScene* s)
-//{
-//    const U32 count = s->baseCount[eBaseTypeUI];
-//    const U32 arraySize = count * sizeof(_zUI*);
-//
-//    m_preUpdateStart = 0;
-//    m_preUpdateEnd = count - 1;
-//    m_preUpdateMax = count;
-//    m_preUpdate = (_zUI**)xMemAllocSize(arraySize);
-//
-//    m_updateStart = 0;
-//    m_updateEnd = count - 1;
-//    m_updateMax = count;
-//    m_update = (_zUI**)xMemAllocSize(arraySize);
-//
-//    // non-matching: incorrect registers
-//
-//    _zUI* ui = (_zUI*)s->baseList[eBaseTypeUI];
-//
-//    for (U32 i = 0; i < s->baseCount[eBaseTypeUI]; i++)
-//    {
-//        Add(ui);
-//        ui++;
-//    }
-//}
-//
-//void zUIMgr::Touch(_zUI* ui)
-//{
-//    if (ui->baseType == eBaseTypeUI)
-//    {
-//        Remove(ui);
-//        Add(ui);
-//    }
-//}
-//
-//void zUIMgr::Remove(_zUI* ui)
-//{
-//    Remove_PreUpdate(ui);
-//    Remove_Update(ui);
-//}
-//
-//void zUIMgr::Remove_PreUpdate(_zUI* ui)
-//{
-//    if (ui->preUpdateIndex < m_preUpdateStart)
-//    {
-//        if (ui->preUpdateIndex != m_preUpdateStart - 1)
-//        {
-//            _zUI* r5 = m_preUpdate[m_preUpdateStart - 1];
-//
-//            m_preUpdate[ui->preUpdateIndex] = r5;
-//            r5->preUpdateIndex = ui->preUpdateIndex;
-//        }
-//
-//        m_preUpdateStart--;
-//    }
-//    else
-//    {
-//        if (ui->preUpdateIndex != m_preUpdateEnd + 1)
-//        {
-//            _zUI* r5 = m_preUpdate[m_preUpdateEnd + 1];
-//
-//            m_preUpdate[ui->preUpdateIndex] = r5;
-//            r5->preUpdateIndex = ui->preUpdateIndex;
-//        }
-//
-//        m_preUpdateEnd++;
-//    }
-//}
-//
-//void zUIMgr::Remove_Update(_zUI* ui)
-//{
-//    if (ui->updateIndex < m_updateStart)
-//    {
-//        if (ui->updateIndex != m_updateStart - 1)
-//        {
-//            _zUI* r5 = m_update[m_updateStart - 1];
-//
-//            m_update[ui->updateIndex] = r5;
-//            r5->updateIndex = ui->updateIndex;
-//        }
-//
-//        m_updateStart--;
-//    }
-//    else
-//    {
-//        if (ui->updateIndex != m_updateEnd + 1)
-//        {
-//            _zUI* r5 = m_update[m_updateEnd + 1];
-//
-//            m_update[ui->updateIndex] = r5;
-//            r5->updateIndex = ui->updateIndex;
-//        }
-//
-//        m_updateEnd++;
-//    }
-//}
-//
-//void zUIMgr::Add(_zUI* ui)
-//{
-//    Add_PreUpdate(ui);
-//    Add_Update(ui);
-//}
-//
-//void zUIMgr::Add_PreUpdate(_zUI* ui)
-//{
-//    if (ui->uiFlags & 0x8 && (ui->uiFlags & 0x2 || ui->uiFlags & 0x1))
-//    {
-//        ui->preUpdateIndex = m_preUpdateStart;
-//        m_preUpdate[m_preUpdateStart++] = ui;
-//    }
-//    else
-//    {
-//        ui->preUpdateIndex = m_preUpdateEnd;
-//        m_preUpdate[m_preUpdateEnd--] = ui;
-//    }
-//}
-//
-//void zUIMgr::Add_Update(_zUI* ui)
-//{
-//    if (xEntIsVisible(ui))
-//    {
-//        ui->updateIndex = m_updateStart;
-//        m_update[m_updateStart++] = ui;
-//    }
-//    else
-//    {
-//        ui->updateIndex = m_updateEnd;
-//        m_update[m_updateEnd--] = ui;
-//    }
-//}
-//
-//void zUI_Init()
-//{
-//    init_tweaks();
-//}
-//
-//void zUI_Init(void* ent, void* asset)
-//{
-//    zUI_Init((_zUI*)ent, (xEntAsset*)asset);
-//}
-//
-//namespace
-//{
-//    xModelInstance* load_model(U32 id)
-//    {
-//        U32 size;
-//        void* data;
-//
-//        data = xSTFindAsset(xStrHashCat(id, ".minf"), &size);
-//
-//        if (data)
-//        {
-//            return zEntRecurseModelInfo(data, NULL);
-//        }
-//
-//        data = xSTFindAsset(id, &size);
-//
-//        if (!data)
-//        {
-//            data = xSTFindAsset(xStrHashCat(id, ".dff"), &size);
-//        }
-//
-//        if (!data)
-//        {
-//            return NULL;
-//        }
-//
-//        return xModelInstanceAlloc((RpAtomic*)data, NULL, 0, 0, NULL);
-//    }
-//
-//    void load_anim_list(_zUI& ui)
-//    {
-//        if (ui.model)
-//        {
-//            zUIAsset& a = *ui.sasset;
-//
-//            if (a.animListID)
-//            {
-//                ui.atbl = NULL;
-//
-//                S32 used = zAnimListGetNumUsed(a.animListID);
-//
-//                if (used > 0)
-//                {
-//                    ui.atbl = zAnimListGetTable(a.animListID);
-//
-//                    xAnimPoolAlloc(&globals.sceneCur->mempool, &ui, ui.atbl, ui.model);
-//
-//                    xAnimState* ast = xAnimTableGetState(ui.atbl, "idle");
-//
-//                    if (ast)
-//                    {
-//                        xAnimSingle* single = ui.model->Anim->Single;
-//
-//                        single->State = ast;
-//                        single->Time = 0.0f;
-//                        single->CurrentSpeed = 1.0f;
-//                    }
-//                }
-//            }
-//        }
-//    }
-//} // namespace
-//
-//void zUI_Init(_zUI* ent, xEntAsset* asset)
-//{
-//    zUIAsset* sasset = (zUIAsset*)asset;
-//
-//    xEntInit(ent, asset);
-//
-//    ent->collType = XENT_COLLTYPE_NONE;
-//    ent->bound.type = XBOUND_TYPE_NA;
-//    ent->sasset = sasset;
-//    ent->pflags = 0;
-//
-//    if (ent->baseType == eBaseTypeUI && sasset->modelInfoID)
-//    {
-//        ent->model = load_model(sasset->modelInfoID);
-//        load_anim_list(*ent);
-//    }
-//
-//    ent->penby = XENT_COLLTYPE_NONE;
-//    ent->chkby = XENT_COLLTYPE_NONE;
-//    ent->update = (xEntUpdateCallback)zUI_Update;
-//    ent->move = NULL;
-//    ent->eventFunc = zUIEventCB;
-//
-//    if (ent->linkCount)
-//    {
-//        ent->link = (xLinkAsset*)(sasset + 1);
-//    }
-//
-//    ent->eventFunc = zUIEventCB;
-//    ent->uiFlags = sasset->uiFlags;
-//
-//    if (ent->uiFlags & 0x4)
-//    {
-//        ent->render = NULL;
-//    }
-//
-//    zEntReset(ent);
-//    refresh_model(*ent);
-//
-//    sSortedCount = 0;
-//
-//    if (ent->asset->surfaceID)
-//    {
-//        xSurface* surf = (xSurface*)xSceneResolvID(g_xSceneCur, ent->asset->surfaceID);
-//
-//        if (surf)
-//        {
-//            surf->type = XSURFACE_TYPE_3;
-//            surf->ent = ent;
-//
-//            xModelInstance* minst = ent->model;
-//
-//            while (minst)
-//            {
-//                minst->Surf = surf;
-//                minst = minst->Next;
-//            }
-//        }
-//    }
-//
-//    cKeyUIid1off = xStrHash("KEY OFF 1 UI");
-//    cKeyUIid2off = xStrHash("KEY OFF 2 UI");
-//    cKeyUIid3off = xStrHash("KEY OFF 3 UI");
-//    cKeyUIid4off = xStrHash("KEY OFF 4 UI");
-//    cKeyUIid1on = xStrHash("KEY ON 1 UI");
-//    cKeyUIid2on = xStrHash("KEY ON 2 UI");
-//    cKeyUIid3on = xStrHash("KEY ON 3 UI");
-//    cKeyUIid4on = xStrHash("KEY ON 4 UI");
-//}
-//
-//void zUI_Save(_zUI* ent, xSerial* s)
-//{
-//    zEntSave(ent, s);
-//}
+
+void zUIMgr::Setup(zScene* s)
+{
+    const U32 count = s->baseCount[eBaseTypeUI];
+    const U32 arraySize = count * sizeof(_zUI*);
+
+    m_preUpdateStart = 0;
+    m_preUpdateEnd = count - 1;
+    m_preUpdateMax = count;
+    m_preUpdate = (_zUI**)xMemAllocSize(arraySize);
+
+    m_updateStart = 0;
+    m_updateEnd = count - 1;
+    m_updateMax = count;
+    m_update = (_zUI**)xMemAllocSize(arraySize);
+
+    // non-matching: incorrect registers
+
+    _zUI* ui = (_zUI*)s->baseList[eBaseTypeUI];
+
+    for (U32 i = 0; i < s->baseCount[eBaseTypeUI]; i++)
+    {
+        Add(ui);
+        ui++;
+    }
+}
+
+void zUIMgr::Touch(_zUI* ui)
+{
+    if (ui->baseType == eBaseTypeUI)
+    {
+        Remove(ui);
+        Add(ui);
+    }
+}
+
+void zUIMgr::Remove(_zUI* ui)
+{
+    Remove_PreUpdate(ui);
+    Remove_Update(ui);
+}
+
+void zUIMgr::Remove_PreUpdate(_zUI* ui)
+{
+    if (ui->preUpdateIndex < m_preUpdateStart)
+    {
+        if (ui->preUpdateIndex != m_preUpdateStart - 1)
+        {
+            _zUI* r5 = m_preUpdate[m_preUpdateStart - 1];
+
+            m_preUpdate[ui->preUpdateIndex] = r5;
+            r5->preUpdateIndex = ui->preUpdateIndex;
+        }
+
+        m_preUpdateStart--;
+    }
+    else
+    {
+        if (ui->preUpdateIndex != m_preUpdateEnd + 1)
+        {
+            _zUI* r5 = m_preUpdate[m_preUpdateEnd + 1];
+
+            m_preUpdate[ui->preUpdateIndex] = r5;
+            r5->preUpdateIndex = ui->preUpdateIndex;
+        }
+
+        m_preUpdateEnd++;
+    }
+}
+
+void zUIMgr::Remove_Update(_zUI* ui)
+{
+    if (ui->updateIndex < m_updateStart)
+    {
+        if (ui->updateIndex != m_updateStart - 1)
+        {
+            _zUI* r5 = m_update[m_updateStart - 1];
+
+            m_update[ui->updateIndex] = r5;
+            r5->updateIndex = ui->updateIndex;
+        }
+
+        m_updateStart--;
+    }
+    else
+    {
+        if (ui->updateIndex != m_updateEnd + 1)
+        {
+            _zUI* r5 = m_update[m_updateEnd + 1];
+
+            m_update[ui->updateIndex] = r5;
+            r5->updateIndex = ui->updateIndex;
+        }
+
+        m_updateEnd++;
+    }
+}
+
+void zUIMgr::Add(_zUI* ui)
+{
+    Add_PreUpdate(ui);
+    Add_Update(ui);
+}
+
+void zUIMgr::Add_PreUpdate(_zUI* ui)
+{
+    if (ui->uiFlags & 0x8 && (ui->uiFlags & 0x2 || ui->uiFlags & 0x1))
+    {
+        ui->preUpdateIndex = m_preUpdateStart;
+        m_preUpdate[m_preUpdateStart++] = ui;
+    }
+    else
+    {
+        ui->preUpdateIndex = m_preUpdateEnd;
+        m_preUpdate[m_preUpdateEnd--] = ui;
+    }
+}
+
+void zUIMgr::Add_Update(_zUI* ui)
+{
+    if (xEntIsVisible(ui))
+    {
+        ui->updateIndex = m_updateStart;
+        m_update[m_updateStart++] = ui;
+    }
+    else
+    {
+        ui->updateIndex = m_updateEnd;
+        m_update[m_updateEnd--] = ui;
+    }
+}
+
+void zUI_Init()
+{
+    init_tweaks();
+}
+
+void zUI_Init(void* ent, void* asset)
+{
+    zUI_Init((_zUI*)ent, (xEntAsset*)asset);
+}
+
+namespace
+{
+    xModelInstance* load_model(U32 id)
+    {
+        U32 size;
+        void* data;
+
+        data = xSTFindAsset(xStrHashCat(id, ".minf"), &size);
+
+        if (data)
+        {
+            return zEntRecurseModelInfo(data, NULL);
+        }
+
+        data = xSTFindAsset(id, &size);
+
+        if (!data)
+        {
+            data = xSTFindAsset(xStrHashCat(id, ".dff"), &size);
+        }
+
+        if (!data)
+        {
+            return NULL;
+        }
+
+        return xModelInstanceAlloc((RpAtomic*)data, NULL, 0, 0, NULL);
+    }
+
+    void load_anim_list(_zUI& ui)
+    {
+        if (ui.model)
+        {
+            zUIAsset& a = *ui.sasset;
+
+            if (a.animListID)
+            {
+                ui.atbl = NULL;
+
+                S32 used = zAnimListGetNumUsed(a.animListID);
+
+                if (used > 0)
+                {
+                    ui.atbl = zAnimListGetTable(a.animListID);
+
+                    xAnimPoolAlloc(&globals.sceneCur->mempool, &ui, ui.atbl, ui.model);
+
+                    xAnimState* ast = xAnimTableGetState(ui.atbl, "idle");
+
+                    if (ast)
+                    {
+                        xAnimSingle* single = ui.model->Anim->Single;
+
+                        single->State = ast;
+                        single->Time = 0.0f;
+                        single->CurrentSpeed = 1.0f;
+                    }
+                }
+            }
+        }
+    }
+} // namespace
+
+void zUI_Init(_zUI* ent, xEntAsset* asset)
+{
+    zUIAsset* sasset = (zUIAsset*)asset;
+
+    xEntInit(ent, asset);
+
+    ent->collType = XENT_COLLTYPE_NONE;
+    ent->bound.type = XBOUND_TYPE_NA;
+    ent->sasset = sasset;
+    ent->pflags = 0;
+
+    if (ent->baseType == eBaseTypeUI && sasset->modelInfoID)
+    {
+        ent->model = load_model(sasset->modelInfoID);
+        load_anim_list(*ent);
+    }
+
+    ent->penby = XENT_COLLTYPE_NONE;
+    ent->chkby = XENT_COLLTYPE_NONE;
+    ent->update = (xEntUpdateCallback)zUI_Update;
+    ent->move = NULL;
+    ent->eventFunc = zUIEventCB;
+
+    if (ent->linkCount)
+    {
+        ent->link = (xLinkAsset*)(sasset + 1);
+    }
+
+    ent->eventFunc = zUIEventCB;
+    ent->uiFlags = sasset->uiFlags;
+
+    if (ent->uiFlags & 0x4)
+    {
+        ent->render = NULL;
+    }
+
+    zEntReset(ent);
+    refresh_model(*ent);
+
+    sSortedCount = 0;
+
+    if (ent->asset->surfaceID)
+    {
+        xSurface* surf = (xSurface*)xSceneResolvID(g_xSceneCur, ent->asset->surfaceID);
+
+        if (surf)
+        {
+            surf->type = XSURFACE_TYPE_3;
+            surf->ent = ent;
+
+            xModelInstance* minst = ent->model;
+
+            while (minst)
+            {
+                minst->Surf = surf;
+                minst = minst->Next;
+            }
+        }
+    }
+
+    cKeyUIid1off = xStrHash("KEY OFF 1 UI");
+    cKeyUIid2off = xStrHash("KEY OFF 2 UI");
+    cKeyUIid3off = xStrHash("KEY OFF 3 UI");
+    cKeyUIid4off = xStrHash("KEY OFF 4 UI");
+    cKeyUIid1on = xStrHash("KEY ON 1 UI");
+    cKeyUIid2on = xStrHash("KEY ON 2 UI");
+    cKeyUIid3on = xStrHash("KEY ON 3 UI");
+    cKeyUIid4on = xStrHash("KEY ON 4 UI");
+}
+
+void zUI_Save(_zUI* ent, xSerial* s)
+{
+    zEntSave(ent, s);
+}
 
 void zUI_Load(_zUI* ent, xSerial* s)
 {
     zEntLoad(ent, s);
 }
 
-//void zUI_Reset(_zUI* ent)
-//{
-//    zEntReset(ent);
-//    refresh_model(*ent);
-//
-//    ent->pflags = 0;
-//    ent->penby |= XENT_COLLTYPE_PLYR; // interesting...
-//    ent->chkby = XENT_COLLTYPE_NONE;
-//    ent->uiFlags = ent->sasset->uiFlags;
-//
-//    sSortedCount = 0;
-//
-//    // non-matching: epilogue
-//}
-//
-//void zUI_PreUpdate(_zUI* ent, xScene*, F32)
-//{
-//    _zUI* ui = ent;
-//
-//    ent->uiButton = 0;
-//    // This matches perfectly with inlining enabled
-//    for (S32 i = 0; i < (globals.firstStartPressed ? 1 : 1); i++)
-//    {
-//        _tagxPad* pad;
-//
-//        switch (i)
-//        {
-//        case 0:
-//        {
-//            pad = globals.pad0;
-//            break;
-//        }
-//        case 1:
-//        {
-//            pad = globals.pad1;
-//            break;
-//        }
-//        case 2:
-//        {
-//            pad = globals.pad2;
-//            break;
-//        }
-//        default:
-//        {
-//            pad = globals.pad3;
-//            break;
-//        }
-//        }
-//
-//        if (pad && pad->pressed && ui->uiFlags & 0x8 && (ui->uiFlags & 0x2 || ui->uiFlags & 0x1))
-//        {
-//            if (gTrcPad[0].state == TRC_PadInserted)
-//            {
-//                if (pad->pressed & XPAD_BUTTON_UP)
-//                {
-//                    ui->uiButton |= XPAD_BUTTON_UP;
-//                }
-//                else if (pad->pressed & XPAD_BUTTON_DOWN)
-//                {
-//                    ui->uiButton |= XPAD_BUTTON_DOWN;
-//                }
-//                else if (pad->pressed & XPAD_BUTTON_LEFT)
-//                {
-//                    ui->uiButton |= XPAD_BUTTON_LEFT;
-//                }
-//                else if (pad->pressed & XPAD_BUTTON_RIGHT)
-//                {
-//                    ui->uiButton |= XPAD_BUTTON_RIGHT;
-//                }
-//
-//                if (pad->pressed & XPAD_BUTTON_START)
-//                {
-//                    ui->uiButton |= XPAD_BUTTON_START;
-//                }
-//
-//                if (pad->pressed & XPAD_BUTTON_SELECT)
-//                {
-//                    ui->uiButton |= XPAD_BUTTON_SELECT;
-//                }
-//
-//                if (pad->pressed & XPAD_BUTTON_R1)
-//                {
-//                    ui->uiButton |= XPAD_BUTTON_R1;
-//                }
-//
-//                if (pad->pressed & XPAD_BUTTON_R2)
-//                {
-//                    ui->uiButton |= XPAD_BUTTON_R2;
-//                }
-//
-//                if (pad->pressed & XPAD_BUTTON_L1)
-//                {
-//                    ui->uiButton |= XPAD_BUTTON_L1;
-//                }
-//
-//                if (pad->pressed & XPAD_BUTTON_L2)
-//                {
-//                    ui->uiButton |= XPAD_BUTTON_L2;
-//                }
-//
-//                if (pad->pressed & XPAD_BUTTON_X)
-//                {
-//                    ui->uiButton |= XPAD_BUTTON_X;
-//                }
-//
-//                if (pad->pressed & XPAD_BUTTON_O)
-//                {
-//                    ui->uiButton |= XPAD_BUTTON_O;
-//                }
-//
-//                if (pad->pressed & XPAD_BUTTON_SQUARE)
-//                {
-//                    ui->uiButton |= XPAD_BUTTON_SQUARE;
-//                }
-//
-//                if (pad->pressed & XPAD_BUTTON_TRIANGLE)
-//                {
-//                    ui->uiButton |= XPAD_BUTTON_TRIANGLE;
-//                }
-//
-//                if (ui->uiButton)
-//                {
-//                    ui->uiFlags |= 0x40;
-//                }
-//            }
-//            else if (globals.firstStartPressed)
-//            {
-//                if (pad->pressed & 0x1)
-//                {
-//                    pad->pressed &= ~XPAD_BUTTON_START;
-//                    gTrcPad[0].state = TRC_PadInserted;
-//
-//                    xTRCReset();
-//                }
-//            }
-//            else if (pad->pressed & 0x1 && (ui->asset->id == xStrHash("MNU3 PRESS START UIF") ||
-//                                            ui->asset->id == xStrHash("MNU3 PRESS START 02 UIF")))
-//            {
-//                globals.currentActivePad = i;
-//
-//                gTrcPad[0].state = TRC_PadInserted;
-//                gTrcPad[0].id = i;
-//
-//                _tagxPad* p = iPadEnable(&mPad[i], i);
-//
-//                xPadRumbleEnable(i, 1);
-//
-//                globals.pad0 = p;
-//
-//                ui->uiButton |= XPAD_BUTTON_START;
-//
-//                globals.firstStartPressed = 1;
-//            }
-//        }
-//    }
-//}
-//
-//void zUI_Update(_zUI* ent, xScene*, F32 dt)
-//{
-//    if (xEntIsVisible(ent) && ent->model && (!(ent->uiFlags & 0x4) || !ent->sasset->textureID))
-//    {
-//        xModelUpdate(ent->model, dt);
-//        xModelEval(ent->model);
-//    }
-//
-//    if (ent->uiButton && gTrcPad[0].state == TRC_PadInserted)
-//    {
-//        if (ent->uiButton & XPAD_BUTTON_UP)
-//        {
-//            zEntEvent(ent, ent, eEventPadPressUp);
-//        }
-//        else if (ent->uiButton & XPAD_BUTTON_DOWN)
-//        {
-//            zEntEvent(ent, ent, eEventPadPressDown);
-//        }
-//        else if (ent->uiButton & XPAD_BUTTON_LEFT)
-//        {
-//            zEntEvent(ent, ent, eEventPadPressLeft);
-//        }
-//        else if (ent->uiButton & XPAD_BUTTON_RIGHT)
-//        {
-//            zEntEvent(ent, ent, eEventPadPressRight);
-//        }
-//        else if (ent->uiButton & XPAD_BUTTON_START)
-//        {
-//            zEntEvent(ent, ent, eEventPadPressStart);
-//        }
-//        else if (ent->uiButton & XPAD_BUTTON_SELECT)
-//        {
-//            zEntEvent(ent, ent, eEventPadPressSelect);
-//        }
-//        else if (ent->uiButton & XPAD_BUTTON_R1)
-//        {
-//            zEntEvent(ent, ent, eEventPadPressR1);
-//            ent->uiButton = XPAD_BUTTON_R1;
-//        }
-//        else if (ent->uiButton & XPAD_BUTTON_R2)
-//        {
-//            zEntEvent(ent, ent, eEventPadPressR2);
-//            ent->uiButton = XPAD_BUTTON_R2;
-//        }
-//        else if (ent->uiButton & XPAD_BUTTON_L1)
-//        {
-//            zEntEvent(ent, ent, eEventPadPressL1);
-//        }
-//        else if (ent->uiButton & XPAD_BUTTON_L2)
-//        {
-//            zEntEvent(ent, ent, eEventPadPressL2);
-//        }
-//        else if (ent->uiButton & XPAD_BUTTON_X)
-//        {
-//            zEntEvent(ent, ent, eEventPadPressX);
-//        }
-//        else if (ent->uiButton & XPAD_BUTTON_O)
-//        {
-//            zEntEvent(ent, ent, eEventPadPressO);
-//        }
-//        else if (ent->uiButton & XPAD_BUTTON_TRIANGLE)
-//        {
-//            zEntEvent(ent, ent, eEventPadPressTriangle);
-//        }
-//        else if (ent->uiButton & XPAD_BUTTON_SQUARE)
-//        {
-//            zEntEvent(ent, ent, eEventPadPressSquare);
-//        }
-//
-//        ent->uiFlags &= ~0x40;
-//    }
-//}
-//
-//static xBase* zUIRenderIteratorInsert(xBase* b, zScene*, void*)
-//{
-//    sSorted[sSortedCount++] = (_zUI*)b;
-//    return b;
-//}
-//
-//S32 iRenderQSort_Face(const void* arg1, const void* arg2)
-//{
-//    _zUI* f1 = *(_zUI**)arg1;
-//    _zUI* f2 = *(_zUI**)arg2;
-//
-//    bool font1, font2;
-//
-//    font1 = (f1->baseType == eBaseTypeUIFont);
-//    font2 = (f2->baseType == eBaseTypeUIFont);
-//
-//    if (font1 && !font2)
-//    {
-//        return 1;
-//    }
-//
-//    if (font2 && !font1)
-//    {
-//        return -1;
-//    }
-//
-//    font1 = (f1->baseType == eBaseTypeUI && f1->sasset->textureID == 0);
-//    font2 = (f2->baseType == eBaseTypeUI && f2->sasset->textureID == 0);
-//
-//    if (font1 && !font2)
-//    {
-//        return 1;
-//    }
-//
-//    if (!font1 && font2)
-//    {
-//        return -1;
-//    }
-//
-//    if (f1->sasset->pos.z < f2->sasset->pos.z)
-//    {
-//        return 1;
-//    }
-//
-//    if (f1->sasset->pos.z > f2->sasset->pos.z)
-//    {
-//        return -1;
-//    }
-//
-//    return 0;
-//}
-//
-//void zUIRenderAll()
-//{
-//    // non-matching: floats are epic
-//
-//    ushift += 0.05f;
-//
-//    if (ushift >= 2.0f)
-//    {
-//        ushift -= 2.0f;
-//    }
-//
-//    if (!sSortedCount)
-//    {
-//        zSceneForAllBase(zUIRenderIteratorInsert, eBaseTypeUI, NULL);
-//        zSceneForAllBase(zUIRenderIteratorInsert, eBaseTypeUIFont, NULL);
-//
-//        if (sSortedCount > 1)
-//        {
-//            qsort(sSorted, sSortedCount, sizeof(_zUI*), iRenderQSort_Face);
-//        }
-//    }
-//
-//    bool rendering_models = false;
-//
-//    for (S32 i = 0; i < (S32)sSortedCount; i++)
-//    {
-//        if (xEntIsVisible(sSorted[i]))
-//        {
-//            if (sSorted[i]->baseType == eBaseTypeUI)
-//            {
-//                if (!rendering_models && !sSorted[i]->sasset->textureID)
-//                {
-//                    zRenderState(SDRS_AlphaModels);
-//                    rendering_models = true;
-//                }
-//
-//                zUI_Render(sSorted[i]);
-//            }
-//            else
-//            {
-//                if (zGameIsPaused())
-//                {
-//                    if (!(((zUIFontAsset*)sSorted[i]->sasset)->uiFontFlags & 0x100))
-//                    {
-//                        zUIFont_Render(sSorted[i]);
-//                    }
-//                }
-//                else
-//                {
-//                    zUIFont_Render(sSorted[i]);
-//                }
-//            }
-//        }
-//    }
-//
-//    debug_render();
-//}
-//
-//void zUI_Render(xEnt* ent)
-//{
-//    static xVec3 from = { 0.0f, 0.0f, -1.0f };
-//    static xVec3 to = { 0.0f, 0.0f, 0.0f };
-//
-//    _zUI* ui = (_zUI*)ent;
-//    if (xScrFxIsLetterbox())
-//    {
-//        if (ent->id == cKeyUIid1off || ent->id == cKeyUIid2off || ent->id == cKeyUIid3off ||
-//            ent->id == cKeyUIid4off || ent->id == cKeyUIid1on || ent->id == cKeyUIid2on ||
-//            ent->id == cKeyUIid3on || ent->id == cKeyUIid4on)
-//        {
-//            return;
-//        }
-//    }
-//
-//    if (ui->uiFlags & 4)
-//    {
-//        if (xEntIsVisible(ui))
-//        {
-//            if (ui->sasset->textureID)
-//            {
-//                RwTexture* texture = (RwTexture*)xSTFindAsset(ui->sasset->textureID, 0);
-//
-//                if (texture != NULL && texture->raster != NULL)
-//                {
-//                    RwRenderStateSet(rwRENDERSTATETEXTURERASTER, texture->raster);
-//                }
-//
-//                RwRaster* raster = texture->raster;
-//                U8 r = 0xFF;
-//                U8 g = 0xFF;
-//                U8 b = 0xFF;
-//                U8 a = 0xFF;
-//                F32 w = 640.0f;
-//                F32 h = 480.0f;
-//
-//                F32 u1 = ui->sasset->uva[0];
-//                F32 v1 = ui->sasset->uva[1];
-//                F32 u2 = ui->sasset->uvb[0];
-//                F32 v2 = ui->sasset->uvb[1];
-//                F32 u3 = ui->sasset->uvc[0];
-//                F32 v3 = ui->sasset->uvc[1];
-//                F32 u4 = ui->sasset->uvd[0];
-//                F32 v4 = ui->sasset->uvd[1];
-//                F32 x1 = w * ui->sasset->pos.x / w;
-//                F32 y1 = h * ui->sasset->pos.y / h;
-//                F32 x2 = w * (ui->sasset->pos.x + ui->sasset->dim[0]) / w;
-//                F32 y2 = h * (ui->sasset->pos.y + ui->sasset->dim[1]) / h;
-//
-//                F32 z = RwIm2DGetNearScreenZ();
-//                F32 cz = z;
-//
-//                if ((float)iabs(z) <= 0.00001f)
-//                {
-//                    cz = z >= 0.0f ? 0.00001f : -0.00001f;
-//                }
-//
-//                RwIm2DVertexSetIntRGBA(&Vertex[0], 0xFF, 0xFF, 0xFF, 0xFF);
-//                RwIm2DVertexSetIntRGBA(&Vertex[1], 0xFF, 0xFF, 0xFF, 0xFF);
-//                RwIm2DVertexSetIntRGBA(&Vertex[2], 0xFF, 0xFF, 0xFF, 0xFF);
-//                RwIm2DVertexSetIntRGBA(&Vertex[3], 0xFF, 0xFF, 0xFF, 0xFF);
-//
-//                RwIm2DVertexSetScreenX(&Vertex[0], x1);
-//                RwIm2DVertexSetScreenY(&Vertex[0], y1);
-//                RwIm2DVertexSetScreenZ(&Vertex[0], cz);
-//                RwIm2DVertexSetU(&Vertex[0], u1, 0);
-//                RwIm2DVertexSetV(&Vertex[0], v1, 0);
-//
-//                RwIm2DVertexSetScreenX(&Vertex[1], x1);
-//                RwIm2DVertexSetScreenY(&Vertex[1], y2);
-//                RwIm2DVertexSetScreenZ(&Vertex[1], cz);
-//                RwIm2DVertexSetU(&Vertex[1], u4, 0);
-//                RwIm2DVertexSetV(&Vertex[1], v4, 0);
-//
-//                RwIm2DVertexSetScreenX(&Vertex[2], x2);
-//                RwIm2DVertexSetScreenY(&Vertex[2], y2);
-//                RwIm2DVertexSetScreenZ(&Vertex[2], cz);
-//                RwIm2DVertexSetU(&Vertex[2], u3, 0);
-//                RwIm2DVertexSetV(&Vertex[2], v3, 0);
-//
-//                RwIm2DVertexSetScreenX(&Vertex[3], x2);
-//                RwIm2DVertexSetScreenY(&Vertex[3], y1);
-//                RwIm2DVertexSetScreenZ(&Vertex[3], cz);
-//                RwIm2DVertexSetU(&Vertex[3], u2, 0);
-//                RwIm2DVertexSetV(&Vertex[3], v2, 0);
-//
-//                // For some reason this is done twice.
-//                RwIm2DVertexSetIntRGBA(&Vertex[0], 0xFF, 0xFF, 0xFF, 0xFF);
-//                RwIm2DVertexSetIntRGBA(&Vertex[1], 0xFF, 0xFF, 0xFF, 0xFF);
-//                RwIm2DVertexSetIntRGBA(&Vertex[2], 0xFF, 0xFF, 0xFF, 0xFF);
-//                RwIm2DVertexSetIntRGBA(&Vertex[3], 0xFF, 0xFF, 0xFF, 0xFF);
-//
-//                zRenderState(SDRS_Default);
-//                RwRenderStateSet(rwRENDERSTATEFOGENABLE, 0);
-//                RwRenderStateSet(rwRENDERSTATESRCBLEND, (void*)rwBLENDSRCALPHA);
-//                RwRenderStateSet(rwRENDERSTATEDESTBLEND, (void*)rwBLENDINVSRCALPHA);
-//                RwRenderStateSet(rwRENDERSTATEVERTEXALPHAENABLE, (void*)1);
-//                RwRenderStateSet(rwRENDERSTATESHADEMODE, (void*)rwSHADEMODEFLAT);
-//                RwRenderStateSet(rwRENDERSTATEZWRITEENABLE, 0);
-//                RwIm2DRenderIndexedPrimitive(rwPRIMTYPETRILIST, Vertex, 4, Index, 6);
-//            }
-//            else if (ui->model != NULL)
-//            {
-//                // zUIAsset & a;
-//                basic_rect<F32> r = {};
-//                r.x = ui->sasset->pos.x / 640.0f;
-//                r.y = ui->sasset->pos.y / 480.0f;
-//                r.w = ui->sasset->dim[0] / 640.0f;
-//                r.h = ui->sasset->dim[1] / 480.0f;
-//
-//                if (r.w <= 0.0f || r.h <= 0.0f)
-//                {
-//                    return;
-//                }
-//
-//                U32 srcblend = XMODELINSTANCE_GET_SRCBLEND(ui->model);
-//                U32 destblend = XMODELINSTANCE_GET_DSTBLEND(ui->model);
-//                RwRenderStateSet(rwRENDERSTATESRCBLEND,
-//                                 (void*)(srcblend ? srcblend : rwBLENDSRCALPHA));
-//                RwRenderStateSet(rwRENDERSTATEDESTBLEND,
-//                                 (void*)(destblend ? destblend : rwBLENDINVSRCALPHA));
-//
-//                if ((ui->model->PipeFlags & 0b1100) == rwBLENDINVSRCCOLOR)
-//                {
-//                    RwRenderStateSet(rwRENDERSTATEZWRITEENABLE, 0);
-//                    RwRenderStateSet(rwRENDERSTATEZTESTENABLE, 0);
-//                }
-//
-//                xEntSetupPipeline(ui->model);
-//
-//                ui->model->Scale.assign(1.0f, 1.0f, 1.0f);
-//                xModelRender2D(*ui->model, r, from, to);
-//                xEntRestorePipeline(ui->model);
-//
-//                if ((ui->model->PipeFlags & 0b1100) == rwBLENDINVSRCCOLOR)
-//                {
-//                    RwRenderStateSet(rwRENDERSTATEZWRITEENABLE, (void*)1);
-//                    RwRenderStateSet(rwRENDERSTATEZTESTENABLE, (void*)1);
-//                }
-//            }
-//        }
-//    }
-//    else
-//    {
-//        xEntRender(ui);
-//    }
-//}
-//
-//S32 zUIEventCB(xBase*, xBase* to, U32 toEvent, const F32* toParam, xBase*)
-//{
-//    _zUI* s = (_zUI*)to;
-//
-//    switch (toEvent)
-//    {
-//    case eEventVisible:
-//    {
-//        xEntShow(s);
-//        gUIMgr.Touch(s);
-//        break;
-//    }
-//    case eEventInvisible:
-//    {
-//        xEntHide(s);
-//        gUIMgr.Touch(s);
-//        break;
-//    }
-//    case eEventReset:
-//    {
-//        zUI_Reset(s);
-//        break;
-//    }
-//    case eEventUISelect:
-//    {
-//        if (s->id == xStrHash("MNU4 CONTROL MUSIC GC/XB UIF"))
-//        {
-//            xSndPauseCategory(SND_CAT_UI, 0);
-//        }
-//
-//        s->uiFlags |= 0x2;
-//
-//        gUIMgr.Touch(s);
-//
-//        break;
-//    }
-//    case eEventUIUnselect:
-//    {
-//        if (s->uiFlags & 0x2)
-//        {
-//            s->uiFlags ^= 0x2;
-//        }
-//
-//        if (s->id == xStrHash("MNU4 CONTROL MUSIC GC/XB UIF"))
-//        {
-//            xSndPauseCategory(SND_CAT_UI, 1);
-//        }
-//
-//        gUIMgr.Touch(s);
-//
-//        break;
-//    }
-//    case eEventUIFocusOn:
-//    {
-//        s->uiFlags |= 0x8;
-//
-//        gUIMgr.Touch(s);
-//
-//        if (s->uiFlags & 0x10)
-//        {
-//            zEntEvent(s, s, eEventVisible);
-//        }
-//
-//        break;
-//    }
-//    case eEventUIFocusOff:
-//    {
-//        if (s->uiFlags & 0x8)
-//        {
-//            s->uiFlags ^= 0x8;
-//        }
-//
-//        gUIMgr.Touch(s);
-//
-//        if (s->uiFlags & 0x20)
-//        {
-//            zEntEvent(s, s, eEventInvisible);
-//        }
-//
-//        break;
-//    }
-//    case eEventUIFocusOn_Select:
-//    {
-//        zEntEvent(s, s, eEventUIFocusOn);
-//        zEntEvent(s, s, eEventUISelect);
-//        break;
-//    }
-//    case eEventUIFocusOff_Unselect:
-//    {
-//        zEntEvent(s, s, eEventUIFocusOff);
-//        zEntEvent(s, s, eEventUIUnselect);
-//        break;
-//    }
-//    case eEventUIChangeTexture:
-//    {
-//        if (s->sasset)
-//        {
-//            U32 theTextureID = *(U32*)&toParam[0];
-//
-//            if (theTextureID)
-//            {
-//                RwTexture* texture = (RwTexture*)xSTFindAsset(theTextureID, NULL);
-//
-//                if (texture)
-//                {
-//                    s->sasset->textureID = theTextureID;
-//                }
-//                else
-//                {
-//                    s->sasset->textureID = 0;
-//                }
-//            }
-//            else
-//            {
-//                s->sasset->textureID = 0;
-//            }
-//        }
-//
-//        break;
-//    }
-//    }
-//
-//    return 1;
-//}
-//
+void zUI_Reset(_zUI* ent)
+{
+    zEntReset(ent);
+    refresh_model(*ent);
+
+    ent->pflags = 0;
+    ent->penby |= XENT_COLLTYPE_PLYR; // interesting...
+    ent->chkby = XENT_COLLTYPE_NONE;
+    ent->uiFlags = ent->sasset->uiFlags;
+
+    sSortedCount = 0;
+
+    // non-matching: epilogue
+}
+
+void zUI_PreUpdate(_zUI* ent, xScene*, F32)
+{
+    _zUI* ui = ent;
+
+    ent->uiButton = 0;
+    // This matches perfectly with inlining enabled
+    for (S32 i = 0; i < (globals.firstStartPressed ? 1 : 1); i++)
+    {
+        _tagxPad* pad;
+
+        switch (i)
+        {
+        case 0:
+        {
+            pad = globals.pad0;
+            break;
+        }
+        case 1:
+        {
+            pad = globals.pad1;
+            break;
+        }
+        case 2:
+        {
+            pad = globals.pad2;
+            break;
+        }
+        default:
+        {
+            pad = globals.pad3;
+            break;
+        }
+        }
+
+        if (pad && pad->pressed && ui->uiFlags & 0x8 && (ui->uiFlags & 0x2 || ui->uiFlags & 0x1))
+        {
+            if (gTrcPad[0].state == TRC_PadInserted)
+            {
+                if (pad->pressed & XPAD_BUTTON_UP)
+                {
+                    ui->uiButton |= XPAD_BUTTON_UP;
+                }
+                else if (pad->pressed & XPAD_BUTTON_DOWN)
+                {
+                    ui->uiButton |= XPAD_BUTTON_DOWN;
+                }
+                else if (pad->pressed & XPAD_BUTTON_LEFT)
+                {
+                    ui->uiButton |= XPAD_BUTTON_LEFT;
+                }
+                else if (pad->pressed & XPAD_BUTTON_RIGHT)
+                {
+                    ui->uiButton |= XPAD_BUTTON_RIGHT;
+                }
+
+                if (pad->pressed & XPAD_BUTTON_START)
+                {
+                    ui->uiButton |= XPAD_BUTTON_START;
+                }
+
+                if (pad->pressed & XPAD_BUTTON_SELECT)
+                {
+                    ui->uiButton |= XPAD_BUTTON_SELECT;
+                }
+
+                if (pad->pressed & XPAD_BUTTON_R1)
+                {
+                    ui->uiButton |= XPAD_BUTTON_R1;
+                }
+
+                if (pad->pressed & XPAD_BUTTON_R2)
+                {
+                    ui->uiButton |= XPAD_BUTTON_R2;
+                }
+
+                if (pad->pressed & XPAD_BUTTON_L1)
+                {
+                    ui->uiButton |= XPAD_BUTTON_L1;
+                }
+
+                if (pad->pressed & XPAD_BUTTON_L2)
+                {
+                    ui->uiButton |= XPAD_BUTTON_L2;
+                }
+
+                if (pad->pressed & XPAD_BUTTON_X)
+                {
+                    ui->uiButton |= XPAD_BUTTON_X;
+                }
+
+                if (pad->pressed & XPAD_BUTTON_O)
+                {
+                    ui->uiButton |= XPAD_BUTTON_O;
+                }
+
+                if (pad->pressed & XPAD_BUTTON_SQUARE)
+                {
+                    ui->uiButton |= XPAD_BUTTON_SQUARE;
+                }
+
+                if (pad->pressed & XPAD_BUTTON_TRIANGLE)
+                {
+                    ui->uiButton |= XPAD_BUTTON_TRIANGLE;
+                }
+
+                if (ui->uiButton)
+                {
+                    ui->uiFlags |= 0x40;
+                }
+            }
+            else if (globals.firstStartPressed)
+            {
+                if (pad->pressed & 0x1)
+                {
+                    pad->pressed &= ~XPAD_BUTTON_START;
+                    gTrcPad[0].state = TRC_PadInserted;
+
+                    xTRCReset();
+                }
+            }
+            else if (pad->pressed & 0x1 && (ui->asset->id == xStrHash("MNU3 PRESS START UIF") ||
+                                            ui->asset->id == xStrHash("MNU3 PRESS START 02 UIF")))
+            {
+                globals.currentActivePad = i;
+
+                gTrcPad[0].state = TRC_PadInserted;
+                gTrcPad[0].id = i;
+
+                _tagxPad* p = iPadEnable(&mPad[i], i);
+
+                xPadRumbleEnable(i, 1);
+
+                globals.pad0 = p;
+
+                ui->uiButton |= XPAD_BUTTON_START;
+
+                globals.firstStartPressed = 1;
+            }
+        }
+    }
+}
+
+void zUI_Update(_zUI* ent, xScene*, F32 dt)
+{
+    if (xEntIsVisible(ent) && ent->model && (!(ent->uiFlags & 0x4) || !ent->sasset->textureID))
+    {
+        xModelUpdate(ent->model, dt);
+        xModelEval(ent->model);
+    }
+
+    if (ent->uiButton && gTrcPad[0].state == TRC_PadInserted)
+    {
+        if (ent->uiButton & XPAD_BUTTON_UP)
+        {
+            zEntEvent(ent, ent, eEventPadPressUp);
+        }
+        else if (ent->uiButton & XPAD_BUTTON_DOWN)
+        {
+            zEntEvent(ent, ent, eEventPadPressDown);
+        }
+        else if (ent->uiButton & XPAD_BUTTON_LEFT)
+        {
+            zEntEvent(ent, ent, eEventPadPressLeft);
+        }
+        else if (ent->uiButton & XPAD_BUTTON_RIGHT)
+        {
+            zEntEvent(ent, ent, eEventPadPressRight);
+        }
+        else if (ent->uiButton & XPAD_BUTTON_START)
+        {
+            zEntEvent(ent, ent, eEventPadPressStart);
+        }
+        else if (ent->uiButton & XPAD_BUTTON_SELECT)
+        {
+            zEntEvent(ent, ent, eEventPadPressSelect);
+        }
+        else if (ent->uiButton & XPAD_BUTTON_R1)
+        {
+            zEntEvent(ent, ent, eEventPadPressR1);
+            ent->uiButton = XPAD_BUTTON_R1;
+        }
+        else if (ent->uiButton & XPAD_BUTTON_R2)
+        {
+            zEntEvent(ent, ent, eEventPadPressR2);
+            ent->uiButton = XPAD_BUTTON_R2;
+        }
+        else if (ent->uiButton & XPAD_BUTTON_L1)
+        {
+            zEntEvent(ent, ent, eEventPadPressL1);
+        }
+        else if (ent->uiButton & XPAD_BUTTON_L2)
+        {
+            zEntEvent(ent, ent, eEventPadPressL2);
+        }
+        else if (ent->uiButton & XPAD_BUTTON_X)
+        {
+            zEntEvent(ent, ent, eEventPadPressX);
+        }
+        else if (ent->uiButton & XPAD_BUTTON_O)
+        {
+            zEntEvent(ent, ent, eEventPadPressO);
+        }
+        else if (ent->uiButton & XPAD_BUTTON_TRIANGLE)
+        {
+            zEntEvent(ent, ent, eEventPadPressTriangle);
+        }
+        else if (ent->uiButton & XPAD_BUTTON_SQUARE)
+        {
+            zEntEvent(ent, ent, eEventPadPressSquare);
+        }
+
+        ent->uiFlags &= ~0x40;
+    }
+}
+
+static xBase* zUIRenderIteratorInsert(xBase* b, zScene*, void*)
+{
+    sSorted[sSortedCount++] = (_zUI*)b;
+    return b;
+}
+
+S32 iRenderQSort_Face(const void* arg1, const void* arg2)
+{
+    _zUI* f1 = *(_zUI**)arg1;
+    _zUI* f2 = *(_zUI**)arg2;
+
+    bool font1, font2;
+
+    font1 = (f1->baseType == eBaseTypeUIFont);
+    font2 = (f2->baseType == eBaseTypeUIFont);
+
+    if (font1 && !font2)
+    {
+        return 1;
+    }
+
+    if (font2 && !font1)
+    {
+        return -1;
+    }
+
+    font1 = (f1->baseType == eBaseTypeUI && f1->sasset->textureID == 0);
+    font2 = (f2->baseType == eBaseTypeUI && f2->sasset->textureID == 0);
+
+    if (font1 && !font2)
+    {
+        return 1;
+    }
+
+    if (!font1 && font2)
+    {
+        return -1;
+    }
+
+    if (f1->sasset->pos.z < f2->sasset->pos.z)
+    {
+        return 1;
+    }
+
+    if (f1->sasset->pos.z > f2->sasset->pos.z)
+    {
+        return -1;
+    }
+
+    return 0;
+}
+
+void zUIRenderAll()
+{
+    // non-matching: floats are epic
+
+    ushift += 0.05f;
+
+    if (ushift >= 2.0f)
+    {
+        ushift -= 2.0f;
+    }
+
+    if (!sSortedCount)
+    {
+        zSceneForAllBase(zUIRenderIteratorInsert, eBaseTypeUI, NULL);
+        zSceneForAllBase(zUIRenderIteratorInsert, eBaseTypeUIFont, NULL);
+
+        if (sSortedCount > 1)
+        {
+            qsort(sSorted, sSortedCount, sizeof(_zUI*), iRenderQSort_Face);
+        }
+    }
+
+    bool rendering_models = false;
+
+    for (S32 i = 0; i < (S32)sSortedCount; i++)
+    {
+        if (xEntIsVisible(sSorted[i]))
+        {
+            if (sSorted[i]->baseType == eBaseTypeUI)
+            {
+                if (!rendering_models && !sSorted[i]->sasset->textureID)
+                {
+                    zRenderState(SDRS_AlphaModels);
+                    rendering_models = true;
+                }
+
+                zUI_Render(sSorted[i]);
+            }
+            else
+            {
+                if (zGameIsPaused())
+                {
+                    if (!(((zUIFontAsset*)sSorted[i]->sasset)->uiFontFlags & 0x100))
+                    {
+                        zUIFont_Render(sSorted[i]);
+                    }
+                }
+                else
+                {
+                    zUIFont_Render(sSorted[i]);
+                }
+            }
+        }
+    }
+
+    debug_render();
+}
+
+void zUI_Render(xEnt* ent)
+{
+    static xVec3 from = { 0.0f, 0.0f, -1.0f };
+    static xVec3 to = { 0.0f, 0.0f, 0.0f };
+
+    _zUI* ui = (_zUI*)ent;
+    if (xScrFxIsLetterbox())
+    {
+        if (ent->id == cKeyUIid1off || ent->id == cKeyUIid2off || ent->id == cKeyUIid3off ||
+            ent->id == cKeyUIid4off || ent->id == cKeyUIid1on || ent->id == cKeyUIid2on ||
+            ent->id == cKeyUIid3on || ent->id == cKeyUIid4on)
+        {
+            return;
+        }
+    }
+
+    if (ui->uiFlags & 4)
+    {
+        if (xEntIsVisible(ui))
+        {
+            if (ui->sasset->textureID)
+            {
+                RwTexture* texture = (RwTexture*)xSTFindAsset(ui->sasset->textureID, 0);
+
+                if (texture != NULL && texture->raster != NULL)
+                {
+                    RwRenderStateSet(rwRENDERSTATETEXTURERASTER, texture->raster);
+                }
+
+                RwRaster* raster = texture->raster;
+                U8 r = 0xFF;
+                U8 g = 0xFF;
+                U8 b = 0xFF;
+                U8 a = 0xFF;
+                F32 w = 640.0f;
+                F32 h = 480.0f;
+
+                F32 u1 = ui->sasset->uva[0];
+                F32 v1 = ui->sasset->uva[1];
+                F32 u2 = ui->sasset->uvb[0];
+                F32 v2 = ui->sasset->uvb[1];
+                F32 u3 = ui->sasset->uvc[0];
+                F32 v3 = ui->sasset->uvc[1];
+                F32 u4 = ui->sasset->uvd[0];
+                F32 v4 = ui->sasset->uvd[1];
+                F32 x1 = w * ui->sasset->pos.x / w;
+                F32 y1 = h * ui->sasset->pos.y / h;
+                F32 x2 = w * (ui->sasset->pos.x + ui->sasset->dim[0]) / w;
+                F32 y2 = h * (ui->sasset->pos.y + ui->sasset->dim[1]) / h;
+
+                F32 z = RwIm2DGetNearScreenZ();
+                F32 cz = z;
+
+                if ((float)iabs(z) <= 0.00001f)
+                {
+                    cz = z >= 0.0f ? 0.00001f : -0.00001f;
+                }
+
+                RwIm2DVertexSetIntRGBA(&Vertex[0], 0xFF, 0xFF, 0xFF, 0xFF);
+                RwIm2DVertexSetIntRGBA(&Vertex[1], 0xFF, 0xFF, 0xFF, 0xFF);
+                RwIm2DVertexSetIntRGBA(&Vertex[2], 0xFF, 0xFF, 0xFF, 0xFF);
+                RwIm2DVertexSetIntRGBA(&Vertex[3], 0xFF, 0xFF, 0xFF, 0xFF);
+
+                RwIm2DVertexSetScreenX(&Vertex[0], x1);
+                RwIm2DVertexSetScreenY(&Vertex[0], y1);
+                RwIm2DVertexSetScreenZ(&Vertex[0], cz);
+                RwIm2DVertexSetU(&Vertex[0], u1, 0);
+                RwIm2DVertexSetV(&Vertex[0], v1, 0);
+
+                RwIm2DVertexSetScreenX(&Vertex[1], x1);
+                RwIm2DVertexSetScreenY(&Vertex[1], y2);
+                RwIm2DVertexSetScreenZ(&Vertex[1], cz);
+                RwIm2DVertexSetU(&Vertex[1], u4, 0);
+                RwIm2DVertexSetV(&Vertex[1], v4, 0);
+
+                RwIm2DVertexSetScreenX(&Vertex[2], x2);
+                RwIm2DVertexSetScreenY(&Vertex[2], y2);
+                RwIm2DVertexSetScreenZ(&Vertex[2], cz);
+                RwIm2DVertexSetU(&Vertex[2], u3, 0);
+                RwIm2DVertexSetV(&Vertex[2], v3, 0);
+
+                RwIm2DVertexSetScreenX(&Vertex[3], x2);
+                RwIm2DVertexSetScreenY(&Vertex[3], y1);
+                RwIm2DVertexSetScreenZ(&Vertex[3], cz);
+                RwIm2DVertexSetU(&Vertex[3], u2, 0);
+                RwIm2DVertexSetV(&Vertex[3], v2, 0);
+
+                // For some reason this is done twice.
+                RwIm2DVertexSetIntRGBA(&Vertex[0], 0xFF, 0xFF, 0xFF, 0xFF);
+                RwIm2DVertexSetIntRGBA(&Vertex[1], 0xFF, 0xFF, 0xFF, 0xFF);
+                RwIm2DVertexSetIntRGBA(&Vertex[2], 0xFF, 0xFF, 0xFF, 0xFF);
+                RwIm2DVertexSetIntRGBA(&Vertex[3], 0xFF, 0xFF, 0xFF, 0xFF);
+
+                zRenderState(SDRS_Default);
+                RwRenderStateSet(rwRENDERSTATEFOGENABLE, 0);
+                RwRenderStateSet(rwRENDERSTATESRCBLEND, (void*)rwBLENDSRCALPHA);
+                RwRenderStateSet(rwRENDERSTATEDESTBLEND, (void*)rwBLENDINVSRCALPHA);
+                RwRenderStateSet(rwRENDERSTATEVERTEXALPHAENABLE, (void*)1);
+                RwRenderStateSet(rwRENDERSTATESHADEMODE, (void*)rwSHADEMODEFLAT);
+                RwRenderStateSet(rwRENDERSTATEZWRITEENABLE, 0);
+                RwIm2DRenderIndexedPrimitive(rwPRIMTYPETRILIST, Vertex, 4, Index, 6);
+            }
+            else if (ui->model != NULL)
+            {
+                // zUIAsset & a;
+                basic_rect<F32> r = {};
+                r.x = ui->sasset->pos.x / 640.0f;
+                r.y = ui->sasset->pos.y / 480.0f;
+                r.w = ui->sasset->dim[0] / 640.0f;
+                r.h = ui->sasset->dim[1] / 480.0f;
+
+                if (r.w <= 0.0f || r.h <= 0.0f)
+                {
+                    return;
+                }
+
+                U32 srcblend = XMODELINSTANCE_GET_SRCBLEND(ui->model);
+                U32 destblend = XMODELINSTANCE_GET_DSTBLEND(ui->model);
+                RwRenderStateSet(rwRENDERSTATESRCBLEND,
+                                 (void*)(srcblend ? srcblend : rwBLENDSRCALPHA));
+                RwRenderStateSet(rwRENDERSTATEDESTBLEND,
+                                 (void*)(destblend ? destblend : rwBLENDINVSRCALPHA));
+
+                if ((ui->model->PipeFlags & 0b1100) == rwBLENDINVSRCCOLOR)
+                {
+                    RwRenderStateSet(rwRENDERSTATEZWRITEENABLE, 0);
+                    RwRenderStateSet(rwRENDERSTATEZTESTENABLE, 0);
+                }
+
+                xEntSetupPipeline(ui->model);
+
+                ui->model->Scale.assign(1.0f, 1.0f, 1.0f);
+                xModelRender2D(*ui->model, r, from, to);
+                xEntRestorePipeline(ui->model);
+
+                if ((ui->model->PipeFlags & 0b1100) == rwBLENDINVSRCCOLOR)
+                {
+                    RwRenderStateSet(rwRENDERSTATEZWRITEENABLE, (void*)1);
+                    RwRenderStateSet(rwRENDERSTATEZTESTENABLE, (void*)1);
+                }
+            }
+        }
+    }
+    else
+    {
+        xEntRender(ui);
+    }
+}
+
+S32 zUIEventCB(xBase*, xBase* to, U32 toEvent, const F32* toParam, xBase*)
+{
+    _zUI* s = (_zUI*)to;
+
+    switch (toEvent)
+    {
+    case eEventVisible:
+    {
+        xEntShow(s);
+        gUIMgr.Touch(s);
+        break;
+    }
+    case eEventInvisible:
+    {
+        xEntHide(s);
+        gUIMgr.Touch(s);
+        break;
+    }
+    case eEventReset:
+    {
+        zUI_Reset(s);
+        break;
+    }
+    case eEventUISelect:
+    {
+        if (s->id == xStrHash("MNU4 CONTROL MUSIC GC/XB UIF"))
+        {
+            xSndPauseCategory(SND_CAT_UI, 0);
+        }
+
+        s->uiFlags |= 0x2;
+
+        gUIMgr.Touch(s);
+
+        break;
+    }
+    case eEventUIUnselect:
+    {
+        if (s->uiFlags & 0x2)
+        {
+            s->uiFlags ^= 0x2;
+        }
+
+        if (s->id == xStrHash("MNU4 CONTROL MUSIC GC/XB UIF"))
+        {
+            xSndPauseCategory(SND_CAT_UI, 1);
+        }
+
+        gUIMgr.Touch(s);
+
+        break;
+    }
+    case eEventUIFocusOn:
+    {
+        s->uiFlags |= 0x8;
+
+        gUIMgr.Touch(s);
+
+        if (s->uiFlags & 0x10)
+        {
+            zEntEvent(s, s, eEventVisible);
+        }
+
+        break;
+    }
+    case eEventUIFocusOff:
+    {
+        if (s->uiFlags & 0x8)
+        {
+            s->uiFlags ^= 0x8;
+        }
+
+        gUIMgr.Touch(s);
+
+        if (s->uiFlags & 0x20)
+        {
+            zEntEvent(s, s, eEventInvisible);
+        }
+
+        break;
+    }
+    case eEventUIFocusOn_Select:
+    {
+        zEntEvent(s, s, eEventUIFocusOn);
+        zEntEvent(s, s, eEventUISelect);
+        break;
+    }
+    case eEventUIFocusOff_Unselect:
+    {
+        zEntEvent(s, s, eEventUIFocusOff);
+        zEntEvent(s, s, eEventUIUnselect);
+        break;
+    }
+    case eEventUIChangeTexture:
+    {
+        if (s->sasset)
+        {
+            U32 theTextureID = *(U32*)&toParam[0];
+
+            if (theTextureID)
+            {
+                RwTexture* texture = (RwTexture*)xSTFindAsset(theTextureID, NULL);
+
+                if (texture)
+                {
+                    s->sasset->textureID = theTextureID;
+                }
+                else
+                {
+                    s->sasset->textureID = 0;
+                }
+            }
+            else
+            {
+                s->sasset->textureID = 0;
+            }
+        }
+
+        break;
+    }
+    }
+
+    return 1;
+}
+
 //// clang-format off
 //
 ///**************************    PAUSE MENU   *********************************
@@ -1245,15 +1245,15 @@ static menuWorldInfo sWorldInfo[] =
 
 static menuWorld sWorld[WORLD_COUNT];
 
-//_zUI* sTakeTaxi;
-//_zUI* sNoneTaskDesc;
-//_zUI* sCurrTaskDesc;
-//U32 sCurrWorld;
-//U32 sCurrTask;
-//_zUI* sPauseManager;
-//_zUI* sConfirmation;
-//xGroup* sTaxiConfirmGrp;
-//
+_zUI* sTakeTaxi;
+_zUI* sNoneTaskDesc;
+_zUI* sCurrTaskDesc;
+U32 sCurrWorld;
+U32 sCurrTask;
+_zUI* sPauseManager;
+_zUI* sConfirmation;
+xGroup* sTaxiConfirmGrp;
+
 //// This function only matches when using string literals for some reason.
 //// Need to wait until all strings are decompiled.
 //void zUI_ParseINI(xIniFile* ini)
@@ -1313,437 +1313,437 @@ static menuWorld sWorld[WORLD_COUNT];
 //        }
 //    }
 //}
-//
-//static _zUI* findUI(zScene* s, U32 id)
-//{
-//    S32 i;
-//    _zUI* ui = (_zUI*)s->baseList[eBaseTypeUI];
-//
-//    for (i = 0; i < s->baseCount[eBaseTypeUI]; i++)
-//    {
-//        if (xBaseIsValid(ui) && ui->sasset->id == id)
-//        {
-//            break;
-//        }
-//
-//        ui++;
-//    }
-//
-//    if (i == s->baseCount[eBaseTypeUI])
-//    {
-//        return NULL;
-//    }
-//
-//    return ui;
-//}
-//
-//static zUIFont* findUIFont(zScene* zsc, U32 id)
-//{
-//    S32 i;
-//    zUIFont* ui = (zUIFont*)zsc->baseList[eBaseTypeUIFont];
-//
-//    for (i = 0; i < zsc->baseCount[eBaseTypeUIFont]; i++)
-//    {
-//        if (xBaseIsValid(ui) && ui->sasset->id == id)
-//        {
-//            break;
-//        }
-//
-//        ui++;
-//    }
-//
-//    if (i == zsc->baseCount[eBaseTypeUIFont])
-//    {
-//        return NULL;
-//    }
-//
-//    return ui;
-//}
-//
-//S32 zUIPortalEventCB(xBase* from, xBase* to, U32 toEvent, const F32* toParam, xBase* toParamWidget)
-//{
-//    S32 result;
-//
-//    result = zUIFontEventCB(from, to, toEvent, toParam, toParamWidget);
-//
-//    if (toEvent == eEventUISelect)
-//    {
-//        zEntEvent(to, toEvent, sWorld[sCurrWorld].uiSelected, eEventUIFocusOn_Select, NULL, NULL,
-//                  0);
-//        zEntEvent(to, toEvent, sWorld[sCurrWorld].task[sCurrTask].uiSelected,
-//                  eEventUIFocusOn_Select, NULL, NULL, 0);
-//    }
-//
-//    return result;
-//}
-//
-//void zUI_ScenePortalSetToCurrentLevel(zScene* zsc)
-//{
-//    sCurrTaskDesc = NULL;
-//
-//    for (U32 i = 0; i < sizeof(sWorld) / sizeof(sWorld[0]); i++)
-//    {
-//        U32 curPrefix = (sWorld[i].worldPrefix[0] << 24) | (sWorld[i].worldPrefix[1] << 16);
-//        U32 scnPrefix = zsc->sceneID & ~0xffff;
-//
-//        if (curPrefix == scnPrefix)
-//        {
-//            sCurrWorld = i;
-//            break;
-//        }
-//    }
-//
-//    sCurrTask = 0;
-//}
-//
-//static void init_patsocks(zScene* zsc)
-//{
-//    patsock_ui = findUI(zsc, xStrHash("UI_LEVEL_PATSOCK"));
-//    patsock_uif = findUIFont(zsc, xStrHash("UIF_LEVEL_PATSOCK"));
-//
-//    // non-matching: instruction order and registers
-//    patsock_text_buffer[0] = '\0';
-//    patsock_prev_world = -1;
-//    patsock_prev_count = -1;
-//}
-//
-//void zUI_ScenePortalInit(zScene* zsc)
-//{
-//    init_patsocks(zsc);
-//
-//    if (zsc->baseCount[eBaseTypeUI] == 0)
-//    {
-//        return;
-//    }
-//
-//    sWorld[WORLD_HB].numTasks = 8;
-//    sWorld[WORLD_JF].numTasks = 8;
-//    sWorld[WORLD_BB].numTasks = 8;
-//    sWorld[WORLD_GL].numTasks = 8;
-//    sWorld[WORLD_B1].numTasks = 1;
-//    sWorld[WORLD_RB].numTasks = 8;
-//    sWorld[WORLD_BC].numTasks = 8;
-//    sWorld[WORLD_SM].numTasks = 8;
-//    sWorld[WORLD_B2].numTasks = 1;
-//    sWorld[WORLD_KF].numTasks = 8;
-//    sWorld[WORLD_GY].numTasks = 8;
-//    sWorld[WORLD_DB].numTasks = 8;
-//    sWorld[WORLD_B3].numTasks = 2;
-//    sWorld[WORLD_PAT].numTasks = 8;
-//    sWorld[WORLD_KRABS].numTasks = 8;
-//
-//    U32 i, j;
-//    char c, c2;
-//    char tempString[32];
-//    U32 uiID;
-//    _zUI* ui;
-//    U32 id;
-//
-//    for (i = 0; i < WORLD_COUNT; i++)
-//    {
-//        strcpy(tempString, "00_SPAT_MARKER_00");
-//
-//        tempString[0] = sWorld[i].worldPrefix[0];
-//        tempString[1] = sWorld[i].worldPrefix[1];
-//
-//        c = '1';
-//
-//        for (j = 0; j < sWorld[i].numTasks; i++)
-//        {
-//            if (c > '9')
-//            {
-//                c = '0';
-//                tempString[15]++;
-//            }
-//
-//            tempString[16] = c++;
-//
-//            if (sWorld[i].task[j].levelSuffix[0] == '0' && sWorld[i].task[j].levelSuffix[1] == '0')
-//            {
-//                sWorld[i].task[j].portal.passet = NULL;
-//                continue;
-//            }
-//
-//            sWorld[i].task[j].portalAsset.assetCameraID = xStrHash("STARTCAM");
-//            sWorld[i].task[j].portalAsset.assetMarkerID = xStrHash(tempString);
-//            sWorld[i].task[j].portalAsset.ang = sWorldInfo[i].taskInfo[j].ang;
-//
-//            if (i == WORLD_PAT || i == WORLD_KRABS)
-//            {
-//                sWorld[i].task[j].portalAsset.sceneID = (sWorld[i].task[j].levelSuffix[1] << 24) |
-//                                                        (sWorld[i].task[j].levelSuffix[0] << 16) |
-//                                                        'BH';
-//            }
-//            else
-//            {
-//                sWorld[i].task[j].portalAsset.sceneID = (sWorld[i].task[j].levelSuffix[1] << 24) |
-//                                                        (sWorld[i].task[j].levelSuffix[0] << 16) |
-//                                                        (sWorld[i].worldPrefix[1] << 8) |
-//                                                        sWorld[i].worldPrefix[0];
-//            }
-//
-//            sWorld[i].task[j].portal.passet = &sWorld[i].task[j].portalAsset;
-//        }
-//    }
-//
-//    for (i = 0; i < WORLD_COUNT; i++)
-//    {
-//        strcpy(tempString, "00_TASK_COUNTER_00");
-//
-//        tempString[0] = sWorld[i].worldPrefix[0];
-//        tempString[1] = sWorld[i].worldPrefix[1];
-//
-//        c = '1';
-//
-//        for (j = 0; j < sWorld[i].numTasks; j++)
-//        {
-//            if (c > '9')
-//            {
-//                c = '0';
-//                tempString[16]++;
-//            }
-//
-//            tempString[17] = c;
-//            c++;
-//
-//            id = xStrHash(tempString);
-//
-//            sWorld[i].task[j].counter = (_xCounter*)zSceneFindObject(id);
-//            sWorld[i].task[j].counter->counterFlags |= XCOUNTER_ISSPATULA;
-//        }
-//    }
-//
-//    strcpy(tempString, "LEVEL ON UI 00");
-//
-//    c = '1';
-//
-//    for (i = 0; i < WORLD_COUNT; i++)
-//    {
-//        if (c > '9')
-//        {
-//            c = '0';
-//            tempString[12]++;
-//        }
-//
-//        tempString[13] = c;
-//        id = xStrHash(tempString);
-//
-//        c++;
-//
-//        sWorld[i].uiSelected = findUI(zsc, id);
-//    }
-//
-//    strcpy(tempString, "TASK NONE UI 00");
-//
-//    c = '1';
-//
-//    for (j = 0; j < TASK_COUNT; j++)
-//    {
-//        if (c > '9')
-//        {
-//            c = '0';
-//            tempString[13]++;
-//        }
-//
-//        tempString[14] = c;
-//        id = xStrHash(tempString);
-//
-//        c++;
-//
-//        ui = findUI(zsc, id);
-//
-//        for (i = 0; i < WORLD_COUNT; i++)
-//        {
-//            sWorld[i].task[j].uiSpatOutline = ui;
-//        }
-//    }
-//
-//    strcpy(tempString, "TASK UI 00");
-//
-//    c = '1';
-//
-//    for (j = 0; j < TASK_COUNT; j++)
-//    {
-//        if (c > '9')
-//        {
-//            c = '0';
-//            tempString[8]++;
-//        }
-//
-//        tempString[9] = c;
-//        id = xStrHash(tempString);
-//
-//        c++;
-//
-//        ui = findUI(zsc, id);
-//
-//        for (i = 0; i < WORLD_COUNT; i++)
-//        {
-//            sWorld[i].task[j].uiSpatGray = ui;
-//        }
-//    }
-//
-//    strcpy(tempString, "TASK GOLDEN UI 00");
-//
-//    c = '1';
-//
-//    for (j = 0; j < TASK_COUNT; j++)
-//    {
-//        if (c > '9')
-//        {
-//            c = '0';
-//            tempString[15]++;
-//        }
-//
-//        tempString[16] = c;
-//        id = xStrHash(tempString);
-//
-//        c++;
-//
-//        ui = findUI(zsc, id);
-//
-//        for (i = 0; i < WORLD_COUNT; i++)
-//        {
-//            sWorld[i].task[j].uiSpatGold = ui;
-//        }
-//    }
-//
-//    strcpy(tempString, "TASK GLOW UI 00");
-//
-//    c = '1';
-//
-//    for (j = 0; j < TASK_COUNT; j++)
-//    {
-//        if (c > '9')
-//        {
-//            c = '0';
-//            tempString[13]++;
-//        }
-//
-//        tempString[14] = c;
-//        id = xStrHash(tempString);
-//
-//        c++;
-//
-//        ui = findUI(zsc, id);
-//
-//        for (i = 0; i < WORLD_COUNT; i++)
-//        {
-//            if (sWorld[i].numTasks == TASK_COUNT)
-//            {
-//                sWorld[i].task[j].uiSelected = ui;
-//            }
-//        }
-//    }
-//
-//    strcpy(tempString, "TASK GLOW UI BOSS 00");
-//
-//    c = '1';
-//
-//    for (j = 0; j < TASK_COUNT_BOSS; j++)
-//    {
-//        if (c > '9')
-//        {
-//            c = '0';
-//            tempString[18]++;
-//        }
-//
-//        tempString[19] = c;
-//        id = xStrHash(tempString);
-//
-//        c++;
-//
-//        ui = findUI(zsc, id);
-//
-//        for (i = 0; i < WORLD_COUNT; i++)
-//        {
-//            if (sWorld[i].numTasks == TASK_COUNT_BOSS)
-//            {
-//                sWorld[i].task[j].uiSelected = ui;
-//            }
-//        }
-//    }
-//
-//    strcpy(tempString, "TASK GLOW UI SMALLBOSS 00");
-//
-//    c = '1';
-//
-//    for (j = 0; j < TASK_COUNT_SMALLBOSS; j++)
-//    {
-//        if (c > '9')
-//        {
-//            c = '0';
-//            tempString[23]++;
-//        }
-//
-//        tempString[24] = c;
-//        id = xStrHash(tempString);
-//
-//        c++;
-//
-//        ui = findUI(zsc, id);
-//
-//        for (i = 0; i < WORLD_COUNT; i++)
-//        {
-//            if (sWorld[i].numTasks == TASK_COUNT_SMALLBOSS)
-//            {
-//                sWorld[i].task[j].uiSelected = ui;
-//            }
-//        }
-//    }
-//
-//    strcpy(tempString, "PAUSE TASK UIF 0000");
-//
-//    c = '1';
-//
-//    for (i = 0; i < WORLD_COUNT; i++)
-//    {
-//        if (c > '9')
-//        {
-//            c = '0';
-//            tempString[15]++;
-//        }
-//
-//        tempString[16] = c;
-//        c++;
-//
-//        c2 = '1';
-//        for (j = 0; j < sWorld[i].numTasks; j++)
-//        {
-//            if (c2 > '9')
-//            {
-//                c2 = '0';
-//                tempString[17]++;
-//            }
-//
-//            tempString[18] = c2;
-//            c2++;
-//
-//            id = xStrHash(tempString);
-//
-//            sWorld[i].task[j].uiTaskDesc = findUIFont(zsc, id);
-//        }
-//    }
-//
-//    id = xStrHash("PAUSE TAKE BUS UIF");
-//    sTakeTaxi = findUIFont(zsc, id);
-//
-//    id = xStrHash("PAUSE TASK NONE UIF");
-//    sNoneTaskDesc = findUIFont(zsc, id);
-//
-//    id = xStrHash("PAUSE MGR UIF");
-//    sPauseManager = findUIFont(zsc, id);
-//    sPauseManager->eventFunc = zUIPortalEventCB;
-//
-//    id = xStrHash("TAXI CONFIRM UIF");
-//    sConfirmation = findUIFont(zsc, id);
-//
-//    id = xStrHash("TAXI CONFIRM GROUP");
-//    sTaxiConfirmGrp = (xGroup*)zSceneFindObject(id);
-//
-//    zUI_ScenePortalSetToCurrentLevel(zsc);
-//}
-//
+
+static _zUI* findUI(zScene* s, U32 id)
+{
+    S32 i;
+    _zUI* ui = (_zUI*)s->baseList[eBaseTypeUI];
+
+    for (i = 0; i < s->baseCount[eBaseTypeUI]; i++)
+    {
+        if (xBaseIsValid(ui) && ui->sasset->id == id)
+        {
+            break;
+        }
+
+        ui++;
+    }
+
+    if (i == s->baseCount[eBaseTypeUI])
+    {
+        return NULL;
+    }
+
+    return ui;
+}
+
+static zUIFont* findUIFont(zScene* zsc, U32 id)
+{
+    S32 i;
+    zUIFont* ui = (zUIFont*)zsc->baseList[eBaseTypeUIFont];
+
+    for (i = 0; i < zsc->baseCount[eBaseTypeUIFont]; i++)
+    {
+        if (xBaseIsValid(ui) && ui->sasset->id == id)
+        {
+            break;
+        }
+
+        ui++;
+    }
+
+    if (i == zsc->baseCount[eBaseTypeUIFont])
+    {
+        return NULL;
+    }
+
+    return ui;
+}
+
+S32 zUIPortalEventCB(xBase* from, xBase* to, U32 toEvent, const F32* toParam, xBase* toParamWidget)
+{
+    S32 result;
+
+    result = zUIFontEventCB(from, to, toEvent, toParam, toParamWidget);
+
+    if (toEvent == eEventUISelect)
+    {
+        zEntEvent(to, toEvent, sWorld[sCurrWorld].uiSelected, eEventUIFocusOn_Select, NULL, NULL,
+                  0);
+        zEntEvent(to, toEvent, sWorld[sCurrWorld].task[sCurrTask].uiSelected,
+                  eEventUIFocusOn_Select, NULL, NULL, 0);
+    }
+
+    return result;
+}
+
+void zUI_ScenePortalSetToCurrentLevel(zScene* zsc)
+{
+    sCurrTaskDesc = NULL;
+
+    for (U32 i = 0; i < sizeof(sWorld) / sizeof(sWorld[0]); i++)
+    {
+        U32 curPrefix = (sWorld[i].worldPrefix[0] << 24) | (sWorld[i].worldPrefix[1] << 16);
+        U32 scnPrefix = zsc->sceneID & ~0xffff;
+
+        if (curPrefix == scnPrefix)
+        {
+            sCurrWorld = i;
+            break;
+        }
+    }
+
+    sCurrTask = 0;
+}
+
+static void init_patsocks(zScene* zsc)
+{
+    patsock_ui = findUI(zsc, xStrHash("UI_LEVEL_PATSOCK"));
+    patsock_uif = findUIFont(zsc, xStrHash("UIF_LEVEL_PATSOCK"));
+
+    // non-matching: instruction order and registers
+    patsock_text_buffer[0] = '\0';
+    patsock_prev_world = -1;
+    patsock_prev_count = -1;
+}
+
+void zUI_ScenePortalInit(zScene* zsc)
+{
+    init_patsocks(zsc);
+
+    if (zsc->baseCount[eBaseTypeUI] == 0)
+    {
+        return;
+    }
+
+    sWorld[WORLD_HB].numTasks = 8;
+    sWorld[WORLD_JF].numTasks = 8;
+    sWorld[WORLD_BB].numTasks = 8;
+    sWorld[WORLD_GL].numTasks = 8;
+    sWorld[WORLD_B1].numTasks = 1;
+    sWorld[WORLD_RB].numTasks = 8;
+    sWorld[WORLD_BC].numTasks = 8;
+    sWorld[WORLD_SM].numTasks = 8;
+    sWorld[WORLD_B2].numTasks = 1;
+    sWorld[WORLD_KF].numTasks = 8;
+    sWorld[WORLD_GY].numTasks = 8;
+    sWorld[WORLD_DB].numTasks = 8;
+    sWorld[WORLD_B3].numTasks = 2;
+    sWorld[WORLD_PAT].numTasks = 8;
+    sWorld[WORLD_KRABS].numTasks = 8;
+
+    U32 i, j;
+    char c, c2;
+    char tempString[32];
+    U32 uiID;
+    _zUI* ui;
+    U32 id;
+
+    for (i = 0; i < WORLD_COUNT; i++)
+    {
+        strcpy(tempString, "00_SPAT_MARKER_00");
+
+        tempString[0] = sWorld[i].worldPrefix[0];
+        tempString[1] = sWorld[i].worldPrefix[1];
+
+        c = '1';
+
+        for (j = 0; j < sWorld[i].numTasks; i++)
+        {
+            if (c > '9')
+            {
+                c = '0';
+                tempString[15]++;
+            }
+
+            tempString[16] = c++;
+
+            if (sWorld[i].task[j].levelSuffix[0] == '0' && sWorld[i].task[j].levelSuffix[1] == '0')
+            {
+                sWorld[i].task[j].portal.passet = NULL;
+                continue;
+            }
+
+            sWorld[i].task[j].portalAsset.assetCameraID = xStrHash("STARTCAM");
+            sWorld[i].task[j].portalAsset.assetMarkerID = xStrHash(tempString);
+            sWorld[i].task[j].portalAsset.ang = sWorldInfo[i].taskInfo[j].ang;
+
+            if (i == WORLD_PAT || i == WORLD_KRABS)
+            {
+                sWorld[i].task[j].portalAsset.sceneID = (sWorld[i].task[j].levelSuffix[1] << 24) |
+                                                        (sWorld[i].task[j].levelSuffix[0] << 16) |
+                                                        'BH';
+            }
+            else
+            {
+                sWorld[i].task[j].portalAsset.sceneID = (sWorld[i].task[j].levelSuffix[1] << 24) |
+                                                        (sWorld[i].task[j].levelSuffix[0] << 16) |
+                                                        (sWorld[i].worldPrefix[1] << 8) |
+                                                        sWorld[i].worldPrefix[0];
+            }
+
+            sWorld[i].task[j].portal.passet = &sWorld[i].task[j].portalAsset;
+        }
+    }
+
+    for (i = 0; i < WORLD_COUNT; i++)
+    {
+        strcpy(tempString, "00_TASK_COUNTER_00");
+
+        tempString[0] = sWorld[i].worldPrefix[0];
+        tempString[1] = sWorld[i].worldPrefix[1];
+
+        c = '1';
+
+        for (j = 0; j < sWorld[i].numTasks; j++)
+        {
+            if (c > '9')
+            {
+                c = '0';
+                tempString[16]++;
+            }
+
+            tempString[17] = c;
+            c++;
+
+            id = xStrHash(tempString);
+
+            sWorld[i].task[j].counter = (_xCounter*)zSceneFindObject(id);
+            sWorld[i].task[j].counter->counterFlags |= XCOUNTER_ISSPATULA;
+        }
+    }
+
+    strcpy(tempString, "LEVEL ON UI 00");
+
+    c = '1';
+
+    for (i = 0; i < WORLD_COUNT; i++)
+    {
+        if (c > '9')
+        {
+            c = '0';
+            tempString[12]++;
+        }
+
+        tempString[13] = c;
+        id = xStrHash(tempString);
+
+        c++;
+
+        sWorld[i].uiSelected = findUI(zsc, id);
+    }
+
+    strcpy(tempString, "TASK NONE UI 00");
+
+    c = '1';
+
+    for (j = 0; j < TASK_COUNT; j++)
+    {
+        if (c > '9')
+        {
+            c = '0';
+            tempString[13]++;
+        }
+
+        tempString[14] = c;
+        id = xStrHash(tempString);
+
+        c++;
+
+        ui = findUI(zsc, id);
+
+        for (i = 0; i < WORLD_COUNT; i++)
+        {
+            sWorld[i].task[j].uiSpatOutline = ui;
+        }
+    }
+
+    strcpy(tempString, "TASK UI 00");
+
+    c = '1';
+
+    for (j = 0; j < TASK_COUNT; j++)
+    {
+        if (c > '9')
+        {
+            c = '0';
+            tempString[8]++;
+        }
+
+        tempString[9] = c;
+        id = xStrHash(tempString);
+
+        c++;
+
+        ui = findUI(zsc, id);
+
+        for (i = 0; i < WORLD_COUNT; i++)
+        {
+            sWorld[i].task[j].uiSpatGray = ui;
+        }
+    }
+
+    strcpy(tempString, "TASK GOLDEN UI 00");
+
+    c = '1';
+
+    for (j = 0; j < TASK_COUNT; j++)
+    {
+        if (c > '9')
+        {
+            c = '0';
+            tempString[15]++;
+        }
+
+        tempString[16] = c;
+        id = xStrHash(tempString);
+
+        c++;
+
+        ui = findUI(zsc, id);
+
+        for (i = 0; i < WORLD_COUNT; i++)
+        {
+            sWorld[i].task[j].uiSpatGold = ui;
+        }
+    }
+
+    strcpy(tempString, "TASK GLOW UI 00");
+
+    c = '1';
+
+    for (j = 0; j < TASK_COUNT; j++)
+    {
+        if (c > '9')
+        {
+            c = '0';
+            tempString[13]++;
+        }
+
+        tempString[14] = c;
+        id = xStrHash(tempString);
+
+        c++;
+
+        ui = findUI(zsc, id);
+
+        for (i = 0; i < WORLD_COUNT; i++)
+        {
+            if (sWorld[i].numTasks == TASK_COUNT)
+            {
+                sWorld[i].task[j].uiSelected = ui;
+            }
+        }
+    }
+
+    strcpy(tempString, "TASK GLOW UI BOSS 00");
+
+    c = '1';
+
+    for (j = 0; j < TASK_COUNT_BOSS; j++)
+    {
+        if (c > '9')
+        {
+            c = '0';
+            tempString[18]++;
+        }
+
+        tempString[19] = c;
+        id = xStrHash(tempString);
+
+        c++;
+
+        ui = findUI(zsc, id);
+
+        for (i = 0; i < WORLD_COUNT; i++)
+        {
+            if (sWorld[i].numTasks == TASK_COUNT_BOSS)
+            {
+                sWorld[i].task[j].uiSelected = ui;
+            }
+        }
+    }
+
+    strcpy(tempString, "TASK GLOW UI SMALLBOSS 00");
+
+    c = '1';
+
+    for (j = 0; j < TASK_COUNT_SMALLBOSS; j++)
+    {
+        if (c > '9')
+        {
+            c = '0';
+            tempString[23]++;
+        }
+
+        tempString[24] = c;
+        id = xStrHash(tempString);
+
+        c++;
+
+        ui = findUI(zsc, id);
+
+        for (i = 0; i < WORLD_COUNT; i++)
+        {
+            if (sWorld[i].numTasks == TASK_COUNT_SMALLBOSS)
+            {
+                sWorld[i].task[j].uiSelected = ui;
+            }
+        }
+    }
+
+    strcpy(tempString, "PAUSE TASK UIF 0000");
+
+    c = '1';
+
+    for (i = 0; i < WORLD_COUNT; i++)
+    {
+        if (c > '9')
+        {
+            c = '0';
+            tempString[15]++;
+        }
+
+        tempString[16] = c;
+        c++;
+
+        c2 = '1';
+        for (j = 0; j < sWorld[i].numTasks; j++)
+        {
+            if (c2 > '9')
+            {
+                c2 = '0';
+                tempString[17]++;
+            }
+
+            tempString[18] = c2;
+            c2++;
+
+            id = xStrHash(tempString);
+
+            sWorld[i].task[j].uiTaskDesc = findUIFont(zsc, id);
+        }
+    }
+
+    id = xStrHash("PAUSE TAKE BUS UIF");
+    sTakeTaxi = findUIFont(zsc, id);
+
+    id = xStrHash("PAUSE TASK NONE UIF");
+    sNoneTaskDesc = findUIFont(zsc, id);
+
+    id = xStrHash("PAUSE MGR UIF");
+    sPauseManager = findUIFont(zsc, id);
+    sPauseManager->eventFunc = zUIPortalEventCB;
+
+    id = xStrHash("TAXI CONFIRM UIF");
+    sConfirmation = findUIFont(zsc, id);
+
+    id = xStrHash("TAXI CONFIRM GROUP");
+    sTaxiConfirmGrp = (xGroup*)zSceneFindObject(id);
+
+    zUI_ScenePortalSetToCurrentLevel(zsc);
+}
+
 //static void hideWorld()
 //{
 //    for (U32 i = 0; i < TASK_COUNT; i++)
@@ -1983,7 +1983,7 @@ void zUI_ScenePortalLoad(xSerial* s)
     }
 }
 
-//WEAK void xMat3x3Scale(xMat3x3* m, const xVec3* s)
-//{
-//    xMat3x3ScaleC(m, s->x, s->y, s->z);
-//}
+void xMat3x3Scale(xMat3x3* m, const xVec3* s)
+{
+    xMat3x3ScaleC(m, s->x, s->y, s->z);
+}

@@ -97,68 +97,68 @@ S32 xFactory::RegItemType(S32 tid, XGOFTypeInfoCreator create, XGOFTypeInfoDestr
 //{
 //    growContextData.Done();
 //}
-//
-//xFactoryInst* xFactory::CreateItem(S32 typeID, void* userdata, RyzMemGrow* callerzgrow)
-//{
-//    S32 idx;
-//    xFactoryInst* item;
-//    XGOFTypeInfo pattern = {};
-//    XGOFTypeInfo* darec = NULL;
-//    RyzMemGrow* grow = callerzgrow;
-//
-//    pattern.tid = typeID;
-//
-//    idx = XOrdLookup(&infolist, &pattern, OrdTest_infotype);
-//
-//    if (idx >= 0)
-//    {
-//        darec = (XGOFTypeInfo*)infolist.list[idx];
-//    }
-//
-//    if (!darec)
-//    {
-//        return NULL;
-//    }
-//
-//    if (!darec->creator)
-//    {
-//        return NULL;
-//    }
-//
-//    if (!darec->destroyer)
-//    {
-//        return NULL;
-//    }
-//
-//    if (!grow && growContextData.IsEnabled())
-//    {
-//        grow = &growContextData;
-//    }
-//
-//    item = darec->creator(darec->tid, grow, userdata);
-//
-//    if (!item)
-//    {
-//        return item;
-//    }
-//
-//    item->itemType = darec->tid;
-//    item->prevprod = NULL;
-//    item->nextprod = NULL;
-//
-//    if (products)
-//    {
-//        item->nextprod = products;
-//        products->prevprod = item;
-//        products = item;
-//    }
-//    else
-//    {
-//        products = item;
-//    }
-//
-//    return item;
-//}
+
+xFactoryInst* xFactory::CreateItem(S32 typeID, void* userdata, RyzMemGrow* callerzgrow)
+{
+    S32 idx;
+    xFactoryInst* item;
+    XGOFTypeInfo pattern = {};
+    XGOFTypeInfo* darec = NULL;
+    RyzMemGrow* grow = callerzgrow;
+
+    pattern.tid = typeID;
+
+    idx = XOrdLookup(&infolist, &pattern, OrdTest_infotype);
+
+    if (idx >= 0)
+    {
+        darec = (XGOFTypeInfo*)infolist.list[idx];
+    }
+
+    if (!darec)
+    {
+        return NULL;
+    }
+
+    if (!darec->creator)
+    {
+        return NULL;
+    }
+
+    if (!darec->destroyer)
+    {
+        return NULL;
+    }
+
+    if (!grow && growContextData.IsEnabled())
+    {
+        grow = &growContextData;
+    }
+
+    item = darec->creator(darec->tid, grow, userdata);
+
+    if (!item)
+    {
+        return item;
+    }
+
+    item->itemType = darec->tid;
+    item->prevprod = NULL;
+    item->nextprod = NULL;
+
+    if (products)
+    {
+        item->nextprod = products;
+        products->prevprod = item;
+        products = item;
+    }
+    else
+    {
+        products = item;
+    }
+
+    return item;
+}
 
 void xFactory::DestroyAll()
 {

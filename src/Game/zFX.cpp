@@ -309,3 +309,26 @@ void zFX_SpawnBubbleWall()
 void zFX_SpawnBubbleSlam(const xVec3* pos, U32 num, F32 rang, F32 bvel, F32 rvel)
 {
 }
+
+void zFXPopOn(xEnt& ent, F32 rate, F32 time) WIP // function not decomped
+{}
+void zFXPopOff(xEnt& ent, F32 rate, F32 time) WIP // function not decomped
+{}
+void zFXGooEventSetWarb(xEnt* obj, const F32* param) WIP // not decomped
+{
+}
+void zFXGooEventSetFreezeDuration(xEnt* obj, const F32 param) WIP // not decomped
+{
+}
+void zFXGooEventMelt(xEnt* obj) WIP // not decomped
+{
+}
+S32 zFXGooIs(xEnt* obj, F32& depth, U32 playerCheck) WIP // not decomped
+{
+    return 0;
+}
+
+void zFX_SpawnBubbleMenuTrail(const xVec3* pos, U32 num, const xVec3* pos_rnd,
+    const xVec3* vel_rnd) WIP // not decomped
+{
+}

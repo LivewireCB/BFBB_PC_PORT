@@ -43,8 +43,8 @@ void xParMgrKillAllParticles()
 //    for (i = sFrameCount; i >= 1; i--);
 //    sFrameCount = i;
 //}
-//
-//void xParMgrRender()
-//{
-//    iParMgrRender();
-//}
+
+void xParMgrRender()
+{
+    iParMgrRender();
+}

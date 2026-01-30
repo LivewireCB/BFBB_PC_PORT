@@ -87,46 +87,46 @@ static zCutSceneNames zCutSceneNamesTable[14] = {
     { "cin_mm_scare", 0, 1 }, { "cin_sh_barrel", 0, 1 },
 
 };
-//static S32 gCutsceneSkipOK;
-//static S32 donpcfx;
-//static U8 ents_hidden;
-//static S32 s_atomicNumber;
-//
-//void zCutsceneMgrInit(void* b, void* tasset)
-//{
-//    zCutsceneMgrInit((xBase*)b, (xCutsceneMgrAsset*)tasset);
-//}
-//
-//void zCutsceneMgrInit(xBase* b, xCutsceneMgrAsset* tasset)
-//{
-//    zCutsceneMgr* mgr = (zCutsceneMgr*)b;
-//    xBaseInit(mgr, tasset);
-//    mgr->eventFunc = zCutsceneMgrEventCB;
-//    mgr->tasset = tasset;
-//    mgr->csn = NULL;
-//    if (mgr->linkCount != 0)
-//    {
-//        mgr->link = (xLinkAsset*)(mgr->tasset + 1);
-//    }
-//    else
-//    {
-//        mgr->link = NULL;
-//    }
-//    ents_hidden = 0;
-//}
-//
-//void zCutsceneMgrReset(zCutsceneMgr* mgr)
-//{
-//    xBaseReset(mgr, mgr->tasset);
-//    if (mgr->csn != NULL)
-//    {
-//        xCutscene_Destroy(mgr->csn);
-//    }
-//    mgr->csn = NULL;
-//    zEntPlayerControlOn(CONTROL_OWNER_CUTSCENE);
-//    ents_hidden = 0;
-//}
-//
+static S32 gCutsceneSkipOK;
+static S32 donpcfx;
+static U8 ents_hidden;
+static S32 s_atomicNumber;
+
+void zCutsceneMgrInit(void* b, void* tasset)
+{
+    zCutsceneMgrInit((xBase*)b, (xCutsceneMgrAsset*)tasset);
+}
+
+void zCutsceneMgrInit(xBase* b, xCutsceneMgrAsset* tasset)
+{
+    zCutsceneMgr* mgr = (zCutsceneMgr*)b;
+    xBaseInit(mgr, tasset);
+    mgr->eventFunc = zCutsceneMgrEventCB;
+    mgr->tasset = tasset;
+    mgr->csn = NULL;
+    if (mgr->linkCount != 0)
+    {
+        mgr->link = (xLinkAsset*)(mgr->tasset + 1);
+    }
+    else
+    {
+        mgr->link = NULL;
+    }
+    ents_hidden = 0;
+}
+
+void zCutsceneMgrReset(zCutsceneMgr* mgr)
+{
+    xBaseReset(mgr, mgr->tasset);
+    if (mgr->csn != NULL)
+    {
+        xCutscene_Destroy(mgr->csn);
+    }
+    mgr->csn = NULL;
+    zEntPlayerControlOn(CONTROL_OWNER_CUTSCENE);
+    ents_hidden = 0;
+}
+
 //void zCutsceneMgrSave(zCutsceneMgr*, xSerial* s)
 //{
 //    for (U32 i = 0; i < 14; i++)
@@ -249,45 +249,45 @@ void zCutSceneNamesTable_clearAll()
 //        }
 //    }
 //}
-//
-//S32 zCutsceneMgrEventCB(xBase*, xBase* to, U32 toEvent, const F32*, xBase*)
-//{
-//    zCutsceneMgr* t = (zCutsceneMgr*)to;
-//
-//    switch (toEvent)
-//    {
-//    case 0x13:
-//        zEntPlayerControlOn(CONTROL_OWNER_CUTSCENE);
-//        t->stop = 1;
-//        break;
-//    case 0x18:
-//        break;
-//    case 0xbe:
-//        zEntPlayerControlOff(CONTROL_OWNER_CUTSCENE);
-//        zMusicPause();
-//        if (globals.cmgr == NULL)
-//        {
-//            t->stop = 0;
-//            t->csn = xCutscene_Create(t->tasset->cutsceneAssetID);
-//            if (t->csn != NULL)
-//            {
-//                xCutscene_LoadStart(t->csn);
-//                globals.cmgr = t;
-//                t->oldfov = xCameraGetFOV(&globals.camera);
-//            }
-//        }
-//        break;
-//    case 0xbf:
-//        zEntPlayerControlOn(CONTROL_OWNER_CUTSCENE);
-//        break;
-//    case 0xa:
-//        zCutsceneMgrReset(t);
-//        break;
-//    }
-//
-//    return 1;
-//}
-//
+
+S32 zCutsceneMgrEventCB(xBase*, xBase* to, U32 toEvent, const F32*, xBase*) RIMP
+{
+    zCutsceneMgr* t = (zCutsceneMgr*)to;
+
+    switch (toEvent)
+    {
+    case 0x13:
+        zEntPlayerControlOn(CONTROL_OWNER_CUTSCENE);
+        t->stop = 1;
+        break;
+    case 0x18:
+        break;
+    case 0xbe:
+        zEntPlayerControlOff(CONTROL_OWNER_CUTSCENE);
+        //zMusicPause();
+        if (globals.cmgr == NULL)
+        {
+            t->stop = 0;
+            t->csn = xCutscene_Create(t->tasset->cutsceneAssetID);
+            if (t->csn != NULL)
+            {
+                xCutscene_LoadStart(t->csn);
+                globals.cmgr = t;
+                t->oldfov = xCameraGetFOV(&globals.camera);
+            }
+        }
+        break;
+    case 0xbf:
+        zEntPlayerControlOn(CONTROL_OWNER_CUTSCENE);
+        break;
+    case 0xa:
+        zCutsceneMgrReset(t);
+        break;
+    }
+
+    return 1;
+}
+
 //void zCutsceneMgrFinishLoad(xBase* to)
 //{
 //    zCutsceneMgr* t = (zCutsceneMgr*)to;

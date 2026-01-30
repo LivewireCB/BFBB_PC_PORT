@@ -281,3 +281,8 @@ void xPadDestroyRumbleChain(S32 idx) RIMP
 {
     /*xPadDestroyRumbleChain(mPad + idx);*/
 }
+
+S32 xPadAddRumble(S32 idx, _tagRumbleType type, F32 time, S32 replace, U32 fxflags) WIP // not decomped
+{
+    return 0;
+}

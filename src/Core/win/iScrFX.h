@@ -4,10 +4,38 @@
 #include <types.h>
 #include <rwcore.h>
 
+//struct rwGameCube2DVertex WIP // IMPORTANT: THIS SHOULD NOT EXIST IN PC PORT, WILL NEED *ACTUAL* RESEARCH TO REMOVE THIS (if needed)
+//{
+//    RwReal x;
+//    RwReal y;
+//    RwReal z;
+//    RwRGBA emissiveColor;
+//    RwReal u;
+//    RwReal v;
+//
+//    rwGameCube2DVertex& operator=(const rwGameCube2DVertex& rhs)
+//    {
+//        this->x = rhs.x;
+//        this->y = rhs.y;
+//        this->z = rhs.z;
+//
+//        this->emissiveColor.red = rhs.emissiveColor.red;
+//        this->emissiveColor.green = rhs.emissiveColor.green;
+//        this->emissiveColor.blue = rhs.emissiveColor.blue;
+//        this->emissiveColor.alpha = rhs.emissiveColor.alpha;
+//
+//        this->u = rhs.u;
+//        this->v = rhs.v;
+//
+//        return *this;
+//    }
+//};
+
 struct _iMotionBlurData
 {
     S32 motionBlurAlpha;
     RwRaster* motionBlurFrontBuffer;
+    RwD3D8Vertex vertex[4]; WIP // changed from gamecube to D3D8
     //rwGameCube2DVertex vertex[4];
     U16 index[6];
     U32 w;

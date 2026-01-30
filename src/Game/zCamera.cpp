@@ -382,108 +382,108 @@ namespace
 //
 //    return 1;
 //}
-//
-//void zCameraFlyStart(U32 assetID)
-//{
-//    st_PKR_ASSET_TOCINFO info;
-//    if (xSTGetAssetInfo(assetID, &info) == 0)
-//    {
-//        return;
-//    }
-//
-//    // weird register use
-//    zcam_fly = 1;
-//    zcam_flypaused = 0;
-//    zcam_flydata = info.mempos;
-//    zcam_flysize = info.size;
-//    // until here
-//    zcam_flytime = 0.033333335f;
-//    zcam_flyasset_current = assetID;
-//
-//    zEntPlayerControlOff(CONTROL_OWNER_FLY_CAM);
-//    xScrFxLetterbox(1);
-//
-//    zcam_backupcam = globals.camera;
-//
-//    if (zCamera_FlyOnly() == 0)
-//    {
-//        zMusicSetVolume(0.5f, 0.1f);
-//    }
-//}
-//
-//static void zCameraFlyRestoreBackup(xCamera* backup)
-//{
-//    globals.camera.mat = backup->mat;
-//    globals.camera.omat = backup->omat;
-//    globals.camera.mbasis = backup->mbasis;
-//    globals.camera.bound = backup->bound;
-//    globals.camera.focus = backup->focus;
-//
-//    globals.camera.flags = backup->flags;
-//    globals.camera.tmr = backup->tmr;
-//    globals.camera.tm_acc = backup->tm_acc;
-//    globals.camera.tm_dec = backup->tm_dec;
-//    globals.camera.ltmr = backup->ltmr;
-//    globals.camera.ltm_acc = backup->ltm_acc;
-//    globals.camera.ltm_dec = backup->ltm_dec;
-//    globals.camera.dmin = backup->dmin;
-//    globals.camera.dmax = backup->dmax;
-//    globals.camera.dcur = backup->dcur;
-//    globals.camera.dgoal = backup->dgoal;
-//    globals.camera.hmin = backup->hmin;
-//    globals.camera.hmax = backup->hmax;
-//    globals.camera.hcur = backup->hcur;
-//    globals.camera.hgoal = backup->hgoal;
-//    globals.camera.pmin = backup->pmin;
-//    globals.camera.pmax = backup->pmax;
-//    globals.camera.pcur = backup->pcur;
-//    globals.camera.pgoal = backup->pgoal;
-//    globals.camera.depv = backup->depv;
-//    globals.camera.hepv = backup->hepv;
-//    globals.camera.pepv = backup->pepv;
-//    globals.camera.orn_epv = backup->orn_epv;
-//    globals.camera.yaw_epv = backup->yaw_epv;
-//    globals.camera.pitch_epv = backup->pitch_epv;
-//    globals.camera.roll_epv = backup->roll_epv;
-//    globals.camera.orn_cur = backup->orn_cur;
-//    globals.camera.orn_goal = backup->orn_goal;
-//    globals.camera.orn_diff = backup->orn_diff;
-//    globals.camera.yaw_cur = backup->yaw_cur;
-//    globals.camera.yaw_goal = backup->yaw_goal;
-//    globals.camera.pitch_cur = backup->pitch_cur;
-//    globals.camera.pitch_goal = backup->pitch_goal;
-//    globals.camera.roll_cur = backup->roll_cur;
-//    globals.camera.roll_goal = backup->roll_goal;
-//    globals.camera.dct = backup->dct;
-//    globals.camera.dcd = backup->dcd;
-//    globals.camera.dccv = backup->dccv;
-//    globals.camera.dcsv = backup->dcsv;
-//    globals.camera.hct = backup->hct;
-//    globals.camera.hcd = backup->hcd;
-//    globals.camera.hccv = backup->hccv;
-//    globals.camera.hcsv = backup->hcsv;
-//    globals.camera.pct = backup->pct;
-//    globals.camera.pcd = backup->pcd;
-//    globals.camera.pccv = backup->pccv;
-//    globals.camera.pcsv = backup->pcsv;
-//    globals.camera.orn_ct = backup->orn_ct;
-//    globals.camera.orn_cd = backup->orn_cd;
-//    globals.camera.orn_ccv = backup->orn_ccv;
-//    globals.camera.orn_csv = backup->orn_csv;
-//    globals.camera.yaw_ct = backup->yaw_ct;
-//    globals.camera.yaw_cd = backup->yaw_cd;
-//    globals.camera.yaw_ccv = backup->yaw_ccv;
-//    globals.camera.yaw_csv = backup->yaw_csv;
-//    globals.camera.pitch_ct = backup->pitch_ct;
-//    globals.camera.pitch_cd = backup->pitch_cd;
-//    globals.camera.pitch_ccv = backup->pitch_ccv;
-//    globals.camera.pitch_csv = backup->pitch_csv;
-//    globals.camera.roll_ct = backup->roll_ct;
-//    globals.camera.roll_cd = backup->roll_cd;
-//    globals.camera.roll_ccv = backup->roll_ccv;
-//    globals.camera.roll_csv = backup->roll_csv;
-//}
-//
+
+void zCameraFlyStart(U32 assetID) RIMP WIP // operator= issue
+{
+    st_PKR_ASSET_TOCINFO info;
+    if (xSTGetAssetInfo(assetID, &info) == 0)
+    {
+        return;
+    }
+
+    // weird register use
+    zcam_fly = 1;
+    zcam_flypaused = 0;
+    zcam_flydata = info.mempos;
+    zcam_flysize = info.size;
+    // until here
+    zcam_flytime = 0.033333335f;
+    zcam_flyasset_current = assetID;
+
+    zEntPlayerControlOff(CONTROL_OWNER_FLY_CAM);
+    xScrFxLetterbox(1);
+
+    //zcam_backupcam = globals.camera;
+
+    if (zCamera_FlyOnly() == 0)
+    {
+        //zMusicSetVolume(0.5f, 0.1f);
+    }
+}
+
+static void zCameraFlyRestoreBackup(xCamera* backup) WIP RIMP // same operator= issue
+{
+    globals.camera.mat = backup->mat;
+    globals.camera.omat = backup->omat;
+    globals.camera.mbasis = backup->mbasis;
+    //globals.camera.bound = backup->bound;
+    globals.camera.focus = backup->focus;
+
+    globals.camera.flags = backup->flags;
+    globals.camera.tmr = backup->tmr;
+    globals.camera.tm_acc = backup->tm_acc;
+    globals.camera.tm_dec = backup->tm_dec;
+    globals.camera.ltmr = backup->ltmr;
+    globals.camera.ltm_acc = backup->ltm_acc;
+    globals.camera.ltm_dec = backup->ltm_dec;
+    globals.camera.dmin = backup->dmin;
+    globals.camera.dmax = backup->dmax;
+    globals.camera.dcur = backup->dcur;
+    globals.camera.dgoal = backup->dgoal;
+    globals.camera.hmin = backup->hmin;
+    globals.camera.hmax = backup->hmax;
+    globals.camera.hcur = backup->hcur;
+    globals.camera.hgoal = backup->hgoal;
+    globals.camera.pmin = backup->pmin;
+    globals.camera.pmax = backup->pmax;
+    globals.camera.pcur = backup->pcur;
+    globals.camera.pgoal = backup->pgoal;
+    globals.camera.depv = backup->depv;
+    globals.camera.hepv = backup->hepv;
+    globals.camera.pepv = backup->pepv;
+    globals.camera.orn_epv = backup->orn_epv;
+    globals.camera.yaw_epv = backup->yaw_epv;
+    globals.camera.pitch_epv = backup->pitch_epv;
+    globals.camera.roll_epv = backup->roll_epv;
+    globals.camera.orn_cur = backup->orn_cur;
+    globals.camera.orn_goal = backup->orn_goal;
+    globals.camera.orn_diff = backup->orn_diff;
+    globals.camera.yaw_cur = backup->yaw_cur;
+    globals.camera.yaw_goal = backup->yaw_goal;
+    globals.camera.pitch_cur = backup->pitch_cur;
+    globals.camera.pitch_goal = backup->pitch_goal;
+    globals.camera.roll_cur = backup->roll_cur;
+    globals.camera.roll_goal = backup->roll_goal;
+    globals.camera.dct = backup->dct;
+    globals.camera.dcd = backup->dcd;
+    globals.camera.dccv = backup->dccv;
+    globals.camera.dcsv = backup->dcsv;
+    globals.camera.hct = backup->hct;
+    globals.camera.hcd = backup->hcd;
+    globals.camera.hccv = backup->hccv;
+    globals.camera.hcsv = backup->hcsv;
+    globals.camera.pct = backup->pct;
+    globals.camera.pcd = backup->pcd;
+    globals.camera.pccv = backup->pccv;
+    globals.camera.pcsv = backup->pcsv;
+    globals.camera.orn_ct = backup->orn_ct;
+    globals.camera.orn_cd = backup->orn_cd;
+    globals.camera.orn_ccv = backup->orn_ccv;
+    globals.camera.orn_csv = backup->orn_csv;
+    globals.camera.yaw_ct = backup->yaw_ct;
+    globals.camera.yaw_cd = backup->yaw_cd;
+    globals.camera.yaw_ccv = backup->yaw_ccv;
+    globals.camera.yaw_csv = backup->yaw_csv;
+    globals.camera.pitch_ct = backup->pitch_ct;
+    globals.camera.pitch_cd = backup->pitch_cd;
+    globals.camera.pitch_ccv = backup->pitch_ccv;
+    globals.camera.pitch_csv = backup->pitch_csv;
+    globals.camera.roll_ct = backup->roll_ct;
+    globals.camera.roll_cd = backup->roll_cd;
+    globals.camera.roll_ccv = backup->roll_ccv;
+    globals.camera.roll_csv = backup->roll_csv;
+}
+
 //static S32 zCameraRewardUpdate(xCamera* cam, F32 dt)
 //{
 //    xCameraUpdate(cam, dt);
@@ -676,31 +676,32 @@ namespace
 //
 //    lktm = 0.1f;
 //}
-//
-//void zCameraUpdate(xCamera* camera, F32 dt)
-//{
-//    U32 sceneId = globals.sceneCur->sceneID;
-//
-//    if (sceneId == 'HB01' ||
-//        // HB02 intentionally omitted
-//        sceneId == 'HB03' || sceneId == 'HB04' || sceneId == 'HB06' || sceneId == 'HB07' ||
-//        sceneId == 'HB08' || sceneId == 'HB09' || sceneId == 'HB10')
-//    {
-//        zcam_near |= 0x2;
-//    }
-//    else
-//    {
-//        zcam_near &= 0x1;
-//    }
-//
-//    zCameraTweakGlobal_Update(dt);
-//
-//    // Placeholder usage of floats to match data section.
-//    camera->dcd = 30.0f;
-//    camera->dcd = 0.0000099999997f;
-//    camera->dcd = 12.139999f;
-//}
-//
+
+void zCameraUpdate(xCamera* camera, F32 dt) WIP
+// Function not decomped yet
+{
+    //U32 sceneId = globals.sceneCur->sceneID;
+
+    //if (sceneId == 'HB01' ||
+    //    // HB02 intentionally omitted
+    //    sceneId == 'HB03' || sceneId == 'HB04' || sceneId == 'HB06' || sceneId == 'HB07' ||
+    //    sceneId == 'HB08' || sceneId == 'HB09' || sceneId == 'HB10')
+    //{
+    //    zcam_near |= 0x2;
+    //}
+    //else
+    //{
+    //    zcam_near &= 0x1;
+    //}
+
+    //zCameraTweakGlobal_Update(dt);
+
+    //// Placeholder usage of floats to match data section.
+    //camera->dcd = 30.0f;
+    //camera->dcd = 0.0000099999997f;
+    //camera->dcd = 12.139999f;
+}
+
 //void zCameraSetBbounce(S32 bbouncing)
 //{
 //    zcam_bbounce = bbouncing;
@@ -785,65 +786,65 @@ S32 zCameraGetConvers()
     return zcam_convers;
 }
 
-//void zCameraSetConvers(S32 on)
-//{
-//    xCamera& cam = globals.camera;
-//    zcam_convers = on;
-//    static U8 saved = 0;
-//
-//    if (on)
-//    {
-//        cam = zcam_backupconvers;
-//        saved = 1;
-//        zcam_dest = NULL;
-//        zcam_tmr = 0.0f;
-//    }
-//    else
-//    {
-//        xCameraSetFOV(&cam, 75.0f);
-//        zcam_fovcurr = 75.0f;
-//
-//        if (saved)
-//        {
-//            zCameraFlyRestoreBackup(&zcam_backupconvers);
-//            xCameraMove(&cam, 0x2E, cam.dcur, cam.hcur, cam.pcur, 0.0f, 0.0f, 0.0f);
-//            saved = 0;
-//        }
-//    }
-//}
-//
-//void zCameraDoTrans(xCamAsset* asset, F32 ttime)
-//{
-//    xMat3x3 m;
-//
-//    zcam_dest = asset;
-//
-//    ttime = ttime > 0.0f ? ttime : asset->trans_time;
-//
-//    zcam_tmr = ttime;
-//    zcam_ttm = ttime;
-//
-//    if (ttime <= 0.0f)
-//    {
-//        globals.camera.mat.right = asset->right;
-//        globals.camera.mat.up = asset->up;
-//        globals.camera.mat.at = asset->at;
-//        globals.camera.mat.pos = asset->pos;
-//
-//        zcam_fovcurr = asset->fov;
-//        zcam_fovdest = asset->fov;
-//    }
-//    else
-//    {
-//        m.right = asset->right;
-//        m.up = asset->up;
-//        m.at = asset->at;
-//
-//        xQuatFromMat(&zcam_quat, &m);
-//        zcam_fovdest = asset->fov;
-//    }
-//}
-//
+void zCameraSetConvers(S32 on) WIP RIMP // same operator= issue
+{
+    xCamera& cam = globals.camera;
+    zcam_convers = on;
+    static U8 saved = 0;
+
+    if (on)
+    {
+        //cam = zcam_backupconvers;
+        saved = 1;
+        zcam_dest = NULL;
+        zcam_tmr = 0.0f;
+    }
+    else
+    {
+        xCameraSetFOV(&cam, 75.0f);
+        zcam_fovcurr = 75.0f;
+
+        if (saved)
+        {
+            zCameraFlyRestoreBackup(&zcam_backupconvers);
+            xCameraMove(&cam, 0x2E, cam.dcur, cam.hcur, cam.pcur, 0.0f, 0.0f, 0.0f);
+            saved = 0;
+        }
+    }
+}
+
+void zCameraDoTrans(xCamAsset* asset, F32 ttime)
+{
+    xMat3x3 m;
+
+    zcam_dest = asset;
+
+    ttime = ttime > 0.0f ? ttime : asset->trans_time;
+
+    zcam_tmr = ttime;
+    zcam_ttm = ttime;
+
+    if (ttime <= 0.0f)
+    {
+        globals.camera.mat.right = asset->right;
+        globals.camera.mat.up = asset->up;
+        globals.camera.mat.at = asset->at;
+        globals.camera.mat.pos = asset->pos;
+
+        zcam_fovcurr = asset->fov;
+        zcam_fovdest = asset->fov;
+    }
+    else
+    {
+        m.right = asset->right;
+        m.up = asset->up;
+        m.at = asset->at;
+
+        xQuatFromMat(&zcam_quat, &m);
+        zcam_fovdest = asset->fov;
+    }
+}
+
 //void zCameraTranslate(xCamera* cam, F32 x, F32 y, F32 z)
 //{
 //    cam->mat.pos.x += x;

@@ -263,15 +263,15 @@ void zShrapnel_GameInit() RIMP
 //        frag = next;
 //    }
 //}
-//
-//void zShrapnel_Render()
-//{
-//    if (sNumActiveFrags != 0 && sProjectileList.next != NULL)
-//    {
-//        zFrag_ProjectileRenderer();
-//    }
-//}
-//
+
+void zShrapnel_Render()
+{
+    if (sNumActiveFrags != 0 && sProjectileList.next != NULL)
+    {
+        zFrag_ProjectileRenderer();
+    }
+}
+
 //static void CinFragCB(zFrag* frag, zFragAsset* asset)
 //{
 //    F32 time = frag->delay + frag->lifetime + 1.0f;
@@ -913,3 +913,9 @@ static void zShrapnel_SpongebobInit(zShrapnelAsset* shrap, xModelInstance* paren
 {
     // TODO
 }
+
+void zShrapnel_SceneInit(zScene*) WIP // not decomped
+{
+}
+
+

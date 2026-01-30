@@ -1,63 +1,63 @@
-//#include <types.h>
-//
-//#include "xstransvc.h"
-//#include "xEvent.h"
-//#include "xString.h"
-//#include "xEnt.h"
-//
-//#include "zBusStop.h"
-//#include "zGame.h"
-//#include "zGlobals.h"
-//#include "zScene.h"
-//
-//#include "zEntPlayer.h"
-//#include "zEntCruiseBubble.h"
-//
-//U32 gBusStopIsRunning;
-//static xEnt* sBusStopUI;
-//
-//void zBusStop_Init(xBase& base, xDynAsset& asset, size_t)
-//{
-//    zBusStop_Init((zBusStop*)&base, (busstop_asset*)&asset);
-//}
-//
-//void zBusStop_Init(zBusStop* bstop, busstop_asset* asset)
-//{
-//    xBaseInit(bstop, asset);
-//    bstop->basset = asset;
-//    bstop->eventFunc = zBusStopEventCB;
-//
-//    if (bstop->linkCount)
-//    {
-//        bstop->link = (xLinkAsset*)(asset + 1);
-//    }
-//    else
-//    {
-//        bstop->link = NULL;
-//    }
-//
-//    U32 size;
-//    void* marker = xSTFindAsset(asset->marker, &size);
-//
-//    if (marker != NULL)
-//    {
-//        if (size == sizeof(xVec3))
-//        {
-//            xVec3Copy(&bstop->pos, (xVec3*)marker);
-//            bstop->prevState = 0;
-//            bstop->currState = 0;
-//        }
-//    }
-//}
-//
-//void zBusStop_Setup(zBusStop* bstop)
-//{
-//    zSceneFindObject(bstop->basset->cameraID);
-//    bstop->bus = (zEnt*)zSceneFindObject(bstop->basset->busID);
-//    bstop->switchTimer = -1.0f;
-//    sBusStopUI = (xEnt*)zSceneFindObject(xStrHash("mnu4 busstop"));
-//}
-//
+#include <types.h>
+
+#include "xstransvc.h"
+#include "xEvent.h"
+#include "xString.h"
+#include "xEnt.h"
+
+#include "zBusStop.h"
+#include "zGame.h"
+#include "zGlobals.h"
+#include "zScene.h"
+
+#include "zEntPlayer.h"
+#include "zEntCruiseBubble.h"
+
+U32 gBusStopIsRunning;
+static xEnt* sBusStopUI;
+
+void zBusStop_Init(xBase& base, xDynAsset& asset, size_t)
+{
+    zBusStop_Init((zBusStop*)&base, (busstop_asset*)&asset);
+}
+
+void zBusStop_Init(zBusStop* bstop, busstop_asset* asset)
+{
+    xBaseInit(bstop, asset);
+    bstop->basset = asset;
+    bstop->eventFunc = zBusStopEventCB;
+
+    if (bstop->linkCount)
+    {
+        bstop->link = (xLinkAsset*)(asset + 1);
+    }
+    else
+    {
+        bstop->link = NULL;
+    }
+
+    U32 size;
+    void* marker = xSTFindAsset(asset->marker, &size);
+
+    if (marker != NULL)
+    {
+        if (size == sizeof(xVec3))
+        {
+            xVec3Copy(&bstop->pos, (xVec3*)marker);
+            bstop->prevState = 0;
+            bstop->currState = 0;
+        }
+    }
+}
+
+void zBusStop_Setup(zBusStop* bstop)
+{
+    zSceneFindObject(bstop->basset->cameraID);
+    bstop->bus = (zEnt*)zSceneFindObject(bstop->basset->busID);
+    bstop->switchTimer = -1.0f;
+    sBusStopUI = (xEnt*)zSceneFindObject(xStrHash("mnu4 busstop"));
+}
+
 //void zBusStop_Update(xBase* to, xScene* scene, F32 dt)
 //{
 //    // If nearby, advance out of state 0, otherwise, drop back to state 0
@@ -189,8 +189,8 @@
 //        }
 //    }
 //}
-//
-//S32 zBusStopEventCB(xBase*, xBase*, U32, const F32*, xBase*)
-//{
-//    return eEventEnable;
-//}
+
+S32 zBusStopEventCB(xBase*, xBase*, U32, const F32*, xBase*)
+{
+    return eEventEnable;
+}

@@ -33,46 +33,46 @@ void xScrFxReset()
 
 void xScrFxUpdate(RwCamera* cam, F32 dt) RIMP
 {
-    /*iScrFxBegin();
-    xScrFxUpdateFade(cam, dt);
-    xScrFxUpdateLetterBox(cam, dt);
+    iScrFxBegin();
+    //xScrFxUpdateFade(cam, dt);
+    //xScrFxUpdateLetterBox(cam, dt);
     xScrFXGlareUpdate(dt);
-    xScrFxDistortionUpdate(dt);*/
+    xScrFxDistortionUpdate(dt);
 }
 
-void xScrFxRender(RwCamera* cam) RIMP
+void xScrFxRender(RwCamera* cam) RIMP WIP // IMPORTANT: RwEngineInstance causes issues
 {
-    /*iScrFxBegin();
-    xScrFxDistortionRender((RwCamera*)RwEngineInstance->curCamera);
-    if (g_debugRenderSafeArea != '\0')
-    {
-        xScrFxDrawSafeArea();
-    }
-    iScrFxEnd();*/
+    //iScrFxBegin();
+    //xScrFxDistortionRender((RwCamera*)RwEngineInstance->curCamera);
+    //if (g_debugRenderSafeArea != '\0')
+    //{
+        //xScrFxDrawSafeArea();
+    //}
+    //iScrFxEnd();
 }
 
-//void xScrFxDrawScreenSizeRectangle()
-//{
-//    // I honestly dont know how to complete this function
-//    // FIXME: First 2 params of xScrFxDrawBox seem to be correct
-//    // The rest of them confuse me.
-//
-//    RwVideoMode video_mode;
-//
-//    F32 x2 = 0;
-//    F32 y2 = 0;
-//    U8 red = 0;
-//    U8 green = 0;
-//    U8 blue = 0;
-//    U8 alpha = 255;
-//    F32 ushift = 0;
-//    F32 vshift = 0;
-//
-//    S32 mode = RwEngineGetCurrentVideoMode();
-//    RwEngineGetVideoModeInfo(&video_mode, mode);
-//    xScrFxDrawBox((F32)video_mode.width, (F32)video_mode.height, x2, y2, red, green, blue, alpha,
-//                  ushift, vshift);
-//}
+void xScrFxDrawScreenSizeRectangle() RIMP
+{
+    // I honestly dont know how to complete this function
+    // FIXME: First 2 params of xScrFxDrawBox seem to be correct
+    // The rest of them confuse me.
+
+    /*RwVideoMode video_mode;
+
+    F32 x2 = 0;
+    F32 y2 = 0;
+    U8 red = 0;
+    U8 green = 0;
+    U8 blue = 0;
+    U8 alpha = 255;
+    F32 ushift = 0;
+    F32 vshift = 0;
+
+    S32 mode = RwEngineGetCurrentVideoMode();
+    RwEngineGetVideoModeInfo(&video_mode, mode);
+    xScrFxDrawBox((F32)video_mode.width, (F32)video_mode.height, x2, y2, red, green, blue, alpha,
+                  ushift, vshift);*/
+}
 
 void xScrFxFadeInit()
 {
@@ -121,9 +121,9 @@ void xScrFxLetterBoxSetAlpha(U8 alpha)
     sLetterBoxAlpha = alpha;
 }
 
-void xScrFxLetterbox(S32 enable) RIMP
+void xScrFxLetterbox(S32 enable)
 {
-    /*if (zMenuRunning() != 0)
+    if (zMenuRunning() != 0)
     {
         enable = 0;
     }
@@ -134,7 +134,7 @@ void xScrFxLetterbox(S32 enable) RIMP
     else
     {
         mLetterboxTO = 0.0f;
-    }*/
+    }
 }
 
 S32 xScrFxIsLetterbox()
@@ -162,4 +162,27 @@ void xScrFXGlareInit()
 void xScrFXGlareReset()
 {
     xScrFXGlareInit();
+}
+
+S32 xScrFXGlareAdd(xVec3* pos, F32 life, F32 intensity, F32 size, F32 r, F32 g, F32 b, F32 a,
+    RwRaster* raster) WIP // not decomped
+{
+    return 0;
+}
+
+void xScrFXFullScreenGlareRender() WIP // not decomped
+{
+}
+
+static void xScrFxDistortionUpdate(F32 dt) WIP // not decomped
+{
+}
+
+void xScrFXGlareUpdate(F32) WIP // not decomped // Return type may be wrong, Not in dwarf
+{
+}
+
+
+void xScrFXGlareRender(xCamera* cam) WIP // not decomped
+{
 }

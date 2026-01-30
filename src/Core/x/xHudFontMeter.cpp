@@ -1,18 +1,18 @@
-//#include "xHudFontMeter.h"
-//
-//#include <types.h>
-//#include <xMath2.h>
-//#include <PowerPC_EABI_Support\MSL_C\MSL_Common\printf.h>
-//#include <PowerPC_EABI_Support\MSL_C++\MSL_Common\Include\new.h>
-//
-//void xhud::font_meter_widget::load(xBase& data, xDynAsset& asset, u32 size_t)
-//{
-//    // Stubbed out for now for causing build failure. 100% match locally though if method redefined to be nonstatic.
-//    // widget::init_base((xBase&)*this, *(xBaseAsset*)&data, sizeof(xhud::font_meter_widget) + 0x10);
-//    // new (&this->rc.size)
-//    //     xhud::font_meter_widget(*(xhud::font_meter_asset*)&data); // TODO: proper size value
-//}
-//
+#include "xHudFontMeter.h"
+
+#include <types.h>
+#include <xMath2.h>
+//#include <printf.h>
+#include <new.h>
+
+void xhud::font_meter_widget::load(xBase& data, xDynAsset& asset, U32 size_t)
+{
+    // Stubbed out for now for causing build failure. 100% match locally though if method redefined to be nonstatic.
+    // widget::init_base((xBase&)*this, *(xBaseAsset*)&data, sizeof(xhud::font_meter_widget) + 0x10);
+    // new (&this->rc.size)
+    //     xhud::font_meter_widget(*(xhud::font_meter_asset*)&data); // TODO: proper size value
+}
+
 //xhud::font_meter_widget::font_meter_widget(xhud::font_meter_asset& init) : meter_widget(init)
 //{
 //    basic_rect<F32> screen_bounds;

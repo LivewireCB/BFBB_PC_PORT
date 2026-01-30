@@ -16,6 +16,7 @@
 
 #include "iDraw.h"
 #include "iSystem.h"
+#include "iScrFx.h"
 #include "iTRC.h"
 
 #include "xDebug.h"
@@ -30,6 +31,7 @@
 #include "xUtil.h"
 
 #include <types.h>
+#include "rwframesync.h"
 
 #include <stdio.h>
 
@@ -47,19 +49,20 @@ static S32 sPortalling;
 //extern eGameMode gGameMode;
 //static F32 sGameOverTimer;
 //F32 sTimeElapsed;
-//iTime sTimeLast;
-//iTime sTimeCurrent;
-//extern RpLight* DirectionalLight;
-//extern RpWorld* World;
-//extern RwCamera* sGameScreenTransCam;
+iTime sTimeLast;
+iTime sTimeCurrent;
+RpLight* DirectionalLight; WIP // investigate why these were originally externed
+RpWorld* World; WIP // investigate why these were originally externed
+RwCamera* sGameScreenTransCam; WIP // investigate why these were originally externed
 //extern _tagTRCPadInfo gTrcPad[4];
 static S32 g_hiphopReloadHIP;
 static S32 g_hiphopForcePortal;
 //xPortalAsset dummyPortalAsset;
 //_zPortal dummyPortal;
-//U32 gSoak;
-//static U32 loadMeter;
-//
+U8 sHackSmoothedUpdate;
+U32 gSoak;
+static U32 loadMeter;
+
 //void xMemDebug_SoakLog(const char*);
 //void zCutsceneMgrFinishExit(xBase* to);
 //
@@ -360,7 +363,7 @@ void zGameInit(U32 theSceneID) RIMP
     gGameWhereAmI = eGameWhere_InitCamera;
     xCameraInit(&globals.camera, 640, 480);
     zCameraReset(&globals.camera);
-    //xCameraSetScene(&globals.camera, globals.sceneCur);
+    xCameraSetScene(&globals.camera, globals.sceneCur);
     gGameWhereAmI = eGameWhere_InitMusic;
     //zMusicInit();
     gGameWhereAmI = eGameWhere_InitOther;
@@ -856,252 +859,254 @@ void zGameLoop() WIP
 //        sGameOverTimer = 0.0f;
 //    }
 //}
-//
-//void zGameTakeSnapShot(RwCamera*)
-//{
-//}
-//
-//// Float memes
-//void zGameUpdateTransitionBubbles()
-//{
-//    gGameWhereAmI = eGameWhere_TransitionBubbles;
-//    sTimeCurrent = iTimeGet();
-//	F32 diff = iTimeDiffSec(sTimeLast, sTimeCurrent);
-//    sTimeElapsed = diff;
-//    sTimeLast = sTimeCurrent;
-//	if (sTimeElapsed > 0.5f)
-//	{
-//		zParPTankUpdate(sTimeElapsed);
-//	}
-//	else
-//	{
-//		zParPTankUpdate(0.5f);
-//	}
-//    zParPTankRender();
-//}
-//
-//void zGameScreenTransitionBegin()
-//{
-//    gGameWhereAmI = eGameWhere_TransitionBegin;
-//    zGameSetOstrich(eGameOstrich_Loading);
-//    globals.dontShowPadMessageDuringLoadingOrCutScene = '\0';
-//    sGameScreenTransCam = iCameraCreate(640, 480, 0);
-//    if (sGameScreenTransCam != NULL)
-//    {
-//        DirectionalLight = RpLightCreate(1);
-//        if (DirectionalLight != NULL)
-//        {
-//            RwRGBAReal col;
-//			col.red = col.green = col.blue = 1.0f;
-//			col.alpha = 0.0f;
-//            RpLightSetColor(DirectionalLight, &col);
-//            RwFrame* frame = RwFrameCreate();
-//            _rwObjectHasFrameSetFrame(DirectionalLight, frame);
-//            RwBBox box;
-//			box.sup.z = box.sup.y = box.sup.x =  10000.0f;
-//			box.inf.z = box.inf.y = box.inf.x = -10000.0f;
-//            World = RpWorldCreate(&box);
-//            RpWorldAddCamera(World, sGameScreenTransCam);
-//            gGameWhereAmI = eGameWhere_TransitionSnapShot;
-//            zGameTakeSnapShot(sGameScreenTransCam);
-//        }
-//    }
-//}
-//
-//void zGameScreenTransitionUpdate(F32 percentComplete, char* msg)
-//{
-//    if (!zMenuIsFirstBoot())
-//    {
-//        zGameScreenTransitionUpdate(percentComplete, msg, 0);
-//    }
-//}
-//
-//U32 bgID = 0x1d33b0bb;
-//F32 bgu2 = 1.333f;
-//F32 bgv2 = 1.0f;
-//U8 bgr = 0x60;
-//U8 bgg = 0x60;
-//U8 bgb = 0x60;
-//U8 bga = 0x80;
-//F32 bgu1;
-//F32 bgv1;
-//
-//void zGameScreenTransitionUpdate(F32 percentComplete, char* msg, U8* rgba)
-//{
-//    RwTexture* tex;
-//    RwRaster* ras;
-//    rwGameCube2DVertex vx[4];
-//
-//    gGameWhereAmI = eGameWhere_TransitionUpdate;
-//
-//    if (zMenuIsFirstBoot())
-//    {
-//        return;
-//    }
-//
-//    RwRGBA back_col = { 0xFF, 0x00, 0x00, 0x00 };
-//    if (rgba != NULL)
-//    {
-//        back_col.red   = rgba[0];
-//        back_col.green = rgba[1];
-//        back_col.blue  = rgba[2];
-//        back_col.alpha = rgba[3];
-//    }
-//
-//    gGameWhereAmI = eGameWhere_TransitionPadUpdate;
-//    xPadUpdate(globals.currentActivePad, sTimeElapsed);
-//    xDrawBegin();
-//
-//    if (sGameScreenTransCam != NULL)
-//    {
-//        gGameWhereAmI = eGameWhere_TransitionTRCCheck;
-//        iTRCDisk::CheckDVDAndResetState();
-//
-//        gGameWhereAmI = eGameWhere_TransitionCameraClear;
-//        RwCameraClear(sGameScreenTransCam, &back_col, 3);
-//
-//        gGameWhereAmI = eGameWhere_TransitionCameraBegin;
-//        RwCameraBeginUpdate(sGameScreenTransCam);
-//
-//        gGameWhereAmI = eGameWhere_TransitionRenderBackground;
-//        tex = (RwTexture*)xSTFindAsset(bgID, NULL);
-//        if ((tex != NULL) && (ras = (RwRaster*)tex->raster, ras != NULL))
-//        {
-//            RwRenderStateSet(rwRENDERSTATETEXTURERASTER, (void*)0);
-//            RwRenderStateSet(rwRENDERSTATESRCBLEND, (void*)2);
-//            RwRenderStateSet(rwRENDERSTATEDESTBLEND, (void*)1);
-//            RwRenderStateSet(rwRENDERSTATEZTESTENABLE, (void*)0);
-//            RwRenderStateSet(rwRENDERSTATETEXTUREFILTER, (void*)2);
-//            RwRenderStateSet(rwRENDERSTATETEXTURERASTER, ras);
-//
-//            F32 z = RwIm2DGetFarScreenZ();
-//
-//            vx[0].x = 0.0f;
-//            vx[0].y = 0.0f;
-//            vx[0].z = z;
-//            vx[0].emissiveColor.red   = bgr;
-//            vx[0].emissiveColor.green = bgb;
-//            vx[0].emissiveColor.blue  = bgg;
-//            vx[0].emissiveColor.alpha = bga;
-//            vx[0].u = bgu1;
-//            vx[0].v = bgv1;
-//
-//            vx[1].x = 0.0f;
-//            vx[1].y = 480.0f;
-//            vx[1].z = z;
-//            vx[1].emissiveColor.red   = bgr;
-//            vx[1].emissiveColor.green = bgb;
-//            vx[1].emissiveColor.blue  = bgg;
-//            vx[1].emissiveColor.alpha = bga;
-//            vx[1].u = bgu1;
-//            vx[1].v = bgv2;
-//
-//            vx[2].x = 640.0f;
-//            vx[2].y = 0.0f;
-//            vx[2].z = z;
-//            vx[2].emissiveColor.red   = bgr;
-//            vx[2].emissiveColor.green = bgb;
-//            vx[2].emissiveColor.blue  = bgg;
-//            vx[2].emissiveColor.alpha = bga;
-//            vx[2].u = bgu2;
-//            vx[2].v = bgv1;
-//
-//            vx[3].x = 640.0f;
-//            vx[3].y = 480.0f;
-//            vx[3].z = z;
-//            vx[3].emissiveColor.red   = bgr;
-//            vx[3].emissiveColor.green = bgb;
-//            vx[3].emissiveColor.blue  = bgg;
-//            vx[3].emissiveColor.alpha = bga;
-//            vx[3].u = bgu2;
-//            vx[3].v = bgv2;
-//
-//            RwIm2DRenderPrimitive(rwPRIMTYPETRISTRIP, &vx[0], 4);
-//            RwRenderStateSet(rwRENDERSTATEZTESTENABLE, (void*)1);
-//            RwRenderStateSet(rwRENDERSTATESRCBLEND, (void*)5);
-//            RwRenderStateSet(rwRENDERSTATEDESTBLEND, (void*)6);
-//        }
-//    }
-//
-//    xprintf("Loading... %3.2f\n", percentComplete);
-//
-//    if (msg != NULL)
-//    {
-//        xprintf(msg);
-//    }
-//
-//    char meter[256] = "...";
-//
-//    switch ((loadMeter / 0x19) % 5)
-//    {
-//        case 0:
-//            strcpy(meter, "   ");
-//            break;
-//        case 1:
-//            strcpy(meter, ".  ");
-//            break;
-//        case 2:
-//            strcpy(meter, ".. ");
-//            break;
-//        case 3:
-//            strcpy(meter, "...");
-//            break;
-//        case 4:
-//            loadMeter = 0;
-//            break;
-//    }
-//
-//    loadMeter++;
-//
-//    xDebugUpdate();
-//
-//    gGameWhereAmI = eGameWhere_TransitionSpawnBubbles;
-//    zFX_SpawnBubbleWall();
-//
-//    gGameWhereAmI = eGameWhere_TransitionDrawEnd;
-//    xDrawEnd();
-//
-//    if (sGameScreenTransCam != NULL)
-//    {
-//        gGameWhereAmI = eGameWhere_TransitionUpdateBubbles;
-//        zGameUpdateTransitionBubbles();
-//        gGameWhereAmI = eGameWhere_TransitionCameraEnd;
-//        RwCameraEndUpdate(sGameScreenTransCam);
-//        gGameWhereAmI = eGameWhere_TransitionCameraShowRaster;
-//        RwCameraShowRaster(sGameScreenTransCam, NULL, 1);
-//    }
-//
-//    gGameWhereAmI = eGameWhere_TransitionUpdateEnd;
-//}
-//
-//void zGameScreenTransitionEnd()
-//{
-//    RwFrame* frame;
-//    gGameWhereAmI = eGameWhere_TransitionEnd;
-//    _rwFrameSyncDirty();
-//    if (DirectionalLight != NULL)
-//    {
-//        frame = (RwFrame*)(DirectionalLight->object).object.parent;
-//        if (frame != NULL)
-//        {
-//            RwFrameDestroy(frame);
-//        }
-//        RpLightDestroy(DirectionalLight);
-//        DirectionalLight = 0;
-//    }
-//    if (World != NULL)
-//    {
-//        if (sGameScreenTransCam != NULL)
-//        {
-//            RpWorldRemoveCamera(World, sGameScreenTransCam);
-//            iCameraDestroy(sGameScreenTransCam);
-//            sGameScreenTransCam = 0;
-//        }
-//        RpWorldDestroy(World);
-//        World = 0;
-//    }
-//    gGameWhereAmI = eGameWhere_TransitionEnded;
-//}
+
+void zGameTakeSnapShot(RwCamera*) WIP // not decomped
+{
+}
+
+// Float memes
+void zGameUpdateTransitionBubbles()
+{
+    gGameWhereAmI = eGameWhere_TransitionBubbles;
+    sTimeCurrent = iTimeGet();
+	F32 diff = iTimeDiffSec(sTimeLast, sTimeCurrent);
+    sTimeElapsed = diff;
+    sTimeLast = sTimeCurrent;
+	if (sTimeElapsed > 0.5f)
+	{
+		zParPTankUpdate(sTimeElapsed);
+	}
+	else
+	{
+		zParPTankUpdate(0.5f);
+	}
+    zParPTankRender();
+}
+
+void zGameScreenTransitionBegin()
+{
+    gGameWhereAmI = eGameWhere_TransitionBegin;
+    zGameSetOstrich(eGameOstrich_Loading);
+    globals.dontShowPadMessageDuringLoadingOrCutScene = '\0';
+    sGameScreenTransCam = iCameraCreate(640, 480, 0);
+    if (sGameScreenTransCam != NULL)
+    {
+        DirectionalLight = RpLightCreate(1);
+        if (DirectionalLight != NULL)
+        {
+            RwRGBAReal col;
+			col.red = col.green = col.blue = 1.0f;
+			col.alpha = 0.0f;
+            RpLightSetColor(DirectionalLight, &col);
+            RwFrame* frame = RwFrameCreate();
+            _rwObjectHasFrameSetFrame(DirectionalLight, frame);
+            RwBBox box;
+			box.sup.z = box.sup.y = box.sup.x =  10000.0f;
+			box.inf.z = box.inf.y = box.inf.x = -10000.0f;
+            World = RpWorldCreate(&box);
+            RpWorldAddCamera(World, sGameScreenTransCam);
+            gGameWhereAmI = eGameWhere_TransitionSnapShot;
+            zGameTakeSnapShot(sGameScreenTransCam);
+        }
+    }
+}
+
+void zGameScreenTransitionUpdate(F32 percentComplete, char* msg)
+{
+    if (!zMenuIsFirstBoot())
+    {
+        zGameScreenTransitionUpdate(percentComplete, msg, 0);
+    }
+}
+
+U32 bgID = 0x1d33b0bb;
+F32 bgu2 = 1.333f;
+F32 bgv2 = 1.0f;
+U8 bgr = 0x60;
+U8 bgg = 0x60;
+U8 bgb = 0x60;
+U8 bga = 0x80;
+F32 bgu1;
+F32 bgv1;
+
+void zGameScreenTransitionUpdate(F32 percentComplete, char* msg, U8* rgba) WIP MIMP // IMPORTANT: rwGamecube2DVertex will most likely need 
+// changed to the PC equivalent. Leaving until further research is done.
+{
+    RwTexture* tex;
+    RwRaster* ras;
+    RwD3D8Vertex vx[4]; WIP  // changed from gc to pc equivalent
+    //rwGameCube2DVertex vx[4]; 
+
+    gGameWhereAmI = eGameWhere_TransitionUpdate;
+
+    if (zMenuIsFirstBoot())
+    {
+        return;
+    }
+
+    RwRGBA back_col = { 0xFF, 0x00, 0x00, 0x00 };
+    if (rgba != NULL)
+    {
+        back_col.red   = rgba[0];
+        back_col.green = rgba[1];
+        back_col.blue  = rgba[2];
+        back_col.alpha = rgba[3];
+    }
+
+    gGameWhereAmI = eGameWhere_TransitionPadUpdate;
+    xPadUpdate(globals.currentActivePad, sTimeElapsed);
+    xDrawBegin();
+
+    if (sGameScreenTransCam != NULL)
+    {
+        gGameWhereAmI = eGameWhere_TransitionTRCCheck;
+        iTRCDisk::CheckDVDAndResetState();
+
+        gGameWhereAmI = eGameWhere_TransitionCameraClear;
+        RwCameraClear(sGameScreenTransCam, &back_col, 3);
+
+        gGameWhereAmI = eGameWhere_TransitionCameraBegin;
+        RwCameraBeginUpdate(sGameScreenTransCam);
+
+        gGameWhereAmI = eGameWhere_TransitionRenderBackground;
+        tex = (RwTexture*)xSTFindAsset(bgID, NULL);
+        if ((tex != NULL) && (ras = (RwRaster*)tex->raster, ras != NULL))
+        {
+            RwRenderStateSet(rwRENDERSTATETEXTURERASTER, (void*)0);
+            RwRenderStateSet(rwRENDERSTATESRCBLEND, (void*)2);
+            RwRenderStateSet(rwRENDERSTATEDESTBLEND, (void*)1);
+            RwRenderStateSet(rwRENDERSTATEZTESTENABLE, (void*)0);
+            RwRenderStateSet(rwRENDERSTATETEXTUREFILTER, (void*)2);
+            RwRenderStateSet(rwRENDERSTATETEXTURERASTER, ras);
+
+            F32 z = RwIm2DGetFarScreenZ();
+
+            vx[0].x = 0.0f;
+            vx[0].y = 0.0f;
+            vx[0].z = z;
+            vx[0].emissiveColor.red   = bgr;
+            vx[0].emissiveColor.green = bgb;
+            vx[0].emissiveColor.blue  = bgg;
+            vx[0].emissiveColor.alpha = bga;
+            vx[0].u = bgu1;
+            vx[0].v = bgv1;
+
+            vx[1].x = 0.0f;
+            vx[1].y = 480.0f;
+            vx[1].z = z;
+            vx[1].emissiveColor.red   = bgr;
+            vx[1].emissiveColor.green = bgb;
+            vx[1].emissiveColor.blue  = bgg;
+            vx[1].emissiveColor.alpha = bga;
+            vx[1].u = bgu1;
+            vx[1].v = bgv2;
+
+            vx[2].x = 640.0f;
+            vx[2].y = 0.0f;
+            vx[2].z = z;
+            vx[2].emissiveColor.red   = bgr;
+            vx[2].emissiveColor.green = bgb;
+            vx[2].emissiveColor.blue  = bgg;
+            vx[2].emissiveColor.alpha = bga;
+            vx[2].u = bgu2;
+            vx[2].v = bgv1;
+
+            vx[3].x = 640.0f;
+            vx[3].y = 480.0f;
+            vx[3].z = z;
+            vx[3].emissiveColor.red   = bgr;
+            vx[3].emissiveColor.green = bgb;
+            vx[3].emissiveColor.blue  = bgg;
+            vx[3].emissiveColor.alpha = bga;
+            vx[3].u = bgu2;
+            vx[3].v = bgv2;
+
+            RwIm2DRenderPrimitive(rwPRIMTYPETRISTRIP, &vx[0], 4);
+            RwRenderStateSet(rwRENDERSTATEZTESTENABLE, (void*)1);
+            RwRenderStateSet(rwRENDERSTATESRCBLEND, (void*)5);
+            RwRenderStateSet(rwRENDERSTATEDESTBLEND, (void*)6);
+        }
+    }
+
+    xprintf("Loading... %3.2f\n", percentComplete);
+
+    if (msg != NULL)
+    {
+        xprintf(msg);
+    }
+
+    char meter[256] = "...";
+
+    switch ((loadMeter / 0x19) % 5)
+    {
+        case 0:
+            strcpy(meter, "   ");
+            break;
+        case 1:
+            strcpy(meter, ".  ");
+            break;
+        case 2:
+            strcpy(meter, ".. ");
+            break;
+        case 3:
+            strcpy(meter, "...");
+            break;
+        case 4:
+            loadMeter = 0;
+            break;
+    }
+
+    loadMeter++;
+
+    xDebugUpdate();
+
+    gGameWhereAmI = eGameWhere_TransitionSpawnBubbles;
+    zFX_SpawnBubbleWall();
+
+    gGameWhereAmI = eGameWhere_TransitionDrawEnd;
+    xDrawEnd();
+
+    if (sGameScreenTransCam != NULL)
+    {
+        gGameWhereAmI = eGameWhere_TransitionUpdateBubbles;
+        zGameUpdateTransitionBubbles();
+        gGameWhereAmI = eGameWhere_TransitionCameraEnd;
+        RwCameraEndUpdate(sGameScreenTransCam);
+        gGameWhereAmI = eGameWhere_TransitionCameraShowRaster;
+        RwCameraShowRaster(sGameScreenTransCam, NULL, 1);
+    }
+
+    gGameWhereAmI = eGameWhere_TransitionUpdateEnd;
+}
+
+void zGameScreenTransitionEnd()
+{
+    RwFrame* frame;
+    gGameWhereAmI = eGameWhere_TransitionEnd;
+    _rwFrameSyncDirty();
+    if (DirectionalLight != NULL)
+    {
+        frame = (RwFrame*)(DirectionalLight->object).object.parent;
+        if (frame != NULL)
+        {
+            RwFrameDestroy(frame);
+        }
+        RpLightDestroy(DirectionalLight);
+        DirectionalLight = 0;
+    }
+    if (World != NULL)
+    {
+        if (sGameScreenTransCam != NULL)
+        {
+            RpWorldRemoveCamera(World, sGameScreenTransCam);
+            iCameraDestroy(sGameScreenTransCam);
+            sGameScreenTransCam = 0;
+        }
+        RpWorldDestroy(World);
+        World = 0;
+    }
+    gGameWhereAmI = eGameWhere_TransitionEnded;
+}
 
 void zGameSetupPlayer() RIMP
 {
@@ -1150,12 +1155,12 @@ void zGameStats_Init() COMPLETE
 {
 }
 
-//void xDrawEnd()
-//{
-//    iDrawEnd();
-//}
-//
-//void xDrawBegin()
-//{
-//    iDrawBegin();
-//}
+void xDrawEnd()
+{
+    iDrawEnd();
+}
+
+void xDrawBegin()
+{
+    iDrawBegin();
+}

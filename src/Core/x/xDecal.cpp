@@ -1,34 +1,34 @@
-//#include "xDecal.h"
-//
-//#include <types.h>
-//
-//#include "xString.h"
-//#include "xstransvc.h"
-//#include "zGlobals.h"
-//#include "containers.h"
-//
-//namespace 
-//{
-//    static xDecalEmitter * active_emitters[32];
-//    static U32 active_emitters_size;
-//
-//    void register_emitter(xDecalEmitter* emitter)
-//    {
-//        if (active_emitters_size < 32)
-//        {
-//            active_emitters[active_emitters_size] = emitter;
-//            active_emitters_size++;
-//        }
-//    }
-//
-//    F32 choose_greatest(F32 a, F32 b, F32 c);
-//}  // end of anonymous namespace
-//
-//void xDecalInit()
-//{
-//    active_emitters_size = 0;
-//}
-//
+#include "xDecal.h"
+
+#include <types.h>
+
+#include "xString.h"
+#include "xstransvc.h"
+#include "zGlobals.h"
+#include "containers.h"
+
+namespace 
+{
+    static xDecalEmitter * active_emitters[32];
+    static U32 active_emitters_size;
+
+    void register_emitter(xDecalEmitter* emitter)
+    {
+        if (active_emitters_size < 32)
+        {
+            active_emitters[active_emitters_size] = emitter;
+            active_emitters_size++;
+        }
+    }
+
+    F32 choose_greatest(F32 a, F32 b, F32 c);
+}  // end of anonymous namespace
+
+void xDecalInit()
+{
+    active_emitters_size = 0;
+}
+
 //void xDecalUpdate(F32 dt)
 //{
 //    for (U32 i = 0; i < active_emitters_size; ++i)

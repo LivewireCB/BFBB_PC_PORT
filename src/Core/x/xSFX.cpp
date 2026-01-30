@@ -33,42 +33,42 @@
 //
 //    return 0;
 //}
-//
-//void xSFXInit(void* t, void* asset)
-//
-//{
-//    xSFXInit((xSFX*)t, (xSFXAsset*)asset);
-//}
-//
-//void xSFXInit(xSFX* t, xSFXAsset* asset)
-//{
-//    xBaseInit(t, asset);
-//
-//    // S32 xSFXEventCB(xBase* to, xBase* from, U32 toEvent, const F32* toParam, xBase*)
-//    t->eventFunc = &xSFXEventCB;
-//    t->asset = asset;
-//
-//    if (t->linkCount)
-//    {
-//        t->link = (xLinkAsset*)(t->asset + 1);
-//    }
-//    else
-//    {
-//        t->link = 0;
-//    }
-//    if (xSFXWillSendDone(t))
-//    {
-//        asset->flagsSFX = asset->flagsSFX | 0x800;
-//    }
-//    t->sndID = 0;
-//    t->asset->flagsSFX = t->asset->flagsSFX & 0xefff;
-//    t->cachedOuterDistSquared = (t->asset->outerRadius * t->asset->outerRadius);
-//}
-//
-//void xSFXSave(xSFX* ent, xSerial* s)
-//{
-//    xBaseSave(ent, s);
-//}
+
+void xSFXInit(void* t, void* asset)
+
+{
+    xSFXInit((xSFX*)t, (xSFXAsset*)asset);
+}
+
+void xSFXInit(xSFX* t, xSFXAsset* asset) RIMP
+{
+    //xBaseInit(t, asset);
+
+    //// S32 xSFXEventCB(xBase* to, xBase* from, U32 toEvent, const F32* toParam, xBase*)
+    //t->eventFunc = &xSFXEventCB;
+    //t->asset = asset;
+
+    //if (t->linkCount)
+    //{
+    //    t->link = (xLinkAsset*)(t->asset + 1);
+    //}
+    //else
+    //{
+    //    t->link = 0;
+    //}
+    //if (xSFXWillSendDone(t))
+    //{
+    //    asset->flagsSFX = asset->flagsSFX | 0x800;
+    //}
+    //t->sndID = 0;
+    //t->asset->flagsSFX = t->asset->flagsSFX & 0xefff;
+    //t->cachedOuterDistSquared = (t->asset->outerRadius * t->asset->outerRadius);
+}
+
+void xSFXSave(xSFX* ent, xSerial* s)
+{
+    xBaseSave(ent, s);
+}
 
 void xSFXLoad(xSFX* ent, xSerial* s)
 {

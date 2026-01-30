@@ -18,269 +18,269 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-//void zEntInit(zEnt* ent, xEntAsset* asset, U32 type)
-//{
-//    xEntInit(ent, asset);
-//    ent->update = (xEntUpdateCallback)zEntUpdate;
-//
-//    // Surprisingly, this is not a switch statement.
-//    if (type == 0x504c5952)
-//    {
-//        ent->collType = 0x10;
-//        ent->collLev = 0x4;
-//        ent->bound.type = 0x1;
-//        zEntParseModelInfo(ent, asset->modelInfoID);
-//    }
-//    else if (type == 0x56494c20)
-//    {
-//        ent->collType = 0x8;
-//        ent->collLev = 0x4;
-//        ent->bound.type = 0x1;
-//        ent->moreFlags = ent->moreFlags | 0x10;
-//        zEntParseModelInfo(ent, asset->modelInfoID);
-//    }
-//    else if (type == 0x4954454d)
-//    {
-//        ent->collType = 0x2;
-//        ent->collLev = 0x4;
-//        ent->bound.type = 0x1;
-//        ent->eventFunc = NULL;
-//        zEntParseModelInfo(ent, asset->modelInfoID);
-//    }
-//    else if (type == 0x504b5550)
-//    {
-//        ent->collType = 0;
-//        ent->bound.type = 0;
-//    }
-//    else if (type == 0x504c4154)
-//    {
-//        ent->collType = 0x4;
-//        if (asset->moreFlags & 2)
-//        {
-//            ent->collLev = 0x5;
-//        }
-//        else
-//        {
-//            ent->collLev = 0x4;
-//        }
-//        zEntParseModelInfo(ent, asset->modelInfoID);
-//        ent->bound.type = 0x4;
-//        ent->bound.mat = (xMat4x3*)ent->model->Mat;
-//    }
-//    else if (type == 0x50454e44)
-//    {
-//        ent->collType = 0x4;
-//        if (asset->moreFlags & 2)
-//        {
-//            ent->collLev = 0x5;
-//        }
-//        else
-//        {
-//            ent->collLev = 0x4;
-//        }
-//        zEntParseModelInfo(ent, asset->modelInfoID);
-//        ent->bound.type = 0x4;
-//        ent->bound.mat = (xMat4x3*)ent->model->Mat;
-//    }
-//    else if (type == 0x54524947)
-//    {
-//        ent->collType = 0x1;
-//        ent->bound.type = 0;
-//    }
-//    else if (type == 0x48414e47)
-//    {
-//        ent->collType = 0x4;
-//        ent->collLev = 0x4;
-//        ent->bound.type = 0x1;
-//        zEntParseModelInfo(ent, asset->modelInfoID);
-//    }
-//    else if (type == 0x53494d50)
-//    {
-//        ent->collType = 0x2;
-//        if (asset->moreFlags & 2)
-//        {
-//            ent->collLev = 0x5;
-//        }
-//        else
-//        {
-//            ent->collLev = 0x4;
-//        }
-//        ent->bound.type = 0x4;
-//        zEntParseModelInfo(ent, asset->modelInfoID);
-//        ent->bound.mat = (xMat4x3*)ent->model->Mat;
-//    }
-//    else if (type == 0x55492020)
-//    {
-//    }
-//    else if (type == 0x4255544e)
-//    {
-//        ent->collType = 0x4;
-//        if (asset->moreFlags & 2)
-//        {
-//            ent->collLev = 0x5;
-//        }
-//        else
-//        {
-//            ent->collLev = 0x4;
-//        }
-//        ent->bound.type = 0x4;
-//        ent->moreFlags = ent->moreFlags | 0x10;
-//        zEntParseModelInfo(ent, asset->modelInfoID);
-//        ent->bound.mat = (xMat4x3*)ent->model->Mat;
-//    }
-//    else if (type == 0x44535452)
-//    {
-//        ent->collType = 0x4;
-//        if (asset->moreFlags & 2)
-//        {
-//            ent->collLev = 0x5;
-//        }
-//        else
-//        {
-//            ent->collLev = 0x4;
-//        }
-//        ent->bound.type = 0x4;
-//        ent->moreFlags = ent->moreFlags | 0x10;
-//        zEntParseModelInfo(ent, asset->modelInfoID);
-//        ent->bound.mat = (xMat4x3*)ent->model->Mat;
-//    }
-//    else if (type == 0x4547454e)
-//    {
-//        ent->collType = 0x4;
-//        if (asset->moreFlags & 2)
-//        {
-//            ent->collLev = 0x5;
-//        }
-//        else
-//        {
-//            ent->collLev = 0x4;
-//        }
-//        ent->bound.type = 0x4;
-//        zEntParseModelInfo(ent, asset->modelInfoID);
-//        ent->bound.mat = (xMat4x3*)ent->model->Mat;
-//    }
-//    else if (type == 0x54424f58)
-//    {
-//        ent->collType = 0x2;
-//        ent->collLev = 0x5;
-//        ent->bound.type = 0x4;
-//        zEntParseModelInfo(ent, asset->modelInfoID);
-//        ent->bound.mat = (xMat4x3*)ent->model->Mat;
-//    }
-//
-//    if (asset->animListID != 0)
-//    {
-//        S32 num_used = zAnimListGetNumUsed(asset->animListID);
-//        if (num_used > 0)
-//        {
-//            ent->atbl = zAnimListGetTable(asset->animListID);
-//            xAnimPoolAlloc(&globals.sceneCur->mempool, ent, ent->atbl, ent->model);
-//            xAnimState* ast = xAnimTableGetState(ent->atbl, "idle");
-//            if (ast != NULL)
-//            {
-//                xAnimSingle* single = ent->model->Anim->Single;
-//                single->State = ast;
-//                single->Time = 0.0f;
-//                single->CurrentSpeed = 1.0f;
-//                xModelEval(ent->model);
-//            }
-//        }
-//        else
-//        {
-//            ent->atbl = NULL;
-//        }
-//    }
-//    else
-//    {
-//        ent->atbl = NULL;
-//    }
-//
-//    xEntInitForType(ent);
-//}
-//
-//void zEntSetup(zEnt* ent)
-//{
-//    xEntSetup(ent);
-//    checkpoint_collision_hack(ent);
-//}
-//
-//// Equivalent
-//// This function needs to be declared inline to generate the correct mangled name for model_id
-//inline void checkpoint_collision_hack(zEnt* ent)
-//{
-//    // instruction swap involving the guard for this static initializer.
-//    // Might be due to the sda reloc access for model_id getting moved down
-//    static U32 model_id = xStrHash("checkpoint_bind");
-//    if (ent->asset->modelInfoID == model_id)
-//    {
-//        ent->bound.type = 0x2;
-//        xVec3* lower = &ent->bound.box.box.lower;
-//        xVec3* upper = &ent->bound.box.box.upper;
-//        *lower = *upper = xEntGetFrame(ent)->pos;
-//
-//        lower->x += -0.5f;
-//        lower->z += -0.5f;
-//
-//        upper->x += 0.5f;
-//        upper->y += 5.0f;
-//        upper->z += 0.5f;
-//
-//        xEntDefaultBoundUpdate(ent, &xEntGetFrame(ent)->pos);
-//
-//        ent->miscflags = ent->miscflags | 8;
-//
-//        xEntAnimateCollision(*ent, 0);
-//        xModelAnimCollStop(*(ent->collModel != NULL ? ent->collModel : ent->model));
-//
-//        ent->moreFlags = ent->moreFlags & 0xdd;
-//        ent->asset->moreFlags = ent->asset->moreFlags & 0xdd;
-//        ent->baseFlags = ent->baseFlags & 0xffef;
-//        ent->asset->baseFlags = ent->asset->baseFlags & 0xffef;
-//    }
-//}
-//
-//void zEntSave(zEnt* ent, xSerial* s)
-//{
-//    xEntSave(ent, s);
-//}
+void zEntInit(zEnt* ent, xEntAsset* asset, U32 type)
+{
+    xEntInit(ent, asset);
+    ent->update = (xEntUpdateCallback)zEntUpdate;
+
+    // Surprisingly, this is not a switch statement.
+    if (type == 0x504c5952)
+    {
+        ent->collType = 0x10;
+        ent->collLev = 0x4;
+        ent->bound.type = 0x1;
+        zEntParseModelInfo(ent, asset->modelInfoID);
+    }
+    else if (type == 0x56494c20)
+    {
+        ent->collType = 0x8;
+        ent->collLev = 0x4;
+        ent->bound.type = 0x1;
+        ent->moreFlags = ent->moreFlags | 0x10;
+        zEntParseModelInfo(ent, asset->modelInfoID);
+    }
+    else if (type == 0x4954454d)
+    {
+        ent->collType = 0x2;
+        ent->collLev = 0x4;
+        ent->bound.type = 0x1;
+        ent->eventFunc = NULL;
+        zEntParseModelInfo(ent, asset->modelInfoID);
+    }
+    else if (type == 0x504b5550)
+    {
+        ent->collType = 0;
+        ent->bound.type = 0;
+    }
+    else if (type == 0x504c4154)
+    {
+        ent->collType = 0x4;
+        if (asset->moreFlags & 2)
+        {
+            ent->collLev = 0x5;
+        }
+        else
+        {
+            ent->collLev = 0x4;
+        }
+        zEntParseModelInfo(ent, asset->modelInfoID);
+        ent->bound.type = 0x4;
+        ent->bound.mat = (xMat4x3*)ent->model->Mat;
+    }
+    else if (type == 0x50454e44)
+    {
+        ent->collType = 0x4;
+        if (asset->moreFlags & 2)
+        {
+            ent->collLev = 0x5;
+        }
+        else
+        {
+            ent->collLev = 0x4;
+        }
+        zEntParseModelInfo(ent, asset->modelInfoID);
+        ent->bound.type = 0x4;
+        ent->bound.mat = (xMat4x3*)ent->model->Mat;
+    }
+    else if (type == 0x54524947)
+    {
+        ent->collType = 0x1;
+        ent->bound.type = 0;
+    }
+    else if (type == 0x48414e47)
+    {
+        ent->collType = 0x4;
+        ent->collLev = 0x4;
+        ent->bound.type = 0x1;
+        zEntParseModelInfo(ent, asset->modelInfoID);
+    }
+    else if (type == 0x53494d50)
+    {
+        ent->collType = 0x2;
+        if (asset->moreFlags & 2)
+        {
+            ent->collLev = 0x5;
+        }
+        else
+        {
+            ent->collLev = 0x4;
+        }
+        ent->bound.type = 0x4;
+        zEntParseModelInfo(ent, asset->modelInfoID);
+        ent->bound.mat = (xMat4x3*)ent->model->Mat;
+    }
+    else if (type == 0x55492020)
+    {
+    }
+    else if (type == 0x4255544e)
+    {
+        ent->collType = 0x4;
+        if (asset->moreFlags & 2)
+        {
+            ent->collLev = 0x5;
+        }
+        else
+        {
+            ent->collLev = 0x4;
+        }
+        ent->bound.type = 0x4;
+        ent->moreFlags = ent->moreFlags | 0x10;
+        zEntParseModelInfo(ent, asset->modelInfoID);
+        ent->bound.mat = (xMat4x3*)ent->model->Mat;
+    }
+    else if (type == 0x44535452)
+    {
+        ent->collType = 0x4;
+        if (asset->moreFlags & 2)
+        {
+            ent->collLev = 0x5;
+        }
+        else
+        {
+            ent->collLev = 0x4;
+        }
+        ent->bound.type = 0x4;
+        ent->moreFlags = ent->moreFlags | 0x10;
+        zEntParseModelInfo(ent, asset->modelInfoID);
+        ent->bound.mat = (xMat4x3*)ent->model->Mat;
+    }
+    else if (type == 0x4547454e)
+    {
+        ent->collType = 0x4;
+        if (asset->moreFlags & 2)
+        {
+            ent->collLev = 0x5;
+        }
+        else
+        {
+            ent->collLev = 0x4;
+        }
+        ent->bound.type = 0x4;
+        zEntParseModelInfo(ent, asset->modelInfoID);
+        ent->bound.mat = (xMat4x3*)ent->model->Mat;
+    }
+    else if (type == 0x54424f58)
+    {
+        ent->collType = 0x2;
+        ent->collLev = 0x5;
+        ent->bound.type = 0x4;
+        zEntParseModelInfo(ent, asset->modelInfoID);
+        ent->bound.mat = (xMat4x3*)ent->model->Mat;
+    }
+
+    if (asset->animListID != 0)
+    {
+        S32 num_used = zAnimListGetNumUsed(asset->animListID);
+        if (num_used > 0)
+        {
+            ent->atbl = zAnimListGetTable(asset->animListID);
+            xAnimPoolAlloc(&globals.sceneCur->mempool, ent, ent->atbl, ent->model);
+            xAnimState* ast = xAnimTableGetState(ent->atbl, "idle");
+            if (ast != NULL)
+            {
+                xAnimSingle* single = ent->model->Anim->Single;
+                single->State = ast;
+                single->Time = 0.0f;
+                single->CurrentSpeed = 1.0f;
+                xModelEval(ent->model);
+            }
+        }
+        else
+        {
+            ent->atbl = NULL;
+        }
+    }
+    else
+    {
+        ent->atbl = NULL;
+    }
+
+    xEntInitForType(ent);
+}
+
+void zEntSetup(zEnt* ent)
+{
+    xEntSetup(ent);
+    checkpoint_collision_hack(ent);
+}
+
+// Equivalent
+// This function needs to be declared inline to generate the correct mangled name for model_id
+inline void checkpoint_collision_hack(zEnt* ent)
+{
+    // instruction swap involving the guard for this static initializer.
+    // Might be due to the sda reloc access for model_id getting moved down
+    static U32 model_id = xStrHash("checkpoint_bind");
+    if (ent->asset->modelInfoID == model_id)
+    {
+        ent->bound.type = 0x2;
+        xVec3* lower = &ent->bound.box.box.lower;
+        xVec3* upper = &ent->bound.box.box.upper;
+        *lower = *upper = xEntGetFrame(ent)->pos;
+
+        lower->x += -0.5f;
+        lower->z += -0.5f;
+
+        upper->x += 0.5f;
+        upper->y += 5.0f;
+        upper->z += 0.5f;
+
+        xEntDefaultBoundUpdate(ent, &xEntGetFrame(ent)->pos);
+
+        ent->miscflags = ent->miscflags | 8;
+
+        xEntAnimateCollision(*ent, 0);
+        xModelAnimCollStop(*(ent->collModel != NULL ? ent->collModel : ent->model));
+
+        ent->moreFlags = ent->moreFlags & 0xdd;
+        ent->asset->moreFlags = ent->asset->moreFlags & 0xdd;
+        ent->baseFlags = ent->baseFlags & 0xffef;
+        ent->asset->baseFlags = ent->asset->baseFlags & 0xffef;
+    }
+}
+
+void zEntSave(zEnt* ent, xSerial* s)
+{
+    xEntSave(ent, s);
+}
 
 void zEntLoad(zEnt* ent, xSerial* s)
 {
     xEntLoad(ent, s);
 }
 
-//void zEntReset(zEnt* ent)
-//{
-//    xEntReset(ent);
-//
-//    if (ent->asset->animListID != 0 && ent->atbl != NULL)
-//    {
-//        xAnimState* ast = xAnimTableGetState(ent->atbl, "idle");
-//        if (ast != NULL)
-//        {
-//            xAnimSingle* single = ent->model->Anim->Single;
-//            single->State = ast;
-//            single->Time = 0.0f;
-//            single->CurrentSpeed = 1.0f;
-//            xModelEval(ent->model);
-//        }
-//    }
-//
-//    if (!(ent->miscflags & 1) && ent->asset->modelInfoID != 0 && ent->model != NULL &&
-//        ent->model->Anim != NULL && ent->model->Anim->Table != NULL &&
-//        strcmp("xEntAutoEventSimple", ent->model->Anim->Table->Name) == 0)
-//    {
-//        ent->model->Anim = ent->model->Anim;
-//        xAnimPlaySetState(ent->model->Anim->Single, ent->model->Anim->Table->StateList, 0.0f);
-//        ent->miscflags = ent->miscflags | 1;
-//    }
-//    checkpoint_collision_hack(ent);
-//}
-//
-//void zEntUpdate(zEnt* ent, zScene* scene, F32 elapsedSec)
-//{
-//    xEntUpdate(ent, scene, elapsedSec);
-//}
+void zEntReset(zEnt* ent)
+{
+    xEntReset(ent);
+
+    if (ent->asset->animListID != 0 && ent->atbl != NULL)
+    {
+        xAnimState* ast = xAnimTableGetState(ent->atbl, "idle");
+        if (ast != NULL)
+        {
+            xAnimSingle* single = ent->model->Anim->Single;
+            single->State = ast;
+            single->Time = 0.0f;
+            single->CurrentSpeed = 1.0f;
+            xModelEval(ent->model);
+        }
+    }
+
+    if (!(ent->miscflags & 1) && ent->asset->modelInfoID != 0 && ent->model != NULL &&
+        ent->model->Anim != NULL && ent->model->Anim->Table != NULL &&
+        strcmp("xEntAutoEventSimple", ent->model->Anim->Table->Name) == 0)
+    {
+        ent->model->Anim = ent->model->Anim;
+        xAnimPlaySetState(ent->model->Anim->Single, ent->model->Anim->Table->StateList, 0.0f);
+        ent->miscflags = ent->miscflags | 1;
+    }
+    checkpoint_collision_hack(ent);
+}
+
+void zEntUpdate(zEnt* ent, zScene* scene, F32 elapsedSec)
+{
+    xEntUpdate(ent, scene, elapsedSec);
+}
 
 void zEntEventAll(xBase* from, U32 fromEvent, U32 toEvent, F32* toParam)
 {
@@ -314,78 +314,78 @@ void zEntEventAllOfType(U32 toEvent, U32 type)
     zEntEventAllOfType(NULL, 0, toEvent, NULL, type);
 }
 
-//xModelInstance* zEntRecurseModelInfo(void* info, xEnt* ent)
-//{
-//    xModelAssetInfo* zinfo = (xModelAssetInfo*)info;
-//    xModelAssetInst* zinst = (xModelAssetInst*)(zinfo + 1);
-//    U32 bufsize;
-//    xModelInstance* tempInst[64];
-//
-//    for (U32 i = 0; i < zinfo->NumModelInst; i++)
-//    {
-//        RpAtomic* imodel = (RpAtomic*)xSTFindAsset(zinst[i].ModelID, &bufsize);
-//        if (*(U32*)&imodel->object.object == 0x464e494d)
-//        {
-//            tempInst[i] = zEntRecurseModelInfo(imodel, ent);
-//            if (i != 0)
-//            {
-//                tempInst[i]->Flags |= zinst[i].Flags;
-//                tempInst[i]->BoneIndex = zinst[i].Bone;
-//                xModelInstanceAttach(tempInst[i], tempInst[zinst[i].Parent]);
-//            }
-//        }
-//        else
-//        {
-//            if (i == 0)
-//            {
-//                tempInst[i] = xModelInstanceAlloc(imodel, ent, 0, 0, 0);
-//                tempInst[i]->modelID = zinst[i].ModelID;
-//                while (imodel = iModelFile_RWMultiAtomic(imodel), imodel != NULL)
-//                {
-//                    xModelInstanceAttach(xModelInstanceAlloc(imodel, ent, 0x2000, 0, NULL),
-//                                         tempInst[i]);
-//                }
-//            }
-//            else
-//            {
-//                tempInst[i] = xModelInstanceAlloc(imodel, ent, zinst[i].Flags, zinst[i].Bone, NULL);
-//                xModelInstanceAttach(tempInst[i], tempInst[zinst[i].Parent]);
-//
-//                while (imodel = iModelFile_RWMultiAtomic(imodel), imodel != NULL)
-//                {
-//                    xModelInstanceAttach(xModelInstanceAlloc(imodel, ent, 0x2000, 0, NULL),
-//                                         tempInst[i]);
-//                }
-//            }
-//        }
-//    }
-//    if (zinfo->AnimTableID != 0)
-//    {
-//        xAnimTable* table = (xAnimTable*)xSTFindAsset(zinfo->AnimTableID, &bufsize);
-//        tempInst[0]->Anim = xAnimPoolAlloc(&globals.sceneCur->mempool, ent, table, tempInst[0]);
-//    }
-//    return tempInst[0];
-//}
-//
-//void zEntParseModelInfo(xEnt* ent, U32 assetID)
-//{
-//    U32 bufsize[4];
-//    void* info = xSTFindAsset(assetID, bufsize);
-//    if (*(U32*)info == 0x464e494d)
-//    {
-//        ent->model = zEntRecurseModelInfo(info, ent);
-//    }
-//    else
-//    {
-//        xEntLoadModel(ent, (RpAtomic*)info);
-//        ent->model->modelID = assetID;
-//    }
-//}
-//
+xModelInstance* zEntRecurseModelInfo(void* info, xEnt* ent)
+{
+    xModelAssetInfo* zinfo = (xModelAssetInfo*)info;
+    xModelAssetInst* zinst = (xModelAssetInst*)(zinfo + 1);
+    U32 bufsize;
+    xModelInstance* tempInst[64];
+
+    for (U32 i = 0; i < zinfo->NumModelInst; i++)
+    {
+        RpAtomic* imodel = (RpAtomic*)xSTFindAsset(zinst[i].ModelID, &bufsize);
+        if (*(U32*)&imodel->object.object == 0x464e494d)
+        {
+            tempInst[i] = zEntRecurseModelInfo(imodel, ent);
+            if (i != 0)
+            {
+                tempInst[i]->Flags |= zinst[i].Flags;
+                tempInst[i]->BoneIndex = zinst[i].Bone;
+                xModelInstanceAttach(tempInst[i], tempInst[zinst[i].Parent]);
+            }
+        }
+        else
+        {
+            if (i == 0)
+            {
+                tempInst[i] = xModelInstanceAlloc(imodel, ent, 0, 0, 0);
+                tempInst[i]->modelID = zinst[i].ModelID;
+                while (imodel = iModelFile_RWMultiAtomic(imodel), imodel != NULL)
+                {
+                    xModelInstanceAttach(xModelInstanceAlloc(imodel, ent, 0x2000, 0, NULL),
+                                         tempInst[i]);
+                }
+            }
+            else
+            {
+                tempInst[i] = xModelInstanceAlloc(imodel, ent, zinst[i].Flags, zinst[i].Bone, NULL);
+                xModelInstanceAttach(tempInst[i], tempInst[zinst[i].Parent]);
+
+                while (imodel = iModelFile_RWMultiAtomic(imodel), imodel != NULL)
+                {
+                    xModelInstanceAttach(xModelInstanceAlloc(imodel, ent, 0x2000, 0, NULL),
+                                         tempInst[i]);
+                }
+            }
+        }
+    }
+    if (zinfo->AnimTableID != 0)
+    {
+        xAnimTable* table = (xAnimTable*)xSTFindAsset(zinfo->AnimTableID, &bufsize);
+        tempInst[0]->Anim = xAnimPoolAlloc(&globals.sceneCur->mempool, ent, table, tempInst[0]);
+    }
+    return tempInst[0];
+}
+
+void zEntParseModelInfo(xEnt* ent, U32 assetID) COMPLETE
+{
+    U32 bufsize[4];
+    void* info = xSTFindAsset(assetID, bufsize);
+    if (info == (void*)0x464e494d)
+    {
+        ent->model = zEntRecurseModelInfo(info, ent);
+    }
+    else
+    {
+        xEntLoadModel(ent, (RpAtomic*)info);
+        ent->model->modelID = assetID;
+    }
+}
+
 //// This function suffers from a couple floating point memes
 //// Additionally it has a jumptable that needs to be generated in the correct place.
-//void zEntAnimEvent(zEnt* ent, U32 animEvent, const F32* animParam)
-//{
+void zEntAnimEvent(zEnt* ent, U32 animEvent, const F32* animParam) RIMP
+{
 //    xAnimPlay* play = ent->model->Anim;
 //    if (play == NULL)
 //    {
@@ -541,8 +541,8 @@ void zEntEventAllOfType(U32 toEvent, U32 type)
 //            break;
 //        }
 //    }
-//}
-//
+}
+
 //U32 g_hash_xentanim[5] = { 0 };
 //char* g_strz_xentanim[5] = {
 //    "Idle01", "Anim02", "Anim03", "Anim04", "Anim05",
@@ -914,22 +914,22 @@ xAnimTable* xEnt_AnimTable_AutoEventSmall()
 //        }
 //    }
 //}
-//
-//void xModelAnimCollStop(xModelInstance& m)
-//{
-//    m.Flags = m.Flags & 0xe7ff;
-//}
+
+void xModelAnimCollStop(xModelInstance& m)
+{
+    m.Flags = m.Flags & 0xe7ff;
+}
 
 xMat4x3* xEntGetFrame(const xEnt* ent)
 {
     return xModelGetFrame(ent->model);
 }
 
-//void xSndPlay3D(U32 id, F32 vol, F32 pitch, U32 priority, U32 flags, const xVec3* pos, F32 radius,
-//                sound_category category, F32 delay)
-//{
-//    xSndPlay3D(id, vol, pitch, priority, flags, pos, radius / 4.0f, radius, category, delay);
-//}
+void xSndPlay3D(U32 id, F32 vol, F32 pitch, U32 priority, U32 flags, const xVec3* pos, F32 radius,
+                sound_category category, F32 delay)
+{
+    xSndPlay3D(id, vol, pitch, priority, flags, pos, radius / 4.0f, radius, category, delay);
+}
 
 S32 xNPCBasic::SelfType() const
 {

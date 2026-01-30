@@ -3031,12 +3031,12 @@ void xGoal::AddFlags(S32 flags)
 //void zNPCCommon::DuploNotice(en_SM_NOTICES, void*)
 //{
 //}
-//
-//xVec3* zNPCCommon::Center()
-//{
-//    return xEntGetCenter(this);
-//}
-//
+
+xVec3* zNPCCommon::Center()
+{
+    return xEntGetCenter(this);
+}
+
 //void zNPCCommon::ModelScaleSet(F32 unk)
 //{
 //    ModelScaleSet(unk, unk, unk);

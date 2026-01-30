@@ -128,72 +128,72 @@ eGameMode zGameModeGet()
     return gGameMode;
 }
 
-//_GameOstrich zGameGetOstrich()
-//{
-//    return gGameOstrich;
-//}
-//
-//void zGameSetOstrich(_GameOstrich value)
-//{
-//    gGameOstrich = value;
-//}
-//
-//S32 zGameStateFindEvent(U32* eventList, S32 eventCount, S32 targetMode, S32 targetEvent,
-//                          S32* new_mode, S32* new_state)
-//{
-//    for (S32 i = 0; i < eventCount; ++i)
-//    {
-//        if (targetEvent == eventList[i])
-//        {
-//            *new_mode = targetMode;
-//            *new_state = i;
-//            return 1;
-//        }
-//    }
-//    return 0;
-//}
-//
-//void zGameStateSwitchEvent(S32 event)
-//{
-//    S32 old_mode = zGameModeGet();
-//    S32 old_state = zGameStateGet();
-//    S32 new_mode = -1;
-//    S32 new_state = -1;
-//
-//    if (zGameStateFindEvent(sGameState_DoDispatchTable, eGameState_Count, eGameMode_Game, event,
-//                            &new_mode, &new_state) ||
-//        zGameStateFindEvent(sPauseState_DoDispatchTable, ePauseState_Count, eGameMode_Pause, event,
-//                            &new_mode, &new_state) ||
-//        zGameStateFindEvent(sSaveState_DoDispatchTable, eSaveState_Count, eGameMode_Save, event,
-//                            &new_mode, &new_state) ||
-//        zGameStateFindEvent(sOptionsState_DoDispatchTable, eOptionsState_Count, eGameMode_Options,
-//                            event, &new_mode, &new_state) ||
-//        zGameStateFindEvent(sLoadState_DoDispatchTable, eLoadState_Count, eGameMode_Load, event,
-//                            &new_mode, &new_state) ||
-//        zGameStateFindEvent(sTitleState_DoDispatchTable, eTitleState_Count, eGameMode_Title, event,
-//                            &new_mode, &new_state) ||
-//        zGameStateFindEvent(sIntroState_DoDispatchTable, eIntroState_Count, eGameMode_Intro, event,
-//                            &new_mode, &new_state))
-//    {
-//        // yay
-//    }
-//
-//    if (new_mode != old_mode)
-//    {
-//        zGameModeSwitch((eGameMode)new_mode);
-//    }
-//
-//    if (new_mode != old_mode || new_state != old_state)
-//    {
-//        zGameStateSwitch(new_state);
-//
-//        if (new_state == eGameState_Exit)
-//        {
-//            zEntEvent("MNU4 CONFIRM SFX", eEventPlay);
-//            xSerialWipeMainBuffer();
-//        }
-//    }
-//}
+_GameOstrich zGameGetOstrich()
+{
+    return gGameOstrich;
+}
+
+void zGameSetOstrich(_GameOstrich value)
+{
+    gGameOstrich = value;
+}
+
+S32 zGameStateFindEvent(U32* eventList, S32 eventCount, S32 targetMode, S32 targetEvent,
+                          S32* new_mode, S32* new_state)
+{
+    for (S32 i = 0; i < eventCount; ++i)
+    {
+        if (targetEvent == eventList[i])
+        {
+            *new_mode = targetMode;
+            *new_state = i;
+            return 1;
+        }
+    }
+    return 0;
+}
+
+void zGameStateSwitchEvent(S32 event)
+{
+    S32 old_mode = zGameModeGet();
+    S32 old_state = zGameStateGet();
+    S32 new_mode = -1;
+    S32 new_state = -1;
+
+    if (zGameStateFindEvent(sGameState_DoDispatchTable, eGameState_Count, eGameMode_Game, event,
+                            &new_mode, &new_state) ||
+        zGameStateFindEvent(sPauseState_DoDispatchTable, ePauseState_Count, eGameMode_Pause, event,
+                            &new_mode, &new_state) ||
+        zGameStateFindEvent(sSaveState_DoDispatchTable, eSaveState_Count, eGameMode_Save, event,
+                            &new_mode, &new_state) ||
+        zGameStateFindEvent(sOptionsState_DoDispatchTable, eOptionsState_Count, eGameMode_Options,
+                            event, &new_mode, &new_state) ||
+        zGameStateFindEvent(sLoadState_DoDispatchTable, eLoadState_Count, eGameMode_Load, event,
+                            &new_mode, &new_state) ||
+        zGameStateFindEvent(sTitleState_DoDispatchTable, eTitleState_Count, eGameMode_Title, event,
+                            &new_mode, &new_state) ||
+        zGameStateFindEvent(sIntroState_DoDispatchTable, eIntroState_Count, eGameMode_Intro, event,
+                            &new_mode, &new_state))
+    {
+        // yay
+    }
+
+    if (new_mode != old_mode)
+    {
+        zGameModeSwitch((eGameMode)new_mode);
+    }
+
+    if (new_mode != old_mode || new_state != old_state)
+    {
+        zGameStateSwitch(new_state);
+
+        if (new_state == eGameState_Exit)
+        {
+            zEntEvent("MNU4 CONFIRM SFX", eEventPlay);
+            xSerialWipeMainBuffer();
+        }
+    }
+}
 
 void zGameStateSwitch(S32 theNewState)
 {

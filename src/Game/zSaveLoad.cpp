@@ -2380,14 +2380,15 @@
 //    }
 //    return 1;
 //}
-//
-//U32 zSaveLoad_slotIsEmpty(U32 slot)
-//{
-//    // TODO: Fix this hardcoded offset once string generation is correct
-//    char* label = zSaveLoadGameTable[slot].label;
-//    return strcmp(label, "ld gameslot group" + 0x49c) == 0 ? 1 : 0;
-//}
-//
+
+U32 zSaveLoad_slotIsEmpty(U32 slot) RIMP
+{
+    // TODO: Fix this hardcoded offset once string generation is correct
+    //char* label = zSaveLoadGameTable[slot].label;
+    //return strcmp(label, "ld gameslot group" + 0x49c) == 0 ? 1 : 0;
+    return 0;
+}
+
 //S32 XSGAutoData::LastPhysicalSlot()
 //{
 //    return this->lastPhysicalSlot;
